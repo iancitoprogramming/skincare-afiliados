@@ -1,0 +1,13 @@
+/* Tema del nicho skincare. Para otro nicho: copiar este archivo y cambiar valores. */
+@theme {
+  --color-porcelana: #eff2f0;
+  --color-tinta: #16211d;
+  --color-gel: #c6e7d4;
+  --color-agua: #6fb2c0;
+  --color-vitamina: #f0531d;
+  --color-niebla: #c7d2cd;
+
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-space-mono), ui-monospace, monospace;
+}
