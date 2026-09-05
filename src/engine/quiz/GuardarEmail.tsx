@@ -40,7 +40,7 @@ export function GuardarEmail({
 
   return (
     <form onSubmit={submit} className="flex flex-col gap-2">
-      <label htmlFor="email-rutina" className="font-mono text-xs text-agua">
+      <label htmlFor="email-rutina" className="font-mono text-xs text-piedra">
         {label}
       </label>
       <div className="flex gap-2">
@@ -55,7 +55,7 @@ export function GuardarEmail({
             if (error) setError("");
           }}
           placeholder="tu@email.com"
-          className="min-h-[52px] flex-1 rounded-xl border border-niebla bg-porcelana px-4 font-body text-tinta outline-none focus:border-agua"
+          className="min-h-[52px] flex-1 rounded-xl border border-niebla bg-porcelana px-4 font-body text-tinta outline-none focus:border-piedra"
         />
         <button
           type="submit"
@@ -64,9 +64,9 @@ export function GuardarEmail({
           guardar
         </button>
       </div>
-      {error ? <p className="font-body text-sm text-vitamina">{error}</p> : null}
+      {error ? <p className="font-body text-sm text-terracota">{error}</p> : null}
       {estado === "error" ? (
-        <p className="font-body text-sm text-vitamina">No se pudo guardar, probá de nuevo.</p>
+        <p className="font-body text-sm text-terracota">No se pudo guardar, probá de nuevo.</p>
       ) : null}
     </form>
   );

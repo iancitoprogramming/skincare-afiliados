@@ -1,11 +1,24 @@
-/* Tema del nicho skincare. Para otro nicho: copiar este archivo y cambiar valores. */
+/* Tema del nicho skincare. Para otro nicho: copiar este archivo y cambiar valores.
+   ─────────────────────────────────────────────────────────────────────────────
+   Lectura de marca: BOTÁNICO · NATURAL. La decide el catálogo, no el gusto:
+   centella, arroz, ginseng, caracol, té verde. Los ingredientes son el
+   posicionamiento.
+
+   `piedra` es el azul del logo. Que el color de la marca sea además el color del
+   texto secundario es lo que evita que el logo quede fuera de paleta: no es un
+   acento suelto, es el ancla fría de todo el sistema.
+
+   Todos los colores que llevan texto pasan WCAG AA (4.5:1) sobre `porcelana`.
+   Antes no: `agua` estaba en 2,12:1 y el botón de compra en 3,13:1.
+*/
 @theme {
-  --color-porcelana: #eff2f0;
-  --color-tinta: #16211d;
-  --color-gel: #c6e7d4;
-  --color-agua: #6fb2c0;
-  --color-vitamina: #f0531d;
-  --color-niebla: #c7d2cd;
+  --color-porcelana: #f4f6f3;  /* fondo                                        */
+  --color-tinta:     #1b2430;  /* texto principal          14,4:1              */
+  --color-piedra:    #5a6b85;  /* texto secundario · logo   4,98:1             */
+  --color-salvia:    #4a6b57;  /* verde de marca            5,47:1             */
+  --color-gel:       #dce7de;  /* superficie verde suave    (fondo, no texto)  */
+  --color-terracota: #c2410c;  /* CTA — porcelana encima    4,76:1             */
+  --color-niebla:    #cbd5d0;  /* bordes                    (no texto)         */
 
   --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;

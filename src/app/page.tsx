@@ -38,14 +38,14 @@ export default async function Home() {
             href="/catalogo"
             className="flex flex-col gap-1 rounded-2xl border border-niebla bg-porcelana p-5 transition-transform active:scale-[0.99]"
           >
-            <span className="font-mono text-xs text-agua">
+            <span className="font-mono text-xs text-piedra">
               {activos} productos · con filtros
             </span>
             <span className="font-display text-2xl font-medium text-tinta">
               {copy.catalogo.titulo}
             </span>
             <span className="font-body text-sm text-tinta/75">{copy.catalogo.bajadaHome}</span>
-            <span className="mt-3 font-body text-base font-medium text-vitamina">
+            <span className="mt-3 font-body text-base font-medium text-terracota">
               {copy.catalogo.cta} →
             </span>
           </Link>
@@ -55,14 +55,14 @@ export default async function Home() {
               href="/kits"
               className="flex flex-col gap-1 rounded-2xl border border-niebla bg-gel/40 p-5 transition-transform active:scale-[0.99]"
             >
-              <span className="font-mono text-xs text-agua">
+              <span className="font-mono text-xs text-piedra">
                 {total} kits{KITS_UNICOS.length > 0 ? " · hay de una sola compra" : ""}
               </span>
               <span className="font-display text-2xl font-medium text-tinta">
                 {copy.home.kits.titulo}
               </span>
               <span className="font-body text-sm text-tinta/75">{copy.home.kits.bajada}</span>
-              <span className="mt-3 font-body text-base font-medium text-vitamina">
+              <span className="mt-3 font-body text-base font-medium text-terracota">
                 {copy.home.kits.cta} →
               </span>
             </Link>
@@ -72,12 +72,12 @@ export default async function Home() {
             href="/rutina"
             className="flex flex-col gap-1 rounded-2xl border border-niebla bg-porcelana p-5 transition-transform active:scale-[0.99]"
           >
-            <span className="font-mono text-xs text-agua">a tu medida</span>
+            <span className="font-mono text-xs text-piedra">a tu medida</span>
             <span className="font-display text-2xl font-medium text-tinta">
               {copy.home.quiz.titulo}
             </span>
             <span className="font-body text-sm text-tinta/75">{copy.home.quiz.bajada(preguntas)}</span>
-            <span className="mt-3 font-body text-base font-medium text-vitamina">
+            <span className="mt-3 font-body text-base font-medium text-terracota">
               {copy.home.quiz.cta} →
             </span>
           </Link>

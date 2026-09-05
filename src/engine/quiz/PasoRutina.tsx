@@ -38,7 +38,7 @@ export function PasoRutina({
 
   return (
     <div className="rounded-2xl border border-niebla bg-gel/25 p-5">
-      <p className="font-mono text-xs text-agua">
+      <p className="font-mono text-xs text-piedra">
         paso {String(numero).padStart(2, "0")} · {categoriaLabel}
         {conAvisoDeCombinacion ? (
           <span className="ml-2 text-tinta/50">↓ {copy.compatibilidad.enPaso}</span>
@@ -63,22 +63,22 @@ export function PasoRutina({
           </span>
         ) : null}
       </div>
-      {p.marca ? <p className="font-mono text-xs text-agua">{p.marca}</p> : null}
+      {p.marca ? <p className="font-mono text-xs text-piedra">{p.marca}</p> : null}
       <PruebaSocial d={p} className="mt-2" />
 
       {p.por_que ? (
         <p className="mt-3 font-body text-tinta">
-          <span className="text-agua">por qué:</span> {p.por_que}
+          <span className="text-piedra">por qué:</span> {p.por_que}
         </p>
       ) : null}
       {p.como_usar ? (
         <p className="mt-1 font-body text-tinta">
-          <span className="text-agua">cómo:</span> {p.como_usar}
+          <span className="text-piedra">cómo:</span> {p.como_usar}
         </p>
       ) : null}
 
       {aviso ? (
-        <p className="mt-3 rounded-xl border border-vitamina/30 bg-vitamina/5 px-3 py-2 font-body text-xs text-tinta/80">
+        <p className="mt-3 rounded-xl border border-terracota/30 bg-terracota/5 px-3 py-2 font-body text-xs text-tinta/80">
           {aviso}
         </p>
       ) : null}
@@ -88,7 +88,7 @@ export function PasoRutina({
         target="_blank"
         rel="sponsored noopener noreferrer"
         onClick={() => trackClick({ sesion_id: sesionId, producto_id: p.id, posicion: numero })}
-        className="mt-4 flex min-h-[52px] w-full items-center justify-center rounded-xl bg-vitamina px-5 font-body text-lg font-medium text-porcelana transition-transform active:scale-[0.98]"
+        className="mt-4 flex min-h-[52px] w-full items-center justify-center rounded-xl bg-terracota px-5 font-body text-lg font-medium text-porcelana transition-transform active:scale-[0.98]"
       >
         Ver en Mercado Libre
       </a>

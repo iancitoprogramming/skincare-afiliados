@@ -65,7 +65,7 @@ export default function Combinaciones() {
               ["pagás dos veces", "no pasa nada malo. Estás comprando lo mismo dos veces."],
             ].map(([k, v]) => (
               <div key={k} className="flex flex-col">
-                <dt className="font-mono text-xs text-agua">{k}</dt>
+                <dt className="font-mono text-xs text-piedra">{k}</dt>
                 <dd className="font-body text-sm leading-relaxed text-tinta/85">{v}</dd>
               </div>
             ))}
@@ -74,12 +74,12 @@ export default function Combinaciones() {
 
         {/* ── La matriz ───────────────────────────────────────────────────── */}
         <section className="flex flex-col gap-3">
-          <h2 className="font-mono text-sm text-agua">la tabla</h2>
+          <h2 className="font-mono text-sm text-piedra">la tabla</h2>
           <div className="-mx-5 overflow-x-auto px-5">
             <table className="w-max border-collapse font-mono text-[11px]">
               <thead>
                 <tr>
-                  <th className="sticky left-0 z-10 bg-porcelana p-1.5 text-left font-normal text-agua">
+                  <th className="sticky left-0 z-10 bg-porcelana p-1.5 text-left font-normal text-piedra">
                     &nbsp;
                   </th>
                   {EN_MATRIZ.map((id) => (
@@ -88,7 +88,7 @@ export default function Combinaciones() {
                       // Ancho fijo + break-words: "Niacinamida" es una sola
                       // palabra larga y sin esto se le monta a la columna de al
                       // lado en vez de partirse.
-                      className="w-20 break-words px-2 py-1.5 align-bottom font-normal leading-tight text-agua"
+                      className="w-20 break-words px-2 py-1.5 align-bottom font-normal leading-tight text-piedra"
                     >
                       {ACTIVOS[id].nombre}
                     </th>
@@ -109,9 +109,9 @@ export default function Combinaciones() {
                           title={c.motivo ?? undefined}
                           className={`p-1.5 text-center text-sm ${
                             c.marca === "nunca"
-                              ? "text-vitamina"
+                              ? "text-terracota"
                               : c.marca === "separar"
-                                ? "text-agua"
+                                ? "text-piedra"
                                 : c.marca === "potencia"
                                   ? "text-tinta"
                                   : "text-tinta/35"
@@ -156,7 +156,7 @@ export default function Combinaciones() {
                   <li
                     key={r.id}
                     className={`rounded-2xl border p-4 ${
-                      r.severidad === "separar" ? "border-vitamina/40" : "border-niebla"
+                      r.severidad === "separar" ? "border-terracota/40" : "border-niebla"
                     }`}
                   >
                     <h3 className="font-display text-base font-medium leading-snug text-tinta">
@@ -166,7 +166,7 @@ export default function Combinaciones() {
                       {r.explicacion}
                     </p>
                     <p className="mt-2 font-body text-sm leading-relaxed text-tinta">
-                      <span className="text-agua">qué hacer:</span> {r.queHacer}
+                      <span className="text-piedra">qué hacer:</span> {r.queHacer}
                     </p>
                     {r.evidencia ? (
                       <p className="mt-2 border-t border-niebla pt-2 font-body text-xs leading-relaxed text-tinta/60">
@@ -228,10 +228,10 @@ export default function Combinaciones() {
                   {m.titulo}
                 </h3>
                 <p className="mt-2 font-body text-sm leading-relaxed text-tinta/70">
-                  <span className="text-agua">lo que se dice:</span> {m.loQueSeDice}
+                  <span className="text-piedra">lo que se dice:</span> {m.loQueSeDice}
                 </p>
                 <p className="mt-1 font-body text-sm leading-relaxed text-tinta/85">
-                  <span className="text-agua">lo que se sabe:</span> {m.loQueSabemos}
+                  <span className="text-piedra">lo que se sabe:</span> {m.loQueSabemos}
                 </p>
                 {m.evidencia ? (
                   <p className="mt-2 font-body text-xs leading-relaxed text-tinta/60">
@@ -253,13 +253,13 @@ export default function Combinaciones() {
           </p>
           <Link
             href="/rutina"
-            className="mt-4 flex min-h-[52px] w-full items-center justify-center rounded-xl bg-vitamina px-5 font-body text-lg font-medium text-porcelana transition-transform active:scale-[0.98]"
+            className="mt-4 flex min-h-[52px] w-full items-center justify-center rounded-xl bg-terracota px-5 font-body text-lg font-medium text-porcelana transition-transform active:scale-[0.98]"
           >
             Armar mi rutina
           </Link>
         </section>
 
-        <p className="font-body text-xs leading-relaxed text-agua">
+        <p className="font-body text-xs leading-relaxed text-piedra">
           * {copy.dermatologo} Nada de lo que se explica acá reemplaza una consulta, y ninguno de
           estos productos trata ni cura ninguna condición.
         </p>

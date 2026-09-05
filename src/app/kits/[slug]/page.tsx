@@ -36,8 +36,8 @@ export default async function KitDetalle({ params }: { params: Promise<{ slug: s
       <Shell volver={{ href: "/kits", label: copy.kits.volver }} disclaimers>
         <div className="flex flex-col gap-5">
           <header className="flex flex-col gap-2">
-            <span className="flex flex-wrap items-center gap-2 font-mono text-xs text-agua">
-              <span className="rounded-full bg-vitamina px-2 py-0.5 text-porcelana">
+            <span className="flex flex-wrap items-center gap-2 font-mono text-xs text-piedra">
+              <span className="rounded-full bg-terracota px-2 py-0.5 text-porcelana">
                 {copy.kits.unicos.badge}
               </span>
               {unico.mas_vendido ? <span>más vendido en ML</span> : null}
@@ -61,7 +61,7 @@ export default async function KitDetalle({ params }: { params: Promise<{ slug: s
               {precio(unico.precio_ars)}
             </span>
             {unico.precio_lista ? (
-              <span className="font-mono text-base text-agua line-through">
+              <span className="font-mono text-base text-piedra line-through">
                 {precio(unico.precio_lista)}
               </span>
             ) : null}
@@ -69,7 +69,7 @@ export default async function KitDetalle({ params }: { params: Promise<{ slug: s
 
           {unico.incluye.length > 0 ? (
             <div className="rounded-2xl border border-niebla bg-gel/25 p-5">
-              <p className="font-mono text-xs text-agua">{copy.kits.unicos.incluye}</p>
+              <p className="font-mono text-xs text-piedra">{copy.kits.unicos.incluye}</p>
               <ul className="mt-2 flex flex-col gap-1">
                 {unico.incluye.map((x) => (
                   <li key={x} className="font-body text-tinta">
@@ -107,7 +107,7 @@ export default async function KitDetalle({ params }: { params: Promise<{ slug: s
     <Shell volver={{ href: "/kits", label: copy.kits.volver }} disclaimers>
       <div className="flex flex-col gap-6">
         <header className="flex flex-col gap-2">
-          <p className="font-mono text-xs text-agua">
+          <p className="font-mono text-xs text-piedra">
             {copy.kits.pasos(kit.pasos.length)}
             {kit.totalCompleto ? ` · ${copy.kits.total} ${precio(kit.total)}` : ""}
           </p>

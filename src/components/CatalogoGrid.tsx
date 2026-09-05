@@ -63,20 +63,20 @@ export function CatalogoGrid({
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3 border-y border-niebla py-3">
-        <p className="font-mono text-xs text-agua">
+        <p className="font-mono text-xs text-piedra">
           {visibles.length} {visibles.length === 1 ? "producto" : "productos"}
           {hayFiltros ? (
             <button
               type="button"
               onClick={limpiar}
-              className="ml-3 text-vitamina underline underline-offset-2"
+              className="ml-3 text-terracota underline underline-offset-2"
             >
               limpiar filtros
             </button>
           ) : null}
         </p>
 
-        <label className="flex items-center gap-2 font-mono text-xs text-agua">
+        <label className="flex items-center gap-2 font-mono text-xs text-piedra">
           orden
           <select
             value={orden}
@@ -98,7 +98,7 @@ export function CatalogoGrid({
           <button
             type="button"
             onClick={limpiar}
-            className="mt-3 font-body font-medium text-vitamina"
+            className="mt-3 font-body font-medium text-terracota"
           >
             Ver todo el catálogo
           </button>
@@ -124,7 +124,7 @@ export function CatalogoGrid({
                 )}
 
                 {p.marca ? (
-                  <span className="font-mono text-[11px] leading-none text-agua">{p.marca}</span>
+                  <span className="font-mono text-[11px] leading-none text-piedra">{p.marca}</span>
                 ) : null}
                 <span className="font-display text-sm font-medium leading-tight text-tinta">
                   {p.nombre}
@@ -160,7 +160,7 @@ function Fila({
 }) {
   return (
     <div className="flex flex-col gap-2">
-      <p className="font-mono text-xs text-agua">{titulo}</p>
+      <p className="font-mono text-xs text-piedra">{titulo}</p>
       <div className="flex flex-wrap gap-2">
         {opciones.map((o) => {
           const activo = valor === o.valor;
@@ -172,7 +172,7 @@ function Fila({
               onClick={() => onChange(activo ? null : o.valor)}
               className={`rounded-full border px-3 py-1.5 font-body text-sm transition-colors ${
                 activo
-                  ? "border-vitamina bg-vitamina text-porcelana"
+                  ? "border-terracota bg-terracota text-porcelana"
                   : "border-niebla bg-porcelana text-tinta"
               }`}
             >

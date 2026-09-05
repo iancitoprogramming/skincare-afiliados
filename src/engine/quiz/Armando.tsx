@@ -19,9 +19,9 @@ export function Armando({ label, onDone }: { label: string; onDone: () => void }
   return (
     <div className="flex flex-col items-center justify-center gap-6 py-16" role="status" aria-live="polite">
       <div className="flex gap-2">
-        <span className="h-2.5 w-2.5 animate-bounce rounded-full bg-agua [animation-delay:-0.2s]" />
-        <span className="h-2.5 w-2.5 animate-bounce rounded-full bg-agua [animation-delay:-0.1s]" />
-        <span className="h-2.5 w-2.5 animate-bounce rounded-full bg-agua" />
+        <span className="h-2.5 w-2.5 animate-bounce rounded-full bg-piedra [animation-delay:-0.2s]" />
+        <span className="h-2.5 w-2.5 animate-bounce rounded-full bg-piedra [animation-delay:-0.1s]" />
+        <span className="h-2.5 w-2.5 animate-bounce rounded-full bg-piedra" />
       </div>
       <p className="font-mono text-sm text-tinta">{label}…</p>
     </div>

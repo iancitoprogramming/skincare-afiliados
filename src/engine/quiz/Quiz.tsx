@@ -69,7 +69,7 @@ export function Quiz({ config, productos }: { config: QuizConfig; productos: Pro
     <main className="mx-auto flex min-h-[100dvh] w-full max-w-md flex-col px-5 py-6">
       {phase === "quiz" ? (
         <>
-          <p className="font-mono text-xs text-agua">{config.intro}</p>
+          <p className="font-mono text-xs text-piedra">{config.intro}</p>
           <div className="mt-6 flex flex-col gap-8 rounded-2xl border border-niebla bg-gel/25 p-5">
             <Progreso
               current={step}

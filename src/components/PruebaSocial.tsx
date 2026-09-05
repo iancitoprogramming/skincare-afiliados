@@ -24,11 +24,11 @@ export function PruebaSocial({ d, className = "" }: { d: DatosSociales; classNam
       {muestraRating ? (
         <span className="text-tinta">
           ★ {d.rating!.toLocaleString("es-AR", { minimumFractionDigits: 1 })}
-          <span className="text-agua"> ({d.opiniones!.toLocaleString("es-AR")})</span>
+          <span className="text-piedra"> ({d.opiniones!.toLocaleString("es-AR")})</span>
         </span>
       ) : null}
 
-      {d.vendidos ? <span className="text-agua">{d.vendidos} vendidos</span> : null}
+      {d.vendidos ? <span className="text-piedra">{d.vendidos} vendidos</span> : null}
 
       {d.reputacion ? (
         <span className="rounded-full bg-gel px-2 py-0.5 text-tinta">{d.reputacion}</span>

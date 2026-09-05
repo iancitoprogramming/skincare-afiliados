@@ -18,20 +18,20 @@ export function OpcionCard({
       aria-pressed={selected}
       className={[
         "group flex w-full items-center gap-3 px-4 py-4 text-left min-h-[56px]",
-        "transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-agua",
-        selected ? "bg-agua/15" : "hover:bg-gel/40 active:bg-gel/60",
+        "transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-piedra",
+        selected ? "bg-piedra/15" : "hover:bg-gel/40 active:bg-gel/60",
       ].join(" ")}
     >
       <span
         aria-hidden
         className={[
           "h-2 w-2 shrink-0 rounded-full transition-colors",
-          selected ? "bg-vitamina" : "bg-agua/50 group-hover:bg-agua",
+          selected ? "bg-terracota" : "bg-piedra/50 group-hover:bg-piedra",
         ].join(" ")}
       />
       <span className="flex flex-col">
         <span className="font-body text-lg leading-snug text-tinta">{option.label}</span>
-        {option.hint ? <span className="font-mono text-xs text-agua">{option.hint}</span> : null}
+        {option.hint ? <span className="font-mono text-xs text-piedra">{option.hint}</span> : null}
       </span>
     </button>
   );

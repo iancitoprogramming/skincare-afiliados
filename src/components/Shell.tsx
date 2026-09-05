@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { copy } from "@/niches/skincare/copy";
+import { Logo } from "@/components/Logo";
 
 // Shell común de todas las pantallas: marca arriba, disclaimers abajo.
 // Mobile-first: el 90% del tráfico va a entrar desde una red social.
@@ -21,7 +22,7 @@ export function Shell({
     <div className="mx-auto flex min-h-[100dvh] w-full max-w-md flex-col px-5 py-6">
       <header className="flex items-baseline justify-between gap-3">
         <Link href="/" className="flex items-center gap-2">
-          <span className="h-2.5 w-2.5 rounded-full bg-vitamina" />
+          <Logo size={26} className="text-piedra" />
           <span className="font-display text-lg font-medium tracking-tight text-tinta">
             {copy.marca}
           </span>
@@ -29,7 +30,7 @@ export function Shell({
         {volver ? (
           <Link
             href={volver.href}
-            className="font-mono text-xs text-agua transition-colors hover:text-tinta"
+            className="font-mono text-xs text-piedra transition-colors hover:text-tinta"
           >
             ← {volver.label}
           </Link>
@@ -48,14 +49,14 @@ export function Shell({
       <footer className="flex flex-col gap-2 border-t border-niebla pt-4">
         <Link
           href="/combinaciones"
-          className="font-mono text-xs text-agua underline decoration-niebla underline-offset-4 transition-colors hover:text-tinta"
+          className="font-mono text-xs text-piedra underline decoration-niebla underline-offset-4 transition-colors hover:text-tinta"
         >
           {copy.home.criterios} →
         </Link>
         {disclaimers ? (
           <>
-            <p className="font-body text-xs text-agua">* {copy.afiliacion}</p>
-            <p className="font-body text-xs text-agua">* {copy.dermatologo}</p>
+            <p className="font-body text-xs text-piedra">* {copy.afiliacion}</p>
+            <p className="font-body text-xs text-piedra">* {copy.dermatologo}</p>
           </>
         ) : null}
       </footer>

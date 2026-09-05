@@ -38,10 +38,10 @@ export default async function Kits() {
               <Link
                 key={k.slug}
                 href={`/kits/${k.slug}`}
-                className="flex flex-col gap-1 rounded-2xl border border-vitamina/40 bg-gel/40 p-5 transition-transform active:scale-[0.99]"
+                className="flex flex-col gap-1 rounded-2xl border border-terracota/40 bg-gel/40 p-5 transition-transform active:scale-[0.99]"
               >
-                <span className="flex flex-wrap items-center gap-2 font-mono text-xs text-agua">
-                  <span className="rounded-full bg-vitamina px-2 py-0.5 text-porcelana">
+                <span className="flex flex-wrap items-center gap-2 font-mono text-xs text-piedra">
+                  <span className="rounded-full bg-terracota px-2 py-0.5 text-porcelana">
                     {copy.kits.unicos.badge}
                   </span>
                   {k.mas_vendido ? <span>más vendido en ML</span> : null}
@@ -56,11 +56,11 @@ export default async function Kits() {
                 <span className="mt-2 flex items-baseline gap-2 font-mono text-sm">
                   <span className="text-tinta">{precio(k.precio_ars)}</span>
                   {k.precio_lista ? (
-                    <span className="text-agua line-through">{precio(k.precio_lista)}</span>
+                    <span className="text-piedra line-through">{precio(k.precio_lista)}</span>
                   ) : null}
                 </span>
 
-                <span className="mt-3 font-body text-base font-medium text-vitamina">
+                <span className="mt-3 font-body text-base font-medium text-terracota">
                   {copy.kits.unicos.ver} →
                 </span>
               </Link>
@@ -82,7 +82,7 @@ export default async function Kits() {
               href={`/kits/${kit.def.slug}`}
               className="flex flex-col gap-1 rounded-2xl border border-niebla bg-gel/25 p-5 transition-transform active:scale-[0.99]"
             >
-              <span className="font-mono text-xs text-agua">
+              <span className="font-mono text-xs text-piedra">
                 {copy.kits.pasos(kit.pasos.length)}
                 {kit.totalCompleto ? ` · ${copy.kits.total} ${precio(kit.total)}` : ""}
               </span>
@@ -90,7 +90,7 @@ export default async function Kits() {
                 {kit.def.nombre}
               </span>
               <span className="font-body text-sm text-tinta/75">{kit.def.descripcion}</span>
-              <span className="mt-3 font-body text-base font-medium text-vitamina">
+              <span className="mt-3 font-body text-base font-medium text-terracota">
                 {copy.kits.ver} →
               </span>
             </Link>
@@ -99,7 +99,7 @@ export default async function Kits() {
 
         <Link
           href="/rutina"
-          className="font-mono text-sm text-agua transition-colors hover:text-tinta"
+          className="font-mono text-sm text-piedra transition-colors hover:text-tinta"
         >
           ¿ninguno te cierra? armá la tuya →
         </Link>

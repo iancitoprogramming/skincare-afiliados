@@ -1,19 +1,19 @@
 // Textos del nicho. Editables sin tocar componentes.
 export const copy = {
   marca: "Club de Piel",
-  tagline: "Rutinas de skincare que se entienden",
+  tagline: "Qué comprar, en qué orden y por qué",
 
   meta: {
-    title: "Club de Piel · Tu rutina de skincare en 30 segundos",
+    title: "Club de Piel · Qué comprar, en qué orden y por qué",
     description:
       "Elegí un kit ya armado, mirá el catálogo completo o respondé unas preguntas y te armamos la rutina para tu piel y tu presupuesto. Productos coreanos, europeos y nacionales.",
   },
 
   // Pantalla de entrada: dos puertas, sin scroll y sin buscar.
   home: {
-    titulo: "Tu piel, sin vueltas.",
+    titulo: "Qué comprar, en qué orden y por qué.",
     bajada:
-      "Sin listas infinitas ni palabras raras. Elegí por dónde arrancar y en un minuto tenés tu rutina.",
+      "Elegimos producto por producto, te explicamos por qué, y te dejamos el link. Coreanos, europeos y nacionales.",
     kits: {
       titulo: "Kits ya armados",
       bajada: "Elegí el de tu tipo de piel y listo.",

@@ -18,12 +18,12 @@ import { copy } from "@/niches/skincare/copy";
 
 const ESTILO: Record<Severidad, { chip: string; borde: string }> = {
   separar: {
-    chip: "bg-vitamina/15 text-vitamina",
-    borde: "border-vitamina/40",
+    chip: "bg-terracota/15 text-terracota",
+    borde: "border-terracota/40",
   },
   cuidado: {
-    chip: "bg-agua/15 text-agua",
-    borde: "border-agua/40",
+    chip: "bg-piedra/15 text-piedra",
+    borde: "border-piedra/40",
   },
   nota: {
     chip: "bg-niebla/40 text-tinta/60",
@@ -46,7 +46,7 @@ function Tarjeta({ conflicto }: { conflicto: Conflicto }) {
         <span className={`rounded-full px-2 py-0.5 font-mono text-[11px] ${estilo.chip}`}>
           {copy.compatibilidad.severidad[conflicto.severidad]}
         </span>
-        <span className="font-mono text-[11px] text-agua">
+        <span className="font-mono text-[11px] text-piedra">
           {copy.compatibilidad.clase[conflicto.clase]}
           {cuando ? ` · ${cuando}` : ""}
         </span>
@@ -59,11 +59,11 @@ function Tarjeta({ conflicto }: { conflicto: Conflicto }) {
         {conflicto.explicacion}
       </p>
       <p className="mt-2 font-body text-sm leading-relaxed text-tinta">
-        <span className="text-agua">qué hacer:</span> {conflicto.queHacer}
+        <span className="text-piedra">qué hacer:</span> {conflicto.queHacer}
       </p>
 
       {conflicto.productos.length ? (
-        <p className="mt-2 font-mono text-[11px] leading-relaxed text-agua">
+        <p className="mt-2 font-mono text-[11px] leading-relaxed text-piedra">
           {conflicto.productos.join(" · ")}
         </p>
       ) : null}
@@ -84,7 +84,7 @@ export function Compatibilidad({
   return (
     <section className="flex flex-col gap-4">
       <div>
-        <h2 className="font-mono text-sm text-agua">{copy.compatibilidad.titulo}</h2>
+        <h2 className="font-mono text-sm text-piedra">{copy.compatibilidad.titulo}</h2>
         <p className="mt-1 font-body text-sm leading-relaxed text-tinta/75">
           {copy.compatibilidad.bajada}
         </p>
@@ -109,7 +109,7 @@ export function Compatibilidad({
           <ol className="mt-3 flex flex-col gap-2">
             {plan.noches.map((n) => (
               <li key={n.noche} className="flex gap-3">
-                <span className="mt-0.5 font-mono text-xs text-agua">
+                <span className="mt-0.5 font-mono text-xs text-piedra">
                   {String(n.noche).padStart(2, "0")}
                 </span>
                 <span className="font-body text-sm leading-relaxed text-tinta">
@@ -124,7 +124,7 @@ export function Compatibilidad({
 
       {sinergias.length ? (
         <div className="rounded-2xl border border-gel bg-gel/25 p-5">
-          <h3 className="font-mono text-xs text-agua">{copy.compatibilidad.sinergias}</h3>
+          <h3 className="font-mono text-xs text-piedra">{copy.compatibilidad.sinergias}</h3>
           <ul className="mt-2 flex flex-col gap-3">
             {sinergias.map((s) => (
               <li key={s.sinergiaId}>
@@ -142,7 +142,7 @@ export function Compatibilidad({
 
       {mitos.length ? (
         <div className="rounded-2xl border border-niebla p-5">
-          <h3 className="font-mono text-xs text-agua">{copy.compatibilidad.mitos}</h3>
+          <h3 className="font-mono text-xs text-piedra">{copy.compatibilidad.mitos}</h3>
           <ul className="mt-2 flex flex-col gap-4">
             {mitos.map((m) => (
               <li key={m.mitoId}>
@@ -150,10 +150,10 @@ export function Compatibilidad({
                   {m.titulo}
                 </p>
                 <p className="mt-1 font-body text-sm leading-relaxed text-tinta/70">
-                  <span className="text-agua">lo que se dice:</span> {m.loQueSeDice}
+                  <span className="text-piedra">lo que se dice:</span> {m.loQueSeDice}
                 </p>
                 <p className="mt-1 font-body text-sm leading-relaxed text-tinta/85">
-                  <span className="text-agua">lo que se sabe:</span> {m.loQueSabemos}
+                  <span className="text-piedra">lo que se sabe:</span> {m.loQueSabemos}
                 </p>
               </li>
             ))}
