@@ -22,9 +22,9 @@ export default function OpengraphImage() {
       >
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
           <div
-            style={{ width: "24px", height: "24px", borderRadius: "50%", backgroundColor: "#f0531d" }}
+            style={{ width: "28px", height: "28px", borderRadius: "50%", backgroundColor: "#f0531d" }}
           />
-          <div style={{ fontSize: "28px", color: "#6fb2c0" }}>rutina en 30 segundos</div>
+          <div style={{ fontSize: "36px", fontWeight: 600, color: "#16211d" }}>{copy.marca}</div>
         </div>
         <div
           style={{
@@ -36,11 +36,11 @@ export default function OpengraphImage() {
             lineHeight: 1.05,
           }}
         >
-          <span>Tu rutina de skincare,</span>
-          <span>para tu piel y tu bolsillo.</span>
+          <span>Tu piel,</span>
+          <span>sin vueltas.</span>
         </div>
         <div style={{ fontSize: "30px", color: "#6fb2c0" }}>
-          4 preguntas · productos recomendados
+          Kits armados · o tu rutina en 4 preguntas
         </div>
       </div>
     ),

@@ -1,4 +1,7 @@
+"use client";
+
 import type { PasoRutina as Paso } from "@/engine/recomendacion";
+import { copy } from "@/niches/skincare/copy";
 import { trackClick } from "@/engine/tracking";
 
 // Un paso de la rutina: producto + botón directo a Mercado Libre.
@@ -16,6 +19,14 @@ export function PasoRutina({
   sesionId: string | null;
 }) {
   const p = paso.producto;
+  // Cuando la recomendacion no fue un match limpio, se dice. Un kit o una rutina
+  // que esconde esto vende peor a la larga.
+  const aviso =
+    paso.fallback === "no_apto_sensible"
+      ? copy.avisos.no_apto_sensible
+      : paso.fallback === "otro_origen"
+        ? copy.avisos.otro_origen
+        : null;
 
   return (
     <div className="rounded-2xl border border-niebla bg-gel/25 p-5">
@@ -41,6 +52,12 @@ export function PasoRutina({
       {p.como_usar ? (
         <p className="mt-1 font-body text-tinta">
           <span className="text-agua">cómo:</span> {p.como_usar}
+        </p>
+      ) : null}
+
+      {aviso ? (
+        <p className="mt-3 rounded-xl border border-vitamina/30 bg-vitamina/5 px-3 py-2 font-body text-xs text-tinta/80">
+          {aviso}
         </p>
       ) : null}
 
