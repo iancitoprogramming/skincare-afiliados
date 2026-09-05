@@ -125,8 +125,13 @@ describe("origen", () => {
 });
 
 describe("catálogo", () => {
-  it("hoy sólo Tier 1 es servible — el resto espera catálogo", () => {
-    expect(tiersServibles).toEqual(["1"]);
+  it("Tiers 1 a 3 servibles; el 4 espera ampolla y retinoide", () => {
+    expect(tiersServibles).toEqual(["1", "2", "3"]);
+
+    const faltan = TIERS["4"]
+      .map((s) => s.categoria)
+      .filter((c) => !CATEGORIAS_CON_STOCK.has(c));
+    expect([...new Set(faltan)].sort()).toEqual(["retinoide", "serum_secundario"]);
   });
 
   it("tiene comodín en cada categoría de los tiers servibles", () => {

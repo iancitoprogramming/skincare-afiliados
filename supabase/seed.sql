@@ -1,4 +1,4 @@
--- Seed de 24 productos de ejemplo. Generado por scripts/gen-seed.ts.
+-- Seed de 26 productos de ejemplo. Generado por scripts/gen-seed.ts.
 -- No editar a mano: cambiá src/niches/skincare/productos.ts y corré npm run gen-seed.
 
 insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, prioridad, comodin, activo)
@@ -95,4 +95,12 @@ on conflict (id) do nothing;
 
 insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, prioridad, comodin, activo)
 values ('9f280ac4-84cb-5eca-b3cd-583eceef3219', 'Mineral 89 Contorno de Ojos 15 ml', 'Vichy', 'contorno', 6, 'ambos', array['grasa', 'mixta', 'normal', 'seca', 'sensible'], array['deshidratacion', 'textura'], 'europeo', true, 2, 47977, 'https://http2.mlstatic.com/D_Q_NP_2X_623415-MLU78028761401_072024-V.webp', 'https://meli.la/1d7iet1', 'https://www.mercadolibre.com.ar/p/MLA18956630', 'MLA18956630', 'Contorno liviano con ácido hialurónico. Apto para todo tipo de piel.', 'Golpecitos suaves alrededor del ojo, mañana y noche.', 3, true, true)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, prioridad, comodin, activo)
+values ('360306d6-7439-53f6-80d0-9d8644884868', 'Milk Skin Toner 150 ml', 'TIRTIR', 'tonico', 3, 'ambos', array['grasa', 'mixta', 'normal', 'seca', 'sensible'], array['deshidratacion', 'textura'], 'coreano', true, 3, 65999, 'https://http2.mlstatic.com/D_Q_NP_2X_909856-MLA94560758043_102025-V.webp', 'https://meli.la/27hmLZT', 'https://www.mercadolibre.com.ar/up/MLAU3481553718', 'MLAU3481553718', 'Tónico de textura lechosa. Suma humedad sin peso y deja la piel lista para lo que viene después.', 'Después de limpiar, con las manos o un algodón. Mañana y noche.', 3, true, true)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, prioridad, comodin, activo)
+values ('ed3e0a91-2640-59fc-80d5-5008a15d65a5', 'Tónico Exfoliante de Ácido Glicólico 7 por ciento 100 ml', 'The Ordinary', 'exfoliante', 9, 'pm', array['grasa', 'mixta', 'normal'], array['textura', 'manchas'], 'europeo', false, 3, 57170, 'https://http2.mlstatic.com/D_Q_NP_2X_641467-MLU74154671501_012024-V.webp', 'https://meli.la/16akSDT', 'https://www.mercadolibre.com.ar/p/MLA29493655', 'MLA29493655', 'Ácido glicólico al 7 por ciento: empareja la textura y ayuda a que las marcas se aclaren.', 'De noche, sobre la piel seca, 2 o 3 veces por semana. Nunca el mismo día que otro ácido.', 4, true, true)
 on conflict (id) do nothing;
