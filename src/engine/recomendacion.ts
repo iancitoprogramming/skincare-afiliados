@@ -27,6 +27,12 @@ export interface Producto {
   rango_precio: number; // 1 | 2 | 3
   precio_ars?: number;
   imagen_url?: string;
+  /**
+   * Misma foto en proporción original y mayor resolución (variante -F del CDN de
+   * ML, hasta 1200px). La cuadrada sirve para las cards; esta es para piezas de
+   * diseño, donde el relleno blanco del cuadrado molesta.
+   */
+  imagen_hd?: string;
   /** Link del Programa de Afiliados. Es el único que monetiza. */
   link_afiliado: string;
   /** URL de browse de ML, sólo para identificar el producto al cargar el afiliado. NO monetiza. */

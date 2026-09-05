@@ -24,6 +24,8 @@ export interface KitUnico {
   precio_ars: number;
   precio_lista?: number;
   imagen_url: string;
+  /** Proporcion original y mayor resolucion, para piezas de diseno. */
+  imagen_hd?: string;
   link_afiliado: string;
   vendedor?: string;
   mas_vendido?: boolean;
