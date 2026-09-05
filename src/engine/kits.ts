@@ -3,6 +3,32 @@ import { armarRutina, type PasoRutina, type Producto, type RutinaSlot } from "./
 // Un kit es una rutina pre-resuelta: (tipo de piel + foco + tier) fijos, sin quiz.
 // Sirve para el que llega de una red social y quiere comprar sin responder nada.
 
+/**
+ * Kit de compra única: UNA publicación de Mercado Libre que ya viene con varios
+ * productos adentro. Un link, un checkout, un envío.
+ *
+ * No pasa por el motor de recomendación: es un producto cerrado que armó otro.
+ * Por eso vive acá y no en el catálogo, donde cada fila es un producto suelto
+ * que el motor combina.
+ */
+export interface KitUnico {
+  slug: string;
+  ml_id: string;
+  nombre: string;
+  marca: string;
+  descripcion: string;
+  /** Lo que el título de la publicación declara. Vacío si no lo aclara. */
+  incluye: string[];
+  piel: string[];
+  apto_sensible: boolean;
+  precio_ars: number;
+  precio_lista?: number;
+  imagen_url: string;
+  link_afiliado: string;
+  vendedor?: string;
+  mas_vendido?: boolean;
+}
+
 export interface KitDef {
   slug: string;
   nombre: string;
@@ -46,6 +72,8 @@ export function armarKit(
       piel: def.piel,
       objetivo: def.objetivo,
       presupuesto: def.presupuesto,
+      // En un kit el total se ve de una: a igual match, el más barato.
+      preferencia: "precio",
     });
   } catch {
     return null;

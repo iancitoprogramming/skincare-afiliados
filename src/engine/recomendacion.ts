@@ -67,6 +67,14 @@ export interface RespuestasRutina {
   presupuesto: number; // 1 | 2 | 3
   /** Preferencia de procedencia. Si viene vacío, no filtra. */
   origen?: string;
+  /**
+   * A igualdad de prioridad, con qué criterio se desempata.
+   * - "mejor" (default): el más caro que entre en el presupuesto. Es lo que
+   *   quiere alguien que ya eligió cuánto gastar.
+   * - "precio": el más barato. Es lo que conviene en un kit, donde el total
+   *   se ve de una y un número alto espanta antes de leer nada.
+   */
+  preferencia?: "mejor" | "precio";
 }
 
 export interface Rutina {
@@ -81,9 +89,14 @@ function momentoCompatible(slot: Momento, producto: Momento): boolean {
   return producto === slot || producto === "ambos";
 }
 
-// Dentro del presupuesto, el de mayor prioridad; a igualdad, el mejor que se pueda pagar.
-function ordenar(a: Producto, b: Producto): number {
-  return b.prioridad - a.prioridad || b.rango_precio - a.rango_precio;
+// Siempre gana la prioridad (qué tan buen match es). El desempate es por precio,
+// y hacia qué lado lo define la preferencia.
+function ordenador(preferencia: RespuestasRutina["preferencia"]) {
+  const signo = preferencia === "precio" ? -1 : 1;
+  return (a: Producto, b: Producto): number =>
+    b.prioridad - a.prioridad ||
+    signo * (b.rango_precio - a.rango_precio) ||
+    signo * ((b.precio_ars ?? 0) - (a.precio_ars ?? 0));
 }
 
 // Filtro duro: categoría y momento. Nunca se relaja.
@@ -101,6 +114,8 @@ function mejorDe(
   pool: Producto[],
   r: RespuestasRutina,
 ): { producto: Producto; fallback: NivelFallback } | null {
+  const ordenar = ordenador(r.preferencia);
+
   const match = pool.filter(
     (p) => p.tipos_piel.includes(r.piel) && p.preocupaciones.includes(r.objetivo),
   );
@@ -155,7 +170,7 @@ export function elegirPaso(
   // no dejar el paso vacío.
   const comodines = enCategoria.filter((p) => p.comodin);
   if (comodines.length)
-    return { slot, producto: comodines.sort(ordenar)[0], fallback: "comodin" };
+    return { slot, producto: comodines.sort(ordenador(r.preferencia))[0], fallback: "comodin" };
 
   throw new Error(
     `Sin comodín para la categoría "${slot.categoria}" (momento ${slot.momento}). ` +

@@ -4,7 +4,7 @@ import { getCatalogo } from "@/engine/catalogo";
 import { armarKits } from "@/engine/kits";
 import { copy } from "@/niches/skincare/copy";
 import { TIERS } from "@/niches/skincare/config";
-import { KITS } from "@/niches/skincare/kits";
+import { KITS, KITS_UNICOS } from "@/niches/skincare/kits";
 import { productos as fallback } from "@/niches/skincare/productos";
 
 export const revalidate = 3600;
@@ -14,21 +14,66 @@ export const metadata = {
   description: copy.kits.bajada,
 };
 
+const precio = (n: number) => `$${n.toLocaleString("es-AR")}`;
+
 export default async function Kits() {
   const productos = await getCatalogo(fallback);
   const kits = armarKits(productos, KITS, TIERS);
 
   return (
     <Shell volver={{ href: "/", label: "inicio" }}>
-      <div className="flex flex-col gap-6">
-        <header className="flex flex-col gap-2">
-          <h1 className="font-display text-3xl font-medium tracking-tight text-tinta">
-            {copy.kits.titulo}
-          </h1>
-          <p className="font-body text-sm text-tinta/75">{copy.kits.bajada}</p>
-        </header>
+      <div className="flex flex-col gap-10">
+        {/* Compra única primero: es el camino de menos fricción. */}
+        {KITS_UNICOS.length > 0 ? (
+          <section className="flex flex-col gap-4">
+            <header className="flex flex-col gap-1">
+              <h1 className="font-display text-3xl font-medium tracking-tight text-tinta">
+                {copy.kits.unicos.titulo}
+              </h1>
+              <p className="font-body text-sm text-tinta/75">{copy.kits.unicos.bajada}</p>
+            </header>
 
-        <div className="flex flex-col gap-3">
+            {KITS_UNICOS.map((k) => (
+              <Link
+                key={k.slug}
+                href={`/kits/${k.slug}`}
+                className="flex flex-col gap-1 rounded-2xl border border-vitamina/40 bg-gel/40 p-5 transition-transform active:scale-[0.99]"
+              >
+                <span className="flex flex-wrap items-center gap-2 font-mono text-xs text-agua">
+                  <span className="rounded-full bg-vitamina px-2 py-0.5 text-porcelana">
+                    {copy.kits.unicos.badge}
+                  </span>
+                  {k.mas_vendido ? <span>más vendido en ML</span> : null}
+                </span>
+
+                <span className="mt-1 font-display text-xl font-medium leading-tight text-tinta">
+                  {k.nombre}
+                </span>
+                <span className="font-body text-sm text-tinta/75">{k.descripcion}</span>
+
+                <span className="mt-2 flex items-baseline gap-2 font-mono text-sm">
+                  <span className="text-tinta">{precio(k.precio_ars)}</span>
+                  {k.precio_lista ? (
+                    <span className="text-agua line-through">{precio(k.precio_lista)}</span>
+                  ) : null}
+                </span>
+
+                <span className="mt-3 font-body text-base font-medium text-vitamina">
+                  {copy.kits.unicos.ver} →
+                </span>
+              </Link>
+            ))}
+          </section>
+        ) : null}
+
+        <section className="flex flex-col gap-4">
+          <header className="flex flex-col gap-1">
+            <h2 className="font-display text-2xl font-medium tracking-tight text-tinta">
+              {copy.kits.armados.titulo}
+            </h2>
+            <p className="font-body text-sm text-tinta/75">{copy.kits.armados.bajada}</p>
+          </header>
+
           {kits.map((kit) => (
             <Link
               key={kit.def.slug}
@@ -37,9 +82,7 @@ export default async function Kits() {
             >
               <span className="font-mono text-xs text-agua">
                 {copy.kits.pasos(kit.pasos.length)}
-                {kit.totalCompleto
-                  ? ` · ${copy.kits.total} $${kit.total.toLocaleString("es-AR")}`
-                  : ""}
+                {kit.totalCompleto ? ` · ${copy.kits.total} ${precio(kit.total)}` : ""}
               </span>
               <span className="font-display text-xl font-medium leading-tight text-tinta">
                 {kit.def.nombre}
@@ -50,7 +93,7 @@ export default async function Kits() {
               </span>
             </Link>
           ))}
-        </div>
+        </section>
 
         <Link
           href="/rutina"

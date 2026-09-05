@@ -28,13 +28,26 @@ export const copy = {
 
   kits: {
     titulo: "Kits armados",
+    // Los de compra única van primero: un link y un checkout convierte mucho
+    // mejor que tres. Lo decimos con esas palabras, no con jerga.
+    unicos: {
+      titulo: "Todo en una sola compra",
+      bajada: "Un solo link, un solo pago, un solo envío.",
+      badge: "una sola compra",
+      incluye: "Incluye",
+      ver: "Comprar el kit",
+    },
+    armados: {
+      titulo: "Armados por nosotros",
+      bajada: "Elegimos producto por producto. Cada uno se compra aparte.",
+    },
     bajada: "Cada kit es una rutina completa elegida para un tipo de piel.",
     pasos: (n: number) => `${n} paso${n === 1 ? "" : "s"}`,
     total: "total aprox.",
     // En Mercado Libre cada producto es una compra distinta. Decirlo antes de que
     // la persona lo descubra en el checkout.
     aclaracionCompra:
-      "Cada producto se compra por separado en Mercado Libre. El total es la suma de los tres.",
+      "Cada producto se compra por separado en Mercado Libre: son varios checkouts y varios envíos. El total es la suma de todos.",
     ver: "Ver el kit",
     volver: "todos los kits",
   },

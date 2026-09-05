@@ -4,7 +4,7 @@ import { getCatalogo } from "@/engine/catalogo";
 import { armarKits } from "@/engine/kits";
 import { copy } from "@/niches/skincare/copy";
 import { TIERS } from "@/niches/skincare/config";
-import { KITS } from "@/niches/skincare/kits";
+import { KITS, KITS_UNICOS } from "@/niches/skincare/kits";
 import { productos as fallback } from "@/niches/skincare/productos";
 
 export const revalidate = 3600;
@@ -14,6 +14,7 @@ export const revalidate = 3600;
 export default async function Home() {
   const productos = await getCatalogo(fallback);
   const kits = armarKits(productos, KITS, TIERS);
+  const total = kits.length + KITS_UNICOS.length;
 
   return (
     <Shell>
@@ -26,13 +27,13 @@ export default async function Home() {
         </div>
 
         <div className="flex flex-col gap-4">
-          {kits.length > 0 ? (
+          {total > 0 ? (
             <Link
               href="/kits"
               className="flex flex-col gap-1 rounded-2xl border border-niebla bg-gel/40 p-5 transition-transform active:scale-[0.99]"
             >
               <span className="font-mono text-xs text-agua">
-                {kits.length} kits · sin responder nada
+                {total} kits{KITS_UNICOS.length > 0 ? " · hay de una sola compra" : ""}
               </span>
               <span className="font-display text-2xl font-medium text-tinta">
                 {copy.home.kits.titulo}
