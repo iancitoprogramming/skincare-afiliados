@@ -2,6 +2,7 @@
 
 import type { PasoRutina as Paso } from "@/engine/recomendacion";
 import { copy } from "@/niches/skincare/copy";
+import { PruebaSocial } from "@/components/PruebaSocial";
 import { trackClick } from "@/engine/tracking";
 
 // Un paso de la rutina: producto + botón directo a Mercado Libre.
@@ -53,6 +54,7 @@ export function PasoRutina({
         ) : null}
       </div>
       {p.marca ? <p className="font-mono text-xs text-agua">{p.marca}</p> : null}
+      <PruebaSocial d={p} className="mt-2" />
 
       {p.por_que ? (
         <p className="mt-3 font-body text-tinta">

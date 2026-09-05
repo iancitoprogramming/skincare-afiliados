@@ -29,6 +29,11 @@ export interface KitUnico {
   link_afiliado: string;
   vendedor?: string;
   mas_vendido?: boolean;
+  rating?: number;
+  opiniones?: number;
+  vendidos?: string;
+  vendidos_aprox?: number;
+  reputacion?: string;
 }
 
 export interface KitDef {

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { Shell } from "@/components/Shell";
 import { BotonComprar } from "@/components/BotonComprar";
+import { PruebaSocial } from "@/components/PruebaSocial";
 import { getCatalogo } from "@/engine/catalogo";
 import { armarKit } from "@/engine/kits";
 import { PasoRutina } from "@/engine/quiz/PasoRutina";
@@ -45,6 +46,7 @@ export default async function KitDetalle({ params }: { params: Promise<{ slug: s
               {unico.nombre}
             </h1>
             <p className="font-body text-sm text-tinta/75">{unico.descripcion}</p>
+            <PruebaSocial d={unico} className="mt-1" />
           </header>
 
           {/* eslint-disable-next-line @next/next/no-img-element */}

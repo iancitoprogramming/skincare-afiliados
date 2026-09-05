@@ -17,6 +17,11 @@ export const KITS_UNICOS: KitUnico[] = [
   {
     slug: "libra-grasa-acneica",
     ml_id: "MLAU560830924",
+    rating: 4.7,
+    opiniones: 281,
+    vendidos: "+1000",
+    vendidos_aprox: 1000,
+    reputacion: "Tienda oficial",
     nombre: "Kit Libra · Piel grasa y acneica",
     marca: "Libra",
     descripcion: "Loción con ácido salicílico y serum de niacinamida, para usar de noche.",
@@ -36,6 +41,11 @@ export const KITS_UNICOS: KitUnico[] = [
   {
     slug: "libra-piel-mixta",
     ml_id: "MLAU3408127149",
+    rating: 4.8,
+    opiniones: 442,
+    vendidos: "+1000",
+    vendidos_aprox: 1000,
+    reputacion: "Tienda oficial",
     nombre: "Kit Libra · Rutina piel mixta",
     marca: "Libra",
     descripcion: "Rutina de piel mixta con hialurónico y vitamina E.",

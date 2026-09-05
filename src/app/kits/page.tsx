@@ -3,6 +3,7 @@ import { Shell } from "@/components/Shell";
 import { getCatalogo } from "@/engine/catalogo";
 import { armarKits } from "@/engine/kits";
 import { copy } from "@/niches/skincare/copy";
+import { PruebaSocial } from "@/components/PruebaSocial";
 import { TIERS } from "@/niches/skincare/config";
 import { KITS, KITS_UNICOS } from "@/niches/skincare/kits";
 import { productos as fallback } from "@/niches/skincare/productos";
@@ -50,6 +51,7 @@ export default async function Kits() {
                   {k.nombre}
                 </span>
                 <span className="font-body text-sm text-tinta/75">{k.descripcion}</span>
+                <PruebaSocial d={k} className="mt-2" />
 
                 <span className="mt-2 flex items-baseline gap-2 font-mono text-sm">
                   <span className="text-tinta">{precio(k.precio_ars)}</span>

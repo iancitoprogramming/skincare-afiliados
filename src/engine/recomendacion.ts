@@ -39,6 +39,18 @@ export interface Producto {
   url_referencia?: string;
   /** ID del producto en Mercado Libre (MLA… / MLAU…). Clave natural para deduplicar. */
   ml_id?: string;
+  // ── Prueba social. Relevado de Mercado Libre, se pone viejo solo. ─────────
+  /** Promedio de estrellas. Ojo: sin `opiniones` suficientes no significa nada. */
+  rating?: number;
+  /** Cantidad de opiniones detrás del rating. */
+  opiniones?: number;
+  /** Etiqueta tal cual la muestra ML: "+10 mil". No es un número exacto. */
+  vendidos?: string;
+  /** La etiqueta anterior en número, para ordenar y comparar. */
+  vendidos_aprox?: number;
+  /** "Tienda oficial" | "MercadoLíder". */
+  reputacion?: string;
+
   por_que?: string;
   como_usar?: string;
   prioridad: number;
