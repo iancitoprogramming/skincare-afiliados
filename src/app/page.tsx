@@ -15,6 +15,7 @@ export default async function Home() {
   const productos = await getCatalogo(fallback);
   const kits = armarKits(productos, KITS, TIERS);
   const total = kits.length + KITS_UNICOS.length;
+  const activos = productos.filter((p) => p.activo).length;
 
   return (
     <Shell>
@@ -27,6 +28,22 @@ export default async function Home() {
         </div>
 
         <div className="flex flex-col gap-4">
+          <Link
+            href="/catalogo"
+            className="flex flex-col gap-1 rounded-2xl border border-niebla bg-porcelana p-5 transition-transform active:scale-[0.99]"
+          >
+            <span className="font-mono text-xs text-agua">
+              {activos} productos · con filtros
+            </span>
+            <span className="font-display text-2xl font-medium text-tinta">
+              {copy.catalogo.titulo}
+            </span>
+            <span className="font-body text-sm text-tinta/75">{copy.catalogo.bajadaHome}</span>
+            <span className="mt-3 font-body text-base font-medium text-vitamina">
+              {copy.catalogo.cta} →
+            </span>
+          </Link>
+
           {total > 0 ? (
             <Link
               href="/kits"

@@ -26,6 +26,13 @@ export const copy = {
     },
   },
 
+  catalogo: {
+    titulo: "Todo el catálogo",
+    bajada: "Filtrá por tu tipo de piel, por paso o por origen. Cada producto tiene su ficha.",
+    cta: "Ver el catálogo",
+    bajadaHome: "Mirá producto por producto y elegí vos.",
+  },
+
   kits: {
     titulo: "Kits armados",
     // Los de compra única van primero: un link y un checkout convierte mucho
