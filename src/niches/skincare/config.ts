@@ -8,10 +8,12 @@ import { copy } from "./copy";
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Rangos de presupuesto en ARS. Editables acá sin tocar componentes.
+// Etiquetas cualitativas a propósito: los montos fijos quedan viejos solos y
+// pasan a mentir. El precio real de cada producto se ve en su card.
 export const PRESUPUESTO: Record<"1" | "2" | "3", string> = {
-  "1": "Hasta $15.000",
-  "2": "$15.000 a $30.000",
-  "3": "Más de $30.000",
+  "1": "Lo más accesible",
+  "2": "Equilibrado",
+  "3": "Lo mejor que haya",
 };
 
 // Procedencia. Es preferencia del usuario, no filtro duro: el motor la relaja si
@@ -132,11 +134,11 @@ export const skincareQuiz: QuizConfig = {
     },
     {
       urlKey: "b",
-      title: "¿Cuánto querés invertir por mes?",
+      title: "¿Cuánto querés gastar?",
       options: [
-        { value: "1", label: PRESUPUESTO["1"] },
-        { value: "2", label: PRESUPUESTO["2"] },
-        { value: "3", label: PRESUPUESTO["3"] },
+        { value: "1", label: PRESUPUESTO["1"], hint: "lo justo y necesario" },
+        { value: "2", label: PRESUPUESTO["2"], hint: "buena relación precio-calidad" },
+        { value: "3", label: PRESUPUESTO["3"], hint: "sin mirar el precio" },
       ],
     },
     {

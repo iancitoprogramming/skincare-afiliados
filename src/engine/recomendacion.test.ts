@@ -110,8 +110,15 @@ describe("origen", () => {
   });
 
   it("marca otro_origen cuando cae fuera de la preferencia", () => {
+    // No hay protector solar nacional en el catálogo: es el hueco que fuerza el
+    // fallback. Si algún día se carga uno, este test avisa que hay que cambiarlo.
+    const hayNacional = productos.some(
+      (p) => p.activo && p.categoria === "protector_solar" && p.origen === "nacional",
+    );
+    expect(hayNacional, "ya hay protector solar nacional: actualizá este test").toBe(false);
+
     const r = { piel: "grasa", objetivo: "acne", presupuesto: 3, origen: "nacional" };
-    const paso = elegirPaso(productos, { categoria: "limpiador", momento: "ambos" }, r);
+    const paso = elegirPaso(productos, { categoria: "protector_solar", momento: "am" }, r);
     expect(paso.producto.origen).not.toBe("nacional");
     expect(paso.fallback).toBe("otro_origen");
   });

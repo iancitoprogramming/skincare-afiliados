@@ -34,7 +34,17 @@ export function PasoRutina({
         paso {String(numero).padStart(2, "0")} · {categoriaLabel}
       </p>
 
-      <div className="mt-1 flex items-baseline justify-between gap-3">
+      {p.imagen_url ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={p.imagen_url}
+          alt={p.nombre}
+          loading="lazy"
+          className="mt-3 h-40 w-full rounded-xl bg-porcelana object-contain"
+        />
+      ) : null}
+
+      <div className="mt-3 flex items-baseline justify-between gap-3">
         <h3 className="font-display text-xl font-medium leading-tight text-tinta">{p.nombre}</h3>
         {p.precio_ars ? (
           <span className="whitespace-nowrap font-mono text-sm text-tinta">

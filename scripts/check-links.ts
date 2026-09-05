@@ -15,6 +15,8 @@ type Veredicto = "afiliado" | "placeholder" | "browse" | "vacio" | "desconocido"
 function clasificar(link: string): Veredicto {
   if (!link || !link.trim()) return "vacio";
   if (link.includes("REEMPLAZAR-LINK-AFILIADO")) return "placeholder";
+  // meli.la es el acortador oficial del Programa de Afiliados.
+  if (/^https:\/\/meli\.la\//i.test(link)) return "afiliado";
   if (/mercadolibre\.com(\.ar)?\/sec\//i.test(link)) return "afiliado";
   if (/[?&#]matt_(tool|word)=/i.test(link)) return "afiliado";
   // Lo que se copia de la grilla de búsqueda: todo el tracking va después del #,
