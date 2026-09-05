@@ -795,6 +795,8 @@ export const productos: Producto[] = [
     como_usar: "De noche, sobre la piel seca, 2 o 3 veces por semana. Nunca el mismo día que otro ácido.",
     prioridad: 4,
     comodin: true,
-    activo: true,
+    // Ningún tier usa `exfoliante` desde que salió de las rutinas. Queda cargado
+    // y listo: alcanza con poner true y devolver el slot a TIERS.
+    activo: false,
   },
 ];

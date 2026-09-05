@@ -39,8 +39,13 @@ export const CATEGORIAS: Record<string, string> = {
 };
 
 // Los 4 tiers. El protector solar va siempre a la mañana; el limpiador oleoso es
-// la primera mitad de la doble limpieza, así que es de noche. Exfoliante y
-// retinoide van marcados "no_diario": la UI los muestra fuera del paso a paso.
+// la primera mitad de la doble limpieza, así que es de noche. El retinoide va
+// marcado "no_diario": la UI lo muestra fuera del paso a paso.
+//
+// El exfoliante químico salió de todos los tiers por decisión de producto: suma
+// costo, riesgo de irritación y un paso más, para un beneficio que no justifica
+// la fricción en rutinas pensadas para que la gente las sostenga. La categoría
+// sigue definida en CATEGORIAS por si se vuelve atrás.
 export const TIERS: Record<"1" | "2" | "3" | "4", RutinaSlot[]> = {
   // Tier 1 · Base — 3 productos
   "1": [
@@ -56,7 +61,7 @@ export const TIERS: Record<"1" | "2" | "3" | "4", RutinaSlot[]> = {
     { categoria: "hidratante", momento: "ambos" },
     { categoria: "protector_solar", momento: "am" },
   ],
-  // Tier 3 · Completo — 7 productos
+  // Tier 3 · Completo — 6 productos
   "3": [
     { categoria: "limpiador_oleoso", momento: "pm" },
     { categoria: "limpiador", momento: "ambos" },
@@ -64,9 +69,8 @@ export const TIERS: Record<"1" | "2" | "3" | "4", RutinaSlot[]> = {
     { categoria: "serum_activo", momento: "ambos" },
     { categoria: "hidratante", momento: "ambos" },
     { categoria: "protector_solar", momento: "am" },
-    { categoria: "exfoliante", momento: "pm", frecuencia: "no_diario" },
   ],
-  // Tier 4 · Máximo — 10 productos
+  // Tier 4 · Máximo — 9 productos
   "4": [
     { categoria: "limpiador_oleoso", momento: "pm" },
     { categoria: "limpiador", momento: "ambos" },
@@ -76,7 +80,6 @@ export const TIERS: Record<"1" | "2" | "3" | "4", RutinaSlot[]> = {
     { categoria: "contorno", momento: "ambos" },
     { categoria: "hidratante", momento: "ambos" },
     { categoria: "protector_solar", momento: "am" },
-    { categoria: "exfoliante", momento: "pm", frecuencia: "no_diario" },
     { categoria: "retinoide", momento: "pm", frecuencia: "no_diario" },
   ],
 };
@@ -147,8 +150,8 @@ export const skincareQuiz: QuizConfig = {
       options: [
         { value: "1", label: "Lo mínimo que funcione", hint: "3 productos" },
         { value: "2", label: "Un poco más completo", hint: "5 productos" },
-        { value: "3", label: "Rutina en serio", hint: "7 productos" },
-        { value: "4", label: "Todo el ritual", hint: "10 productos" },
+        { value: "3", label: "Rutina en serio", hint: "6 productos" },
+        { value: "4", label: "Todo el ritual", hint: "9 productos" },
       ],
     },
   ],
