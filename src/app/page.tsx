@@ -58,6 +58,13 @@ export default async function Home() {
               {copy.home.quiz.cta} →
             </span>
           </Link>
+
+          <Link
+            href="/combinaciones"
+            className="self-start font-mono text-xs text-agua underline decoration-niebla underline-offset-4 transition-colors hover:text-tinta"
+          >
+            {copy.home.criterios} →
+          </Link>
         </div>
       </div>
     </Shell>

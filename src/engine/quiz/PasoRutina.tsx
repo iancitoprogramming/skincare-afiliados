@@ -13,11 +13,18 @@ export function PasoRutina({
   numero,
   categoriaLabel,
   sesionId,
+  conAvisoDeCombinacion = false,
 }: {
   paso: Paso;
   numero: number;
   categoriaLabel: string;
   sesionId: string | null;
+  /**
+   * Este paso aparece en algún aviso del bloque "cómo combinarlos". Se marca acá
+   * para que el aviso de abajo se pueda conectar con el producto concreto sin
+   * que la persona tenga que ir y volver adivinando cuál era.
+   */
+  conAvisoDeCombinacion?: boolean;
 }) {
   const p = paso.producto;
   // Cuando la recomendacion no fue un match limpio, se dice. Un kit o una rutina
@@ -33,6 +40,9 @@ export function PasoRutina({
     <div className="rounded-2xl border border-niebla bg-gel/25 p-5">
       <p className="font-mono text-xs text-agua">
         paso {String(numero).padStart(2, "0")} · {categoriaLabel}
+        {conAvisoDeCombinacion ? (
+          <span className="ml-2 text-tinta/50">↓ {copy.compatibilidad.enPaso}</span>
+        ) : null}
       </p>
 
       {p.imagen_url ? (
