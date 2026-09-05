@@ -24,7 +24,14 @@ export function Resultados({
   const piel = answers[rec.pielKey];
   const objetivo = answers[rec.objetivoKey];
   const presupuesto = Number(answers[rec.presupuestoKey]);
-  const slots = rec.rutinas[answers[rec.rutinaKey]] ?? [];
+
+  // Techo por tipo de piel: piel sensible no pasa de Tier 3 aunque haya elegido
+  // Tier 4. Las variantes están ordenadas por número, de menos a más pasos.
+  const elegida = answers[rec.rutinaKey] ?? rec.variantePorDefecto ?? "";
+  const techo = rec.techoPorPiel?.[piel];
+  const variante =
+    techo && Number(elegida) > Number(techo) ? techo : elegida;
+  const slots = rec.rutinas[variante] ?? [];
 
   const rutina = armarRutina(productos, slots, { piel, objetivo, presupuesto });
 

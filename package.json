@@ -9,7 +9,9 @@
     "test": "vitest run",
     "sync": "tsx scripts/sync-catalogo.ts",
     "cobertura": "tsx scripts/cobertura.ts",
-    "gen-seed": "tsx scripts/gen-seed.ts"
+    "gen-seed": "tsx scripts/gen-seed.ts",
+    "importar-vault": "tsx scripts/importar-vault.ts",
+    "check-links": "tsx scripts/check-links.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0",

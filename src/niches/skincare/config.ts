@@ -2,6 +2,11 @@ import type { QuizConfig } from "@/engine/quiz/types";
 import type { RutinaSlot } from "@/engine/recomendacion";
 import { copy } from "./copy";
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Estructura del nicho. Espeja el vault de Obsidian "Club de Piel":
+// 5 tipos de piel × 4 tiers, con piel sensible topeada en Tier 3.
+// ─────────────────────────────────────────────────────────────────────────────
+
 // Rangos de presupuesto en ARS. Editables acá sin tocar componentes.
 export const PRESUPUESTO: Record<"1" | "2" | "3", string> = {
   "1": "Hasta $15.000",
@@ -9,34 +14,95 @@ export const PRESUPUESTO: Record<"1" | "2" | "3", string> = {
   "3": "Más de $30.000",
 };
 
-// Definición de la rutina por nivel (respuesta "n" del quiz). El protector solar
-// va siempre a la mañana. Los slots "ambos" aparecen en mañana y noche.
-export const RUTINAS: Record<"0" | "1", RutinaSlot[]> = {
-  // De cero: 3 productos.
-  "0": [
-    { categoria: "limpiador", momento: "ambos" },
-    { categoria: "hidratante", momento: "ambos" },
-    { categoria: "protector_solar", momento: "am" },
-  ],
-  // Ya usa algo: 5 productos.
-  "1": [
-    { categoria: "limpiador", momento: "ambos" },
-    { categoria: "serum", momento: "ambos" },
-    { categoria: "hidratante", momento: "ambos" },
-    { categoria: "protector_solar", momento: "am" },
-    { categoria: "exfoliante", momento: "pm" },
-  ],
+// Procedencia. Es preferencia del usuario, no filtro duro: el motor la relaja si
+// no hay cobertura en esa categoría, y la card avisa cuando eso pasa.
+export const ORIGENES: Record<string, string> = {
+  coreano: "Coreano",
+  europeo: "Europeo",
+  nacional: "Nacional",
 };
 
 // Etiquetas legibles para las categorías (valores con guión bajo).
 export const CATEGORIAS: Record<string, string> = {
+  limpiador_oleoso: "limpiador oleoso",
   limpiador: "limpiador",
-  serum: "serum",
+  tonico: "tónico o esencia",
+  serum_activo: "serum activo",
+  serum_secundario: "serum secundario o ampolla",
+  contorno: "contorno de ojos",
   hidratante: "hidratante",
   protector_solar: "protector solar",
-  exfoliante: "exfoliante",
-  contorno: "contorno",
+  exfoliante: "exfoliante químico",
+  retinoide: "retinoide",
 };
+
+// Los 4 tiers. El protector solar va siempre a la mañana; el limpiador oleoso es
+// la primera mitad de la doble limpieza, así que es de noche. Exfoliante y
+// retinoide van marcados "no_diario": la UI los muestra fuera del paso a paso.
+export const TIERS: Record<"1" | "2" | "3" | "4", RutinaSlot[]> = {
+  // Tier 1 · Base — 3 productos
+  "1": [
+    { categoria: "limpiador", momento: "ambos" },
+    { categoria: "hidratante", momento: "ambos" },
+    { categoria: "protector_solar", momento: "am" },
+  ],
+  // Tier 2 · Esencial — 5 productos
+  "2": [
+    { categoria: "limpiador_oleoso", momento: "pm" },
+    { categoria: "limpiador", momento: "ambos" },
+    { categoria: "tonico", momento: "ambos" },
+    { categoria: "hidratante", momento: "ambos" },
+    { categoria: "protector_solar", momento: "am" },
+  ],
+  // Tier 3 · Completo — 7 productos
+  "3": [
+    { categoria: "limpiador_oleoso", momento: "pm" },
+    { categoria: "limpiador", momento: "ambos" },
+    { categoria: "tonico", momento: "ambos" },
+    { categoria: "serum_activo", momento: "ambos" },
+    { categoria: "hidratante", momento: "ambos" },
+    { categoria: "protector_solar", momento: "am" },
+    { categoria: "exfoliante", momento: "pm", frecuencia: "no_diario" },
+  ],
+  // Tier 4 · Máximo — 10 productos
+  "4": [
+    { categoria: "limpiador_oleoso", momento: "pm" },
+    { categoria: "limpiador", momento: "ambos" },
+    { categoria: "tonico", momento: "ambos" },
+    { categoria: "serum_activo", momento: "ambos" },
+    { categoria: "serum_secundario", momento: "ambos" },
+    { categoria: "contorno", momento: "ambos" },
+    { categoria: "hidratante", momento: "ambos" },
+    { categoria: "protector_solar", momento: "am" },
+    { categoria: "exfoliante", momento: "pm", frecuencia: "no_diario" },
+    { categoria: "retinoide", momento: "pm", frecuencia: "no_diario" },
+  ],
+};
+
+// Piel sensible topea en Tier 3. Si alguien con piel sensible elige Tier 4, el
+// motor lo baja y la UI lo explica en vez de darle una rutina que la va a irritar.
+export const TECHO_POR_PIEL: Record<string, "1" | "2" | "3" | "4"> = {
+  sensible: "3",
+};
+
+export function tierEfectivo(tierElegido: string, piel: string): "1" | "2" | "3" | "4" {
+  const techo = TECHO_POR_PIEL[piel];
+  const t = (tierElegido in TIERS ? tierElegido : "1") as "1" | "2" | "3" | "4";
+  if (!techo) return t;
+  return Number(t) > Number(techo) ? techo : t;
+}
+
+// Sustituciones para piel sensible. NO se aplican solas: el motor filtra por
+// `apto_sensible`, que es un flag curado producto por producto. Esta tabla es el
+// criterio con el que se carga ese flag, y lo que se le muestra a la persona.
+export const SUSTITUTOS_SENSIBLE: { evitar: string; usar: string }[] = [
+  { evitar: "AHA o BHA", usar: "PHA" },
+  { evitar: "Alcohol denat", usar: "fórmula sin alcohol" },
+  { evitar: "Fragancia", usar: "sin fragancia" },
+  { evitar: "Protector solar químico", usar: "protector mineral" },
+  { evitar: "Retinol", usar: "bakuchiol o ácido azelaico" },
+  { evitar: "Vitamina C pura", usar: "derivados de vitamina C" },
+];
 
 export const skincareQuiz: QuizConfig = {
   slug: "skincare",
@@ -49,6 +115,7 @@ export const skincareQuiz: QuizConfig = {
       options: [
         { value: "grasa", label: "Con brillo, se ve grasa", short: "Piel grasa" },
         { value: "mixta", label: "Zona T grasa, mejillas normales", short: "Piel mixta" },
+        { value: "normal", label: "Cómoda, ni tirante ni grasa", short: "Piel normal" },
         { value: "seca", label: "Tirante, áspera o reseca", short: "Piel seca" },
         { value: "sensible", label: "Se irrita o enrojece fácil", short: "Piel sensible" },
       ],
@@ -74,10 +141,12 @@ export const skincareQuiz: QuizConfig = {
     },
     {
       urlKey: "n",
-      title: "¿Arrancás de cero o ya tenés rutina?",
+      title: "¿Cuántos pasos estás dispuesta a hacer?",
       options: [
-        { value: "0", label: "Arranco de cero", hint: "rutina de 3 pasos" },
-        { value: "1", label: "Ya uso algo", hint: "rutina de 5 pasos" },
+        { value: "1", label: "Lo mínimo que funcione", hint: "3 productos" },
+        { value: "2", label: "Un poco más completo", hint: "5 productos" },
+        { value: "3", label: "Rutina en serio", hint: "7 productos" },
+        { value: "4", label: "Todo el ritual", hint: "10 productos" },
       ],
     },
   ],
@@ -87,7 +156,8 @@ export const skincareQuiz: QuizConfig = {
     objetivoKey: "o",
     presupuestoKey: "b",
     rutinaKey: "n",
-    rutinas: RUTINAS,
+    rutinas: TIERS,
+    techoPorPiel: TECHO_POR_PIEL,
   },
   resultados: {
     titulo: "tu rutina",
@@ -99,3 +169,6 @@ export const skincareQuiz: QuizConfig = {
     rehacer: "rehacer el quiz",
   },
 };
+
+// Compatibilidad: el nombre viejo apuntaba a 2 variantes. Ahora son 4 tiers.
+export const RUTINAS = TIERS;

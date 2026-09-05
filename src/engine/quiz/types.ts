@@ -21,8 +21,19 @@ export interface RecomendacionConfig {
   pielKey: string;
   objetivoKey: string;
   presupuestoKey: string;
-  rutinaKey: string; // la respuesta de esta pregunta elige la variante de rutina
+  rutinaKey: string; // la respuesta de esta pregunta elige la variante de rutina (el tier)
   rutinas: Record<string, RutinaSlot[]>; // indexada por el valor de rutinaKey
+  /**
+   * Tier máximo permitido por tipo de piel. Piel sensible topea en Tier 3: sumarle
+   * ampolla, contorno y retinoide encima es pedirle problemas. Si una piel no está
+   * acá, no tiene techo.
+   */
+  techoPorPiel?: Record<string, string>;
+  /**
+   * Variante a usar cuando la pregunta del tier no se le hizo a la persona
+   * (porque el catálogo sólo puede servir una). La setea configServible().
+   */
+  variantePorDefecto?: string;
 }
 
 export interface ResultadosCopy {

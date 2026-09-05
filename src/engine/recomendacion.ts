@@ -1,9 +1,15 @@
 // Motor de recomendación. Determinístico, sin IA. No sabe de skincare: recibe el
 // catálogo, la lista de slots de la rutina (del nicho) y las respuestas, y devuelve
 // la rutina de mañana y de noche. Nunca deja un paso vacío: si no hay match, relaja
-// preocupaciones, después tipos de piel, y por último usa el comodín de la categoría.
+// preocupaciones, después tipos de piel, después el origen, y por último usa el
+// comodín de la categoría.
+//
+// La categoría y el momento del slot no se relajan nunca: sin eso la rutina deja
+// de tener sentido. `apto_sensible` es lo último que se relaja, y cuando pasa el
+// paso queda marcado para que la card lo diga en vez de callarlo.
 
 export type Momento = "am" | "pm" | "ambos";
+export type Frecuencia = "diario" | "no_diario";
 
 export interface Producto {
   id: string;
@@ -14,10 +20,19 @@ export interface Producto {
   momento: Momento;
   tipos_piel: string[];
   preocupaciones: string[];
+  /** Procedencia comercial: "coreano" | "europeo" | "nacional". Es preferencia, se relaja. */
+  origen: string;
+  /** Si es falso, nunca se le ofrece a piel sensible. No se relaja. */
+  apto_sensible: boolean;
   rango_precio: number; // 1 | 2 | 3
   precio_ars?: number;
   imagen_url?: string;
+  /** Link del Programa de Afiliados. Es el único que monetiza. */
   link_afiliado: string;
+  /** URL de browse de ML, sólo para identificar el producto al cargar el afiliado. NO monetiza. */
+  url_referencia?: string;
+  /** ID del producto en Mercado Libre (MLA… / MLAU…). Clave natural para deduplicar. */
+  ml_id?: string;
   por_que?: string;
   como_usar?: string;
   prioridad: number;
@@ -28,9 +43,17 @@ export interface Producto {
 export interface RutinaSlot {
   categoria: string;
   momento: Momento;
+  /** "no_diario" = exfoliante, retinoide. La UI lo muestra aparte del paso a paso. */
+  frecuencia?: Frecuencia;
 }
 
-export type NivelFallback = "match" | "sin_preocupacion" | "sin_piel" | "comodin";
+export type NivelFallback =
+  | "match"
+  | "sin_preocupacion"
+  | "sin_piel"
+  | "otro_origen"
+  | "no_apto_sensible"
+  | "comodin";
 
 export interface PasoRutina {
   slot: RutinaSlot;
@@ -42,6 +65,8 @@ export interface RespuestasRutina {
   piel: string;
   objetivo: string;
   presupuesto: number; // 1 | 2 | 3
+  /** Preferencia de procedencia. Si viene vacío, no filtra. */
+  origen?: string;
 }
 
 export interface Rutina {
@@ -61,39 +86,76 @@ function ordenar(a: Producto, b: Producto): number {
   return b.prioridad - a.prioridad || b.rango_precio - a.rango_precio;
 }
 
+// Filtro duro: categoría y momento. Nunca se relaja.
+function elegibles(productos: Producto[], slot: RutinaSlot): Producto[] {
+  return productos.filter(
+    (p) =>
+      p.activo &&
+      p.categoria === slot.categoria &&
+      momentoCompatible(slot.momento, p.momento),
+  );
+}
+
+// Busca dentro de un conjunto ya filtrado, relajando preocupación y después tipo de piel.
+function mejorDe(
+  pool: Producto[],
+  r: RespuestasRutina,
+): { producto: Producto; fallback: NivelFallback } | null {
+  const match = pool.filter(
+    (p) => p.tipos_piel.includes(r.piel) && p.preocupaciones.includes(r.objetivo),
+  );
+  if (match.length) return { producto: match.sort(ordenar)[0], fallback: "match" };
+
+  const sinPreoc = pool.filter((p) => p.tipos_piel.includes(r.piel));
+  if (sinPreoc.length)
+    return { producto: sinPreoc.sort(ordenar)[0], fallback: "sin_preocupacion" };
+
+  if (pool.length) return { producto: pool.sort(ordenar)[0], fallback: "sin_piel" };
+  return null;
+}
+
 export function elegirPaso(
   productos: Producto[],
   slot: RutinaSlot,
   r: RespuestasRutina,
 ): PasoRutina {
-  const base = productos.filter(
-    (p) =>
-      p.activo &&
-      p.categoria === slot.categoria &&
-      momentoCompatible(slot.momento, p.momento) &&
-      p.rango_precio <= r.presupuesto,
-  );
+  const enCategoria = elegibles(productos, slot);
+  const base = enCategoria.filter((p) => p.rango_precio <= r.presupuesto);
+  const sensible = r.piel === "sensible";
+  const aptos = sensible ? base.filter((p) => p.apto_sensible) : base;
 
-  const match = base.filter(
-    (p) => p.tipos_piel.includes(r.piel) && p.preocupaciones.includes(r.objetivo),
-  );
-  if (match.length) return { slot, producto: match.sort(ordenar)[0], fallback: "match" };
+  // 1. Con la preferencia de origen puesta. Se agota acá antes de cambiar de origen:
+  // si alguien pidió coreano, es mejor darle un coreano que no matchea la preocupación
+  // que un europeo que sí. El origen fue una elección explícita.
+  if (r.origen) {
+    const delOrigen = mejorDe(
+      aptos.filter((p) => p.origen === r.origen),
+      r,
+    );
+    if (delOrigen) return { slot, ...delOrigen };
+  }
 
-  const sinPreoc = base.filter((p) => p.tipos_piel.includes(r.piel));
-  if (sinPreoc.length)
-    return { slot, producto: sinPreoc.sort(ordenar)[0], fallback: "sin_preocupacion" };
+  // 2. Cualquier origen, todavía respetando piel sensible.
+  const cualquierOrigen = mejorDe(aptos, r);
+  if (cualquierOrigen) {
+    // Si había preferencia y terminamos fuera de ella, hay que decirlo en la card.
+    const fallback = r.origen ? "otro_origen" : cualquierOrigen.fallback;
+    return { slot, producto: cualquierOrigen.producto, fallback };
+  }
 
-  if (base.length) return { slot, producto: base.sort(ordenar)[0], fallback: "sin_piel" };
+  // 3. Piel sensible sin ningún producto apto en esta categoría. Es un hueco real
+  // del catálogo (típico: falta un protector solar mineral). Damos el mejor que hay
+  // pero marcado, para que la UI lo aclare en vez de venderlo como apto.
+  if (sensible) {
+    const igual = mejorDe(base, r);
+    if (igual) return { slot, producto: igual.producto, fallback: "no_apto_sensible" };
+  }
 
-  // Último recurso: comodín de la categoría, ignorando presupuesto para no dejar el paso vacío.
-  const comodines = productos.filter(
-    (p) =>
-      p.activo &&
-      p.categoria === slot.categoria &&
-      p.comodin &&
-      momentoCompatible(slot.momento, p.momento),
-  );
-  if (comodines.length) return { slot, producto: comodines.sort(ordenar)[0], fallback: "comodin" };
+  // 4. Último recurso: comodín de la categoría, ignorando presupuesto y origen para
+  // no dejar el paso vacío.
+  const comodines = enCategoria.filter((p) => p.comodin);
+  if (comodines.length)
+    return { slot, producto: comodines.sort(ordenar)[0], fallback: "comodin" };
 
   throw new Error(
     `Sin comodín para la categoría "${slot.categoria}" (momento ${slot.momento}). ` +

@@ -20,6 +20,10 @@ import type { Producto } from "@/engine/recomendacion";
 // Estos 12 son de ejemplo, con links PLACEHOLDER. Reemplazá cada `link_afiliado`.
 // ─────────────────────────────────────────────────────────────────────────────
 
+// OJO taxonomía: `origen` tiene 3 valores (coreano | europeo | nacional). CeraVe,
+// The Ordinary y Cetaphil no son europeas (US / Canadá): quedaron en "europeo" por
+// ser el balde de "no coreano, no nacional". Si el origen se le muestra al usuario,
+// conviene renombrarlo "occidental" o abrir un cuarto valor.
 const LINK_PLACEHOLDER = "https://www.mercadolibre.com.ar/#REEMPLAZAR-LINK-AFILIADO";
 
 export const productos: Producto[] = [
@@ -27,11 +31,13 @@ export const productos: Producto[] = [
   {
     id: "00000000-0000-4000-8000-000000000001",
     nombre: "Espuma limpiadora",
+    origen: "europeo",
+    apto_sensible: true,
     marca: "CeraVe",
     categoria: "limpiador",
     paso: 1,
     momento: "ambos",
-    tipos_piel: ["grasa", "mixta", "seca", "sensible"],
+    tipos_piel: ["grasa", "mixta", "normal", "seca", "sensible"],
     preocupaciones: ["acne", "manchas", "textura", "deshidratacion"],
     rango_precio: 1,
     precio_ars: 8900,
@@ -45,11 +51,13 @@ export const productos: Producto[] = [
   {
     id: "00000000-0000-4000-8000-000000000002",
     nombre: "Crema hidratante",
+    origen: "europeo",
+    apto_sensible: true,
     marca: "CeraVe",
     categoria: "hidratante",
     paso: 3,
     momento: "ambos",
-    tipos_piel: ["grasa", "mixta", "seca", "sensible"],
+    tipos_piel: ["grasa", "mixta", "normal", "seca", "sensible"],
     preocupaciones: ["acne", "manchas", "textura", "deshidratacion"],
     rango_precio: 1,
     precio_ars: 12500,
@@ -63,11 +71,13 @@ export const productos: Producto[] = [
   {
     id: "00000000-0000-4000-8000-000000000003",
     nombre: "Fusion Water FPS 50",
+    origen: "europeo",
+    apto_sensible: false,
     marca: "ISDIN",
     categoria: "protector_solar",
     paso: 5,
     momento: "am",
-    tipos_piel: ["grasa", "mixta", "seca", "sensible"],
+    tipos_piel: ["grasa", "mixta", "normal", "seca", "sensible"],
     preocupaciones: ["acne", "manchas", "textura", "deshidratacion"],
     rango_precio: 2,
     precio_ars: 24000,
@@ -81,11 +91,13 @@ export const productos: Producto[] = [
   {
     id: "00000000-0000-4000-8000-000000000004",
     nombre: "Niacinamide 10% + Zinc 1%",
+    origen: "europeo",
+    apto_sensible: true,
     marca: "The Ordinary",
-    categoria: "serum",
+    categoria: "serum_activo",
     paso: 2,
     momento: "ambos",
-    tipos_piel: ["grasa", "mixta", "seca", "sensible"],
+    tipos_piel: ["grasa", "mixta", "normal", "seca", "sensible"],
     preocupaciones: ["acne", "manchas", "textura", "deshidratacion"],
     rango_precio: 1,
     precio_ars: 9500,
@@ -99,11 +111,13 @@ export const productos: Producto[] = [
   {
     id: "00000000-0000-4000-8000-000000000005",
     nombre: "Lactic Acid 5% + HA",
+    origen: "europeo",
+    apto_sensible: false,
     marca: "The Ordinary",
     categoria: "exfoliante",
     paso: 4,
     momento: "pm",
-    tipos_piel: ["grasa", "mixta", "seca"],
+    tipos_piel: ["grasa", "mixta", "normal", "seca"],
     preocupaciones: ["textura", "manchas"],
     rango_precio: 1,
     precio_ars: 11000,
@@ -119,6 +133,8 @@ export const productos: Producto[] = [
   {
     id: "00000000-0000-4000-8000-000000000006",
     nombre: "Effaclar Gel",
+    origen: "europeo",
+    apto_sensible: true,
     marca: "La Roche-Posay",
     categoria: "limpiador",
     paso: 1,
@@ -137,11 +153,13 @@ export const productos: Producto[] = [
   {
     id: "00000000-0000-4000-8000-000000000007",
     nombre: "Vitamina C 10%",
+    origen: "europeo",
+    apto_sensible: false,
     marca: "La Roche-Posay",
-    categoria: "serum",
+    categoria: "serum_activo",
     paso: 2,
     momento: "ambos",
-    tipos_piel: ["grasa", "mixta", "seca"],
+    tipos_piel: ["grasa", "mixta", "normal", "seca"],
     preocupaciones: ["manchas", "textura"],
     rango_precio: 3,
     precio_ars: 42000,
@@ -155,6 +173,8 @@ export const productos: Producto[] = [
   {
     id: "00000000-0000-4000-8000-000000000008",
     nombre: "Crema para piel seca",
+    origen: "europeo",
+    apto_sensible: true,
     marca: "CeraVe",
     categoria: "hidratante",
     paso: 3,
@@ -173,11 +193,13 @@ export const productos: Producto[] = [
   {
     id: "00000000-0000-4000-8000-000000000009",
     nombre: "Ácido Hialurónico 2%",
+    origen: "europeo",
+    apto_sensible: true,
     marca: "The Ordinary",
-    categoria: "serum",
+    categoria: "serum_activo",
     paso: 2,
     momento: "ambos",
-    tipos_piel: ["grasa", "mixta", "seca", "sensible"],
+    tipos_piel: ["grasa", "mixta", "normal", "seca", "sensible"],
     preocupaciones: ["deshidratacion"],
     rango_precio: 1,
     precio_ars: 8500,
@@ -191,6 +213,8 @@ export const productos: Producto[] = [
   {
     id: "00000000-0000-4000-8000-000000000010",
     nombre: "Fusion Water Oil Control FPS 50",
+    origen: "europeo",
+    apto_sensible: false,
     marca: "ISDIN",
     categoria: "protector_solar",
     paso: 5,
@@ -209,6 +233,8 @@ export const productos: Producto[] = [
   {
     id: "00000000-0000-4000-8000-000000000011",
     nombre: "Salicylic Acid 2%",
+    origen: "europeo",
+    apto_sensible: false,
     marca: "The Ordinary",
     categoria: "exfoliante",
     paso: 4,
@@ -227,6 +253,8 @@ export const productos: Producto[] = [
   {
     id: "00000000-0000-4000-8000-000000000012",
     nombre: "Loción hidratante",
+    origen: "europeo",
+    apto_sensible: true,
     marca: "Cetaphil",
     categoria: "hidratante",
     paso: 3,
