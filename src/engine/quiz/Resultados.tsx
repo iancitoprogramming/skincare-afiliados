@@ -36,7 +36,21 @@ export function Resultados({
   // lo que puede chocar es lo que efectivamente se va a poner en la cara.
   const analisis = analizarRutina(rutina, catalogoActivos, (p) => p.producto.ml_id ?? p.producto.id);
   const plan = planSemanal(analisis);
-  const categoriasConAviso = new Set(analisis.conflictos.flatMap((c) => c.categorias));
+
+  // Marcar los pasos involucrados en un aviso sirve para conectar la tarjeta de
+  // abajo con el producto concreto. Pero la marca sólo significa algo si
+  // distingue: dos filtros para que no termine en todos los pasos.
+  //
+  //   1. Las notas ("estás pagando dos veces") no marcan. Son informativas y
+  //      suelen tocar media rutina — el protector solar no tiene la culpa de que
+  //      traiga niacinamida.
+  //   2. Si aun así la marca cubriría casi toda la rutina, no se pone ninguna:
+  //      a esa altura no orienta, sólo mete ruido en cada tarjeta.
+  const categorias = [...new Set([...rutina.am, ...rutina.pm].map((p) => p.slot.categoria))];
+  const marcadas = new Set(
+    analisis.conflictos.filter((c) => c.severidad !== "nota").flatMap((c) => c.categorias),
+  );
+  const categoriasConAviso = marcadas.size > categorias.length * 0.6 ? new Set<string>() : marcadas;
 
   const etiquetaOpcion = (urlKey: string, value: string) => {
     const q = config.questions.find((x) => x.urlKey === urlKey);

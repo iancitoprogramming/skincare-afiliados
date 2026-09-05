@@ -85,7 +85,10 @@ export default function Combinaciones() {
                   {EN_MATRIZ.map((id) => (
                     <th
                       key={id}
-                      className="max-w-[4.5rem] p-1.5 align-bottom font-normal leading-tight text-agua"
+                      // Ancho fijo + break-words: "Niacinamida" es una sola
+                      // palabra larga y sin esto se le monta a la columna de al
+                      // lado en vez de partirse.
+                      className="w-20 break-words px-2 py-1.5 align-bottom font-normal leading-tight text-agua"
                     >
                       {ACTIVOS[id].nombre}
                     </th>
@@ -95,7 +98,7 @@ export default function Combinaciones() {
               <tbody>
                 {EN_MATRIZ.map((fila) => (
                   <tr key={fila} className="border-t border-niebla/60">
-                    <th className="sticky left-0 z-10 max-w-[7rem] bg-porcelana p-1.5 text-left font-normal leading-tight text-tinta">
+                    <th className="sticky left-0 z-10 w-28 bg-porcelana py-1.5 pr-3 text-left font-normal leading-tight text-tinta">
                       {ACTIVOS[fila].nombre}
                     </th>
                     {EN_MATRIZ.map((col) => {
