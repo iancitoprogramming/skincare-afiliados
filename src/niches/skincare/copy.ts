@@ -52,6 +52,18 @@ export const copy = {
     volver: "todos los kits",
   },
 
+  // Explicación de la rama coreana / occidental. Aparece con los resultados.
+  // La idea no es vender una escuela sobre la otra: es que la persona entienda
+  // qué paso está haciendo y por qué, que es lo que hace que lo sostenga.
+  notas: {
+    coreano:
+      "El tónico es el paso que más distingue una rutina coreana. Va después de limpiar y antes de la crema, y no limpia nada: hidrata y deja la piel húmeda para que lo que viene después entre mejor. Ojo con la confusión: los tónicos occidentales de los 90 eran astringentes, con alcohol, para sacar el resto del jabón. Por eso quedaron con mala fama. Los coreanos van al revés, son de hidratar.",
+    occidental:
+      "Te la armamos sin tónico, que es el paso que en occidente no se usa. Tu rutina queda más corta y no es peor por eso: limpiar, hidratar y protegerte del sol es la base que hace el 80% del trabajo. Si alguna vez tenés ganas de probar el paso extra, rehacé el quiz eligiendo coreanos.",
+    mixto:
+      "Elegimos el mejor de cada paso sin mirar de dónde viene. La diferencia principal entre las dos escuelas es el tónico: en las rutinas coreanas hidrata y prepara la piel entre la limpieza y la crema; en las occidentales ese paso directamente no existe. Ninguna es mejor — la que funciona es la que hacés todos los días.",
+  },
+
   // Avisos honestos cuando la recomendación no es un match perfecto.
   avisos: {
     no_apto_sensible:

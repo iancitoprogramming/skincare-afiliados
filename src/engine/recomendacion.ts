@@ -83,8 +83,11 @@ export interface RespuestasRutina {
   piel: string;
   objetivo: string;
   presupuesto: number; // 1 | 2 | 3
-  /** Preferencia de procedencia. Si viene vacío, no filtra. */
-  origen?: string;
+  /**
+   * Procedencias aceptadas. Es una lista porque "no quiero coreano" no es un
+   * valor: es todo lo demás. Vacío o ausente = no filtra.
+   */
+  origenes?: string[];
   /**
    * A igualdad de prioridad, con qué criterio se desempata.
    * - "mejor" (default): el más caro que entre en el presupuesto. Es lo que
@@ -160,9 +163,9 @@ export function elegirPaso(
   // 1. Con la preferencia de origen puesta. Se agota acá antes de cambiar de origen:
   // si alguien pidió coreano, es mejor darle un coreano que no matchea la preocupación
   // que un europeo que sí. El origen fue una elección explícita.
-  if (r.origen) {
+  if (r.origenes?.length) {
     const delOrigen = mejorDe(
-      aptos.filter((p) => p.origen === r.origen),
+      aptos.filter((p) => r.origenes!.includes(p.origen)),
       r,
     );
     if (delOrigen) return { slot, ...delOrigen };
@@ -172,7 +175,7 @@ export function elegirPaso(
   const cualquierOrigen = mejorDe(aptos, r);
   if (cualquierOrigen) {
     // Si había preferencia y terminamos fuera de ella, hay que decirlo en la card.
-    const fallback = r.origen ? "otro_origen" : cualquierOrigen.fallback;
+    const fallback = r.origenes?.length ? "otro_origen" : cualquierOrigen.fallback;
     return { slot, producto: cualquierOrigen.producto, fallback };
   }
 

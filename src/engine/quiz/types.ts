@@ -17,6 +17,24 @@ export interface QuizQuestion {
 }
 
 // Cómo se traducen las respuestas a la recomendación. Los *Key son urlKeys de preguntas.
+/**
+ * Una pregunta que no sólo filtra productos: cambia qué pasos tiene la rutina.
+ *
+ * El caso concreto es el tónico. En la tradición occidental ese paso directamente
+ * no existe, así que preguntar "¿querés coreanos?" y después igual meterle un
+ * tónico sería no haber escuchado la respuesta.
+ */
+export interface RamaOrigen {
+  /** urlKey de la pregunta que decide la rama. */
+  key: string;
+  /** valor de la respuesta → procedencias aceptadas. Lista vacía = no filtra. */
+  origenes: Record<string, string[]>;
+  /** valor de la respuesta → categorías que salen de la rutina. */
+  quitarCategorias?: Record<string, string[]>;
+  /** valor de la respuesta → explicación que se muestra con los resultados. */
+  nota?: Record<string, string>;
+}
+
 export interface RecomendacionConfig {
   pielKey: string;
   objetivoKey: string;
@@ -34,6 +52,8 @@ export interface RecomendacionConfig {
    * (porque el catálogo sólo puede servir una). La setea configServible().
    */
   variantePorDefecto?: string;
+  /** Rama de procedencia: filtra productos y puede sacar pasos. */
+  rama?: RamaOrigen;
 }
 
 export interface ResultadosCopy {

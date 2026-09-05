@@ -103,7 +103,7 @@ describe("piel sensible", () => {
 
 describe("origen", () => {
   it("respeta la preferencia cuando hay stock de ese origen", () => {
-    const r = { piel: "grasa", objetivo: "acne", presupuesto: 3, origen: "europeo" };
+    const r = { piel: "grasa", objetivo: "acne", presupuesto: 3, origenes: ["europeo"] };
     const paso = elegirPaso(productos, { categoria: "limpiador", momento: "ambos" }, r);
     expect(paso.producto.origen).toBe("europeo");
     expect(paso.fallback).not.toBe("otro_origen");
@@ -117,10 +117,75 @@ describe("origen", () => {
     );
     expect(hayNacional, "ya hay protector solar nacional: actualizá este test").toBe(false);
 
-    const r = { piel: "grasa", objetivo: "acne", presupuesto: 3, origen: "nacional" };
+    const r = { piel: "grasa", objetivo: "acne", presupuesto: 3, origenes: ["nacional"] };
     const paso = elegirPaso(productos, { categoria: "protector_solar", momento: "am" }, r);
     expect(paso.producto.origen).not.toBe("nacional");
     expect(paso.fallback).toBe("otro_origen");
+  });
+});
+
+describe("rama coreana / occidental", () => {
+  const rama = skincareQuiz.recomendacion.rama!;
+  const slotsDe = (tier: string, respuesta: string) =>
+    TIERS[tier as keyof typeof TIERS].filter(
+      (s) => !(rama.quitarCategorias?.[respuesta] ?? []).includes(s.categoria),
+    );
+
+  it("si no quiere coreanos, la rutina no lleva tónico en ningún tier", () => {
+    for (const tier of tiersServibles) {
+      expect(slotsDe(tier, "no").map((s) => s.categoria)).not.toContain("tonico");
+    }
+  });
+
+  it("si quiere coreanos, el tónico sigue estando donde el tier lo tiene", () => {
+    const conTonico = tiersServibles.filter((t) =>
+      TIERS[t as keyof typeof TIERS].some((s) => s.categoria === "tonico"),
+    );
+    expect(conTonico.length).toBeGreaterThan(0);
+    for (const tier of conTonico) {
+      expect(slotsDe(tier, "si").map((s) => s.categoria)).toContain("tonico");
+    }
+  });
+
+  it("pidiendo coreanos, cada paso es coreano salvo que no haya stock", () => {
+    for (const tier of tiersServibles) {
+      const rutina = armarRutina(productos, slotsDe(tier, "si"), {
+        piel: "mixta",
+        objetivo: "textura",
+        presupuesto: 3,
+        origenes: rama.origenes["si"],
+      });
+      for (const p of [...rutina.am, ...rutina.pm]) {
+        // Si no es coreano, el motor tiene que haberlo marcado. Nunca en silencio.
+        if (p.producto.origen !== "coreano") {
+          expect(["otro_origen", "comodin", "no_apto_sensible"]).toContain(p.fallback);
+        }
+      }
+    }
+  });
+
+  it("pidiendo NO coreanos, ningún paso coreano pasa sin marcar", () => {
+    for (const tier of tiersServibles) {
+      const rutina = armarRutina(productos, slotsDe(tier, "no"), {
+        piel: "mixta",
+        objetivo: "textura",
+        presupuesto: 3,
+        origenes: rama.origenes["no"],
+      });
+      for (const p of [...rutina.am, ...rutina.pm]) {
+        if (p.producto.origen === "coreano") {
+          expect(["otro_origen", "comodin", "no_apto_sensible"]).toContain(p.fallback);
+        }
+      }
+    }
+  });
+
+  it("cada respuesta de la rama tiene su explicación", () => {
+    const valores = skincareQuiz.questions.find((q) => q.urlKey === rama.key)!.options.map((o) => o.value);
+    for (const v of valores) {
+      expect(rama.origenes[v], `falta origenes["${v}"]`).toBeDefined();
+      expect(rama.nota?.[v], `falta nota["${v}"]`).toBeTruthy();
+    }
   });
 });
 

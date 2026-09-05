@@ -31,9 +31,18 @@ export function Resultados({
   const techo = rec.techoPorPiel?.[piel];
   const variante =
     techo && Number(elegida) > Number(techo) ? techo : elegida;
-  const slots = rec.rutinas[variante] ?? [];
+  // Rama de procedencia: además de filtrar por origen, puede sacar pasos. Si
+  // alguien dijo que no quiere coreanos, meterle un tónico igual sería no haber
+  // escuchado la respuesta.
+  const rama = rec.rama;
+  const respuestaRama = rama ? answers[rama.key] : undefined;
+  const origenes = rama && respuestaRama ? (rama.origenes[respuestaRama] ?? []) : [];
+  const quitar = rama && respuestaRama ? (rama.quitarCategorias?.[respuestaRama] ?? []) : [];
+  const nota = rama && respuestaRama ? rama.nota?.[respuestaRama] : undefined;
 
-  const rutina = armarRutina(productos, slots, { piel, objetivo, presupuesto });
+  const slots = (rec.rutinas[variante] ?? []).filter((s) => !quitar.includes(s.categoria));
+
+  const rutina = armarRutina(productos, slots, { piel, objetivo, presupuesto, origenes });
 
   const etiquetaOpcion = (urlKey: string, value: string) => {
     const q = config.questions.find((x) => x.urlKey === urlKey);
@@ -44,6 +53,7 @@ export function Resultados({
   const resumen = [
     etiquetaOpcion(rec.pielKey, piel),
     etiquetaOpcion(rec.objetivoKey, objetivo),
+    rama && respuestaRama ? etiquetaOpcion(rama.key, respuestaRama) : "",
     `${slots.length} pasos`,
   ]
     .filter(Boolean)
@@ -75,6 +85,12 @@ export function Resultados({
 
       <Seccion titulo={config.resultados.manana} pasos={rutina.am} />
       <Seccion titulo={config.resultados.noche} pasos={rutina.pm} />
+
+      {nota ? (
+        <section className="rounded-2xl border border-niebla bg-porcelana p-5">
+          <p className="font-body text-sm leading-relaxed text-tinta/85">{nota}</p>
+        </section>
+      ) : null}
 
       <div className="rounded-2xl border border-niebla bg-gel/25 p-5">
         <GuardarEmail label="guardá tu rutina" onGuardar={(email) => guardarLead(sesionId, email)} />

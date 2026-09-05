@@ -111,7 +111,7 @@ export const SUSTITUTOS_SENSIBLE: { evitar: string; usar: string }[] = [
 
 export const skincareQuiz: QuizConfig = {
   slug: "skincare",
-  intro: "Tu rutina ideal en 4 toques · 30s",
+  intro: "Tu rutina ideal en 5 toques · 40s",
   armando: "armando tu rutina",
   questions: [
     {
@@ -145,13 +145,37 @@ export const skincareQuiz: QuizConfig = {
       ],
     },
     {
+      urlKey: "k",
+      title: "¿Querés que te incluyamos productos coreanos?",
+      options: [
+        {
+          value: "si",
+          label: "Sí, quiero probar",
+          short: "con coreanos",
+          hint: "suma el tónico, el paso más típico de esas rutinas",
+        },
+        {
+          value: "no",
+          label: "Prefiero lo de siempre",
+          short: "sin coreanos",
+          hint: "sin tónico, un paso menos",
+        },
+        {
+          value: "tanto",
+          label: "Me da igual, quiero lo que funcione",
+          short: "lo que funcione",
+          hint: "elegimos el mejor de cada paso, venga de donde venga",
+        },
+      ],
+    },
+    {
       urlKey: "n",
       title: "¿Cuántos pasos estás dispuesta a hacer?",
       options: [
         { value: "1", label: "Lo mínimo que funcione", hint: "3 productos" },
-        { value: "2", label: "Un poco más completo", hint: "5 productos" },
-        { value: "3", label: "Rutina en serio", hint: "6 productos" },
-        { value: "4", label: "Todo el ritual", hint: "9 productos" },
+        { value: "2", label: "Un poco más completo", hint: "4 o 5 productos" },
+        { value: "3", label: "Rutina en serio", hint: "5 o 6 productos" },
+        { value: "4", label: "Todo el ritual", hint: "8 o 9 productos" },
       ],
     },
   ],
@@ -163,6 +187,25 @@ export const skincareQuiz: QuizConfig = {
     rutinaKey: "n",
     rutinas: TIERS,
     techoPorPiel: TECHO_POR_PIEL,
+    rama: {
+      key: "k",
+      origenes: {
+        si: ["coreano"],
+        no: ["europeo", "nacional"],
+        tanto: [],
+      },
+      // Si no quiere coreanos, el tónico se va: en occidente ese paso no se usa.
+      // La doble limpieza NO se saca — el aceite desmaquillante también se usa
+      // acá, sólo que no se lo llama "paso 1 de 2".
+      quitarCategorias: {
+        no: ["tonico"],
+      },
+      nota: {
+        si: copy.notas.coreano,
+        no: copy.notas.occidental,
+        tanto: copy.notas.mixto,
+      },
+    },
   },
   resultados: {
     titulo: "tu rutina",
