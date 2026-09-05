@@ -38,12 +38,27 @@ export function Shell({
 
       <main className="flex flex-1 flex-col py-6">{children}</main>
 
-      {disclaimers ? (
-        <footer className="flex flex-col gap-1 border-t border-niebla pt-4">
-          <p className="font-body text-xs text-agua">* {copy.afiliacion}</p>
-          <p className="font-body text-xs text-agua">* {copy.dermatologo}</p>
-        </footer>
-      ) : null}
+      {/*
+        Los criterios viven en el pie, no en la puerta de entrada. Nadie llega de
+        una red social buscando "combinaciones de activos": llega por un producto
+        o por una rutina. Pero el que ya está adentro y quiere entender por qué
+        recomendamos lo que recomendamos, lo tiene a un toque desde cualquier
+        pantalla.
+      */}
+      <footer className="flex flex-col gap-2 border-t border-niebla pt-4">
+        <Link
+          href="/combinaciones"
+          className="font-mono text-xs text-agua underline decoration-niebla underline-offset-4 transition-colors hover:text-tinta"
+        >
+          {copy.home.criterios} →
+        </Link>
+        {disclaimers ? (
+          <>
+            <p className="font-body text-xs text-agua">* {copy.afiliacion}</p>
+            <p className="font-body text-xs text-agua">* {copy.dermatologo}</p>
+          </>
+        ) : null}
+      </footer>
     </div>
   );
 }

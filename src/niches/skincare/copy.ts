@@ -6,7 +6,7 @@ export const copy = {
   meta: {
     title: "Club de Piel · Tu rutina de skincare en 30 segundos",
     description:
-      "Elegí un kit ya armado o respondé 4 preguntas y te armamos la rutina para tu piel y tu presupuesto. Productos coreanos, europeos y nacionales.",
+      "Elegí un kit ya armado, mirá el catálogo completo o respondé unas preguntas y te armamos la rutina para tu piel y tu presupuesto. Productos coreanos, europeos y nacionales.",
   },
 
   // Pantalla de entrada: dos puertas, sin scroll y sin buscar.
@@ -21,7 +21,7 @@ export const copy = {
     },
     quiz: {
       titulo: "Armá tu rutina",
-      bajada: "4 preguntas · 30 segundos.",
+      bajada: (n: number) => `${n} preguntas · menos de un minuto.`,
       cta: "Empezar",
     },
     // Tercera puerta, y a propósito mucho más chica que las otras dos: es para

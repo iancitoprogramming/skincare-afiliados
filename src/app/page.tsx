@@ -5,6 +5,8 @@ import { armarKits } from "@/engine/kits";
 import { copy } from "@/niches/skincare/copy";
 import { TIERS } from "@/niches/skincare/config";
 import { KITS, KITS_UNICOS } from "@/niches/skincare/kits";
+import { configServible } from "@/engine/quiz/servible";
+import { skincareQuiz } from "@/niches/skincare/config";
 import { productos as fallback } from "@/niches/skincare/productos";
 
 export const revalidate = 3600;
@@ -16,6 +18,10 @@ export default async function Home() {
   const kits = armarKits(productos, KITS, TIERS);
   const total = kits.length + KITS_UNICOS.length;
   const activos = productos.filter((p) => p.activo).length;
+  // La cantidad de preguntas cambia sola: si el catálogo sólo puede servir un
+  // tier, esa pregunta desaparece. Hardcodear "4 preguntas" ya nos quedó viejo
+  // una vez cuando entró la rama coreana.
+  const preguntas = configServible(skincareQuiz, productos).questions.length;
 
   return (
     <Shell>
@@ -70,17 +76,10 @@ export default async function Home() {
             <span className="font-display text-2xl font-medium text-tinta">
               {copy.home.quiz.titulo}
             </span>
-            <span className="font-body text-sm text-tinta/75">{copy.home.quiz.bajada}</span>
+            <span className="font-body text-sm text-tinta/75">{copy.home.quiz.bajada(preguntas)}</span>
             <span className="mt-3 font-body text-base font-medium text-vitamina">
               {copy.home.quiz.cta} →
             </span>
-          </Link>
-
-          <Link
-            href="/combinaciones"
-            className="self-start font-mono text-xs text-agua underline decoration-niebla underline-offset-4 transition-colors hover:text-tinta"
-          >
-            {copy.home.criterios} →
           </Link>
         </div>
       </div>
