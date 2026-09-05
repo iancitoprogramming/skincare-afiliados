@@ -24,6 +24,9 @@ export const copy = {
       bajada: "4 preguntas · 30 segundos.",
       cta: "Empezar",
     },
+    // Tercera puerta, y a propósito mucho más chica que las otras dos: es para
+    // el que llega desconfiando. La home sigue siendo de dos caminos.
+    criterios: "cómo decidimos qué combina con qué",
   },
 
   catalogo: {
@@ -69,6 +72,37 @@ export const copy = {
       "Te la armamos sin tónico, que es el paso que en occidente no se usa. Tu rutina queda más corta y no es peor por eso: limpiar, hidratar y protegerte del sol es la base que hace el 80% del trabajo. Si alguna vez tenés ganas de probar el paso extra, rehacé el quiz eligiendo coreanos.",
     mixto:
       "Elegimos el mejor de cada paso sin mirar de dónde viene. La diferencia principal entre las dos escuelas es el tónico: en las rutinas coreanas hidrata y prepara la piel entre la limpieza y la crema; en las occidentales ese paso directamente no existe. Ninguna es mejor — la que funciona es la que hacés todos los días.",
+  },
+
+  // Bloque de combinación de activos. La promesa del sitio no es "te damos
+  // productos", es "te damos productos que funcionan JUNTOS" — y eso hay que
+  // decirlo en la pantalla, no darlo por sobreentendido.
+  compatibilidad: {
+    titulo: "cómo combinarlos",
+    bajada:
+      "Los productos elegidos ya están chequeados entre sí. Lo que sigue es lo que conviene saber " +
+      "para que la combinación rinda.",
+    sinConflictos:
+      "No hay nada para separar: estos productos se pueden usar juntos, en el orden en que están, " +
+      "todos los días.",
+    sinergias: "esto se potencia",
+    mitos: "esto te lo van a decir, y está mal",
+    // Etiquetas de las clases del motor, en castellano y sin jerga.
+    clase: {
+      degradacion: "se destruyen entre sí",
+      ph: "cuestión de orden",
+      irritacion: "carga para la piel",
+      redundancia: "estás pagando dos veces",
+      momento: "momento del día",
+    } as Record<string, string>,
+    severidad: {
+      separar: "separar",
+      cuidado: "ojo con esto",
+      nota: "para tener en cuenta",
+    } as Record<string, string>,
+    // Marca en la card del paso involucrado, para que el aviso de abajo se pueda
+    // conectar con el producto concreto sin hacer scroll dos veces.
+    enPaso: "mirá el aviso de abajo",
   },
 
   // Avisos honestos cuando la recomendación no es un match perfecto.

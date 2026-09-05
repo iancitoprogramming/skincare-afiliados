@@ -8,10 +8,33 @@ ventana de atribución de 24hs; toda la página empuja a que ese clic ocurra rá
 
 El código se separa para poder reusarlo en otros nichos:
 
-- `src/engine/` — el motor. Quiz, recomendación, tracking, Supabase. No sabe nada de skincare.
-- `src/niches/skincare/` — todo lo específico del nicho: preguntas, presupuesto, copy, tema y catálogo.
+- `src/engine/` — el motor. Quiz, recomendación, compatibilidad, tracking, Supabase. No sabe nada de skincare.
+- `src/niches/skincare/` — todo lo específico del nicho: preguntas, presupuesto, copy, tema, catálogo y activos.
 
 Para un nicho nuevo: copiar `src/niches/skincare/` y cambiar `config.ts`, `copy.ts`, `theme.css` y `productos.ts`.
+
+## Compatibilidad entre activos
+
+El motor de recomendación elige qué producto va en cada paso. El de compatibilidad revisa que
+los productos elegidos **funcionen juntos**, que es una pregunta distinta y la que más consultan
+los usuarios.
+
+- `docs/COMPATIBILIDAD.md` — el criterio, con fuentes. Es la fuente de verdad.
+- `src/niches/skincare/activos.ts` — la versión ejecutable: diccionario de activos, reglas,
+  sinergias, mitos y el mapa `ml_id → activos`.
+- `src/engine/compatibilidad.ts` — el motor. Agnóstico del nicho.
+- `src/niches/skincare/matriz.ts` — deriva la tabla pública de las mismas reglas, para que no
+  pueda contradecir al motor.
+- `/combinaciones` — la página pública de criterios.
+
+Separa cuatro cosas que suelen confundirse en una sola: **degradación** (una molécula destruye a
+la otra), **pH** (orden de aplicación), **irritación** (carga acumulada, se arregla con
+calendario) y **redundancia** (pagar dos veces por el mismo activo). El arreglo es distinto en
+cada caso, así que meterlas en la misma bolsa da consejos inútiles.
+
+**Regla de carga:** ningún activo entra al mapa por inferencia. Sin INCI verificado, el producto
+va con lista vacía y el motor no dice nada de él. Una advertencia inventada cuesta lo mismo en
+credibilidad que un claim inventado.
 
 ## Estado
 
@@ -32,11 +55,17 @@ Abre http://localhost:3000
 ## Scripts
 
 ```bash
-npm test          # test de las 96 combinaciones: la rutina nunca queda vacía
+npm test          # rutina nunca vacía + reglas de compatibilidad
+npm run auditar   # recorre las 540 rutinas posibles: conflictos, inventario muerto, calidad del match
 npm run cobertura # qué combos caen a comodín (dónde cargar el próximo link)
 npm run gen-seed  # regenera supabase/seed.sql desde productos.ts
 npm run sync      # sube productos.ts a Supabase (necesita .env)
 ```
+
+`npm run auditar` es el que conviene mirar antes de cargar un producto nuevo. Responde cuatro
+preguntas que a ojo no se pueden contestar: qué conflictos de activos genera el catálogo, qué
+productos el motor no puede elegir nunca (inventario muerto con link de afiliado cargado),
+qué productos no tienen activos mapeados, y cuántos pasos se resuelven con un comodín.
 
 ## Catálogo y links a mano
 

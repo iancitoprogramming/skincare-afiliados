@@ -2,8 +2,12 @@
 
 import type { Answers, QuizConfig } from "./types";
 import type { PasoRutina as Paso, Producto } from "@/engine/recomendacion";
-import { armarRutina } from "@/engine/recomendacion";
+import { analizarRutina } from "@/engine/compatibilidad";
+import { catalogoActivos } from "@/niches/skincare/activos";
+import { planSemanal } from "@/niches/skincare/calendario";
 import { guardarLead } from "@/engine/tracking";
+import { resolverRutina } from "./armar";
+import { Compatibilidad } from "./Compatibilidad";
 import { PasoRutina } from "./PasoRutina";
 import { GuardarEmail } from "./GuardarEmail";
 
@@ -21,28 +25,32 @@ export function Resultados({
   onReset: () => void;
 }) {
   const rec = config.recomendacion;
-  const piel = answers[rec.pielKey];
-  const objetivo = answers[rec.objetivoKey];
-  const presupuesto = Number(answers[rec.presupuestoKey]);
-
-  // Techo por tipo de piel: piel sensible no pasa de Tier 3 aunque haya elegido
-  // Tier 4. Las variantes están ordenadas por número, de menos a más pasos.
-  const elegida = answers[rec.rutinaKey] ?? rec.variantePorDefecto ?? "";
-  const techo = rec.techoPorPiel?.[piel];
-  const variante =
-    techo && Number(elegida) > Number(techo) ? techo : elegida;
-  // Rama de procedencia: además de filtrar por origen, puede sacar pasos. Si
-  // alguien dijo que no quiere coreanos, meterle un tónico igual sería no haber
-  // escuchado la respuesta.
+  // El armado vive en `armar.ts` para que la auditoría de combinaciones recorra
+  // exactamente este camino y no una copia parecida.
+  const { rutina, piel, objetivo, nota } = resolverRutina(config, productos, answers);
   const rama = rec.rama;
   const respuestaRama = rama ? answers[rama.key] : undefined;
-  const origenes = rama && respuestaRama ? (rama.origenes[respuestaRama] ?? []) : [];
-  const quitar = rama && respuestaRama ? (rama.quitarCategorias?.[respuestaRama] ?? []) : [];
-  const nota = rama && respuestaRama ? rama.nota?.[respuestaRama] : undefined;
 
-  const slots = (rec.rutinas[variante] ?? []).filter((s) => !quitar.includes(s.categoria));
+  // Compatibilidad entre los activos de los productos que salieron elegidos.
+  // Se calcula sobre la rutina ya armada, no sobre lo que la persona respondió:
+  // lo que puede chocar es lo que efectivamente se va a poner en la cara.
+  const analisis = analizarRutina(rutina, catalogoActivos, (p) => p.producto.ml_id ?? p.producto.id);
+  const plan = planSemanal(analisis);
 
-  const rutina = armarRutina(productos, slots, { piel, objetivo, presupuesto, origenes });
+  // Marcar los pasos involucrados en un aviso sirve para conectar la tarjeta de
+  // abajo con el producto concreto. Pero la marca sólo significa algo si
+  // distingue: dos filtros para que no termine en todos los pasos.
+  //
+  //   1. Las notas ("estás pagando dos veces") no marcan. Son informativas y
+  //      suelen tocar media rutina — el protector solar no tiene la culpa de que
+  //      traiga niacinamida.
+  //   2. Si aun así la marca cubriría casi toda la rutina, no se pone ninguna:
+  //      a esa altura no orienta, sólo mete ruido en cada tarjeta.
+  const categorias = [...new Set([...rutina.am, ...rutina.pm].map((p) => p.slot.categoria))];
+  const marcadas = new Set(
+    analisis.conflictos.filter((c) => c.severidad !== "nota").flatMap((c) => c.categorias),
+  );
+  const categoriasConAviso = marcadas.size > categorias.length * 0.6 ? new Set<string>() : marcadas;
 
   const etiquetaOpcion = (urlKey: string, value: string) => {
     const q = config.questions.find((x) => x.urlKey === urlKey);
@@ -54,7 +62,8 @@ export function Resultados({
     etiquetaOpcion(rec.pielKey, piel),
     etiquetaOpcion(rec.objetivoKey, objetivo),
     rama && respuestaRama ? etiquetaOpcion(rama.key, respuestaRama) : "",
-    `${slots.length} pasos`,
+    // Un paso de momento "ambos" aparece en las dos listas: se cuenta una vez.
+    `${new Set([...rutina.am, ...rutina.pm].map((p) => p.slot.categoria)).size} pasos`,
   ]
     .filter(Boolean)
     .join(" · ");
@@ -71,6 +80,7 @@ export function Resultados({
           numero={i + 1}
           categoriaLabel={catLabel(paso.slot.categoria)}
           sesionId={sesionId}
+          conAvisoDeCombinacion={categoriasConAviso.has(paso.slot.categoria)}
         />
       ))}
     </section>
@@ -85,6 +95,8 @@ export function Resultados({
 
       <Seccion titulo={config.resultados.manana} pasos={rutina.am} />
       <Seccion titulo={config.resultados.noche} pasos={rutina.pm} />
+
+      <Compatibilidad analisis={analisis} plan={plan} />
 
       {nota ? (
         <section className="rounded-2xl border border-niebla bg-porcelana p-5">
