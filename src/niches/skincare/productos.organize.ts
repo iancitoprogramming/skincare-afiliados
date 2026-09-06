@@ -128,9 +128,15 @@ export const productosOrganize: Producto[] = [
   {
     // (raíz)
     // no va a → sensible: Fragancia
-    id: "e8a48fe9-e89b-5f22-ae91-e6aba34acf8a",
-    ml_id: "MLA19899495",
-    nombre: "Crema Hidratante facial Neutrogena Hydro Boost water gel 50 GR - Todo tipo de Piel",
+    // Repuntado al listado al que va el link de afiliado: es la RECARGA del
+    // Hydro Boost, no el pote. Misma fórmula y mismos 50 g, pero es un repuesto
+    // — quien no tiene el envase no puede usarla. Se movió la entrada en vez de
+    // dejar el link colgado del pote: la página y el link tienen que apuntar al
+    // mismo listado, si no la persona compra otra cosa de la que vio.
+    id: "df0d5355-4ed9-5030-953a-4a710c56fd04",
+    ml_id: "MLA28531465",
+    cuenta: "goldenvalhalla",
+    nombre: "Recarga Crema Hidratante Facial Neutrogena Hydro Boost 50 GR",
     marca: "Neutrogena",
     categoria: "hidratante",
     paso: 0,
@@ -140,8 +146,8 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 1, // provisional, por marca
-    link_afiliado: "", // TODO: sin esto el producto NO monetiza
-    url_referencia: "https://www.mercadolibre.com.ar/p/MLA19899495",
+    link_afiliado: "https://meli.la/1D1MXGd",
+    url_referencia: "https://www.mercadolibre.com.ar/p/MLA28531465",
     relevado: "2026-09-06",
     prioridad: 3,
     comodin: false,
@@ -811,6 +817,7 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: Retinil palmitato, LHA (capriloil salicílico) (AHA/BHA), Fragancia
     id: "bd3180fa-aaaf-5bf7-a6ac-dd0e6cfd92da",
     ml_id: "MLA34459961",
+    cuenta: "maurobilat",
     nombre: "Sérum La Roche-Posay Mela B3 Antimanchas con Niacinamida 30ml",
     marca: "La Roche-Posay",
     categoria: "serum_activo",
@@ -821,7 +828,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 3, // provisional, por marca
-    link_afiliado: "", // TODO: sin esto el producto NO monetiza
+    link_afiliado: "https://meli.la/2ja226e",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA34459961",
     relevado: "2026-09-06",
     prioridad: 5,

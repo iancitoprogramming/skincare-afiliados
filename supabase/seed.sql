@@ -126,7 +126,7 @@ values ('808e43ee-9a93-5cf2-ae71-8210102219b0', 'Crema Hidratante Eucerin Aquapo
 on conflict (id) do nothing;
 
 insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
-values ('e8a48fe9-e89b-5f22-ae91-e6aba34acf8a', 'Crema Hidratante facial Neutrogena Hydro Boost water gel 50 GR - Todo tipo de Piel', 'Neutrogena', 'hidratante', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca'], array['deshidratacion'], 'europeo', false, 1, null, null, '', 'https://www.mercadolibre.com.ar/p/MLA19899495', 'MLA19899495', null, null, '2026-09-06', 3, false, false)
+values ('df0d5355-4ed9-5030-953a-4a710c56fd04', 'Recarga Crema Hidratante Facial Neutrogena Hydro Boost 50 GR', 'Neutrogena', 'hidratante', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca'], array['deshidratacion'], 'europeo', false, 1, null, null, 'https://meli.la/1D1MXGd', 'https://www.mercadolibre.com.ar/p/MLA28531465', 'MLA28531465', null, null, '2026-09-06', 3, false, false)
 on conflict (id) do nothing;
 
 insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
@@ -242,7 +242,7 @@ values ('72651e35-bd63-5f51-880b-30cbc19cb5c4', 'Sérum Brightening Kosmos Vitam
 on conflict (id) do nothing;
 
 insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
-values ('bd3180fa-aaaf-5bf7-a6ac-dd0e6cfd92da', 'Sérum La Roche-Posay Mela B3 Antimanchas con Niacinamida 30ml', 'La Roche-Posay', 'serum_activo', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca'], array['manchas', 'deshidratacion', 'textura', 'acne'], 'europeo', false, 3, null, null, '', 'https://www.mercadolibre.com.ar/p/MLA34459961', 'MLA34459961', null, null, '2026-09-06', 5, false, false)
+values ('bd3180fa-aaaf-5bf7-a6ac-dd0e6cfd92da', 'Sérum La Roche-Posay Mela B3 Antimanchas con Niacinamida 30ml', 'La Roche-Posay', 'serum_activo', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca'], array['manchas', 'deshidratacion', 'textura', 'acne'], 'europeo', false, 3, null, null, 'https://meli.la/2ja226e', 'https://www.mercadolibre.com.ar/p/MLA34459961', 'MLA34459961', null, null, '2026-09-06', 5, false, false)
 on conflict (id) do nothing;
 
 insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)

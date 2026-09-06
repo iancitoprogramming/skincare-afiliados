@@ -18,5 +18,5 @@ producto. Las filas que dejes vacías se ignoran, así que se puede ir de a poco
 
 | ml_id | producto | estado | abrir | pegar acá |
 |---|---|---|---|---|
-| `MLA34459961` | _(inactivo)_ La Roche-Posay Sérum La Roche-Posay Mela B3 Antimanchas con Niacinamida 30ml | SIN CARGAR · producto nuevo, todavía sin link | [ML](https://www.mercadolibre.com.ar/p/MLA34459961) | |
-| `MLA19899495` | _(inactivo)_ Neutrogena Crema Hidratante facial Neutrogena Hydro Boost water gel 50 GR - Todo tipo de Piel | SIN CARGAR · producto nuevo, todavía sin link | [ML](https://www.mercadolibre.com.ar/p/MLA19899495) | |
+| `MLA34459961` | _(inactivo)_ La Roche-Posay Sérum La Roche-Posay Mela B3 Antimanchas con Niacinamida 30ml | SIN CARGAR · producto nuevo, todavía sin link | [ML](https://www.mercadolibre.com.ar/p/MLA34459961) | https://meli.la/2ja226e |
+| `MLA28531465` | _(inactivo)_ Neutrogena Recarga Crema Hidratante Facial Neutrogena Hydro Boost 50 GR | SIN CARGAR · producto nuevo, todavía sin link | [ML](https://www.mercadolibre.com.ar/p/MLA28531465) | https://meli.la/1D1MXGd |
