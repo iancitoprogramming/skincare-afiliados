@@ -1,0 +1,19 @@
+# Links de afiliado pendientes
+
+> Generado por `npm run links-pendientes`. **Se puede editar**: pegá cada link
+> en la última columna y después corré `npm run links-aplicar`.
+
+28 ítems en el catálogo · **28 ya monetizan** · **0 pendientes**
+
+## Cómo se completa
+
+1. Abrí la publicación con el link de la columna *abrir*.
+2. Generá el link de afiliado en el panel de Afiliados de Mercado Libre.
+3. Pegá el `https://meli.la/…` en la columna *pegar acá*.
+4. Guardá el archivo y corré `npm run links-aplicar`.
+
+No toques la columna `ml_id`: es con lo que el script vuelve a encontrar cada
+producto. Las filas que dejes vacías se ignoran, así que se puede ir de a poco.
+## Pendientes
+
+Ninguno. Todo el catálogo monetiza.

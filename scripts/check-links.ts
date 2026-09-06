@@ -7,24 +7,7 @@
 
 import { productos } from "../src/niches/skincare/productos";
 import type { Producto } from "../src/engine/recomendacion";
-
-type Veredicto = "afiliado" | "placeholder" | "browse" | "vacio" | "desconocido";
-
-// Un link del Programa de Afiliados de ML es un shortlink /sec/… o trae los
-// parámetros matt_*. Cualquier otra cosa no atribuye.
-function clasificar(link: string): Veredicto {
-  if (!link || !link.trim()) return "vacio";
-  if (link.includes("REEMPLAZAR-LINK-AFILIADO")) return "placeholder";
-  // meli.la es el acortador oficial del Programa de Afiliados.
-  if (/^https:\/\/meli\.la\//i.test(link)) return "afiliado";
-  if (/mercadolibre\.com(\.ar)?\/sec\//i.test(link)) return "afiliado";
-  if (/[?&#]matt_(tool|word)=/i.test(link)) return "afiliado";
-  // Lo que se copia de la grilla de búsqueda: todo el tracking va después del #,
-  // así que ni siquiera llega al servidor.
-  if (/polycard_client|sid=search|[?&#]tracking_id=|[?&#]wid=MLA/i.test(link)) return "browse";
-  if (/mercadolibre\.com/i.test(link)) return "desconocido";
-  return "desconocido";
-}
+import { clasificar, ETIQUETA as etiqueta, type Veredicto } from "../src/lib/links";
 
 const activos = productos.filter((p) => p.activo);
 const grupos = new Map<Veredicto, Producto[]>();
@@ -33,13 +16,6 @@ for (const p of activos) {
   grupos.set(v, [...(grupos.get(v) ?? []), p]);
 }
 
-const etiqueta: Record<Veredicto, string> = {
-  afiliado: "OK · link de afiliado",
-  placeholder: "PENDIENTE · todavía es el placeholder",
-  browse: "NO MONETIZA · URL copiada de la búsqueda de ML",
-  vacio: "ROTO · sin link",
-  desconocido: "REVISAR · no parece de afiliado",
-};
 
 console.log(`\n${activos.length} productos activos de ${productos.length} en catálogo\n`);
 

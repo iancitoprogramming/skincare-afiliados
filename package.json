@@ -13,7 +13,9 @@
     "importar-vault": "tsx scripts/importar-vault.ts",
     "check-links": "tsx scripts/check-links.ts",
     "auditar": "tsx scripts/auditar-combinaciones.ts",
-    "frescura": "tsx scripts/frescura.ts"
+    "frescura": "tsx scripts/frescura.ts",
+    "links-pendientes": "tsx scripts/links-pendientes.ts",
+    "links-aplicar": "tsx scripts/links-aplicar.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0",

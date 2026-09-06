@@ -107,6 +107,24 @@ Los documentos de Alex dicen "12 de 115 slots cargados, 10%". Este proyecto dice
 "Tiers 1 a 3 servibles". Las dos son ciertas: él cuenta piel × tier × paso en
 carpetas, acá se cuenta si el motor puede armar una rutina completa.
 
+## Links de afiliado: el ida y vuelta
+
+Los links se generan a mano en el panel de Afiliados de ML. Para no pegarlos de a
+uno dentro de un archivo de TypeScript —que es donde se cuela uno en la fila
+equivocada— hay dos scripts que hacen el viaje completo:
+
+```bash
+npm run links-pendientes   # arma docs/links-pendientes.md con lo que no monetiza
+# … se completa la columna "pegar acá" de cada fila …
+npm run links-aplicar      # los escribe en el catálogo
+```
+
+El `ml_id` de la primera columna es la clave: no se toca. Las filas que queden
+vacías se ignoran, así que se puede completar de a poco.
+
+**`links-aplicar` se niega a escribir un link que no monetiza.** Si se pega una
+URL de browse, la rechaza y lo dice, en vez de dejarla entrar en silencio.
+
 ## Cómo se carga un producto
 
 1. Generar el link de afiliado en el panel de ML → shortlink `meli.la`
