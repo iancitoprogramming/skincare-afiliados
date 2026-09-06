@@ -66,6 +66,9 @@ propuesta.
 | **Lectura botánica**, no clínica ni de lujo | La decide el catálogo: centella, arroz, ginseng, caracol |
 | **Los protectores coreanos van aptos para sensible** | Verificado contra las páginas de los fabricantes. Excepción consciente a la regla del vault |
 | **El exfoliante sale de las rutinas** | Suma costo, riesgo y un paso, para un beneficio que no justifica la fricción |
+| **Los tiers son 2, no 4** | Medido por Alex: el Tier 4 sumaba tres pasos, cero puntos de cobertura y 13× el costo |
+| **El tónico y la doble limpieza no son pasos de la rutina** | Misma medición. Siguen en el catálogo como opcionales, con la explicación de por qué quedaron afuera |
+| **La pregunta de origen se queda, pero sólo elige marca** | Cuando el tónico era un paso, responder "no quiero coreanos" lo sacaba. Ya no cambia la forma de la rutina, sólo qué marca toca en cada paso |
 | **El glicólico de The Ordinary es exfoliante, no tónico** | ML lo vende como "tónico exfoliante", pero es un AHA leave-on. En el slot de tónico diría de usarlo dos veces por día |
 | **Presupuesto cualitativo, no en pesos** | Los montos fijos quedan viejos solos y pasan a mentir |
 | **El quiz es una puerta, no el default** | Pinterest es un canal de browse |
@@ -94,7 +97,15 @@ los específicos, así que los cinco kits daban el mismo resultado. El especiali
 tiene que ganarle al comodín en su terreno.
 
 **Números hardcodeados en el copy.** "4 preguntas" quedó viejo cuando entró la
-rama coreana. Ahora sale de `configServible()`.
+rama coreana, y "5 preguntas" cuando se colapsaron los tiers. Dos veces el mismo
+error. Ahora sale de `configServible()`.
+
+**Un merge de git "exitoso" que produce texto mentiroso.** Al integrar la rama de
+Alex, `config.ts` se auto-mergeó sin marcar conflicto: quedaron sus tiers (sin
+tónico) junto con la rama coreana intacta, así que el quiz prometía "suma el
+tónico" cuando ningún tier lo tenía. Que git no marque conflicto no significa
+que el resultado tenga sentido — después de un merge grande hay que leer los
+archivos que ninguno de los dos lados marcó.
 
 **Disparar el escudo de Vercel con polling.** Ver bloqueante 2.
 
