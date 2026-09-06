@@ -13,6 +13,8 @@ export const revalidate = 3600;
 export const metadata = {
   title: `${copy.kits.titulo} · ${copy.marca}`,
   description: copy.kits.bajada,
+  alternates: { canonical: "/kits" },
+  openGraph: { url: "/kits" },
 };
 
 const precio = (n: number) => `$${n.toLocaleString("es-AR")}`;

@@ -27,7 +27,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: `${titulo} · ${copy.marca}`,
     description: p.por_que ?? copy.meta.description,
-    openGraph: { images: p.imagen_hd ? [p.imagen_hd] : undefined },
+    // Todo relativo a propósito. Next lo resuelve contra metadataBase, así que
+    // el día que se cargue NEXT_PUBLIC_SITE_URL se actualizan solas. Absolutas
+    // quedarían clavadas al vercel.app.
+    alternates: { canonical: `/producto/${slug}` },
+    openGraph: {
+      url: `/producto/${slug}`,
+      // Imagen propia. Antes acá iba `p.imagen_hd`, o sea un hotlink al CDN de
+      // Mercado Libre en las 25 páginas que se pinean.
+      images: [{ url: `/api/og/producto/${slug}`, width: 1200, height: 630 }],
+    },
   };
 }
 

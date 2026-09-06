@@ -10,6 +10,8 @@ export const revalidate = 3600;
 export const metadata = {
   title: `Catálogo · ${copy.marca}`,
   description: copy.catalogo.bajada,
+  alternates: { canonical: "/catalogo" },
+  openGraph: { url: "/catalogo" },
 };
 
 export default async function Catalogo() {

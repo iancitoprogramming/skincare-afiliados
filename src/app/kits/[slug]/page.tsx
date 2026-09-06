@@ -21,7 +21,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const k = [...KITS_UNICOS, ...KITS].find((x) => x.slug === slug);
   if (!k) return {};
-  return { title: `${k.nombre} · ${copy.marca}`, description: k.descripcion };
+  return {
+    title: `${k.nombre} · ${copy.marca}`,
+    description: k.descripcion,
+    alternates: { canonical: `/kits/${slug}` },
+    openGraph: { url: `/kits/${slug}` },
+  };
 }
 
 const precio = (n: number) => `$${n.toLocaleString("es-AR")}`;

@@ -9,6 +9,11 @@ import { productos as fallback } from "@/niches/skincare/productos";
 // cacheado (o el fallback local), así la landing sigue funcionando siempre.
 export const revalidate = 3600;
 
+export const metadata = {
+  alternates: { canonical: "/rutina" },
+  openGraph: { url: "/rutina" },
+};
+
 export default async function Rutina() {
   const productos = await getCatalogo(fallback);
   // Sólo ofrecemos los tiers que el catálogo puede entregar. A medida que se

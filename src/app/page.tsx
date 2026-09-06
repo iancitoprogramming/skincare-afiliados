@@ -11,6 +11,13 @@ import { productos as fallback } from "@/niches/skincare/productos";
 
 export const revalidate = 3600;
 
+// Relativas a propósito: Next las resuelve contra metadataBase, así que el día
+// que se cargue el dominio propio se actualizan solas.
+export const metadata = {
+  alternates: { canonical: "/" },
+  openGraph: { url: "/" },
+};
+
 // Puerta de entrada: dos caminos y nada mas. El que llega de una red social
 // decide en un toque, sin buscar ni scrollear un catalogo.
 export default async function Home() {

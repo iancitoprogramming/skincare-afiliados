@@ -17,6 +17,8 @@ import { celda, EN_MATRIZ, LEYENDA, SIMBOLO } from "@/niches/skincare/matriz";
 // motor. No hay una segunda copia de la verdad.
 
 export const metadata = {
+  alternates: { canonical: "/combinaciones" },
+  openGraph: { url: "/combinaciones" },
   title: `Qué se puede mezclar y qué no · ${copy.marca}`,
   description:
     "La tabla completa de combinaciones entre ingredientes activos, con el criterio detrás de " +
