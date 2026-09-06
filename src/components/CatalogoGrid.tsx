@@ -5,12 +5,23 @@ import { useMemo, useState } from "react";
 import type { Producto } from "@/engine/recomendacion";
 import { slugProducto } from "@/engine/slug";
 import { PruebaSocial } from "@/components/PruebaSocial";
+import { ChipRespaldo } from "@/components/ChipRespaldo";
+import { respaldoDe, ORDEN_RESPALDO, type NivelRespaldo } from "@/engine/respaldo";
+import { UMBRALES_RESPALDO } from "@/niches/skincare/config";
 
 // Filtrado en el cliente a propósito: el catálogo son decenas de productos, no
 // miles. Traerlos todos y filtrar en memoria es instantáneo y no cuesta un
 // round-trip por cada toque de filtro, que en mobile se siente.
 
 type Orden = "relevancia" | "precio_asc" | "precio_desc";
+
+// Fijas, no salen del catálogo: son los tres niveles posibles, y que uno quede
+// en cero también es información.
+const RESPALDOS: OpcionFiltro[] = [
+  { valor: "muy_probado" satisfies NivelRespaldo, label: "muy probado" },
+  { valor: "probado" satisfies NivelRespaldo, label: "probado" },
+  { valor: "poca_prueba" satisfies NivelRespaldo, label: "poca prueba" },
+];
 
 export interface OpcionFiltro {
   valor: string;
@@ -32,38 +43,51 @@ export function CatalogoGrid({
   const [paso, setPaso] = useState<string | null>(null);
   const [origen, setOrigen] = useState<string | null>(null);
   const [orden, setOrden] = useState<Orden>("relevancia");
+  const [respaldo, setRespaldo] = useState<string | null>(null);
 
   const visibles = useMemo(() => {
     const filtrados = productos.filter(
       (p) =>
         (!piel || p.tipos_piel.includes(piel)) &&
         (!paso || p.categoria === paso) &&
-        (!origen || p.origen === origen),
+        (!origen || p.origen === origen) &&
+        (!respaldo || respaldoDe(p, UMBRALES_RESPALDO) === respaldo),
     );
     const orden_ = [...filtrados];
     if (orden === "precio_asc") orden_.sort((a, b) => (a.precio_ars ?? 0) - (b.precio_ars ?? 0));
     else if (orden === "precio_desc") orden_.sort((a, b) => (b.precio_ars ?? 0) - (a.precio_ars ?? 0));
-    else orden_.sort((a, b) => (b.vendidos_aprox ?? 0) - (a.vendidos_aprox ?? 0));
+    else
+      // Relevancia = primero lo más respaldado, después lo más vendido.
+      orden_.sort(
+        (a, b) =>
+          ORDEN_RESPALDO[respaldoDe(b, UMBRALES_RESPALDO)] -
+            ORDEN_RESPALDO[respaldoDe(a, UMBRALES_RESPALDO)] ||
+          (b.vendidos_aprox ?? 0) - (a.vendidos_aprox ?? 0),
+      );
     return orden_;
-  }, [productos, piel, paso, origen, orden]);
+  }, [productos, piel, paso, origen, respaldo, orden]);
 
   // Cuántos productos deja cada filtro, contando los otros filtros ya activos.
   // Robado de Ganga Hunter: saber qué hay detrás de un filtro antes de tocarlo
   // evita el toque a ciegas que devuelve cero.
-  const contar = (campo: "piel" | "paso" | "origen", valor: string) =>
+  const contar = (campo: "piel" | "paso" | "origen" | "respaldo", valor: string) =>
     productos.filter(
       (p) =>
         (campo === "piel" ? p.tipos_piel.includes(valor) : !piel || p.tipos_piel.includes(piel)) &&
         (campo === "paso" ? p.categoria === valor : !paso || p.categoria === paso) &&
-        (campo === "origen" ? p.origen === valor : !origen || p.origen === origen),
+        (campo === "origen" ? p.origen === valor : !origen || p.origen === origen) &&
+        (campo === "respaldo"
+          ? respaldoDe(p, UMBRALES_RESPALDO) === valor
+          : !respaldo || respaldoDe(p, UMBRALES_RESPALDO) === respaldo),
     ).length;
 
   const limpiar = () => {
     setPiel(null);
     setPaso(null);
     setOrigen(null);
+    setRespaldo(null);
   };
-  const hayFiltros = Boolean(piel || paso || origen);
+  const hayFiltros = Boolean(piel || paso || origen || respaldo);
 
   return (
     <div className="flex flex-col gap-6">
@@ -71,6 +95,13 @@ export function CatalogoGrid({
         <Fila titulo="tipo de piel" opciones={pieles} valor={piel} onChange={setPiel} contar={(v) => contar("piel", v)} />
         <Fila titulo="paso" opciones={pasos} valor={paso} onChange={setPaso} contar={(v) => contar("paso", v)} />
         <Fila titulo="origen" opciones={origenes} valor={origen} onChange={setOrigen} contar={(v) => contar("origen", v)} />
+        <Fila
+          titulo="respaldo"
+          opciones={RESPALDOS}
+          valor={respaldo}
+          onChange={setRespaldo}
+          contar={(v) => contar("respaldo", v)}
+        />
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3 border-y border-niebla py-3">
@@ -140,6 +171,12 @@ export function CatalogoGrid({
                 <span className="font-display text-sm font-medium leading-tight text-tinta">
                   {p.nombre}
                 </span>
+
+                <ChipRespaldo
+                  nivel={respaldoDe(p, UMBRALES_RESPALDO)}
+                  opiniones={p.opiniones}
+                  className="self-start"
+                />
 
                 <span className="mt-auto flex flex-col gap-1">
                   {p.precio_ars ? (

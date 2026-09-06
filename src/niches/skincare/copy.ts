@@ -105,6 +105,19 @@ export const copy = {
     enPaso: "mirá el aviso de abajo",
   },
 
+  // Cuánto respalda el producto gente que no somos nosotros.
+  // El tercero es el importante: decir que algo tiene poca prueba es lo que hace
+  // creíbles a los otros dos.
+  respaldo: {
+    muy_probado: { chip: "muy probado", detalle: (n: number) => `${n.toLocaleString("es-AR")} opiniones en Mercado Libre` },
+    probado: { chip: "probado", detalle: (n: number) => `${n.toLocaleString("es-AR")} opiniones en Mercado Libre` },
+    poca_prueba: {
+      chip: "poca prueba todavía",
+      detalle: () => "Está en el catálogo por criterio nuestro. Todavía tiene pocas opiniones en Mercado Libre.",
+    },
+    filtro: "respaldo",
+  },
+
   // Avisos honestos cuando la recomendación no es un match perfecto.
   avisos: {
     no_apto_sensible:

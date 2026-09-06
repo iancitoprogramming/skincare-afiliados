@@ -21,6 +21,11 @@ export const PRESUPUESTO: Record<"1" | "2" | "3", string> = {
 // esté siempre vencido y que la herramienta se termine ignorando.
 export const DIAS_FRESCURA = 30;
 
+// Cortes de respaldo. Salen de mirar la distribución real del catálogo, que se
+// parte sola en tres: 11 productos arriba de 1.000 opiniones, 10 entre 10 y 999,
+// y 4 abajo de 10 — que son los coreanos nuevos en Mercado Libre.
+export const UMBRALES_RESPALDO = { muyProbado: 1000, probado: 10 };
+
 // Procedencia. Es preferencia del usuario, no filtro duro: el motor la relaja si
 // no hay cobertura en esa categoría, y la card avisa cuando eso pasa.
 export const ORIGENES: Record<string, string> = {

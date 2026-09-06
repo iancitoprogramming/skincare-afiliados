@@ -3,12 +3,14 @@ import { notFound } from "next/navigation";
 import { Shell } from "@/components/Shell";
 import { BotonComprar } from "@/components/BotonComprar";
 import { PruebaSocial } from "@/components/PruebaSocial";
+import { RespaldoDetalle } from "@/components/ChipRespaldo";
+import { respaldoDe } from "@/engine/respaldo";
 import { getCatalogo } from "@/engine/catalogo";
 import { armarKits } from "@/engine/kits";
 import { indicePorSlug, slugProducto } from "@/engine/slug";
 import { copy } from "@/niches/skincare/copy";
 import { haceCuanto } from "@/lib/sitio";
-import { CATEGORIAS, ORIGENES, TIERS } from "@/niches/skincare/config";
+import { CATEGORIAS, ORIGENES, TIERS, UMBRALES_RESPALDO } from "@/niches/skincare/config";
 import { KITS } from "@/niches/skincare/kits";
 import { productos as fallback } from "@/niches/skincare/productos";
 
@@ -93,6 +95,10 @@ export default async function ProductoDetalle({ params }: { params: Promise<{ sl
           productoId={p.id}
           label="Ver en Mercado Libre"
         />
+
+        {/* Va antes del "por qué lo elegimos": si el producto tiene poca prueba,
+            conviene que se sepa ANTES de leer nuestro argumento, no después. */}
+        <RespaldoDetalle nivel={respaldoDe(p, UMBRALES_RESPALDO)} opiniones={p.opiniones} />
 
         {p.por_que ? (
           <section className="flex flex-col gap-2">
