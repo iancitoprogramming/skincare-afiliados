@@ -60,21 +60,49 @@ export const CATEGORIAS: Record<string, string> = {
 //
 // Las dos categorías siguen definidas en CATEGORIAS por si se vuelven atrás, o
 // para ofrecerlas alguna vez como extra opcional fuera del paso a paso.
-export const TIERS: Record<"1" | "2" | "3" | "4", RutinaSlot[]> = {
-  // Tier 1 · Base — 3 productos
+// ─────────────────────────────────────────────────────────────────────────────
+// LOS TIERS SE DEFINEN POR LO QUE AGREGAN, NO POR CUÁNTOS FRASCOS SON
+//
+// Antes eran cuatro escalones de 3, 5, 6 y 9 productos, y la pregunta del quiz
+// era "¿cuántos pasos estás dispuesta a hacer?". Medirlo cambió la respuesta.
+// `npm run rendimiento` compara los tiers sobre las mismas respuestas:
+//
+//   tier  pasos  cubre el objetivo  conflictos/rutina  graves/rutina
+//    T1     3          98%                0,23             0,00
+//    T2     4          99%                0,23             0,00
+//    T3     5         100%                0,82             0,02
+//    T4     8         100%                3,09             0,76
+//
+// El Tier 4 sumaba tres pasos, CERO puntos de cobertura y 13 veces los
+// conflictos de la base. Los pasos que agregaba —ampolla, contorno, retinoide—
+// no atacaban nada que la rutina no atacara ya, y sí metían activos que chocan
+// entre sí. Vendíamos tres frascos más para empeorar el resultado.
+//
+// Así que el Tier 4 dejó de existir como rutina. Sus productos siguen en el
+// catálogo y se ofrecen aparte, como lo que son: opcionales.
+//
+// Lo esencial son tres pasos —limpiador, hidratante y protector solar— y el
+// resto se gana el lugar o no entra. Los dos escalones que quedan están
+// ordenados por lo que aportan, no por tamaño: primero el sérum activo, que es
+// lo único que ataca el objetivo de la persona más allá de la base; después la
+// doble limpieza, que no mejora ningún objetivo pero sí saca bien el protector
+// solar de todos los días.
+// ─────────────────────────────────────────────────────────────────────────────
+export const TIERS: Record<"1" | "2" | "3", RutinaSlot[]> = {
+  // Base · 3 productos — lo único que no es opcional
   "1": [
     { categoria: "limpiador", momento: "ambos" },
     { categoria: "hidratante", momento: "ambos" },
     { categoria: "protector_solar", momento: "am" },
   ],
-  // Tier 2 · Esencial — 4 productos
+  // Base + tratamiento · 4 productos — el único paso que cambia el resultado
   "2": [
-    { categoria: "limpiador_oleoso", momento: "pm" },
     { categoria: "limpiador", momento: "ambos" },
+    { categoria: "serum_activo", momento: "ambos" },
     { categoria: "hidratante", momento: "ambos" },
     { categoria: "protector_solar", momento: "am" },
   ],
-  // Tier 3 · Completo — 5 productos
+  // Base + tratamiento + doble limpieza · 5 productos
   "3": [
     { categoria: "limpiador_oleoso", momento: "pm" },
     { categoria: "limpiador", momento: "ambos" },
@@ -82,28 +110,38 @@ export const TIERS: Record<"1" | "2" | "3" | "4", RutinaSlot[]> = {
     { categoria: "hidratante", momento: "ambos" },
     { categoria: "protector_solar", momento: "am" },
   ],
-  // Tier 4 · Máximo — 8 productos
-  "4": [
-    { categoria: "limpiador_oleoso", momento: "pm" },
-    { categoria: "limpiador", momento: "ambos" },
-    { categoria: "serum_activo", momento: "ambos" },
-    { categoria: "serum_secundario", momento: "ambos" },
-    { categoria: "contorno", momento: "ambos" },
-    { categoria: "hidratante", momento: "ambos" },
-    { categoria: "protector_solar", momento: "am" },
-    { categoria: "retinoide", momento: "pm", frecuencia: "no_diario" },
-  ],
 };
+
+/**
+ * Categorías que existen en el catálogo pero que NO son un paso de ninguna
+ * rutina. Se ofrecen en el catálogo navegable, nunca dentro del paso a paso.
+ *
+ * No es una lista de descarte: es una lista de cosas opcionales. El retinoide
+ * es el activo con más evidencia para arrugas y no está acá por malo — está
+ * porque meterlo en una rutina automática, junto a un exfoliante y sin
+ * acompañamiento, genera más problemas que soluciones.
+ */
+export const CATEGORIAS_OPCIONALES = [
+  "tonico",
+  "exfoliante",
+  "serum_secundario",
+  "contorno",
+  "retinoide",
+] as const;
 
 // Piel sensible topea en Tier 3. Si alguien con piel sensible elige Tier 4, el
 // motor lo baja y la UI lo explica en vez de darle una rutina que la va a irritar.
-export const TECHO_POR_PIEL: Record<string, "1" | "2" | "3" | "4"> = {
+// Techo por tipo de piel. Hoy no recorta nada, porque el escalón más alto ya es
+// el 3 — quedó como no-op cuando se eliminó el Tier 4. Se deja porque el
+// mecanismo sigue siendo el correcto si algún día vuelve a haber un escalón por
+// encima, y porque borrarlo escondería una decisión que conviene tener a la vista.
+export const TECHO_POR_PIEL: Record<string, "1" | "2" | "3"> = {
   sensible: "3",
 };
 
-export function tierEfectivo(tierElegido: string, piel: string): "1" | "2" | "3" | "4" {
+export function tierEfectivo(tierElegido: string, piel: string): "1" | "2" | "3" {
   const techo = TECHO_POR_PIEL[piel];
-  const t = (tierElegido in TIERS ? tierElegido : "1") as "1" | "2" | "3" | "4";
+  const t = (tierElegido in TIERS ? tierElegido : "1") as "1" | "2" | "3";
   if (!techo) return t;
   return Number(t) > Number(techo) ? techo : t;
 }
@@ -181,12 +219,29 @@ export const skincareQuiz: QuizConfig = {
     },
     {
       urlKey: "n",
-      title: "¿Cuántos pasos estás dispuesta a hacer?",
+      // La pregunta ya no es por cantidad de pasos sino por qué se le suma a la
+      // base, porque medimos que la cantidad no predice el resultado: el Tier 4
+      // tenía cinco pasos más que la base y la misma cobertura.
+      title: "¿Querés sumarle algo a la base?",
       options: [
-        { value: "1", label: "Lo mínimo que funcione", hint: "3 productos" },
-        { value: "2", label: "Un poco más completo", hint: "4 productos" },
-        { value: "3", label: "Rutina en serio", hint: "5 productos" },
-        { value: "4", label: "Todo el ritual", hint: "8 productos" },
+        {
+          value: "1",
+          label: "Solo lo esencial",
+          short: "solo la base",
+          hint: "3 pasos: limpiar, hidratar y protegerte del sol",
+        },
+        {
+          value: "2",
+          label: "Sumale un tratamiento",
+          short: "con tratamiento",
+          hint: "4 pasos: un sérum para lo que querés cambiar",
+        },
+        {
+          value: "3",
+          label: "Y doble limpieza de noche",
+          short: "con doble limpieza",
+          hint: "5 pasos: para sacar bien el protector solar",
+        },
       ],
     },
   ],

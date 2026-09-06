@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { armarRutina, elegirPaso, type Rutina } from "./recomendacion";
 import { productos } from "../niches/skincare/productos";
-import { TIERS, tierEfectivo, skincareQuiz } from "../niches/skincare/config";
+import { TIERS, tierEfectivo, skincareQuiz, CATEGORIAS_OPCIONALES } from "../niches/skincare/config";
 
 const valores = (urlKey: string) =>
   skincareQuiz.questions.find((q) => q.urlKey === urlKey)!.options.map((o) => o.value);
@@ -199,13 +199,35 @@ describe("rama coreana / occidental", () => {
 });
 
 describe("catálogo", () => {
-  it("Tiers 1 a 3 servibles; el 4 espera ampolla y retinoide", () => {
+  it("los tres escalones son servibles y no hay ninguno más", () => {
+    // El Tier 4 se eliminó: sumaba tres pasos, cero puntos de cobertura del
+    // objetivo y 13 veces los conflictos de la base. Sus categorías siguen en
+    // el catálogo, ofrecidas como opcionales.
+    expect(Object.keys(TIERS)).toEqual(["1", "2", "3"]);
     expect(tiersServibles).toEqual(["1", "2", "3"]);
+  });
 
-    const faltan = TIERS["4"]
-      .map((s) => s.categoria)
-      .filter((c) => !CATEGORIAS_CON_STOCK.has(c));
-    expect([...new Set(faltan)].sort()).toEqual(["retinoide", "serum_secundario"]);
+  it("la base es exactamente limpiador, hidratante y protector solar", () => {
+    // Es el único conjunto no negociable. Si alguien agrega un paso acá, que
+    // sea rompiendo un test y no de casualidad.
+    expect(TIERS["1"].map((s) => s.categoria).sort()).toEqual([
+      "hidratante",
+      "limpiador",
+      "protector_solar",
+    ]);
+  });
+
+  it("cada escalón contiene íntegramente al anterior", () => {
+    // Un escalón que saca un paso del anterior no es "más completo": es otra
+    // rutina. Si eso hace falta alguna vez, que sea una decisión explícita.
+    const cats = (t: keyof typeof TIERS) => TIERS[t].map((s) => s.categoria);
+    for (const c of cats("1")) expect(cats("2")).toContain(c);
+    for (const c of cats("2")) expect(cats("3")).toContain(c);
+  });
+
+  it("ninguna categoría opcional aparece como paso de una rutina", () => {
+    const enTiers = new Set(Object.values(TIERS).flat().map((s) => s.categoria));
+    for (const c of CATEGORIAS_OPCIONALES) expect(enTiers.has(c)).toBe(false);
   });
 
   it("tiene comodín en cada categoría de los tiers servibles", () => {

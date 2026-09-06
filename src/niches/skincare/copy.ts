@@ -29,6 +29,42 @@ export const copy = {
     criterios: "cómo decidimos qué combina con qué",
   },
 
+  // Catálogo navegable. Es la pieza que se comparte en redes: cada tarjeta se
+  // sostiene sola, con foto, precio y el porqué en una línea.
+  catalogo: {
+    bajada:
+      "Todo lo que tenemos, con sus activos a la vista. Separado en lo que forma parte de una " +
+      "rutina y lo que es opcional — porque no es lo mismo, y mezclarlos es como termina la gente " +
+      "con nueve frascos y la piel peor.",
+    cta: "Armar mi rutina",
+    notaOpcionalGenerica:
+      "Opcional: suma cuando la base ya está firme y sostenida. No lo pongas al mismo tiempo que " +
+      "empezás con todo lo demás.",
+    // Por qué cada categoría opcional quedó fuera del paso a paso. Se dice con
+    // nombre y apellido: un "opcional" sin explicación se lee como "relleno".
+    notaOpcional: {
+      tonico:
+        "Un tónico no es un paso necesario de ninguna rutina. Hidrata y prepara la piel, y eso " +
+        "está bien, pero no hace nada que la crema no haga. Si te gusta la textura, sumalo; si no, " +
+        "no te estás perdiendo nada.",
+      exfoliante:
+        "Dos o tres veces por semana como mucho, y nunca la misma noche que un retinoide. Es el " +
+        "paso que más rápido rompe una barrera cuando se usa de más, y la señal —piel tirante y " +
+        "más reactiva que antes— se confunde con «necesito exfoliar más».",
+      retinoide:
+        "El activo con más evidencia para arrugas y textura, y también el que más pide. Va de " +
+        "noche, dos veces por semana al principio, sobre piel seca, y nunca junto a un exfoliante. " +
+        "No lo pongas en una rutina que recién empezás.",
+      serum_secundario:
+        "Una capa más de hidratación. Suma si tenés la piel deshidratada de verdad; si no, es un " +
+        "paso que se siente lindo y no cambia el resultado.",
+      contorno:
+        "La piel del párpado es más fina, pero la mayoría de las cremas de contorno son un " +
+        "hidratante en frasco chico y a mayor precio. Vale la pena cuando trae algo específico " +
+        "—cafeína, péptidos— y no como paso obligatorio.",
+    } as Record<string, string>,
+  },
+
   kits: {
     titulo: "Kits armados",
     // Los de compra única van primero: un link y un checkout convierte mucho

@@ -59,12 +59,20 @@ export default async function Home() {
             </span>
           </Link>
 
-          <Link
-            href="/combinaciones"
-            className="self-start font-mono text-xs text-agua underline decoration-niebla underline-offset-4 transition-colors hover:text-tinta"
-          >
-            {copy.home.criterios} →
-          </Link>
+          <div className="flex flex-col gap-2">
+            <Link
+              href="/catalogo"
+              className="self-start font-mono text-xs text-agua underline decoration-niebla underline-offset-4 transition-colors hover:text-tinta"
+            >
+              ver todo el catálogo →
+            </Link>
+            <Link
+              href="/combinaciones"
+              className="self-start font-mono text-xs text-agua underline decoration-niebla underline-offset-4 transition-colors hover:text-tinta"
+            >
+              {copy.home.criterios} →
+            </Link>
+          </div>
         </div>
       </div>
     </Shell>

@@ -816,6 +816,58 @@ debería llegar a la pantalla.
 
 ---
 
+## 8quater · Lo esencial son tres pasos, y lo medimos
+
+Una rutina esencial son tres cosas: **limpiador, hidratante y protector solar**. Todo lo demás es
+opcional. Y "opcional" no es gratis: cada paso que se suma trae activos nuevos, y esos activos
+pueden chocar entre sí. `npm run rendimiento` compara los cuatro tiers sobre las mismas respuestas.
+
+| tier | pasos | cubre el objetivo | activos | conflictos/rutina | graves/rutina |
+|---|---|---|---|---|---|
+| **T1 · base** | 3 | **98%** | 8,5 | 0,23 | 0,00 |
+| T2 | 4 | 99% | 10,0 | 0,23 | 0,00 |
+| T3 | 5 | 100% | 13,3 | 0,82 | 0,02 |
+| **T4** | 8 | **100%** | 20,5 | **3,09** | **0,76** |
+
+Lo marginal, que es lo que decide:
+
+| | pasos | cobertura | conflictos |
+|---|---|---|---|
+| T1 → T2 | +1 | +1 punto | +0,00 |
+| T2 → T3 | +1 | +1 punto | +0,59 |
+| **T3 → T4** | **+3** | **+0 puntos** | **+2,27** |
+
+**El Tier 4 sumaba tres pasos, cero puntos de cobertura y 13 veces los conflictos de la base.** Los
+pasos que agregaba —ampolla, contorno, retinoide— no atacaban nada que la rutina no atacara ya, y
+metían activos que chocan entre sí. Le vendíamos a la persona tres frascos más para empeorarle el
+resultado.
+
+Dejó de existir como rutina. Los tiers pasaron a definirse por **lo que agregan**, no por cuántos
+frascos son:
+
+```
+1 · Base                             limpiador · hidratante · protector solar
+2 · + tratamiento                    + sérum activo
+3 · + doble limpieza                 + limpiador oleoso de noche
+```
+
+El sérum activo va antes que la doble limpieza a propósito: es lo único que ataca el objetivo de la
+persona más allá de la base. La doble limpieza no mejora ningún objetivo, pero saca bien el
+protector solar de todos los días, que es una función real que esta tabla no mide.
+
+**Lo que la tabla no mide, y hay que decirlo.** "Cubre el objetivo" mide si algún producto de la
+rutina apunta a la preocupación elegida. No mide higiene, ni textura, ni si la persona disfruta la
+rutina — y disfrutarla es lo que hace que la sostenga. Por eso la doble limpieza sobrevivió a pesar
+de su +0 en cobertura, y por eso el Tier 4 no: una cosa es un paso que hace algo que no medimos,
+otra es un paso que además empeora lo que sí medimos.
+
+**Dónde va lo que salió.** Al catálogo navegable (`/catalogo`), marcado como opcional y con el
+motivo escrito. No es descarte: el retinoide es el activo con más evidencia para arrugas. Está
+afuera del paso a paso porque meterlo en una rutina automática, junto a un exfoliante y sin
+acompañamiento, genera más problemas que soluciones.
+
+---
+
 ## 8ter · El paso que no debía existir
 
 Antes de aflojar el criterio de desempate del motor había que contestar una pregunta: los

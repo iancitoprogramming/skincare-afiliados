@@ -45,6 +45,27 @@ sin ningún conflicto pasan de 71,9% a 77,6%, y la calidad del match no se mueve
 va con lista vacía y el motor no dice nada de él. Una advertencia inventada cuesta lo mismo en
 credibilidad que un claim inventado.
 
+## Rutinas y catálogo: dos cosas distintas
+
+**Lo esencial son tres pasos**: limpiador, hidratante y protector solar. Todo lo demás es opcional,
+y opcional no es gratis — cada paso trae activos que pueden chocar con los de al lado.
+
+`npm run rendimiento` lo mide. Sobre las mismas respuestas, la base de 3 pasos ya cubre el objetivo
+de la persona en el **98%** de los casos; el viejo Tier 4, con 8 pasos, cubría el 100% y traía
+**13× los conflictos**. Tres frascos más para empeorar el resultado. Por eso los tiers ahora se
+definen por lo que agregan y hay sólo tres:
+
+```
+1 · Base            limpiador · hidratante · protector solar
+2 · + tratamiento   + sérum activo        ← lo único que ataca el objetivo
+3 · + doble limpieza + limpiador oleoso    ← saca bien el protector de todos los días
+```
+
+Lo que quedó afuera —tónico, exfoliante, ampolla, contorno, retinoide— **no se descarta**: vive en
+`/catalogo`, marcado como opcional y con el motivo escrito. Esa página además es la pieza pensada
+para compartir en redes: tarjetas verticales 2:3, que es la proporción que Pinterest muestra sin
+recortar.
+
 ## Estado
 
 - [x] Parte 1 — Quiz (motor + config + tema)
@@ -70,6 +91,7 @@ npm run auditar -- --proyectar   # lo mismo pero como si TODO el pipeline ya est
 npm run auditar -- --sin-evitar  # con el armado viejo, para medir cuánto aporta evitar conflictos
 npm run huecos -- --proyectar    # qué conflicto NO se puede evitar y qué producto falta
 npm run ranking-compra           # ordena los candidatos de compra por conflictos que destraban
+npm run rendimiento              # qué aporta cada paso extra: cobertura vs conflictos vs costo
 npm run importar-organize -- "<ruta al vault Organize>"   # reimporta el catálogo de farmacia
 npm run cobertura # qué combos caen a comodín (dónde cargar el próximo link)
 npm run gen-seed  # regenera supabase/seed.sql desde productos.ts
