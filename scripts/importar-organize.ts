@@ -23,7 +23,7 @@
 // todos salen con `activo: false` y un TODO. Publicar un catálogo que no cobra
 // comisión es peor que no publicarlo: ocupa el lugar de uno que sí.
 
-import { readdirSync, statSync, readFileSync, writeFileSync } from "node:fs";
+import { readdirSync, statSync, readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join, relative, resolve, basename } from "node:path";
 import { createHash } from "node:crypto";
 import { ACTIVOS, ACTIVOS_POR_PRODUCTO } from "../src/niches/skincare/activos";
@@ -43,6 +43,82 @@ const RAIZ = process.argv[2];
 if (!RAIZ) {
   console.error('Falta la ruta. npm run importar-organize -- "C:/ruta/Club de Piel/Organize"');
   process.exit(1);
+}
+
+// ── Lo que NO se regenera ───────────────────────────────────────────────────
+//
+// El archivo de salida dice "no editar a mano, se regenera", y dejó de ser
+// cierto: los links de afiliado, la cuenta que cobra, la fecha de relevamiento y
+// el precio se cargaron encima. Regenerar sin más borraría 43 links que costaron
+// horas de trabajo manual — y peor, los borraría en silencio.
+//
+// Así que el importador ahora LEE su propia salida anterior y arrastra esos
+// campos. Lo que viene del vault se recalcula; lo que vino de una persona se
+// respeta. Es la única forma de que el script se pueda volver a correr.
+const CAMPOS_QUE_SE_CONSERVAN = [
+  "link_afiliado",
+  "cuenta",
+  "relevado",
+  "precio_ars",
+  "precio_lista",
+  "imagen_url",
+  "imagen_hd",
+  "rating",
+  "opiniones",
+  "vendidos",
+  "vendidos_aprox",
+  "reputacion",
+  "activo",
+] as const;
+
+const SALIDA_PREVIA = resolve(process.cwd(), "src/niches/skincare/productos.organize.ts");
+
+/** Extrae de la salida anterior, por ml_id, los campos cargados a mano. */
+function previos(): Map<string, Record<string, string>> {
+  const out = new Map<string, Record<string, string>>();
+  if (!existsSync(SALIDA_PREVIA)) return out;
+  // Normalizar CRLF es obligatorio, no cosmético: en Windows git escribe el
+  // archivo con \r\n, y un patrón que espere `{` seguido de \n no matchea nada.
+  // La primera versión de esto no normalizaba, no encontró ningún bloque, y
+  // regeneró el catálogo BORRANDO los 73 links de afiliado sin una sola queja.
+  // Por eso más abajo hay una guarda que aborta si no reconoce nada.
+  const texto = readFileSync(SALIDA_PREVIA, "utf8").replace(/\r\n/g, "\n");
+  // Cada bloque arranca en `ml_id:` y termina en el cierre del objeto.
+  for (const bloque of texto.split(/\n\s*\{\n/).slice(1)) {
+    const id = bloque.match(/ml_id:\s*"([^"]+)"/)?.[1];
+    if (!id) continue;
+    const campos: Record<string, string> = {};
+    for (const campo of CAMPOS_QUE_SE_CONSERVAN) {
+      // Se guarda el literal tal cual estaba: string, número o booleano.
+      const m = bloque.match(new RegExp(`\\n\\s*${campo}:\\s*("(?:[^"\\\\]|\\\\.)*"|[\\d.]+|true|false)`));
+      if (m) campos[campo] = m[1];
+    }
+    out.set(id, campos);
+  }
+  return out;
+}
+
+const ANTERIOR = previos();
+
+// Guarda de seguridad. Si la salida anterior existe y tiene links cargados pero
+// el parser no reconoció ninguno, algo cambió de formato y regenerar destruiría
+// trabajo manual. Mejor abortar y que alguien mire, que "funcionar" borrando.
+if (existsSync(SALIDA_PREVIA)) {
+  const crudo = readFileSync(SALIDA_PREVIA, "utf8");
+  const linksEnDisco = (crudo.match(/link_afiliado:\s*"https/g) ?? []).length;
+  const linksLeidos = [...ANTERIOR.values()].filter((p) => p.link_afiliado).length;
+  if (linksEnDisco > 0 && linksLeidos < linksEnDisco) {
+    console.error(
+      `\n⛔ ABORTA. La salida anterior tiene ${linksEnDisco} links de afiliado y el ` +
+        `importador sólo pudo leer ${linksLeidos}.\n` +
+        `   Regenerar ahora borraría los que no reconoció.\n` +
+        `   Probablemente cambió el formato del archivo: revisá previos() en este script.\n`,
+    );
+    process.exit(1);
+  }
+  if (linksEnDisco > 0) {
+    console.log(`Conservando ${linksLeidos} links de afiliado de la salida anterior.\n`);
+  }
 }
 
 // ── Taxonomía ───────────────────────────────────────────────────────────────
@@ -356,6 +432,34 @@ for (const p of walk(resolve(RAIZ))) {
 
 filas.sort((a, b) => a.categoria.localeCompare(b.categoria) || a.nombre.localeCompare(b.nombre));
 
+// ── Guarda contra divergencia vault ↔ catálogo ──────────────────────────────
+//
+// Conservar los campos cargados a mano alcanza mientras los dos lados hablen de
+// los mismos productos. No siempre pasa: si alguien cambia una publicación de
+// Mercado Libre en el catálogo (mismo producto, otro ml_id) y no toca el vault,
+// regenerar trae de vuelta el ml_id viejo —sin link— y hace desaparecer el
+// nuevo, con su link puesto.
+//
+// Ya ocurrió: cinco productos del catálogo no existen en el vault. Cuatro son
+// publicaciones reemplazadas y uno es un producto agregado a mano.
+const aEscribir = new Set(filas.map((f) => f.mlId));
+const seCaen = [...ANTERIOR.entries()].filter(
+  ([mlId, campos]) => campos.link_afiliado && !aEscribir.has(mlId),
+);
+if (seCaen.length) {
+  console.error(
+    `\n⛔ ABORTA. ${seCaen.length} productos del catálogo tienen link de afiliado y NO están` +
+      ` en el vault:\n` +
+      seCaen.map(([id]) => `     · ${id}`).join("\n") +
+      `\n\n   Regenerar los borraría. El vault y el catálogo divergieron: alguien cambió` +
+      `\n   publicaciones de Mercado Libre acá sin actualizar los .md de Obsidian.` +
+      `\n\n   Para destrabarlo, una de dos:` +
+      `\n     · actualizar la URL en el .md del vault para que apunte al ml_id nuevo, o` +
+      `\n     · si el producto no vive en el vault, moverlo a productos.ts (el curado a mano).\n`,
+  );
+  process.exit(1);
+}
+
 const destino = resolve(process.cwd(), "src/niches/skincare/productos.organize.ts");
 const lineas: string[] = [
   `import type { Producto } from "@/engine/recomendacion";`,
@@ -363,7 +467,12 @@ const lineas: string[] = [
   `// GENERADO por scripts/importar-organize.ts desde el vault "Club de Piel / Organize".`,
   `// No editar a mano: se regenera. Lo editorial va en catalogo-overlay / activos.ts.`,
   `//`,
-  `// TODOS salen con activo:false porque el vault NO trae link de afiliado ni precio.`,
+  `// El vault NO trae link de afiliado, precio ni copy: eso se carga encima, a mano.`,
+  `// Este archivo se puede REGENERAR sin miedo — el importador lee su propia salida`,
+  `// anterior y arrastra link_afiliado, cuenta, relevado, precio, imágenes, prueba`,
+  `// social y activo. Lo que viene del vault se recalcula; lo que puso una persona`,
+  `// se respeta.`,
+  `//`,
   `// Para activar uno: pegar link_afiliado, precio_ars, por_que y como_usar, y poner`,
   `// activo:true. Mientras tanto no se le muestran a nadie, que es lo correcto.`,
   ``,
@@ -387,11 +496,24 @@ for (const f of filas) {
   lineas.push(`    origen: ${JSON.stringify(f.origen)},`);
   lineas.push(`    apto_sensible: ${f.aptoSensible},`);
   lineas.push(`    rango_precio: ${f.rangoPrecio}, // provisional, por marca`);
-  lineas.push(`    link_afiliado: "", // TODO: sin esto el producto NO monetiza`);
+
+  // Todo lo que cargó una persona sobre la salida anterior se arrastra tal cual.
+  // Sin esto, regenerar borraría 73 links de afiliado en silencio.
+  const previo = ANTERIOR.get(f.mlId) ?? {};
+  for (const campo of CAMPOS_QUE_SE_CONSERVAN) {
+    if (campo === "activo") continue; // se decide abajo, con su propio criterio
+    if (previo[campo] !== undefined) lineas.push(`    ${campo}: ${previo[campo]},`);
+  }
+  if (previo.link_afiliado === undefined) {
+    lineas.push(`    link_afiliado: "", // TODO: sin esto el producto NO monetiza`);
+  }
+
   lineas.push(`    url_referencia: ${JSON.stringify(f.urlReferencia)},`);
   lineas.push(`    prioridad: ${f.prioridad},`);
   lineas.push(`    comodin: ${f.comodin},`);
-  lineas.push(`    activo: false,`);
+  // `activo` se conserva si ya estaba decidido. Un producto que alguien prendió
+  // a mano no se vuelve a apagar por reimportar el vault.
+  lineas.push(`    activo: ${previo.activo ?? "false"},`);
   lineas.push(`  },`);
 }
 lineas.push(`];`);
