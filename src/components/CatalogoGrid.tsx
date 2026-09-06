@@ -47,6 +47,17 @@ export function CatalogoGrid({
     return orden_;
   }, [productos, piel, paso, origen, orden]);
 
+  // Cuántos productos deja cada filtro, contando los otros filtros ya activos.
+  // Robado de Ganga Hunter: saber qué hay detrás de un filtro antes de tocarlo
+  // evita el toque a ciegas que devuelve cero.
+  const contar = (campo: "piel" | "paso" | "origen", valor: string) =>
+    productos.filter(
+      (p) =>
+        (campo === "piel" ? p.tipos_piel.includes(valor) : !piel || p.tipos_piel.includes(piel)) &&
+        (campo === "paso" ? p.categoria === valor : !paso || p.categoria === paso) &&
+        (campo === "origen" ? p.origen === valor : !origen || p.origen === origen),
+    ).length;
+
   const limpiar = () => {
     setPiel(null);
     setPaso(null);
@@ -57,9 +68,9 @@ export function CatalogoGrid({
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-3">
-        <Fila titulo="tipo de piel" opciones={pieles} valor={piel} onChange={setPiel} />
-        <Fila titulo="paso" opciones={pasos} valor={paso} onChange={setPaso} />
-        <Fila titulo="origen" opciones={origenes} valor={origen} onChange={setOrigen} />
+        <Fila titulo="tipo de piel" opciones={pieles} valor={piel} onChange={setPiel} contar={(v) => contar("piel", v)} />
+        <Fila titulo="paso" opciones={pasos} valor={paso} onChange={setPaso} contar={(v) => contar("paso", v)} />
+        <Fila titulo="origen" opciones={origenes} valor={origen} onChange={setOrigen} contar={(v) => contar("origen", v)} />
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3 border-y border-niebla py-3">
@@ -152,11 +163,13 @@ function Fila({
   opciones,
   valor,
   onChange,
+  contar,
 }: {
   titulo: string;
   opciones: OpcionFiltro[];
   valor: string | null;
   onChange: (v: string | null) => void;
+  contar: (valor: string) => number;
 }) {
   return (
     <div className="flex flex-col gap-2">
@@ -164,19 +177,26 @@ function Fila({
       <div className="flex flex-wrap gap-2">
         {opciones.map((o) => {
           const activo = valor === o.valor;
+          const n = contar(o.valor);
           return (
             <button
               key={o.valor}
               type="button"
               aria-pressed={activo}
+              // Un filtro que devuelve cero se muestra igual, apagado: esconderlo
+              // haría que la lista de opciones cambie sola bajo el dedo.
+              disabled={n === 0 && !activo}
               onClick={() => onChange(activo ? null : o.valor)}
               className={`rounded-full border px-3 py-1.5 font-body text-sm transition-colors ${
                 activo
                   ? "border-terracota bg-terracota text-porcelana"
-                  : "border-niebla bg-porcelana text-tinta"
+                  : n === 0
+                    ? "border-niebla bg-porcelana text-tinta/35"
+                    : "border-niebla bg-porcelana text-tinta"
               }`}
             >
               {o.label}
+              <span className={activo ? "text-porcelana/70" : "text-piedra"}> {n}</span>
             </button>
           );
         })}

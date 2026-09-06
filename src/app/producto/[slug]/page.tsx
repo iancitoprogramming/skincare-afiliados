@@ -7,6 +7,7 @@ import { getCatalogo } from "@/engine/catalogo";
 import { armarKits } from "@/engine/kits";
 import { indicePorSlug, slugProducto } from "@/engine/slug";
 import { copy } from "@/niches/skincare/copy";
+import { haceCuanto } from "@/lib/sitio";
 import { CATEGORIAS, ORIGENES, TIERS } from "@/niches/skincare/config";
 import { KITS } from "@/niches/skincare/kits";
 import { productos as fallback } from "@/niches/skincare/productos";
@@ -77,7 +78,14 @@ export default async function ProductoDetalle({ params }: { params: Promise<{ sl
         </header>
 
         {p.precio_ars ? (
-          <p className="font-display text-3xl font-medium text-tinta">{precio(p.precio_ars)}</p>
+          <div className="flex flex-col gap-1">
+            <p className="font-display text-3xl font-medium text-tinta">{precio(p.precio_ars)}</p>
+            {/* Un precio de ML sin fecha es una afirmación que no se puede
+                verificar. Con fecha, la persona decide cuánto confiar. */}
+            <p className="font-mono text-xs text-piedra">
+              precio visto en Mercado Libre {haceCuanto(p.relevado)}
+            </p>
+          </div>
         ) : null}
 
         <BotonComprar

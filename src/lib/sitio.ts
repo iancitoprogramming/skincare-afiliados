@@ -50,3 +50,24 @@ export function informarMetadata(): void {
     }`,
   );
 }
+
+/**
+ * "hace 3 días" / "hoy" a partir de una fecha ISO.
+ *
+ * Se muestra al lado del precio. Un precio de Mercado Libre sin fecha es una
+ * afirmación que no se puede verificar; con fecha, la persona decide cuánto
+ * confiar. Es la misma idea que el "PRECIO ACTUALIZADO · HACE 6 H" que usa
+ * Ganga Hunter, adaptada a que nosotros relevamos a mano y no cada hora.
+ */
+export function haceCuanto(iso: string): string {
+  const [a, m, d] = iso.split("-").map(Number);
+  if (!a || !m || !d) return "";
+  const ahora = new Date();
+  const hoy = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate());
+  const dias = Math.round((hoy.getTime() - new Date(a, m - 1, d).getTime()) / 86_400_000);
+  if (dias <= 0) return "hoy";
+  if (dias === 1) return "ayer";
+  if (dias < 30) return `hace ${dias} días`;
+  const meses = Math.round(dias / 30);
+  return meses === 1 ? "hace un mes" : `hace ${meses} meses`;
+}
