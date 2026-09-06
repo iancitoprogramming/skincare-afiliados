@@ -24,10 +24,15 @@ compra en ML, y ML paga comisión. El precio que paga el comprador no cambia.
 
 Los links salen de dos cuentas de afiliado distintas:
 
-| Cuenta | Perfil | Catálogo |
-|---|---|---|
-| `maurobilat` | **Club de Piel** | Mayoría coreana |
-| `goldenvalhalla` | — | Mix europeo y nacional |
+| Cuenta | De quién es | Perfil | Catálogo |
+|---|---|---|---|
+| `goldenvalhalla` | **Ian** | — | Mix europeo y nacional |
+| `maurobilat` | **Alex** | **Club de Piel** | Mayoría coreana |
+
+De quién es cada cuenta estaba sólo en la cabeza de los dos, y eso ya se dio
+vuelta una vez: se afirmó que `maurobilat` era la de Ian y se le dijo que había
+mandado dos links mal etiquetados cuando en realidad los había mandado bien.
+El handle no dice el nombre, así que va escrito acá.
 
 ### Cómo se ve un link que paga
 
