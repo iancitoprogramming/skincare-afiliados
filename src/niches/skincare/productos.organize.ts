@@ -13,6 +13,7 @@ export const productosOrganize: Producto[] = [
     // FPS 30 en un hidratante, no reemplaza al protector · Sin INCI verificado: no se le mapean activos y el motor no opina sobre su fórmula.
     id: "d47c5c7f-88f8-5547-8ee2-440abda55985",
     ml_id: "MLA67629151",
+    cuenta: "goldenvalhalla",
     nombre: "Avene Hydrance Spf30 Crema Facial Hidratante Piel Sensible",
     marca: "Avène",
     categoria: "hidratante",
@@ -23,7 +24,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: true,
     rango_precio: 3, // provisional, por marca
-    link_afiliado: "", // TODO: sin esto el producto NO monetiza
+    link_afiliado: "https://meli.la/2vucCrR",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA67629151",
     relevado: "2026-09-06",
     prioridad: 4,
@@ -339,6 +340,7 @@ export const productosOrganize: Producto[] = [
     // ORIENTADOS A PIEL SECA
     id: "7787bab2-6a2e-5aae-be68-d587cba8588e",
     ml_id: "MLA53897352",
+    cuenta: "goldenvalhalla",
     nombre: "Gel limpiador hidratante Neutrogena Hydro Boost, 150 ml, para todo tipo de piel",
     marca: "Neutrogena",
     categoria: "limpiador",
@@ -349,7 +351,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: true,
     rango_precio: 1, // provisional, por marca
-    link_afiliado: "", // TODO: sin esto el producto NO monetiza
+    link_afiliado: "https://meli.la/1a13fk3",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA53897352",
     relevado: "2026-09-06",
     prioridad: 3,
@@ -360,9 +362,10 @@ export const productosOrganize: Producto[] = [
     // ORIENTADOS A PIEL SECA
     // Syndet sin jabón, pensado para piel atópica. Sin fragancia.
     // no va a → grasa: textura rica
-    id: "85bb5010-01e6-51c2-a42b-ff7b6309d590",
-    ml_id: "MLA16135276",
-    nombre: "La Roche-posay Lipikar Syndet Ap+ 200 Ml",
+    id: "5c1c9584-f216-5825-abea-fdcaca926992",
+    ml_id: "MLAU376385300",
+    cuenta: "goldenvalhalla",
+    nombre: "La Roche-Posay Lipikar Syndet Ap+ Gel Limpiador X 200 Ml",
     marca: "La Roche-Posay",
     categoria: "limpiador",
     paso: 0,
@@ -372,8 +375,8 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: true,
     rango_precio: 2, // provisional, por marca
-    link_afiliado: "", // TODO: sin esto el producto NO monetiza
-    url_referencia: "https://www.mercadolibre.com.ar/p/MLA16135276",
+    link_afiliado: "https://meli.la/1RixJw8",
+    url_referencia: "https://www.mercadolibre.com.ar/up/MLAU376385300",
     relevado: "2026-09-06",
     prioridad: 5,
     comodin: false,
@@ -500,9 +503,10 @@ export const productosOrganize: Producto[] = [
     // ORIENTADOS A PIEL GRASA
     // no va a → sensible: filtro solar químico, Alcohol denat
     // no va a → seca: efecto mate: le saca a una piel seca lo poco que le queda
-    id: "8fc7d68c-575a-5d51-b26a-a8d4f6910871",
-    ml_id: "MLA16048424",
-    nombre: "Protector Solar Color Efecto Mate Anthelios Fps 50+ La Roche",
+    id: "f2c98169-24cf-59e5-8ceb-eebd40f7720c",
+    ml_id: "MLA16048263",
+    cuenta: "goldenvalhalla",
+    nombre: "La Roche-Posay Anthelios Fps50 Ultra Fluido Con Color X 50 Ml",
     marca: "La Roche-Posay",
     categoria: "protector_solar",
     paso: 0,
@@ -512,8 +516,8 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 3, // provisional, por marca
-    link_afiliado: "", // TODO: sin esto el producto NO monetiza
-    url_referencia: "https://www.mercadolibre.com.ar/p/MLA16048424",
+    link_afiliado: "https://meli.la/1Z5wwA4",
+    url_referencia: "https://www.mercadolibre.com.ar/p/MLA16048263",
     relevado: "2026-09-06",
     prioridad: 4,
     comodin: false,
@@ -548,9 +552,10 @@ export const productosOrganize: Producto[] = [
     // FPS 50+, protector en textura sérum
     // no va a → sensible: filtro solar químico, Ácido salicílico (AHA/BHA), Alcohol denat, Fragancia
     // no va a → seca: anti-imperfecciones con salicílico: le saca a una piel seca lo poco que le queda
-    id: "a4929a81-b3b1-5990-93dd-26929da26278",
-    ml_id: "MLA63460365",
-    nombre: "Sérum Protector Solar Anti Imperfecciones Fps50+ Garnie",
+    id: "d56c81d0-185e-5694-8352-fb09eaf5cd27",
+    ml_id: "MLA38098313",
+    cuenta: "goldenvalhalla",
+    nombre: "Garnier Protector Solar Super Uv Fluido Invisible Fps50 40 Ml",
     categoria: "protector_solar",
     paso: 0,
     momento: "am",
@@ -559,8 +564,8 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 2, // provisional, por marca
-    link_afiliado: "", // TODO: sin esto el producto NO monetiza
-    url_referencia: "https://www.mercadolibre.com.ar/p/MLA63460365",
+    link_afiliado: "https://meli.la/12kE7AR",
+    url_referencia: "https://www.mercadolibre.com.ar/p/MLA38098313",
     relevado: "2026-09-06",
     prioridad: 4,
     comodin: false,
@@ -619,6 +624,7 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: Retinol, Retinil palmitato, Alcohol denat, Fragancia
     id: "24fe4638-63d5-5fd1-8e2d-07c15ffabda3",
     ml_id: "MLAU244146565",
+    cuenta: "goldenvalhalla",
     nombre: "La Roche Posay Retinol B3 Sérum Regenerador X 30 Ml Todo Tipo De Piel, Incluso Sensible.",
     marca: "La Roche-Posay",
     categoria: "retinoide",
@@ -629,7 +635,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 3, // provisional, por marca
-    link_afiliado: "", // TODO: sin esto el producto NO monetiza
+    link_afiliado: "https://meli.la/1cLRPsP",
     url_referencia: "https://www.mercadolibre.com.ar/up/MLAU244146565",
     relevado: "2026-09-06",
     prioridad: 5,
@@ -921,9 +927,10 @@ export const productosOrganize: Producto[] = [
     // Acido Hialuronico
     // sérum de hialurónico
     // no va a → sensible: Alcohol denat, Fragancia
-    id: "bad3b1e1-4cdb-55e8-87b8-3b8d81c16579",
-    ml_id: "MLA12754368",
-    nombre: "La Roche Posay Hyalu B5 Serum 30 ml",
+    id: "0547f1a8-4a58-521a-8f70-b5d8621b4a1d",
+    ml_id: "MLA59802317",
+    cuenta: "goldenvalhalla",
+    nombre: "La Roche-Posay Hyalu B5 Suractivated Serum 30 Ml",
     marca: "La Roche-Posay",
     categoria: "serum_secundario",
     paso: 0,
@@ -933,8 +940,8 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 3, // provisional, por marca
-    link_afiliado: "", // TODO: sin esto el producto NO monetiza
-    url_referencia: "https://www.mercadolibre.com.ar/p/MLA12754368",
+    link_afiliado: "https://meli.la/1CyrL3C",
+    url_referencia: "https://www.mercadolibre.com.ar/p/MLA59802317",
     relevado: "2026-09-06",
     prioridad: 4,
     comodin: false,
