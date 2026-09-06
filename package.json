@@ -19,7 +19,8 @@
     "importar-organize": "tsx scripts/importar-organize.ts",
     "huecos": "tsx scripts/huecos-compatibilidad.ts",
     "ranking-compra": "tsx scripts/ranking-compra.ts",
-    "rendimiento": "tsx scripts/rendimiento-por-tier.ts"
+    "rendimiento": "tsx scripts/rendimiento-por-tier.ts",
+    "cuentas": "tsx scripts/cuentas.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0",

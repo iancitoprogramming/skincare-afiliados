@@ -17,6 +17,7 @@ export const KITS_UNICOS: KitUnico[] = [
   {
     slug: "libra-grasa-acneica",
     ml_id: "MLAU560830924",
+    cuenta: "maurobilat",
     rating: 4.7,
     opiniones: 281,
     vendidos: "+1000",
@@ -42,6 +43,7 @@ export const KITS_UNICOS: KitUnico[] = [
   {
     slug: "libra-piel-mixta",
     ml_id: "MLAU3408127149",
+    cuenta: "maurobilat",
     rating: 4.8,
     opiniones: 442,
     vendidos: "+1000",

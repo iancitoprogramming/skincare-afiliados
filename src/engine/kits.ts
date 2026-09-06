@@ -27,6 +27,8 @@ export interface KitUnico {
   /** Proporcion original y mayor resolucion, para piezas de diseno. */
   imagen_hd?: string;
   link_afiliado: string;
+  /** Cuenta de afiliado que cobra. Ver `npm run cuentas`. */
+  cuenta?: string;
   vendedor?: string;
   mas_vendido?: boolean;
   rating?: number;

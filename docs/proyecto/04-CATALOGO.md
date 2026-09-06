@@ -125,6 +125,25 @@ vacías se ignoran, así que se puede completar de a poco.
 **`links-aplicar` se niega a escribir un link que no monetiza.** Si se pega una
 URL de browse, la rechaza y lo dice, en vez de dejarla entrar en silencio.
 
+## Reparto entre cuentas
+
+Los links salen de dos cuentas de afiliado, y **el reparto tiene que ser parejo
+entre las dos**. El problema es que un shortlink `meli.la` no dice a quién le
+paga: hay que seguir el redirect hasta `/social/<cuenta>`.
+
+```bash
+npm run cuentas              # reporta el reparto
+npm run cuentas -- --guardar # además escribe `cuenta` en el catálogo
+```
+
+**Regenerar un link puede moverlo de una cuenta a la otra sin que se note.** Ya
+pasó: al recargar una tanda, 8 productos pasaron de `goldenvalhalla` a
+`maurobilat`. Por eso `cuenta` se guarda en el catálogo — con el valor anterior
+escrito, el script compara y avisa cuáles cambiaron.
+
+Y `links-aplicar` avisa cuando reemplaza un link que ya existía, que es el
+momento en que puede moverse la comisión.
+
 ## Cómo se carga un producto
 
 1. Generar el link de afiliado en el panel de ML → shortlink `meli.la`

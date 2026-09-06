@@ -22,6 +22,7 @@ const productosCurados: Producto[] = [
     // #1 · MLA21801426 · Idraet
     id: "5d221906-39be-54cf-8a4b-a8451c1bc147",
     ml_id: "MLA21801426",
+    cuenta: "goldenvalhalla",
     rating: 4.9,
     opiniones: 650,
     vendidos: "+5 mil",
@@ -53,6 +54,7 @@ const productosCurados: Producto[] = [
     // #3 · MLAU140993030 · CeraVe
     id: "177a52d8-37db-52eb-91a0-588b515f3170",
     ml_id: "MLAU140993030",
+    cuenta: "goldenvalhalla",
     rating: 4.8,
     opiniones: 3207,
     vendidos: "+10 mil",
@@ -84,6 +86,7 @@ const productosCurados: Producto[] = [
     // #4 · MLA11139349 · sin vendedor destacado
     id: "df632bf0-55e0-5fa8-8515-a863341156e3",
     ml_id: "MLA11139349",
+    cuenta: "maurobilat",
     rating: 4.8,
     opiniones: 141,
     vendidos: "+100",
@@ -114,6 +117,7 @@ const productosCurados: Producto[] = [
     // #6 · MLAU3453545171 · SKINKO
     id: "9f11e96c-a0d6-595c-836b-e2b01e5777d3",
     ml_id: "MLAU3453545171",
+    cuenta: "maurobilat",
     rating: 4.8,
     opiniones: 40,
     vendidos: "+100",
@@ -145,6 +149,7 @@ const productosCurados: Producto[] = [
     // #13 · MLAU3856054670 · Juleriaque
     id: "b944b75b-d195-5887-8c4a-ec6997fd2679",
     ml_id: "MLAU3856054670",
+    cuenta: "goldenvalhalla",
     rating: 5.0,
     opiniones: 1,
     vendidos: "+100",
@@ -176,6 +181,7 @@ const productosCurados: Producto[] = [
     // #23 · MLA27603374 · Mi Farma
     id: "5287ad8a-fb88-5094-a48f-51c710cd96ce",
     ml_id: "MLA27603374",
+    cuenta: "goldenvalhalla",
     rating: 4.9,
     opiniones: 657,
     vendidos: "+1000",
@@ -207,6 +213,7 @@ const productosCurados: Producto[] = [
     // #19 · MLA37240248 · Juleriaque
     id: "faafd241-6fe8-56a8-a766-ccdb6164db56",
     ml_id: "MLA37240248",
+    cuenta: "goldenvalhalla",
     rating: 5.0,
     opiniones: 15,
     vendidos: "+25",
@@ -238,6 +245,7 @@ const productosCurados: Producto[] = [
     // #5 · MLA65451035 · L'Oreal · MAS VENDIDO
     id: "1f69f11c-96bc-5e0d-b79b-684a56278a28",
     ml_id: "MLA65451035",
+    cuenta: "goldenvalhalla",
     rating: 4.8,
     opiniones: 3019,
     vendidos: "+10 mil",
@@ -269,6 +277,7 @@ const productosCurados: Producto[] = [
     // #12 · MLA37722163 · Juleriaque
     id: "599f5ffc-515b-53e3-b1a9-6fa7f105cc0c",
     ml_id: "MLA37722163",
+    cuenta: "maurobilat",
     rating: 4.7,
     opiniones: 330,
     vendidos: "+500",
@@ -300,6 +309,7 @@ const productosCurados: Producto[] = [
     // #14 · MLA19866311 · sin vendedor destacado
     id: "6b7300c1-a37c-5810-a06b-a114171cc45f",
     ml_id: "MLA19866311",
+    cuenta: "maurobilat",
     rating: 4.9,
     opiniones: 3197,
     vendidos: "+10 mil",
@@ -331,6 +341,7 @@ const productosCurados: Producto[] = [
     // #17 · MLA21179266 · La Franco
     id: "0385d1a3-9ab2-5343-9184-2abbd7a5502e",
     ml_id: "MLA21179266",
+    cuenta: "goldenvalhalla",
     rating: 4.8,
     opiniones: 29,
     vendidos: "+100",
@@ -362,6 +373,7 @@ const productosCurados: Producto[] = [
     // #20 · MLA19474747 · L'ALTRA BELLEZZA
     id: "cae68c7d-d0d5-569c-97c1-dc7685e0fc83",
     ml_id: "MLA19474747",
+    cuenta: "maurobilat",
     rating: 4.8,
     opiniones: 5079,
     vendidos: "+10 mil",
@@ -393,6 +405,7 @@ const productosCurados: Producto[] = [
     // #21 · MLA45253335 · sin vendedor destacado
     id: "fb6c8719-ae28-51c3-a2b7-185729019a95",
     ml_id: "MLA45253335",
+    cuenta: "goldenvalhalla",
     rating: 4.8,
     opiniones: 53,
     vendidos: "+100",
@@ -424,6 +437,7 @@ const productosCurados: Producto[] = [
     // #26 · MLA24692733 · La Franco
     id: "3043ace8-c198-5554-a4ef-4b3e0248ff31",
     ml_id: "MLA24692733",
+    cuenta: "maurobilat",
     rating: 4.8,
     opiniones: 767,
     vendidos: "+1000",
@@ -466,6 +480,7 @@ const productosCurados: Producto[] = [
     // #8 · MLAU3480823224 · SKINKO
     id: "ef88803e-f240-5ac9-a0c7-6dc45023f5cb",
     ml_id: "MLAU3480823224",
+    cuenta: "maurobilat",
     rating: 5.0,
     opiniones: 1,
     vendidos: "+50",
@@ -497,6 +512,7 @@ const productosCurados: Producto[] = [
     // #9 · MLA26916726 · sin vendedor destacado · MAS VENDIDO
     id: "2b09ab2e-48f4-5490-860e-b01d8e980e4f",
     ml_id: "MLA26916726",
+    cuenta: "goldenvalhalla",
     rating: 4.9,
     opiniones: 11410,
     vendidos: "+10 mil",
@@ -528,6 +544,7 @@ const productosCurados: Producto[] = [
     // #10 · MLA2097460920 · sin vendedor destacado
     id: "243c3ca9-7456-5c5f-adae-56bc432fdc4c",
     ml_id: "MLA2097460920",
+    cuenta: "maurobilat",
     rating: 5.0,
     opiniones: 1,
     vendidos: "+5",
@@ -559,6 +576,7 @@ const productosCurados: Producto[] = [
     // #11 · MLA16048275 · Eucerin · MAS VENDIDO
     id: "ee65576a-883b-5b68-82d9-b06c4540f9cc",
     ml_id: "MLA16048275",
+    cuenta: "goldenvalhalla",
     rating: 4.9,
     opiniones: 16628,
     vendidos: "+100 mil",
@@ -590,6 +608,7 @@ const productosCurados: Producto[] = [
     // #15 · MLA24454808 · sin vendedor destacado
     id: "49a08f9d-4ffe-54a6-ae25-cb54ece5198f",
     ml_id: "MLA24454808",
+    cuenta: "goldenvalhalla",
     rating: 4.8,
     opiniones: 3995,
     vendidos: "+1000",
@@ -621,6 +640,7 @@ const productosCurados: Producto[] = [
     // #16 · MLA20067103 · Isdin · MAS VENDIDO
     id: "1782a74e-046f-572d-b361-27dacdf2b3ea",
     ml_id: "MLA20067103",
+    cuenta: "maurobilat",
     rating: 4.9,
     opiniones: 6403,
     vendidos: "+10 mil",
@@ -652,6 +672,7 @@ const productosCurados: Producto[] = [
     // #24 · MLA16189493 · Nivea · MAS VENDIDO
     id: "5540f526-7bbb-587e-9340-4c367d3fecb5",
     ml_id: "MLA16189493",
+    cuenta: "maurobilat",
     rating: 4.7,
     opiniones: 5471,
     vendidos: "+50 mil",
@@ -683,6 +704,7 @@ const productosCurados: Producto[] = [
     // #18 · MLA18957818 · Garnier · MAS VENDIDO
     id: "eca1e945-2ceb-5a4b-8d53-5afe77870730",
     ml_id: "MLA18957818",
+    cuenta: "maurobilat",
     rating: 4.8,
     opiniones: 66616,
     vendidos: "+100 mil",
@@ -729,6 +751,7 @@ const productosCurados: Producto[] = [
     // #25 · MLA23033385 · sin vendedor destacado
     id: "2e00ac05-c649-5f6d-bfd2-cce864f2e80e",
     ml_id: "MLA23033385",
+    cuenta: "goldenvalhalla",
     rating: 4.9,
     opiniones: 120,
     vendidos: "+500",
@@ -760,6 +783,7 @@ const productosCurados: Producto[] = [
     // #7 · MLA18956630 · sin vendedor destacado
     id: "9f280ac4-84cb-5eca-b3cd-583eceef3219",
     ml_id: "MLA18956630",
+    cuenta: "goldenvalhalla",
     rating: 4.8,
     opiniones: 8750,
     vendidos: "+10 mil",
@@ -791,6 +815,7 @@ const productosCurados: Producto[] = [
     // #27 · MLAU3481553718 · Tienda oficial
     id: "360306d6-7439-53f6-80d0-9d8644884868",
     ml_id: "MLAU3481553718",
+    cuenta: "maurobilat",
     nombre: "Milk Skin Toner 150 ml",
     marca: "TIRTIR",
     categoria: "tonico",
@@ -825,6 +850,7 @@ const productosCurados: Producto[] = [
     // glicolico dos veces por dia lastima la piel.
     id: "ed3e0a91-2640-59fc-80d5-5008a15d65a5",
     ml_id: "MLA29493655",
+    cuenta: "goldenvalhalla",
     nombre: "Tónico Exfoliante de Ácido Glicólico 7 por ciento 100 ml",
     marca: "The Ordinary",
     categoria: "exfoliante",

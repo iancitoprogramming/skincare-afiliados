@@ -79,13 +79,18 @@ function aplicar(fuente: string, ml_id: string, link: string): string | null {
 
 let aplicados = 0;
 const noEncontrados: string[] = [];
+const pisados: string[] = [];
 
 for (const archivo of CATALOGOS) {
   let s = readFileSync(archivo, "utf8");
   let tocado = false;
   for (const { ml_id, link } of pegados) {
+    const previo = /link_afiliado: "([^"]*)"/.exec(
+      s.slice(s.indexOf(`ml_id: "${ml_id}"`)),
+    )?.[1];
     const nuevo = aplicar(s, ml_id, link);
     if (nuevo) {
+      if (previo && previo !== link) pisados.push(`${ml_id}  ${previo} → ${link}`);
       s = nuevo;
       tocado = true;
       aplicados++;

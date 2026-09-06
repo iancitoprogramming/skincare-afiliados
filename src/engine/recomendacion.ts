@@ -35,6 +35,15 @@ export interface Producto {
   imagen_hd?: string;
   /** Link del Programa de Afiliados. Es el único que monetiza. */
   link_afiliado: string;
+  /**
+   * Cuenta de afiliado que cobra por este link. Se resuelve siguiendo el
+   * redirect del shortlink, con `npm run cuentas -- --guardar`.
+   *
+   * Guardarlo importa porque un `meli.la` no dice a quién le paga: regenerar un
+   * link puede moverlo de una cuenta a la otra sin que se note. Con el campo
+   * escrito, el script compara y avisa.
+   */
+  cuenta?: string;
   /** URL de browse de ML, sólo para identificar el producto al cargar el afiliado. NO monetiza. */
   url_referencia?: string;
   /** ID del producto en Mercado Libre (MLA… / MLAU…). Clave natural para deduplicar. */

@@ -52,6 +52,7 @@ npm run check-links      # falla si un producto activo no monetiza
 npm run frescura         # qué relevamientos quedaron viejos (>30 días)
 npm run links-pendientes # arma el MD con los links que faltan generar
 npm run links-aplicar    # lee ese MD completado y los escribe en el catálogo
+npm run cuentas          # a qué cuenta de afiliado le paga cada link
 npm run cobertura        # dónde el motor cae a comodín o match parcial
 npm run gen-seed         # productos.ts → supabase/seed.sql
 npm run sync             # sube el catálogo a Supabase
