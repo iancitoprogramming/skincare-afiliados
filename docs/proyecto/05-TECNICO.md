@@ -1,0 +1,111 @@
+# Técnico
+
+## Stack
+
+| Capa | Qué |
+|---|---|
+| Framework | Next.js 15 (App Router) |
+| UI | React 19 · Tailwind CSS 4 |
+| Tipado | TypeScript |
+| Tests | Vitest |
+| Datos | Supabase (opcional — hay fallback local) |
+| Deploy | Vercel |
+| Analytics | Vercel Analytics |
+
+**Repo:** `github.com/iancitoprogramming/skincare-afiliados`
+**Producción:** `skincare-afiliados.vercel.app`
+
+## Estructura
+
+```
+src/
+├── app/                        rutas
+├── components/                 Shell · Logo · CatalogoGrid · BotonComprar · PruebaSocial
+├── engine/                     lógica agnóstica del nicho
+│   ├── recomendacion.ts        el motor: cascada de fallbacks
+│   ├── kits.ts                 KitDef · KitUnico · armarKit
+│   ├── slug.ts                 slugs estables de producto
+│   ├── catalogo.ts             lee Supabase, cae al fallback local
+│   ├── compatibilidad.ts       compatibilidad entre activos (de Alex)
+│   ├── tracking.ts             sesiones · clics · leads
+│   └── quiz/                   Quiz · Resultados · PasoRutina · servible
+└── niches/skincare/            todo lo que sabe de skincare
+    ├── productos.ts            EL CATÁLOGO — fuente de verdad
+    ├── kits.ts                 definiciones de kits
+    ├── config.ts               tiers · categorías · quiz · rama
+    ├── copy.ts                 todos los textos
+    ├── activos.ts              activos e interacciones (de Alex)
+    └── theme.css               paleta y tipografías
+```
+
+**La separación importa:** `engine/` no sabe de skincare. Todo lo que es del
+nicho vive en `niches/skincare/`. Para otro nicho se copia esa carpeta.
+
+## Scripts
+
+```bash
+npm run dev              # servidor de desarrollo
+npm test                 # vitest
+npm run check-links      # falla si un producto activo no monetiza
+npm run cobertura        # dónde el motor cae a comodín o match parcial
+npm run gen-seed         # productos.ts → supabase/seed.sql
+npm run sync             # sube el catálogo a Supabase
+npm run importar-vault   # vault de Obsidian → catálogo, dedup por ml_id
+```
+
+## Variables de entorno
+
+**El sitio buildea y funciona sin ninguna.** Sin Supabase usa el catálogo local.
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=        # sólo scripts locales
+NEXT_PUBLIC_SITE_URL=             # dominio propio, cuando lo haya
+NEXT_PUBLIC_PINTEREST_VERIFY=     # código de reclamo de dominio
+```
+
+**Sin las dos primeras el tracking es un no-op silencioso.** Todo clic, sesión y
+email se descarta. Es el bloqueante para lanzar con medición.
+
+`metadataBase` resuelve dominio propio → dominio estable de Vercel → URL del
+deploy → localhost. Los del medio los setea Vercel solo.
+
+## Convenciones de código
+
+**Los comentarios explican el porqué, no el qué.** Si un comentario describe lo
+que la línea siguiente ya dice, sobra. Los que valen son los que explican una
+decisión: por qué el desempate de kits es por precio, por qué el slug no incluye
+la categoría, por qué el tónico sale en la rama occidental.
+
+**Nombres en español**, como el dominio. `armarRutina`, `elegirPaso`,
+`tiersServibles`, `no_apto_sensible`.
+
+**Fallar fuerte antes que servir mal.** `indicePorSlug()` tira excepción ante una
+colisión en vez de devolver el producto equivocado. El motor tira excepción si
+falta un comodín en vez de dejar un paso vacío.
+
+**Los tests documentan el estado real**, no el ideal. Hay uno que afirma qué
+tiers son servibles hoy y cuáles categorías faltan para el Tier 4: cuando se
+carga catálogo, ese test falla y avisa que hay que actualizarlo. Es a propósito.
+
+## Trampas conocidas
+
+**`next build` con el dev server prendido corrompe `.next`.** Aparece como
+`Cannot find module './vendor-chunks/...'` o pantalla negra. Solución:
+`rm -rf .next` y reiniciar el dev.
+
+**Polling con curl contra Vercel dispara el escudo anti-bots.** Aparece como 403
+con `X-Vercel-Mitigated: challenge`. Los navegadores lo pasan solo, pero **el
+crawler de Pinterest es un bot** y podría comerse el challenge — con lo cual el
+preview del pin sale vacío. Revisar Vercel → Settings → Firewall.
+
+**Los archivos usan LF.** En Windows Git avisa que va a convertir a CRLF: es
+normal, no es un error.
+
+## Flujo de git
+
+Rama `main`. Vercel deploya solo en cada push.
+
+Commits descriptivos que expliquen **la decisión**, no sólo el cambio. Cuando un
+commit corrige algo que se rompió, decir qué se rompió y por qué.
