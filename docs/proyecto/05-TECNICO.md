@@ -70,7 +70,23 @@ NEXT_PUBLIC_PINTEREST_VERIFY=     # código de reclamo de dominio
 email se descarta. Es el bloqueante para lanzar con medición.
 
 `metadataBase` resuelve dominio propio → dominio estable de Vercel → URL del
-deploy → localhost. Los del medio los setea Vercel solo.
+deploy → localhost (`src/engine/sitio.ts`). Los del medio los setea Vercel solo.
+
+El valor se **normaliza**: se le agrega `https://` si falta y se le saca la barra
+final. Sin eso, pegar `clubdepiel.com.ar` hace que `new URL()` tire y el build
+falle con un error que no explica nada, y pegar `https://clubdepiel.com.ar/`
+genera og:image con doble barra. Los dos son errores de copiar y pegar en el
+panel de Vercel.
+
+Cada build imprime a qué resolvió:
+
+```
+[metadata] base = https://clubdepiel.com.ar
+[metadata] pinterest = presente
+```
+
+Es la única forma de verlo sin abrir la HTML publicada. Sale repetido una vez
+por worker de Next, que está bien.
 
 ## Convenciones de código
 
