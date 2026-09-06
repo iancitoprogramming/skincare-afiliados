@@ -10,8 +10,13 @@ import { resolve } from "node:path";
 import { clasificar, ETIQUETA } from "../src/lib/links";
 
 const MD = resolve(process.cwd(), "docs/links-pendientes.md");
+// Los tres archivos donde puede vivir un `link_afiliado`. El de organize es el
+// que trae lo importado del vault, y es justo donde están los que faltan cargar:
+// olvidarlo hacía que el script dijera "el ml_id no existe en el catálogo" sobre
+// productos que sí estaban, sólo que en otro archivo.
 const CATALOGOS = [
   resolve(process.cwd(), "src/niches/skincare/productos.ts"),
+  resolve(process.cwd(), "src/niches/skincare/productos.organize.ts"),
   resolve(process.cwd(), "src/niches/skincare/kits.ts"),
 ];
 

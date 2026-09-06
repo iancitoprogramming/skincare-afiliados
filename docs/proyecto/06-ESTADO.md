@@ -9,8 +9,8 @@ _Corte: 2026-09-06_
 | Producción | `skincare-afiliados.vercel.app` |
 | Páginas estáticas | 69 |
 | Productos en catálogo | 72 · 25 activos + 2 kits de compra única |
-| Links que monetizan | 28 de 28 activos · 46 pendientes |
-| Tests | 6 en verde |
+| Links que monetizan | 28 activos + 22 cargados · 23 pendientes |
+| Tests | 56 en verde |
 | Tiers servibles | 1 y 2 (son los dos que existen) |
 
 ## Bloqueantes para salir a vender

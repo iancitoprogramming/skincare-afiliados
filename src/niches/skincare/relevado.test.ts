@@ -33,3 +33,22 @@ describe("relevado", () => {
     expect(malos.map((x) => `${x.nombre}: ${x.relevado}`)).toEqual([]);
   });
 });
+
+// El ml_id es la clave con la que se cruzan los catálogos, se aplican los links
+// y se deduplica contra el vault. Repetido, el mismo producto aparece dos veces
+// en la grilla y un link de afiliado puede terminar en la copia inactiva.
+//
+// Ya pasó: Eucerin Sun Oil Control entró curado y otra vez importado del vault.
+describe("ml_id", () => {
+  it("no hay ninguno repetido en el catálogo", () => {
+    const vistos = new Map<string, string[]>();
+    for (const p of productos) {
+      const id = p.ml_id ?? "";
+      vistos.set(id, [...(vistos.get(id) ?? []), p.nombre]);
+    }
+    const repetidos = [...vistos.entries()]
+      .filter(([, ns]) => ns.length > 1)
+      .map(([id, ns]) => `${id}: ${ns.join(" | ")}`);
+    expect(repetidos).toEqual([]);
+  });
+});

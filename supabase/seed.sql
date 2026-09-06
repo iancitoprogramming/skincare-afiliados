@@ -1,4 +1,4 @@
--- Seed de 26 productos de ejemplo. Generado por scripts/gen-seed.ts.
+-- Seed de 71 productos de ejemplo. Generado por scripts/gen-seed.ts.
 -- No editar a mano: cambiá src/niches/skincare/productos.ts y corré npm run gen-seed.
 
 insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
@@ -54,7 +54,7 @@ values ('fb6c8719-ae28-51c3-a2b7-185729019a95', 'Advanced Snail All In One Cream
 on conflict (id) do nothing;
 
 insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
-values ('3043ace8-c198-5554-a4ef-4b3e0248ff31', 'Crema Hidratante de Dia FPS 30 50 g', 'Dermaglos', 'hidratante', 7, 'am', array['mixta', 'normal', 'seca'], array['deshidratacion'], 'nacional', false, 1, 32661, 'https://http2.mlstatic.com/D_Q_NP_2X_695563-MLU72756171168_112023-V.webp', 'https://meli.la/2kbgQEt', 'https://www.mercadolibre.com.ar/p/MLA24692733', 'MLA24692733', 'Hidratante con FPS 30 incorporado. Resuelve dos pasos si vas corriendo.', 'A la mañana. Si vas a estar al sol, sumale un protector aparte.', '2026-09-05', 4, false, true)
+values ('3043ace8-c198-5554-a4ef-4b3e0248ff31', 'Crema Hidratante de Dia FPS 30 50 g', 'Dermaglos', 'protector_solar', 4, 'am', array['mixta', 'normal', 'seca'], array['deshidratacion', 'manchas'], 'nacional', false, 1, 32661, 'https://http2.mlstatic.com/D_Q_NP_2X_695563-MLU72756171168_112023-V.webp', 'https://meli.la/2kbgQEt', 'https://www.mercadolibre.com.ar/p/MLA24692733', 'MLA24692733', 'Hidrata y protege en un solo paso. La opción para el que no va a hacer dos.', 'A la mañana, como último paso. Es FPS 30: alcanza para el día a día, pero si vas a estar horas al sol conviene uno de 50.', '2026-09-05', 2, false, true)
 on conflict (id) do nothing;
 
 insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
@@ -86,7 +86,7 @@ values ('5540f526-7bbb-587e-9340-4c367d3fecb5', 'Protector Solar Facial Control 
 on conflict (id) do nothing;
 
 insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
-values ('eca1e945-2ceb-5a4b-8d53-5afe77870730', 'Serum Anti Manchas Vitamina C 30 ml', 'Garnier', 'serum_activo', 4, 'am', array['grasa', 'mixta', 'normal', 'seca'], array['manchas', 'textura'], 'europeo', false, 1, 24693, 'https://http2.mlstatic.com/D_Q_NP_2X_984767-MLA114537078502_082026-V.webp', 'https://meli.la/2cvShSS', 'https://www.mercadolibre.com.ar/p/MLA18957818', 'MLA18957818', 'Vitamina C accesible para trabajar sobre manchas y marcas.', 'A la mañana, antes del protector. Empezá día por medio.', '2026-09-05', 4, false, true)
+values ('eca1e945-2ceb-5a4b-8d53-5afe77870730', 'Serum Anti Manchas Vitamina C 30 ml', 'Garnier', 'serum_activo', 2, 'ambos', array['grasa', 'mixta', 'normal', 'seca'], array['manchas', 'textura'], 'europeo', false, 1, 24693, 'https://http2.mlstatic.com/D_Q_NP_2X_984767-MLA114537078502_082026-V.webp', 'https://meli.la/2cvShSS', 'https://www.mercadolibre.com.ar/p/MLA18957818', 'MLA18957818', 'Vitamina C accesible para trabajar sobre manchas y marcas.', 'Después de limpiar y antes de la crema. Rinde más a la mañana, bajo el protector. Empezá día por medio.', '2026-09-05', 4, false, true)
 on conflict (id) do nothing;
 
 insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
@@ -103,4 +103,184 @@ on conflict (id) do nothing;
 
 insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
 values ('ed3e0a91-2640-59fc-80d5-5008a15d65a5', 'Tónico Exfoliante de Ácido Glicólico 7 por ciento 100 ml', 'The Ordinary', 'exfoliante', 9, 'pm', array['grasa', 'mixta', 'normal'], array['textura', 'manchas'], 'europeo', false, 3, 57170, 'https://http2.mlstatic.com/D_Q_NP_2X_641467-MLU74154671501_012024-V.webp', 'https://meli.la/16akSDT', 'https://www.mercadolibre.com.ar/p/MLA29493655', 'MLA29493655', 'Ácido glicólico al 7 por ciento: empareja la textura y ayuda a que las marcas se aclaren.', 'De noche, sobre la piel seca, 2 o 3 veces por semana. Nunca el mismo día que otro ácido.', '2026-09-05', 4, true, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('d47c5c7f-88f8-5547-8ee2-440abda55985', 'Avene Hydrance Spf30 Crema Facial Hidratante Piel Sensible', 'Avène', 'hidratante', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca', 'sensible'], array[], 'europeo', true, 3, null, null, '', 'https://www.mercadolibre.com.ar/p/MLA67629151', 'MLA67629151', null, null, '2026-09-06', 4, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('6fe42157-e35e-5446-a929-217b76a0eb49', 'Avene Tolerance Control Crema Apaisante Restauradora X 40 Tipo de piel Sensible', 'Avène', 'hidratante', 0, 'ambos', array['mixta', 'normal', 'seca', 'sensible'], array['deshidratacion'], 'europeo', true, 3, null, null, '', 'https://www.mercadolibre.com.ar/p/MLA23143346', 'MLA23143346', null, null, '2026-09-06', 5, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('0dd6a780-c079-5225-a8ba-abf771937d09', 'Crema Facial Isdin Ureadin Fusion Melting Cream 50ml - Piel Normal', 'ISDIN', 'hidratante', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca'], array['textura', 'deshidratacion', 'manchas'], 'europeo', false, 2, null, null, '', 'https://www.mercadolibre.com.ar/p/MLA21174873', 'MLA21174873', null, null, '2026-09-06', 4, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('786825f8-fa3a-5ae3-9a12-3514acff04d9', 'Crema Gel Hidratante Anti-imperfecciones Garnier 50ml', 'Garnier', 'hidratante', 0, 'ambos', array['grasa', 'mixta', 'normal'], array['manchas', 'deshidratacion', 'acne', 'textura'], 'europeo', false, 1, null, null, 'https://meli.la/2tBuQVW', 'https://www.mercadolibre.com.ar/p/MLA35115621', 'MLA35115621', null, null, '2026-09-06', 4, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('808e43ee-9a93-5cf2-ae71-8210102219b0', 'Crema Hidratante Eucerin Aquaporin Active para piel mixta-normal de 50mL', 'Eucerin', 'hidratante', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca'], array['deshidratacion'], 'europeo', false, 2, null, null, 'https://meli.la/1BRdsTo', 'https://www.mercadolibre.com.ar/p/MLA9210936', 'MLA9210936', null, null, '2026-09-06', 4, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('e8a48fe9-e89b-5f22-ae91-e6aba34acf8a', 'Crema Hidratante facial Neutrogena Hydro Boost water gel 50 GR - Todo tipo de Piel', 'Neutrogena', 'hidratante', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca'], array['deshidratacion'], 'europeo', false, 1, null, null, '', 'https://www.mercadolibre.com.ar/p/MLA19899495', 'MLA19899495', null, null, '2026-09-06', 3, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('d0d3332a-fc59-5b58-96c8-77f6fb8eabde', 'Eucerin Hyaluron - Filler Día Piel Normal a Mixta Fps15 X 50m', 'Eucerin', 'hidratante', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca'], array['manchas', 'deshidratacion'], 'europeo', false, 3, null, null, 'https://meli.la/22Mh3Rb', 'https://www.mercadolibre.com.ar/p/MLA9855881', 'MLA9855881', null, null, '2026-09-06', 3, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('9e56836d-95e8-5f74-b707-65927d4d01c0', 'Gel Crema Hidratante Facial Piel Sensible Seca - Mixta Aveno 50g', 'Aveno', 'hidratante', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca', 'sensible'], array['deshidratacion'], 'nacional', true, 1, null, null, 'https://meli.la/31jBrGU', 'https://www.mercadolibre.com.ar/p/MLA22990183', 'MLA22990183', null, null, '2026-09-06', 4, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('353d07b5-d81e-5866-8a98-4e8801e5fd0a', 'La Roche-Posay Effaclar Mat 40 mL', 'La Roche-Posay', 'hidratante', 0, 'ambos', array['grasa', 'mixta', 'normal'], array['acne', 'textura'], 'europeo', false, 2, null, null, 'https://meli.la/1ZuPt7D', 'https://www.mercadolibre.com.ar/p/MLA9196384', 'MLA9196384', null, null, '2026-09-06', 4, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('3b6b8c59-405a-5357-b92f-37f1e9ee58bc', 'Agua Micelar Anti-imperfecciones Con Ácido Salicílico Garnier 400ml', 'Garnier', 'limpiador', 0, 'ambos', array['grasa', 'mixta', 'normal'], array['acne', 'textura', 'manchas'], 'europeo', false, 1, null, null, 'https://meli.la/2FJaxYb', 'https://www.mercadolibre.com.ar/p/MLA24300545', 'MLA24300545', null, null, '2026-09-06', 3, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('8fe63985-3796-5e78-9de6-de0a82281a49', 'Agua Micelar Todo en 1 Garnier 400ml', 'Garnier', 'limpiador', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca', 'sensible'], array[], 'europeo', true, 1, null, null, '', 'https://www.mercadolibre.com.ar/p/MLA20546060', 'MLA20546060', null, null, '2026-09-06', 3, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('52747e64-8f8a-5be8-b935-6ef7e5ad517b', 'Cerave Gel Limpiador Espumoso', 'CeraVe', 'limpiador', 0, 'ambos', array['grasa', 'mixta', 'normal', 'sensible'], array['deshidratacion', 'manchas'], 'europeo', true, 2, null, null, '', 'https://www.mercadolibre.com.ar/up/MLAU141343879', 'MLAU141343879', null, null, '2026-09-06', 4, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('2de5e9f9-c212-5e1d-9828-d90c7aff3de9', 'Eucerin Dermopure Oil Control Gel Limpiador Facial 400ml', 'Eucerin', 'limpiador', 0, 'ambos', array['grasa', 'mixta', 'normal'], array['acne', 'textura'], 'europeo', false, 2, null, null, '', 'https://www.mercadolibre.com.ar/p/MLA37349507', 'MLA37349507', null, null, '2026-09-06', 4, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('069e085b-93f0-5e5e-a907-a409f3e4f8d9', 'Gel Limpiador Crema Hidratante Anti Imperfecciones Garnier 250ml', 'Garnier', 'limpiador', 0, 'ambos', array['grasa', 'mixta', 'normal'], array['manchas', 'deshidratacion', 'acne', 'textura'], 'europeo', false, 1, null, null, '', 'https://www.mercadolibre.com.ar/p/MLA47671534', 'MLA47671534', null, null, '2026-09-06', 3, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('7787bab2-6a2e-5aae-be68-d587cba8588e', 'Gel limpiador hidratante Neutrogena Hydro Boost, 150 ml, para todo tipo de piel', 'Neutrogena', 'limpiador', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca', 'sensible'], array['deshidratacion'], 'europeo', true, 1, null, null, '', 'https://www.mercadolibre.com.ar/p/MLA53897352', 'MLA53897352', null, null, '2026-09-06', 3, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('85bb5010-01e6-51c2-a42b-ff7b6309d590', 'La Roche-posay Lipikar Syndet Ap+ 200 Ml', 'La Roche-Posay', 'limpiador', 0, 'ambos', array['mixta', 'normal', 'seca', 'sensible'], array['manchas', 'deshidratacion'], 'europeo', true, 2, null, null, '', 'https://www.mercadolibre.com.ar/p/MLA16135276', 'MLA16135276', null, null, '2026-09-06', 5, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('677a05dc-1afc-5840-8b42-4a09c03ee1cd', 'Limpiador en Gel Beauty Of Joseon Ciruela Verde 100ml Piel Grasa', 'Beauty of Joseon', 'limpiador', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca', 'sensible'], array[], 'coreano', true, 2, null, null, '', 'https://www.mercadolibre.com.ar/p/MLA35427636', 'MLA35427636', null, null, '2026-09-06', 4, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('4be59db9-22f1-56c6-9ffe-21301474f42c', 'Limpiador Facial y Corporal Restaurador de la Piel Cetaphil Pro Ad Restoraderm para Pieles Atópicas', 'Cetaphil', 'limpiador', 0, 'ambos', array['mixta', 'normal', 'seca', 'sensible'], array['manchas', 'deshidratacion'], 'europeo', true, 3, null, null, '', 'https://www.mercadolibre.com.ar/p/MLA20030752', 'MLA20030752', null, null, '2026-09-06', 5, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('8293ef2d-878f-5dc7-85df-5254c10d8812', 'Limpiador Hidratante Cerave Piel Normal A Seca X 236ml', 'CeraVe', 'limpiador', 0, 'ambos', array['mixta', 'normal', 'seca', 'sensible'], array['deshidratacion'], 'europeo', true, 2, null, null, 'https://meli.la/1HXhaNM', 'https://www.mercadolibre.com.ar/p/MLA37598876', 'MLA37598876', null, null, '2026-09-06', 5, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('0cd46bf5-012f-5327-a946-2f0f6fdce296', 'Eucerin Sun Oil Control Protector Solar Facial Tono medio FPS 50 x 50 ml', 'Eucerin', 'protector_solar', 0, 'am', array['grasa', 'mixta', 'normal'], array['manchas', 'deshidratacion'], 'europeo', false, 2, null, null, '', 'https://www.mercadolibre.com.ar/p/MLA19504960', 'MLA19504960', null, null, '2026-09-06', 4, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('093dc761-466b-5ac6-a91d-00f5fe2a9e32', 'Protector Solar Anthelios Oil Control Fps50+ 50 Ml', 'La Roche-Posay', 'protector_solar', 0, 'am', array['grasa', 'mixta', 'normal'], array['manchas'], 'europeo', false, 3, null, null, 'https://meli.la/1ZFq8kv', 'https://www.mercadolibre.com.ar/up/MLAU3133622625', 'MLAU3133622625', null, null, '2026-09-06', 5, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('8fc7d68c-575a-5d51-b26a-a8d4f6910871', 'Protector Solar Color Efecto Mate Anthelios Fps 50+ La Roche', 'La Roche-Posay', 'protector_solar', 0, 'am', array['grasa', 'mixta', 'normal'], array['manchas', 'acne'], 'europeo', false, 3, null, null, '', 'https://www.mercadolibre.com.ar/p/MLA16048424', 'MLA16048424', null, null, '2026-09-06', 4, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('5d60fad9-e033-5346-8f50-790dc29d6f3a', 'Protector solar La Roche-Posay Anthelios UVMUNE 400 50FPS en crema 50mL con COLOR', 'La Roche-Posay', 'protector_solar', 0, 'am', array['grasa', 'mixta', 'normal', 'seca'], array['manchas'], 'europeo', false, 3, null, null, 'https://meli.la/1SbSS1d', 'https://www.mercadolibre.com.ar/p/MLA58897902', 'MLA58897902', null, null, '2026-09-06', 5, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('a4929a81-b3b1-5990-93dd-26929da26278', 'Sérum Protector Solar Anti Imperfecciones Fps50+ Garnie', null, 'protector_solar', 0, 'am', array['grasa', 'mixta', 'normal'], array['manchas', 'deshidratacion', 'acne', 'textura'], 'europeo', false, 2, null, null, '', 'https://www.mercadolibre.com.ar/p/MLA63460365', 'MLA63460365', null, null, '2026-09-06', 4, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('463f3803-17e2-566e-8226-254fe7546889', 'Crema Retinol Boost Anti-arrugas Neutrogena 30ml Todo Tipo De Piel Día-noche', 'Neutrogena', 'retinoide', 0, 'pm', array['grasa', 'mixta', 'normal', 'seca'], array['textura', 'deshidratacion'], 'europeo', false, 2, null, null, 'https://meli.la/2cPjGb7', 'https://www.mercadolibre.com.ar/p/MLA58622882', 'MLA58622882', null, null, '2026-09-06', 4, true, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('07628bc3-918c-5cca-a643-60ef9be1a864', 'Eximia Hyalu-r Concentre Serum Antiedad X 15 Ml', 'Eximia', 'retinoide', 0, 'pm', array['grasa', 'mixta', 'normal', 'seca'], array['textura', 'manchas', 'deshidratacion'], 'nacional', false, 2, null, null, '', 'https://www.mercadolibre.com.ar/p/MLA20021768', 'MLA20021768', null, null, '2026-09-06', 3, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('24fe4638-63d5-5fd1-8e2d-07c15ffabda3', 'La Roche Posay Retinol B3 Sérum Regenerador X 30 Ml Todo Tipo De Piel, Incluso Sensible.', 'La Roche-Posay', 'retinoide', 0, 'pm', array['grasa', 'mixta', 'normal', 'seca'], array['textura', 'manchas', 'deshidratacion'], 'europeo', false, 3, null, null, '', 'https://www.mercadolibre.com.ar/up/MLAU244146565', 'MLAU244146565', null, null, '2026-09-06', 5, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('826faa38-3298-5428-927d-639265ebb5e6', 'Dermaglós Serum Facial Niacinamida X 30 Ml Todo Tipo De Piel Día-noche', 'Dermaglós', 'serum_activo', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca'], array['manchas', 'deshidratacion', 'acne'], 'nacional', false, 1, null, null, 'https://meli.la/1QPrueC', 'https://www.mercadolibre.com.ar/up/MLAU209241342', 'MLAU209241342', null, null, '2026-09-06', 3, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('31342eb5-4fb3-5bb8-949f-68065a203409', 'Detenage N 10% Niacinamida Serum Facial Antiedad 30ml', 'Detenage', 'serum_activo', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca', 'sensible'], array['manchas', 'deshidratacion'], 'nacional', true, 2, null, null, '', 'https://www.mercadolibre.com.ar/up/MLAU1655818860', 'MLAU1655818860', null, null, '2026-09-06', 4, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('4bc1f9e9-cd68-5e76-9a87-6187919f6287', 'Eximia Hyalu-n Concentre X 15 Ml Tipo de piel Todo tipo de piel', 'Eximia', 'serum_activo', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca'], array['manchas', 'deshidratacion', 'textura'], 'nacional', false, 2, null, null, 'https://meli.la/2Z3JW7S', 'https://www.mercadolibre.com.ar/p/MLA29882074', 'MLA29882074', null, null, '2026-09-06', 3, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('f9972d79-114b-5a31-b8e5-3b4b3ab140a6', 'La Roche Posay Pure Vitamin C12 Serum', 'La Roche-Posay', 'serum_activo', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca'], array['manchas', 'acne', 'textura', 'deshidratacion'], 'europeo', false, 3, null, null, 'https://meli.la/1ZrSnwH', 'https://www.mercadolibre.com.ar/p/MLA47223033', 'MLA47223033', null, null, '2026-09-06', 4, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('f97e6ed9-4133-50a5-b4fe-4f5780557aab', 'Liftactiv Supreme Vitamina C Serum 20ml Vichy', 'Vichy', 'serum_activo', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca'], array['manchas', 'deshidratacion'], 'europeo', false, 3, null, null, 'https://meli.la/2RZ82c3', 'https://www.mercadolibre.com.ar/p/MLA19710676', 'MLA19710676', null, null, '2026-09-06', 4, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('e7bb0026-7146-514d-8ac0-056f82a5f465', 'Sérum Anti-imperfecciones con Ácido Salicílico de Garnier 30ml', 'Garnier', 'serum_activo', 0, 'ambos', array['grasa', 'mixta', 'normal'], array['manchas', 'deshidratacion', 'acne', 'textura'], 'europeo', false, 1, null, null, 'https://meli.la/1DCQJzi', 'https://www.mercadolibre.com.ar/p/MLA22843182', 'MLA22843182', null, null, '2026-09-06', 4, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('72651e35-bd63-5f51-880b-30cbc19cb5c4', 'Sérum Brightening Kosmos Vitamina C Pura', 'Kosmos', 'serum_activo', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca'], array['manchas', 'deshidratacion'], 'nacional', false, 2, null, null, 'https://meli.la/1Cxs4p7', 'https://www.mercadolibre.com.ar/p/MLA45672941', 'MLA45672941', null, null, '2026-09-06', 5, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('bd3180fa-aaaf-5bf7-a6ac-dd0e6cfd92da', 'Sérum La Roche-Posay Mela B3 Antimanchas con Niacinamida 30ml', 'La Roche-Posay', 'serum_activo', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca'], array['manchas', 'deshidratacion', 'textura', 'acne'], 'europeo', false, 3, null, null, '', 'https://www.mercadolibre.com.ar/p/MLA34459961', 'MLA34459961', null, null, '2026-09-06', 5, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('ecd8932e-d99a-5c53-ad94-edcbeba21fb4', 'Sérum La Roche-Posay Mela B3 Antimanchas con Niacinamida 30ml Opcion 2', 'La Roche-Posay', 'serum_activo', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca'], array['manchas', 'deshidratacion', 'textura', 'acne'], 'europeo', false, 3, null, null, 'https://meli.la/1FxfS3a', 'https://www.mercadolibre.com.ar/p/MLA26197969', 'MLA26197969', null, null, '2026-09-06', 4, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('f0b2811c-90dc-544d-b3db-3d7711faf69f', 'Skinceuticals C E Ferulic Sérum De Ácido Ferúlico 30ml Todo Tipo De Piel Día-noche', 'SkinCeuticals', 'serum_activo', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca'], array['manchas', 'deshidratacion'], 'europeo', false, 3, null, null, '', 'https://www.mercadolibre.com.ar/p/MLA24840827', 'MLA24840827', null, null, '2026-09-06', 5, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('04b77f59-3bf6-5b04-9a5e-e7662616f848', 'Celimax The Real Noni Energy Ampoule Serum', 'Celimax', 'serum_secundario', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca'], array['deshidratacion'], 'coreano', false, 2, null, null, 'https://meli.la/1wqWqrz', 'https://www.mercadolibre.com.ar/p/MLA45338822', 'MLA45338822', null, null, '2026-09-06', 4, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('dd122b0b-ead4-5bef-a516-ce238f45ae57', 'Eximia Hyalu B Concentré Serum Antiedad X 30ml', 'Eximia', 'serum_secundario', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca'], array['deshidratacion', 'manchas', 'acne'], 'nacional', false, 2, null, null, '', 'https://www.mercadolibre.com.ar/p/MLA45991792', 'MLA45991792', null, null, '2026-09-06', 3, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('bad3b1e1-4cdb-55e8-87b8-3b8d81c16579', 'La Roche Posay Hyalu B5 Serum 30 ml', 'La Roche-Posay', 'serum_secundario', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca'], array['deshidratacion'], 'europeo', false, 3, null, null, '', 'https://www.mercadolibre.com.ar/p/MLA12754368', 'MLA12754368', null, null, '2026-09-06', 4, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('5603d4f7-3e32-586b-8655-8e6acffe2468', 'Sérum Ácido Hialurónico Vichy Minéral 89 Booster Hidratante Gel 50ml', 'Vichy', 'serum_secundario', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca', 'sensible'], array['deshidratacion'], 'europeo', true, 2, null, null, '', 'https://www.mercadolibre.com.ar/p/MLA18964459', 'MLA18964459', null, null, '2026-09-06', 4, true, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('914fa2b9-679c-50cb-a01e-e7713bfcbba3', 'Serum Hidratante Concentrado Neutrogena® Hydro Boost 30 Ml', 'Neutrogena', 'serum_secundario', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca'], array['deshidratacion'], 'europeo', false, 1, null, null, 'https://meli.la/1UvkbhZ', 'https://www.mercadolibre.com.ar/p/MLA22655637', 'MLA22655637', null, null, '2026-09-06', 3, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('ace75d88-f5d6-5ec8-9ec2-02fe2525dc3b', 'Sérum Rostro Revitalift Ácido Hialurónico L''Oréal Paris 30ml', null, 'serum_secundario', 0, 'ambos', array['grasa', 'mixta', 'normal', 'seca', 'sensible'], array['deshidratacion', 'manchas'], 'europeo', true, 1, null, null, 'https://meli.la/11cMuNn', 'https://www.mercadolibre.com.ar/p/MLA18956615', 'MLA18956615', null, null, '2026-09-06', 3, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('2fc14288-5884-5849-ba10-f35d48b14a74', 'Skin1004 Ampolla Serum Anti-acné Tea-trica Relief', 'Skin1004', 'serum_secundario', 0, 'ambos', array['grasa', 'mixta', 'normal'], array['deshidratacion', 'acne'], 'coreano', false, 2, null, null, '', 'https://www.mercadolibre.com.ar/p/MLA38719413', 'MLA38719413', null, null, '2026-09-06', 4, false, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('c88d5ad8-e7da-51ac-96c9-0f015dddfed2', 'Skin1004 Poremizing Fresh Ampoule', 'Skin1004', 'serum_secundario', 0, 'ambos', array['grasa', 'mixta', 'normal', 'sensible'], array['deshidratacion'], 'coreano', true, 2, null, null, 'https://meli.la/31D3Hmf', 'https://www.mercadolibre.com.ar/p/MLA43183566', 'MLA43183566', null, null, '2026-09-06', 3, false, false)
 on conflict (id) do nothing;
