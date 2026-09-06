@@ -1238,6 +1238,9 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // La Roche-Posay Hyalu B5 — hialurónico + pantenol + madecasósido. Con alcohol
   // denat y fragancia, que es lo que lo saca de una rutina de piel reactiva.
   MLA12754368: ["hialuronico", "panthenol", "madecassosido", "adenosina", "tocoferol", "alcohol_denat", "fragancia"],
+  // LRP Hyalu B5 Suractivated [INCI] — reemplazó al anterior. Verificado: misma
+  // lista, incluidos alcohol denat y fragancia.
+  MLA59802317: ["hialuronico", "panthenol", "madecassosido", "adenosina", "tocoferol", "alcohol_denat", "fragancia"],
   // Neutrogena Hydro Boost sérum — hialurónico y pantenol, nada más.
   MLA22655637: ["hialuronico", "panthenol", "fragancia"],
   // L'Oréal Revitalift Ácido Hialurónico — suma ascorbil glucósido y péptido.
@@ -1267,6 +1270,9 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   MLA35115621: ["niacinamida", "bha_salicilico", "vit_c_derivado", "alcohol_denat", "fragancia"],
   // Neutrogena Hydro Boost water gel — hialurónico y siliconas. Sin activos.
   MLA19899495: ["hialuronico", "fragancia"],
+  // La recarga del mismo gel: misma fórmula, otro envase. Se mapea igual porque
+  // el motor razona sobre lo que trae adentro, no sobre el packaging.
+  MLA28531465: ["hialuronico", "fragancia"],
   // La Roche-Posay Effaclar Mat — LHA + salicílico + alcohol denat.
   MLA9196384: ["bha_lha", "bha_salicilico", "alcohol_denat", "fragancia"],
   // Eucerin Hyaluron-Filler Día FPS 15 — filtro insuficiente como protector.
@@ -1302,6 +1308,8 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   MLA53897352: ["hialuronico"],
   // La Roche-Posay Lipikar Syndet AP+ — niacinamida + karité, sin fragancia.
   MLA16135276: ["niacinamida", "manteca_karite"],
+  // Misma crema, otra publicación de ML. Reemplazó a la anterior en el catálogo.
+  MLAU376385300: ["niacinamida", "manteca_karite"],
   // Cetaphil Pro AD Restoraderm — niacinamida + alantoína + karité.
   MLA20030752: ["niacinamida", "alantoina", "manteca_karite", "tocoferol"],
 
@@ -1315,11 +1323,37 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   MLAU3133622625: ["filtro_quimico", "filtro_avobenzona", "filtro_uva_400", "oxidos_de_hierro", "tocoferol", "alcohol_denat"],
   // LRP Anthelios Color Efecto Mate — sin el filtro de 400 nm, con zinc PCA.
   MLA16048424: ["filtro_quimico", "filtro_avobenzona", "filtro_uva_400", "zinc_pca", "tocoferol", "alcohol_denat"],
+  // LRP Anthelios Ultra Fluido con Color [INCI] — reemplazó al anterior en el
+  // catálogo. ATENCIÓN, es el único caso del catálogo:
+  //
+  //   Trae `titanium dioxide [nano]` LISTADO ENTRE LOS FILTROS, no sólo el
+  //   `CI 77891 / titanium dioxide` que va con los óxidos de hierro como
+  //   pigmento. O sea que acá el dióxido de titanio SÍ actúa como filtro: es
+  //   una fórmula híbrida, orgánica + mineral.
+  //
+  // Cuidado con leer esto como "ya tenemos protector mineral". No lo es: sigue
+  // llevando alcohol denat y octocrileno, así que no pasa las reglas de piel
+  // sensible del vault. El hueco B1 —un mineral limpio para piel reactiva—
+  // sigue abierto. Lo que cambia es que este producto es lo más cerca que está
+  // hoy el catálogo, y para quien reacciona a un filtro orgánico puro es una
+  // opción intermedia real.
+  MLA16048263: [
+    "filtro_quimico",
+    "filtro_mineral",
+    "filtro_avobenzona",
+    "oxidos_de_hierro",
+    "agua_termal",
+    "alcohol_denat",
+  ],
   // Eucerin Sun Oil Control Tono medio — con color, y con alcohol denat.
   MLA19504960: ["filtro_quimico", "filtro_avobenzona", "oxidos_de_hierro", "licochalcona", "glicirretinico", "alcohol_denat"],
   // Garnier Super UV Anti-Imperfecciones — protector con niacinamida y
   // salicílico. Poco común y bastante buena idea para piel grasa.
   MLA63460365: ["filtro_quimico", "filtro_avobenzona", "niacinamida", "bha_salicilico", "vit_c_derivado", "zinc_pca", "aloe", "tocoferol", "alcohol_denat", "fragancia"],
+  // Garnier Super UV Fluido Invisible [INCI] — reemplazó al anterior. Verificado
+  // contra la ficha: mismo complejo declarado (niacinamida + salicílico + zinc
+  // PCA) y mismos filtros. Misma lista de activos que su antecesor.
+  MLA38098313: ["filtro_quimico", "filtro_avobenzona", "niacinamida", "bha_salicilico", "vit_c_derivado", "zinc_pca", "aloe", "tocoferol", "alcohol_denat", "fragancia"],
 };
 
 export const catalogoActivos: CatalogoActivos = {
