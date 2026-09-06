@@ -176,10 +176,20 @@ export const ACTIVOS: Record<string, Activo> = {
     familia: "retinoide",
     grupos: ["renovador", "retinoide-oxidable"],
     carga: 1,
-    soloNoche: true,
+    // NO lleva soloNoche, a diferencia del resto de los retinoides. La auditoría
+    // proyectada lo destapó: el palmitato aparece casi siempre como ingrediente
+    // menor —antioxidante de fórmula— dentro de productos que el fabricante
+    // vende para mañana y noche, como el Mela B3. Marcarlo "va de noche" hacía
+    // saltar el aviso en 96 rutinas para contradecir al fabricante sobre un
+    // ingrediente que ni siquiera es el activo del producto. Un aviso que se
+    // dispara por algo que no importa entrena a la gente a ignorar los avisos.
+    //
+    // Lo que sí importa de este ingrediente —que es un retinoide escondido y que
+    // suma si se combina con otro— lo sigue detectando la regla `pila-retinoide`.
     evidencia:
       "El retinoide más débil de la escala: necesita dos conversiones antes de hacer algo. " +
-      "Aparece mucho en etiquetas porque permite decir 'con retinol' sin el costo de irritar.",
+      "Aparece mucho en etiquetas porque permite decir 'con retinol' sin el costo de irritar, " +
+      "y a menudo en cantidades donde no es el activo sino el acompañamiento.",
   },
   tretinoina: {
     id: "tretinoina",

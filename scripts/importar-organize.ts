@@ -26,6 +26,8 @@
 import { readdirSync, statSync, readFileSync, writeFileSync } from "node:fs";
 import { join, relative, resolve, basename } from "node:path";
 import { createHash } from "node:crypto";
+import { ACTIVOS, ACTIVOS_POR_PRODUCTO } from "../src/niches/skincare/activos";
+import { CURADO } from "./overlay-organize";
 
 const NS = "6ba7b810-9dad-11d1-80b4-00c04fd430c8";
 function uuidDe(mlId: string): string {
@@ -146,6 +148,69 @@ function matchear(texto: string, tabla: [RegExp, string][]): string | null {
   return null;
 }
 
+// ── Derivación desde el INCI ────────────────────────────────────────────────
+//
+// Todo lo que se pueda deducir de la lista de ingredientes se deduce acá, y no
+// se escribe a mano. Dos motivos: es consistente entre 46 productos, y es
+// auditable — cualquiera puede seguir la regla y llegar al mismo resultado.
+
+const TODAS_LAS_PIELES = ["grasa", "mixta", "normal", "seca", "sensible"];
+
+/**
+ * Apto para piel sensible según las reglas que el propio vault publica en
+ * `SUSTITUTOS_SENSIBLE` (config.ts). Es más estricta que la etiqueta del
+ * fabricante, y a propósito: si la estructura del catálogo dice "acá va un
+ * sustituto suave", servir la versión fuerte es contradecir el criterio que
+ * Club de Piel eligió publicar.
+ */
+function aptoSensible(activos: string[]): { apto: boolean; motivos: string[] } {
+  const motivos: string[] = [];
+  for (const id of activos) {
+    const a = ACTIVOS[id];
+    if (!a) continue;
+    // El cítrico va casi siempre como ajustador de pH, no como exfoliante: no
+    // descalifica. Está documentado en INGREDIENTES.md §4.5.
+    if (id === "aha_citrico") continue;
+    if ((a.grupos ?? []).includes("irritante-potencial")) motivos.push(a.nombre);
+    else if (a.familia === "aha" || a.familia === "bha") motivos.push(`${a.nombre} (AHA/BHA)`);
+    else if (a.familia === "retinoide") motivos.push(a.nombre);
+    else if (id === "vit_c_laa") motivos.push("vitamina C pura");
+    else if (id === "filtro_quimico") motivos.push("filtro solar químico");
+  }
+  return { apto: motivos.length === 0, motivos: [...new Set(motivos)] };
+}
+
+/**
+ * Qué problema puede atacar el producto, a partir de lo que tiene adentro.
+ * Un producto sin activos queda con lista vacía: el motor igual lo puede servir
+ * por la vía de relajación, pero nunca lo va a vender como "para tu problema".
+ */
+function preocupacionesDe(activos: string[]): string[] {
+  const out = new Set<string>();
+  for (const id of activos) {
+    const a = ACTIVOS[id];
+    if (!a) continue;
+    const g = a.grupos ?? [];
+
+    // Granitos y poros: lo que entra al poro o regula sebo.
+    if (a.familia === "bha" || a.familia === "seborregulador" || a.familia === "peroxido") out.add("acne");
+    if (id === "aceite_esencial_tea_tree" || id === "azelaico" || id === "zinc_gluconato") out.add("acne");
+
+    // Manchas y marcas. El protector solar entra a propósito: es el paso que
+    // más define el resultado en pigmento, no un accesorio.
+    if (g.includes("despigmentante") || a.familia === "filtro" || id === "oxidos_de_hierro") out.add("manchas");
+
+    // Textura y opacidad: lo que acelera el recambio.
+    if (g.includes("renovador") || id === "urea") out.add("textura");
+
+    // Resequedad y tirantez.
+    if (g.includes("barrera-reparadora") || ["humectante", "calmante", "emoliente", "barrera"].includes(a.familia)) {
+      out.add("deshidratacion");
+    }
+  }
+  return [...out];
+}
+
 function marcaDe(nombre: string): string | undefined {
   const n = nombre.toLowerCase();
   for (const [buscar, marca] of MARCAS) if (n.includes(buscar.toLowerCase())) return marca;
@@ -189,11 +254,20 @@ interface Fila {
   categoria: string;
   momento: string;
   tiposPiel: string[];
+  preocupaciones: string[];
+  aptoSensible: boolean;
+  motivosSensible: string[];
+  origen: string;
+  rangoPrecio: number;
+  prioridad: number;
+  comodin: boolean;
   urlReferencia: string;
   ingredientes: string | null;
   carpeta: string;
   archivo: string;
   nota?: string;
+  /** Qué piel se sacó y por qué. Va como comentario al .ts generado. */
+  exclusiones: string[];
 }
 
 const filas: Fila[] = [];
@@ -220,10 +294,36 @@ for (const p of walk(resolve(RAIZ))) {
     continue;
   }
 
-  // Tipos de piel: la carpeta manda si es de las orientadas; si no, se deja
-  // vacío para que lo complete una persona. Un producto sin tipos de piel no
-  // se puede recomendar, y eso es mejor que recomendarlo a la piel equivocada.
-  const tiposPiel = PIEL_POR_CARPETA.find(([re]) => re.test(carpeta))?.[1] ?? [];
+  const cur = CURADO[mlId];
+  if (!cur) {
+    problemas.push(`sin entrada en overlay-organize.ts: ${rel}`);
+    continue;
+  }
+
+  const activos = ACTIVOS_POR_PRODUCTO[mlId] ?? [];
+  const { apto, motivos } = aptoSensible(activos);
+
+  // Tipos de piel: se arranca con las CINCO y se resta con motivo. La carpeta
+  // ("ORIENTADOS A PIEL GRASA") dice para quién rinde mejor, no a quién se le
+  // puede ofrecer — alguien de piel normal puede usar casi cualquier cosa de
+  // acá, y lo que decide es su objetivo, no su tipo de piel.
+  const exclusiones: string[] = [];
+  let tiposPiel = [...TODAS_LAS_PIELES];
+
+  if (!apto) {
+    tiposPiel = tiposPiel.filter((p) => p !== "sensible");
+    exclusiones.push(`sensible: ${motivos.join(", ")}`);
+  }
+  if (cur.textura === "rica") {
+    tiposPiel = tiposPiel.filter((p) => p !== "grasa");
+    exclusiones.push("grasa: textura rica");
+  }
+  for (const ex of cur.excluir ?? []) {
+    tiposPiel = tiposPiel.filter((p) => p !== ex.piel);
+    exclusiones.push(`${ex.piel}: ${ex.motivo}`);
+  }
+
+  const preocupaciones = [...new Set([...preocupacionesDe(activos), ...(cur.sumar ?? [])])];
 
   const ing = ingredientesDe(texto);
   if (!ing) problemas.push(`sin lista de ingredientes: ${rel}`);
@@ -236,11 +336,19 @@ for (const p of walk(resolve(RAIZ))) {
     categoria,
     momento: MOMENTO[categoria] ?? "ambos",
     tiposPiel,
+    preocupaciones,
+    aptoSensible: apto,
+    motivosSensible: motivos,
+    origen: cur.origen,
+    rangoPrecio: cur.rangoPrecio,
+    prioridad: cur.prioridad,
+    comodin: cur.comodin ?? false,
     urlReferencia: `https://www.mercadolibre.com.ar/${urlKind}/${mlId}`,
     ingredientes: ing,
     carpeta,
     archivo: rel,
-    nota: ov?.nota,
+    nota: [ov?.nota, cur.nota].filter(Boolean).join(" · ") || undefined,
+    exclusiones,
   });
 }
 
@@ -264,23 +372,25 @@ const lineas: string[] = [
 
 for (const f of filas) {
   lineas.push(`  {`);
-  lineas.push(`    // ${f.carpeta}${f.nota ? ` · ${f.nota}` : ""}`);
+  lineas.push(`    // ${f.carpeta}`);
+  if (f.nota) lineas.push(`    // ${f.nota}`);
+  for (const e of f.exclusiones) lineas.push(`    // no va a → ${e}`);
   lineas.push(`    id: ${JSON.stringify(uuidDe(f.mlId))},`);
   lineas.push(`    ml_id: ${JSON.stringify(f.mlId)},`);
   lineas.push(`    nombre: ${JSON.stringify(f.nombre)},`);
   if (f.marca) lineas.push(`    marca: ${JSON.stringify(f.marca)},`);
   lineas.push(`    categoria: ${JSON.stringify(f.categoria)},`);
-  lineas.push(`    paso: 0, // TODO`);
+  lineas.push(`    paso: 0,`);
   lineas.push(`    momento: ${JSON.stringify(f.momento)},`);
-  lineas.push(`    tipos_piel: ${JSON.stringify(f.tiposPiel)}, ${f.tiposPiel.length ? "" : "// TODO: el vault no lo declara"}`);
-  lineas.push(`    preocupaciones: [], // TODO`);
-  lineas.push(`    origen: "europeo", // TODO: verificar`);
-  lineas.push(`    apto_sensible: false, // TODO: decidir contra la lista de ingredientes`);
-  lineas.push(`    rango_precio: 2, // TODO`);
+  lineas.push(`    tipos_piel: ${JSON.stringify(f.tiposPiel)},`);
+  lineas.push(`    preocupaciones: ${JSON.stringify(f.preocupaciones)},`);
+  lineas.push(`    origen: ${JSON.stringify(f.origen)},`);
+  lineas.push(`    apto_sensible: ${f.aptoSensible},`);
+  lineas.push(`    rango_precio: ${f.rangoPrecio}, // provisional, por marca`);
   lineas.push(`    link_afiliado: "", // TODO: sin esto el producto NO monetiza`);
   lineas.push(`    url_referencia: ${JSON.stringify(f.urlReferencia)},`);
-  lineas.push(`    prioridad: 3,`);
-  lineas.push(`    comodin: false,`);
+  lineas.push(`    prioridad: ${f.prioridad},`);
+  lineas.push(`    comodin: ${f.comodin},`);
   lineas.push(`    activo: false,`);
   lineas.push(`  },`);
 }
@@ -301,7 +411,19 @@ console.log(`Productos importados: ${filas.length}`);
 const porCat = new Map<string, number>();
 for (const f of filas) porCat.set(f.categoria, (porCat.get(f.categoria) ?? 0) + 1);
 for (const [c, n] of [...porCat].sort((a, b) => b[1] - a[1])) console.log(`  ${String(n).padStart(3)}  ${c}`);
-console.log(`\nSin tipos de piel declarados: ${filas.filter((f) => !f.tiposPiel.length).length}`);
+console.log(`\nAptos para piel sensible: ${filas.filter((f) => f.aptoSensible).length} / ${filas.length}`);
+console.log("Cobertura por tipo de piel:");
+for (const piel of TODAS_LAS_PIELES) {
+  const n = filas.filter((f) => f.tiposPiel.includes(piel)).length;
+  const barra = "█".repeat(Math.round((n / filas.length) * 30));
+  console.log(`  ${piel.padEnd(10)} ${String(n).padStart(3)}/${filas.length}  ${barra}`);
+}
+console.log("Cobertura por preocupación:");
+for (const c of ["acne", "manchas", "textura", "deshidratacion"]) {
+  const n = filas.filter((f) => f.preocupaciones.includes(c)).length;
+  console.log(`  ${c.padEnd(15)} ${String(n).padStart(3)}/${filas.length}`);
+}
+console.log(`Sin preocupación derivable: ${filas.filter((f) => !f.preocupaciones.length).length}`);
 console.log(`Sin lista de ingredientes: ${filas.filter((f) => !f.ingredientes).length}`);
 if (problemas.length) {
   console.log(`\nPROBLEMAS (${problemas.length}):`);
