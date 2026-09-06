@@ -29,6 +29,11 @@ Los links salen de dos cuentas de afiliado distintas:
 | `goldenvalhalla` | **Ian** | — | Mix europeo y nacional |
 | `maurobilat` | **Alex** | **Club de Piel** | Mayoría coreana |
 
+> **Esto tiene que cambiar.** Soporte del Programa indicó que un mismo proyecto
+> debe operar con una sola cuenta afiliada para todos los links: cada afiliado
+> cobra únicamente por los canales declarados en su propia cuenta. Cuál de las
+> dos queda está pendiente entre Ian y Alex. Ver `07-AFILIADOS.md`.
+
 De quién es cada cuenta estaba sólo en la cabeza de los dos, y eso ya se dio
 vuelta una vez: se afirmó que `maurobilat` era la de Ian y se le dijo que había
 mandado dos links mal etiquetados cuando en realidad los había mandado bien.

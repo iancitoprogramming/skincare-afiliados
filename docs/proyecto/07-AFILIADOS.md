@@ -1,0 +1,182 @@
+# Reglas del Programa de Afiliados
+
+> Qué se puede y qué no, según los Términos del Programa de Afiliados de Mercado
+> Libre y las Obligaciones Complementarias, más dos respuestas de soporte pedidas
+> por escrito el 6 de septiembre de 2026.
+>
+> Existe porque estas reglas no se deducen del código y romperlas no da error: el
+> sitio sigue andando y las comisiones dejan de pagarse. Es la misma clase de
+> problema que el `og:image` roto, con plata adelante.
+
+---
+
+## 0 · Lo que hay que resolver
+
+**Todos los links tienen que salir de una sola cuenta.** Hoy salen de dos:
+`maurobilat` (Alex) 38 y `goldenvalhalla` (Ian) 35, sobre el mismo sitio.
+
+Soporte del Programa, consultado el 6/9/2026:
+
+> Cada afiliado solo cobra comisiones por ventas generadas en los canales que
+> tenga declarados en su propia cuenta, y los perfiles/cuentas usados para
+> difusión deben ser propios y estar registrados allí. […] No tengo una regla
+> verificada que autorice que dos afiliados declaren exactamente el mismo sitio
+> y los mismos perfiles para publicar links de ambas cuentas en paralelo. […] Lo
+> más seguro es que un mismo medio/proyecto opere con una sola cuenta afiliada
+> para todos los links.
+
+Es una recomendación de cumplimiento, no una cláusula citada — el agente dice
+explícitamente que no tiene una regla verificada. Pero lo que sí afirma con
+firmeza es que cada afiliado cobra sólo por **sus** canales declarados, y con dos
+cuentas sobre un mismo sitio la mitad de las ventas queda expuesta a no pagarse.
+El riesgo es asimétrico: no se pierde una funcionalidad, se pierden comisiones ya
+generadas.
+
+**Cuál de las dos cuentas queda es una decisión de negocio, no técnica**: quien
+tenga la cuenta cobra todo en su Mercado Pago y factura, y arregla con el otro
+por fuera del Programa. Pendiente entre Ian y Alex.
+
+Cuando se decida:
+
+1. Regenerar a mano, en el panel de Afiliados de la cuenta elegida, los links de
+   la otra. `npm run links-pendientes` arma la lista y `npm run links-aplicar`
+   los escribe.
+2. Rebrandear el perfil social de ML de esa cuenta como "Club de Piel" si no lo
+   está. La cláusula 3.3 permite configurarlo y aclara que no da derechos
+   exclusivos.
+3. `npm run cuentas` cambia de trabajo: deja de medir equidad entre dos cuentas y
+   pasa a auditar que los 73 resuelvan a la misma. Un link que se cuele de la
+   otra es exactamente el error invisible que ese script sabe encontrar.
+
+Consecuencia: **el reparto parejo deja de existir como problema.** Todo lo que se
+midió sobre 37/36 y 38/35 queda sin objeto.
+
+---
+
+## 1 · Declarar los Medios
+
+Cláusula 3.2:
+
+> Serán considerados "Medios" […] las redes sociales, medios, sitios y blogs
+> personales y públicos **informados por el Afiliado** […] La divulgación de
+> Contenidos en sitios distintos a los Medios no será considerada para fines de
+> participación en el Programa.
+
+Hay que declarar en la cuenta, antes de publicar:
+
+| Medio | |
+|---|---|
+| Sitio | `https://clubdepiel.store` |
+| Pinterest | `pinterest.com/ClubDePiel` |
+| Instagram | `@clubdepielok` |
+| TikTok | `@clubdepielok` |
+| YouTube | `@clubdepiel` |
+
+No declararlos no rompe nada visible: los links funcionan, la gente compra, y la
+comisión puede no contarse como Transacción Válida.
+
+---
+
+## 2 · La marca "Mercado Libre" en el sitio: resuelto
+
+El CTA "Ver en Mercado Libre" está autorizado por la cláusula 8.2, que concede
+uso no exclusivo de la marca para publicidad y divulgación del Programa, según el
+Legal Brandbook.
+
+Había una duda razonable sobre si registrar una app para la API nos metía en la
+restricción de los Términos de Desarrolladores, que limitan el uso de las
+palabras "mercado", "libre", "pago" y "envíos". Soporte de Desarrolladores,
+6/9/2026:
+
+> Las restricciones […] aplican únicamente al nombre y diseño de la aplicación
+> registrada para la API. Por lo tanto, no es necesario quitar el texto "Ver en
+> Mercado Libre" de tu sitio web mientras participes en el Programa de Afiliados,
+> ya que este uso está autorizado bajo los Términos del Programa.
+
+**La integración con la API no obliga a tocar el CTA.** Guardar ese mail: es lo
+que justifica el botón si alguna vez se cuestiona.
+
+---
+
+## 3 · Lo que no se puede hacer con los links
+
+Obligación (i): está prohibido usar **shorteners** o cualquier herramienta que
+modifique o distorsione la Herramienta de Monetización. Cláusula 2.4: se
+considera fraude interceptar clicks o alterar la atribución.
+
+- `meli.la` es el shortener **de Mercado Libre**, generado en el panel. Es la
+  Herramienta de Monetización, no algo puesto encima. Está bien.
+- El `href` del botón tiene que ser el `meli.la` **directo**. Hoy lo es:
+  `BotonComprar` lo renderiza tal cual y `/api/clicks` es un `sendBeacon` que
+  registra aparte, sin intermediar la navegación.
+- **Nunca construir un redirect propio** tipo `/go/{id}` para medir mejor. Es la
+  tentación obvia de cualquiera que quiera analítica, y es exactamente lo
+  prohibido.
+
+## 4 · Lo que no se puede hacer con los datos
+
+Obligación (e): prohibida
+
+> cualquier medio o forma automatizada de desarticulación u otros métodos de
+> extracción de datos para acceder, consultar, recopilar o utilizar la propiedad
+> intelectual y/o información de Mercado Libre, incluyendo […] **web scraping**
+
+`scripts/cuentas.ts` pide páginas de Mercado Libre y les parsea el HTML para
+sacar el `polycards` y resolver a qué cuenta y a qué producto va cada link. Eso
+es scraping y cae bajo esta obligación.
+
+Es una de las razones para preferir la API oficial: acceso autorizado por otro
+acuerdo, en vez de extracción no autorizada por ninguno. Con o sin API, el
+scraping hay que retirarlo.
+
+## 5 · Lo que no se puede hacer en redes
+
+Publicidad **paga** sólo en **Instagram, TikTok, Facebook y Pinterest**, y desde
+la cuenta declarada por el Afiliado.
+
+Prohibido, por la obligación (b): anuncios de search o shopping, incluyendo
+Google Ads, Google Shopping, Bing Ads y **YouTube Ads**. El SEO orgánico no está
+prohibido — lo que se prohíbe es el anuncio pago en buscadores.
+
+Otras que aplican a nuestro contenido:
+
+- (d) No ofrecer recompensas ni beneficios a seguidores por comprar.
+- (h) No presentarse como embajador ni representante oficial de Mercado Libre.
+- (a) Nada de email marketing sin permiso escrito. **Afecta al plan de captación
+  de emails**: juntar direcciones está bien, mandarles links de afiliado no.
+
+## 6 · Qué se puede promocionar
+
+Cláusula 3.1: sólo productos **nuevos** disponibles en el Sitio. Excluidos usados,
+clasificados (VIS) y **medicamentos**.
+
+> El Afiliado sólo podrá promocionar los productos según su uso original y para
+> los fines establecidos por el fabricante, evitando cualquier afirmación que sea
+> engañosa respecto al uso, funciones o efectos de los productos.
+
+Nos toca de lleno: todo el contenido afirma qué hace cada activo.
+`INGREDIENTES.md` y `COMPATIBILIDAD.md` son la defensa — dicen qué evidencia
+respalda cada afirmación. Mantenerlos honestos no es prolijidad, es cumplimiento.
+
+Ojo con los retinoides: el retinol cosmético va, la tretinoína es medicamento.
+
+## 7 · Cobro
+
+- Ventana de atribución: **24 horas** desde el primer clic (4.1). Es lo que dice
+  el sitio, y es correcto.
+- Mínimo de pago **persona física**: $30.000 y al menos 3 Transacciones Válidas
+  de 3 compradores distintos. **Persona jurídica**: $1.000.000.
+- Constituir una sociedad multiplica por 33 el mínimo acumulado antes de cobrar
+  el primer peso. Tenerlo en cuenta si alguna vez se evalúa formalizar.
+- Requisito 2.1: hay que ser **monotributista**. Si alguno de los dos no lo es,
+  no participa.
+
+---
+
+## Pendientes
+
+- [ ] Decidir la cuenta única y unificar los 73 links.
+- [ ] Declarar los Medios en esa cuenta.
+- [ ] Confirmar que quien quede como titular sea monotributista.
+- [ ] Retirar el scraping de `scripts/cuentas.ts`.
+- [ ] Crear Facebook, la única red que falta.
