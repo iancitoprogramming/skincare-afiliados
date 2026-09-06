@@ -8,8 +8,8 @@
  * Normaliza lo que se haya pegado en la variable de entorno: agrega https://
  * si falta y saca la barra final.
  *
- * Sin esto, pegar "clubdepiel.com.ar" hace que new URL() tire y el build falle
- * con un error que no explica nada, y pegar "https://clubdepiel.com.ar/" genera
+ * Sin esto, pegar "clubdepiel.store" hace que new URL() tire y el build falle
+ * con un error que no explica nada, y pegar "https://clubdepiel.store/" genera
  * og:image con doble barra. Los dos son errores de copiar y pegar, y los va a
  * cometer alguien apurado en el panel de Vercel.
  */
