@@ -23,13 +23,13 @@ const filas: Fila[] = [
   ...productos.map((p) => ({
     ml_id: p.ml_id ?? "",
     etiqueta: `${p.marca ?? ""} ${p.nombre}`.trim(),
-    estado: clasificar(p.link_afiliado),
+    estado: clasificar(p.link_afiliado, p.activo),
     activo: p.activo,
   })),
   ...KITS_UNICOS.map((k) => ({
     ml_id: k.ml_id,
     etiqueta: `[kit] ${k.marca} ${k.nombre}`,
-    estado: clasificar(k.link_afiliado),
+    estado: clasificar(k.link_afiliado, true),
     activo: true,
   })),
 ];

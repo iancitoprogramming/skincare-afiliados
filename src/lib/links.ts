@@ -5,12 +5,19 @@
 // (links-pendientes) y el que los aplica de vuelta (links-aplicar). Tres copias
 // de esta regla es como se cuela un link que no paga.
 
-export type Veredicto = "afiliado" | "placeholder" | "browse" | "vacio" | "desconocido";
+export type Veredicto =
+  | "afiliado"
+  | "placeholder"
+  | "browse"
+  | "sin_cargar"
+  | "vacio"
+  | "desconocido";
 
 export const ETIQUETA: Record<Veredicto, string> = {
   afiliado: "OK · link de afiliado",
   placeholder: "PENDIENTE · todavía es el placeholder",
   browse: "NO MONETIZA · URL copiada de la búsqueda de ML",
+  sin_cargar: "SIN CARGAR · producto nuevo, todavía sin link",
   vacio: "ROTO · sin link",
   desconocido: "REVISAR · no parece de afiliado",
 };
@@ -24,8 +31,11 @@ export const ETIQUETA: Record<Veredicto, string> = {
  * es la sesión de búsqueda de ML, no un tag de afiliado, y encima va después
  * del `#`, así que ni siquiera llega al servidor.
  */
-export function clasificar(link: string): Veredicto {
-  if (!link || !link.trim()) return "vacio";
+export function clasificar(link: string, activo = true): Veredicto {
+  // Un producto sin link es "roto" sólo si está publicado. Si todavía está
+  // inactivo, es simplemente uno nuevo esperando que le generen el link — y
+  // marcar 46 de esos como ROTO hace que la lista se lea como una catástrofe.
+  if (!link || !link.trim()) return activo ? "vacio" : "sin_cargar";
   if (link.includes("REEMPLAZAR-LINK-AFILIADO")) return "placeholder";
   if (/^https:\/\/meli\.la\//i.test(link)) return "afiliado";
   if (/mercadolibre\.com(\.ar)?\/sec\//i.test(link)) return "afiliado";
