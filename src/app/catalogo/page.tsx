@@ -4,6 +4,7 @@ import { getCatalogo } from "@/engine/catalogo";
 import { copy } from "@/niches/skincare/copy";
 import { CATEGORIAS, ORIGENES, skincareQuiz } from "@/niches/skincare/config";
 import { productos as fallback } from "@/niches/skincare/productos";
+import { OG_POR_DEFECTO } from "@/lib/sitio";
 
 export const revalidate = 3600;
 
@@ -11,7 +12,7 @@ export const metadata = {
   title: `Catálogo · ${copy.marca}`,
   description: copy.catalogo.bajada,
   alternates: { canonical: "/catalogo" },
-  openGraph: { url: "/catalogo" },
+  openGraph: { url: "/catalogo", images: OG_POR_DEFECTO },
 };
 
 export default async function Catalogo() {

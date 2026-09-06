@@ -4,6 +4,7 @@ import { getCatalogo } from "@/engine/catalogo";
 import { skincareQuiz } from "@/niches/skincare/config";
 import { configServible } from "@/engine/quiz/servible";
 import { productos as fallback } from "@/niches/skincare/productos";
+import { OG_POR_DEFECTO } from "@/lib/sitio";
 
 // ISR: la página se regenera cada hora. Si Supabase falla, se sirve el catálogo
 // cacheado (o el fallback local), así la landing sigue funcionando siempre.
@@ -11,7 +12,7 @@ export const revalidate = 3600;
 
 export const metadata = {
   alternates: { canonical: "/rutina" },
-  openGraph: { url: "/rutina" },
+  openGraph: { url: "/rutina", images: OG_POR_DEFECTO },
 };
 
 export default async function Rutina() {

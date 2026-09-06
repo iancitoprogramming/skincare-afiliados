@@ -3,6 +3,7 @@ import { Shell } from "@/components/Shell";
 import { copy } from "@/niches/skincare/copy";
 import { ACTIVOS, MITOS, REGLAS, SINERGIAS } from "@/niches/skincare/activos";
 import { celda, EN_MATRIZ, LEYENDA, SIMBOLO } from "@/niches/skincare/matriz";
+import { OG_POR_DEFECTO } from "@/lib/sitio";
 
 // Página de criterios. Existe por dos motivos, y el segundo es el que importa:
 //
@@ -18,7 +19,7 @@ import { celda, EN_MATRIZ, LEYENDA, SIMBOLO } from "@/niches/skincare/matriz";
 
 export const metadata = {
   alternates: { canonical: "/combinaciones" },
-  openGraph: { url: "/combinaciones" },
+  openGraph: { url: "/combinaciones", images: OG_POR_DEFECTO },
   title: `Qué se puede mezclar y qué no · ${copy.marca}`,
   description:
     "La tabla completa de combinaciones entre ingredientes activos, con el criterio detrás de " +
