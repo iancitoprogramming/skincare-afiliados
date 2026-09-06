@@ -32,7 +32,8 @@
 // La severidad y la acción sugerida salen de la clase, no del criterio del día.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import type { Momento, PasoRutina } from "./recomendacion";
+import type { Momento, PasoRutina, Producto, RespuestasRutina, Rutina, RutinaSlot } from "./recomendacion";
+import { candidatosPaso } from "./recomendacion";
 
 export type ClaseConflicto =
   | "degradacion"
@@ -490,4 +491,136 @@ export function analizarRutina(
     carga: { am: cargaDe(presencias.am), pm: cargaDe(presencias.pm) },
     presencias,
   };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ARMADO QUE EVITA CONFLICTOS
+//
+// Hasta acá el motor de compatibilidad sólo miraba: `armarRutina` elegía cada
+// paso por separado y después se contaba qué había chocado. Eso alcanzaba
+// mientras el catálogo no podía generar un choque grave. Con retinoides y
+// vitamina C pura adentro, no alcanza más: avisar "esto no lo uses junto" sobre
+// una rutina que armamos nosotros es raro, y encima es evitable.
+//
+// La regla de oro de este armado: **esquivar un conflicto NUNCA cuesta calidad
+// de match.** Si alguien pidió algo para las manchas, se le da algo para las
+// manchas. Entre los que sirven para las manchas, se prefiere el que no choca.
+// Por eso se elige siempre dentro del mismo nivel de fallback que hubiera
+// elegido el motor de antes: no se degrada la respuesta para quedar prolijo.
+//
+// El orden en que se recorren los pasos importa y es una decisión, no un
+// detalle: primero se eligen los pasos que DEFINEN la rutina —el sérum activo,
+// el retinoide— sobre su propio mérito, y después los pasos de soporte se
+// acomodan alrededor. Al revés, un limpiador cualquiera podría condicionar cuál
+// tratamiento recibe la persona, que es exactamente al revés de lo que hay que
+// hacer.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const ORDEN_DE_ELECCION = [
+  "serum_activo", // el tratamiento: es el motivo por el que la persona vino
+  "retinoide",
+  "exfoliante",
+  "serum_secundario",
+  "protector_solar", // no negociable: se elige por mérito, no por comodidad
+  "hidratante",
+  "tonico",
+  "contorno",
+  "limpiador",
+  "limpiador_oleoso",
+];
+
+function pesoDeOrden(categoria: string): number {
+  const i = ORDEN_DE_ELECCION.indexOf(categoria);
+  return i === -1 ? ORDEN_DE_ELECCION.length : i;
+}
+
+function rutinaDePasos(pasos: PasoRutina[]): Rutina {
+  return {
+    am: pasos.filter((p) => p.slot.momento === "am" || p.slot.momento === "ambos"),
+    pm: pasos.filter((p) => p.slot.momento === "pm" || p.slot.momento === "ambos"),
+  };
+}
+
+/**
+ * Arma la rutina eligiendo, dentro de cada nivel de match, el producto que menos
+ * choca con lo ya elegido.
+ *
+ * El desempate está ordenado a propósito:
+ *   1. conflictos "separar"  — nunca se acepta uno si hay alternativa
+ *   2. prioridad del producto — qué tan bueno es para ese paso
+ *   3. conflictos "cuidado"  — manejables; no valen sacrificar un mejor producto
+ *   4. conflictos "nota"     — redundancia; sólo importa si todo lo demás empata
+ *   5. precio                — el desempate de siempre
+ *
+ * Que "cuidado" vaya DEBAJO de prioridad es la decisión más discutible de todo
+ * esto, y es deliberada: un aviso de "separalos por momento" se resuelve con una
+ * instrucción de una línea, mientras que darle a alguien un producto peor no se
+ * resuelve con nada.
+ */
+export function armarRutinaEvitandoConflictos(
+  productos: Producto[],
+  slots: RutinaSlot[],
+  r: RespuestasRutina,
+  catalogo: CatalogoActivos,
+  claveProducto: (p: PasoRutina) => string,
+): Rutina {
+  const orden = slots
+    .map((slot, i) => ({ slot, i }))
+    .sort((a, b) => pesoDeOrden(a.slot.categoria) - pesoDeOrden(b.slot.categoria) || a.i - b.i);
+
+  const elegidos: { paso: PasoRutina; i: number }[] = [];
+
+  for (const { slot, i } of orden) {
+    const { productos: candidatos, fallback } = candidatosPaso(productos, slot, r);
+
+    let mejor: PasoRutina | null = null;
+    let mejorPuntaje: [number, number, number, number] | null = null;
+
+    for (const producto of candidatos) {
+      const paso: PasoRutina = { slot, producto, fallback };
+      const analisis = analizarRutina(
+        rutinaDePasos([...elegidos.map((e) => e.paso), paso]),
+        catalogo,
+        claveProducto,
+      );
+
+      let separar = 0;
+      let cuidado = 0;
+      let nota = 0;
+      for (const c of analisis.conflictos) {
+        if (c.severidad === "separar") separar++;
+        else if (c.severidad === "cuidado") cuidado++;
+        else nota++;
+      }
+
+      // `candidatos` ya viene ordenado por prioridad y precio, así que para
+      // desempatar esos dos alcanza con quedarse con el primero que gane: se
+      // usa el índice como sustituto del orden original.
+      const puntaje: [number, number, number, number] = [
+        separar,
+        -producto.prioridad,
+        cuidado,
+        nota,
+      ];
+
+      if (!mejorPuntaje || menor(puntaje, mejorPuntaje)) {
+        mejor = paso;
+        mejorPuntaje = puntaje;
+      }
+    }
+
+    // `candidatosPaso` nunca devuelve vacío: o hay candidatos o levanta excepción.
+    elegidos.push({ paso: mejor!, i });
+  }
+
+  // Se devuelve en el orden original de los slots, no en el de elección.
+  return rutinaDePasos(elegidos.sort((a, b) => a.i - b.i).map((e) => e.paso));
+}
+
+/** Comparación lexicográfica de puntajes. Estrictamente menor = mejor. */
+function menor(a: number[], b: number[]): boolean {
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) return a[i] < b[i];
+  }
+  return false;
 }

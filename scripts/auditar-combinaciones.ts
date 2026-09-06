@@ -37,6 +37,8 @@ const clave = (p: PasoRutina) => p.producto.ml_id ?? p.producto.id;
 // Hoy el catálogo no puede generar una rutina con un conflicto grave; en cuanto
 // se activen esos productos, sí va a poder.
 const PROYECTAR = process.argv.includes("--proyectar");
+/** Apaga el armado que evita conflictos, para medir cuánto aporta. */
+const SIN_EVITAR = process.argv.includes("--sin-evitar");
 const catalogo = PROYECTAR ? productos.map((p) => ({ ...p, activo: true })) : productos;
 
 // La config que ve el usuario, no la teórica: `configServible` recorta los tiers
@@ -95,7 +97,7 @@ for (const piel of pieles) {
           // hallazgo en vez de cortar la auditoría.
           let resuelta;
           try {
-            resuelta = resolverRutina(config, catalogo, answers);
+            resuelta = resolverRutina(config, catalogo, answers, { evitarConflictos: !SIN_EVITAR });
           } catch (e) {
             reventadas.push(
               `${piel} · ${objetivo} · $${presupuesto} · ${ramaValor} · T${tier}: ${(e as Error).message}`,
@@ -131,6 +133,7 @@ const pct = (n: number) => `${((n / filas.length) * 100).toFixed(1)}%`;
 
 linea("═".repeat(78));
 linea(`AUDITORÍA DE COMBINACIONES · ${filas.length} rutinas posibles`);
+linea(`modo: ${PROYECTAR ? "PROYECTADO (todo el pipeline activo)" : "catálogo servible de hoy"} · armado: ${SIN_EVITAR ? "SIN evitar conflictos" : "evitando conflictos"}`);
 linea(
   `${pieles.length} pieles × ${objetivos.length} objetivos × ${presupuestos.length} presupuestos ` +
     `× ${ramas.length} ramas × ${tiers.length} tiers`,

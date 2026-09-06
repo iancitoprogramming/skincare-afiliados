@@ -736,6 +736,81 @@ catálogo que todavía no puede armar una rutina de piel sensible.
 
 ---
 
+## 8bis · El motor no sólo avisa: elige para no chocar
+
+Durante un tiempo el motor de compatibilidad sólo miraba. Armaba la rutina paso por paso, cada uno
+por su cuenta, y después contaba qué había chocado. Eso alcanzaba mientras el catálogo no podía
+generar un choque grave. Con retinoides y vitamina C pura adentro dejó de alcanzar: **avisarle a
+alguien "esto no lo uses junto" sobre una rutina que armamos nosotros es raro, y encima es
+evitable.**
+
+### La regla que gobierna el armado
+
+> **Esquivar un conflicto nunca cuesta calidad de match.**
+
+Si alguien pidió algo para las manchas, se le da algo para las manchas. Entre los que sirven para
+las manchas, se prefiere el que no choca. El motor elige siempre dentro del **mismo nivel de
+fallback** que hubiera elegido antes — nunca degrada la respuesta para quedar prolijo.
+
+El desempate, en orden:
+
+| | Criterio | Por qué ahí |
+|---|---|---|
+| 1 | Conflictos **"separar"** | Nunca se acepta uno si hay alternativa |
+| 2 | **Prioridad** del producto | Qué tan bueno es para ese paso |
+| 3 | Conflictos **"cuidado"** | Manejables: no valen sacrificar un mejor producto |
+| 4 | Conflictos **"nota"** | Redundancia; sólo pesa si todo lo demás empata |
+| 5 | Precio | El desempate de siempre |
+
+Que "cuidado" vaya **debajo** de prioridad es la decisión más discutible de todo esto, y es
+deliberada: un aviso de "separalos por momento" se resuelve con una instrucción de una línea,
+mientras que darle a alguien un producto peor no se resuelve con nada.
+
+### El orden en que se eligen los pasos
+
+Tampoco es el orden de aplicación. Primero se eligen los pasos que **definen** la rutina —el sérum
+activo, el retinoide— sobre su propio mérito; después los pasos de soporte se acomodan alrededor.
+Al revés, un limpiador cualquiera podría condicionar qué tratamiento recibe la persona, que es
+exactamente lo contrario de lo que hay que hacer.
+
+```
+serum_activo → retinoide → exfoliante → serum_secundario → protector_solar
+→ hidratante → tonico → contorno → limpiador → limpiador_oleoso
+```
+
+La rutina se devuelve igual en el orden de aplicación: el orden de elección es interno.
+
+### Cuánto cambia
+
+`npm run auditar -- --sin-evitar` corre el armado viejo para poder medirlo.
+
+| | Catálogo de hoy | | Proyectado (72 productos) | |
+|---|---|---|---|---|
+| | sin evitar | evitando | sin evitar | evitando |
+| Rutinas sin ningún conflicto | 71,9% | **77,6%** | 34,7% | **40,7%** |
+| Con al menos un "separar" | 0% | 0% | 21,3% | **15,3%** |
+| Retinoide + ácido la misma noche | — | — | 19,2% | **9,2%** |
+| Cobre + vitamina C pura | — | — | 2,2% | **0%** |
+| Vitamina C repetida | — | — | 16,7% | **10,7%** |
+| **Pasos con match limpio** | 53,5% | **53,5%** | 61,9% | **61,9%** |
+| **Pasos resueltos por comodín** | 14,4% | **14,4%** | 12,8% | **12,8%** |
+
+Las dos últimas filas son las que importan tanto como las primeras: **la calidad del match no se
+movió ni un punto**. La promesa se cumplió. Como efecto lateral, los productos alcanzables subieron
+de 51 a 57: al desempatar por conflicto en vez de por precio, la selección se reparte más.
+
+### Lo que queda sin poder evitarse, y está bien
+
+`pila-retinoide` no bajó nada (6,7% en los dos modos). El motivo es sano: en Tier 4, para el
+objetivo "manchas", el único sérum activo que matchea es el Mela B3 —que lleva retinil palmitato—
+y el slot de retinoide trae otro retinoide. Evitarlo exigiría darle a la persona un sérum que no
+apunta a su problema, y esa es exactamente la línea que decidimos no cruzar.
+
+**Para esos casos el aviso sigue estando.** Un conflicto inevitable se explica; uno evitable no
+debería llegar a la pantalla.
+
+---
+
 ## 9 · Cómo se mantiene esto
 
 - **`docs/COMPATIBILIDAD.md`** (este archivo) — el criterio y el razonamiento.

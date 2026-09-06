@@ -140,7 +140,14 @@ export const ACTIVOS: Record<string, Activo> = {
     id: "pha_gluconolactona",
     nombre: "PHA (gluconolactona)",
     familia: "pha",
-    grupos: ["exfoliante"],
+    // A propósito NO está en el grupo "exfoliante", que es el que cuenta carga
+    // acumulada. Su propiedad documentada es justamente la contraria: molécula
+    // grande, penetración baja y humectante. Contarlo como carga hacía que
+    // "retinoide + PHA" —que es la combinación que recomendamos para piel
+    // reactiva en COMPATIBILIDAD.md §2.4— disparara un aviso de sobrecarga.
+    // Una regla que le pega a la recomendación que damos nosotros mismos está
+    // mal escrita, no mal aplicada.
+    grupos: [],
     carga: 1,
     evidencia:
       "Molécula grande: entra poco y además retiene agua. Es el exfoliante que la literatura " +

@@ -34,6 +34,13 @@ la otra), **pH** (orden de aplicación), **irritación** (carga acumulada, se ar
 calendario) y **redundancia** (pagar dos veces por el mismo activo). El arreglo es distinto en
 cada caso, así que meterlas en la misma bolsa da consejos inútiles.
 
+**El motor no sólo avisa: elige para no chocar.** Al armar la rutina prefiere, dentro del mismo
+nivel de match, el producto que menos conflictos genera con lo ya elegido. La regla que lo
+gobierna: *esquivar un conflicto nunca cuesta calidad de match* — si alguien pidió algo para las
+manchas, se le da algo para las manchas. Medido con `npm run auditar -- --sin-evitar`: las rutinas
+sin ningún conflicto pasan de 71,9% a 77,6%, y la calidad del match no se mueve. Ver
+`docs/COMPATIBILIDAD.md` §8bis.
+
 **Regla de carga:** ningún activo entra al mapa por inferencia. Sin INCI verificado, el producto
 va con lista vacía y el motor no dice nada de él. Una advertencia inventada cuesta lo mismo en
 credibilidad que un claim inventado.
@@ -60,6 +67,7 @@ Abre http://localhost:3000
 npm test          # rutina nunca vacía + reglas de compatibilidad
 npm run auditar   # recorre las 540 rutinas posibles: conflictos, inventario muerto, calidad del match
 npm run auditar -- --proyectar   # lo mismo pero como si TODO el pipeline ya estuviera activo
+npm run auditar -- --sin-evitar  # con el armado viejo, para medir cuánto aporta evitar conflictos
 npm run importar-organize -- "<ruta al vault Organize>"   # reimporta el catálogo de farmacia
 npm run cobertura # qué combos caen a comodín (dónde cargar el próximo link)
 npm run gen-seed  # regenera supabase/seed.sql desde productos.ts
