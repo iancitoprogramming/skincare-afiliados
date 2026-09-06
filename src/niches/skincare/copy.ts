@@ -1,19 +1,38 @@
 // Textos del nicho. Editables sin tocar componentes.
 export const copy = {
   marca: "Club de Piel",
-  tagline: "Qué comprar, en qué orden y por qué",
+  tagline: "No es el producto, es cuál va con cuál",
 
   meta: {
-    title: "Club de Piel · Qué comprar, en qué orden y por qué",
+    title: "Club de Piel · El problema no era el producto",
     description:
-      "Elegí un kit ya armado, mirá el catálogo completo o respondé unas preguntas y te armamos la rutina para tu piel y tu presupuesto. Productos coreanos, europeos y nacionales.",
+      "Te armamos la rutina completa cruzando cada activo con los demás, para que no compres dos veces lo mismo ni mezcles cosas que se anulan. Coreanos, europeos y nacionales.",
   },
 
   // Pantalla de entrada: dos puertas, sin scroll y sin buscar.
   home: {
-    titulo: "Qué comprar, en qué orden y por qué.",
+    // Above the fold. El mecanismo es "no es el producto, es la combinación", y
+    // está respaldado por el motor de compatibilidad: reglas de conflicto entre
+    // activos, sinergias y mitos. Por eso el fold cierra con un link a
+    // /combinaciones — la credibilidad la da el contenido, no un número.
+    //
+    // El marco temporal ("en 5 preguntas") es sobre NUESTRO servicio, no sobre
+    // resultados en la piel. Prometer "resultados en 3 semanas" sería un claim
+    // que no podemos sostener.
+    titulo: "El problema no era el producto. Era cuál iba con cuál.",
     bajada:
-      "Elegimos producto por producto, te explicamos por qué, y te dejamos el link. Coreanos, europeos y nacionales.",
+      "Te armamos la rutina completa en 5 preguntas, cruzando cada activo con los demás. Sin probar y errar, sin comprar dos veces lo mismo, sin ácidos que se anulan entre sí.",
+    // Orientados a resultado, no a función. Dos: en mobile no entra un tercero
+    // sin empujar el CTA abajo del fold.
+    bullets: [
+      "Comprás una vez lo que te sirve, en vez de ir sumando frascos que quedan por la mitad.",
+      "Te decimos cuándo un producto no es para tu piel, aunque lo tengamos en el catálogo.",
+    ],
+    respaldo: "cómo decidimos qué combina con qué",
+    // Las líneas del titular para la imagen de Open Graph. Van acá, pegadas al
+    // titular de la página, porque la vez que vivieron en otro archivo el copy
+    // cambió y la imagen quedó con el headline anterior durante varios deploys.
+    tituloOG: ["El problema no era", "el producto. Era", "cuál iba con cuál."],
     kits: {
       titulo: "Kits ya armados",
       bajada: "Elegí el de tu tipo de piel y listo.",

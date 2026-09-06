@@ -41,16 +41,18 @@ export default function OpengraphImage() {
           style={{
             display: "flex",
             flexDirection: "column",
-            fontSize: "82px",
+            fontSize: "70px",
             fontWeight: 600,
             color: PALETA.tinta,
             lineHeight: 1.05,
             letterSpacing: "-0.02em",
           }}
         >
-          <span>Qué comprar,</span>
-          <span>en qué orden</span>
-          <span style={{ color: PALETA.salvia }}>y por qué.</span>
+          {copy.home.tituloOG.map((linea, i) => (
+            <span key={linea} style={i === copy.home.tituloOG.length - 1 ? { color: PALETA.salvia } : undefined}>
+              {linea}
+            </span>
+          ))}
         </div>
 
         {/* display explícito: Satori lo exige en cualquier div con más de un

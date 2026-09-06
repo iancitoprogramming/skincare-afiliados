@@ -33,14 +33,45 @@ export default async function Home() {
   return (
     <Shell>
       <div className="flex flex-1 flex-col justify-center gap-10">
-        <div className="flex flex-col gap-3">
-          <h1 className="font-display text-4xl font-medium leading-[1.05] tracking-tight text-tinta">
+        <div className="flex flex-col gap-4">
+          <h1 className="font-display text-[2.1rem] font-medium leading-[1.06] tracking-tight text-tinta sm:text-5xl">
             {copy.home.titulo}
           </h1>
-          <p className="font-body text-base text-tinta/80">{copy.home.bajada}</p>
+          <p className="font-body text-base leading-relaxed text-tinta/80">{copy.home.bajada}</p>
+
+          <ul className="flex flex-col gap-2">
+            {copy.home.bullets.map((b) => (
+              <li key={b} className="flex gap-2.5 font-body text-sm text-tinta/80">
+                <span aria-hidden className="mt-2 h-1 w-3 flex-none rounded-full bg-salvia" />
+                {b}
+              </li>
+            ))}
+          </ul>
+
+          {/* La credibilidad del mecanismo la da contenido real, no un número.
+              Este link es el respaldo de la promesa de arriba. */}
+          <Link
+            href="/combinaciones"
+            className="self-start font-mono text-xs text-piedra underline decoration-niebla underline-offset-4 transition-colors hover:text-tinta"
+          >
+            {copy.home.respaldo} →
+          </Link>
         </div>
 
         <div className="flex flex-col gap-4">
+          <Link
+            href="/rutina"
+            className="flex flex-col gap-1 rounded-2xl border border-terracota/40 bg-gel/40 p-5 transition-transform active:scale-[0.99]"
+          >
+            <span className="font-mono text-xs text-piedra">a tu medida</span>
+            <span className="font-display text-2xl font-medium text-tinta">
+              {copy.home.quiz.titulo}
+            </span>
+            <span className="font-body text-sm text-tinta/75">{copy.home.quiz.bajada(preguntas)}</span>
+            <span className="mt-3 font-body text-base font-medium text-terracota">
+              {copy.home.quiz.cta} →
+            </span>
+          </Link>
           <Link
             href="/catalogo"
             className="flex flex-col gap-1 rounded-2xl border border-niebla bg-porcelana p-5 transition-transform active:scale-[0.99]"
@@ -75,19 +106,6 @@ export default async function Home() {
             </Link>
           ) : null}
 
-          <Link
-            href="/rutina"
-            className="flex flex-col gap-1 rounded-2xl border border-niebla bg-porcelana p-5 transition-transform active:scale-[0.99]"
-          >
-            <span className="font-mono text-xs text-piedra">a tu medida</span>
-            <span className="font-display text-2xl font-medium text-tinta">
-              {copy.home.quiz.titulo}
-            </span>
-            <span className="font-body text-sm text-tinta/75">{copy.home.quiz.bajada(preguntas)}</span>
-            <span className="mt-3 font-body text-base font-medium text-terracota">
-              {copy.home.quiz.cta} →
-            </span>
-          </Link>
         </div>
       </div>
     </Shell>
