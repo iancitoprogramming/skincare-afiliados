@@ -39,7 +39,7 @@ export default async function Catalogo() {
     .map((v) => ({ valor: v, label: ORIGENES[v] ?? v }));
 
   return (
-    <Shell volver={{ href: "/", label: "inicio" }} disclaimers>
+    <Shell volver={{ href: "/", label: "inicio" }} disclaimers ancho="ancho">
       <div className="flex flex-col gap-6">
         <header className="flex flex-col gap-2">
           <h1 className="font-display text-3xl font-medium tracking-tight text-tinta">

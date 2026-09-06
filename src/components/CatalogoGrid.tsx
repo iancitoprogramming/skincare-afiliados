@@ -104,7 +104,7 @@ export function CatalogoGrid({
           </button>
         </div>
       ) : (
-        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {visibles.map((p) => (
             <li key={p.id}>
               <Link

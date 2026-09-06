@@ -5,13 +5,25 @@ import { Logo } from "@/components/Logo";
 
 // Shell común de todas las pantallas: marca arriba, disclaimers abajo.
 // Mobile-first: el 90% del tráfico va a entrar desde una red social.
+// El sitio nació mobile-first y estaba clavado en max-w-md en todas las
+// pantallas. Para una ficha o el quiz esa columna angosta está bien —el texto
+// se lee mejor— pero una grilla de 25 productos en 448px de ancho desaprovecha
+// media pantalla en desktop.
+const ANCHOS = {
+  angosto: "max-w-md",
+  ancho: "max-w-5xl",
+} as const;
+
 export function Shell({
   children,
   volver,
   disclaimers = false,
+  ancho = "angosto",
 }: {
   children: ReactNode;
   volver?: { href: string; label: string };
+  /** "ancho" para grillas; "angosto" para lectura. */
+  ancho?: keyof typeof ANCHOS;
   /**
    * Los avisos de afiliacion y dermatologo aparecen solo donde hay links de
    * compra a la vista. Antes de eso no vienen a cuento.
@@ -19,7 +31,7 @@ export function Shell({
   disclaimers?: boolean;
 }) {
   return (
-    <div className="mx-auto flex min-h-[100dvh] w-full max-w-md flex-col px-5 py-6">
+    <div className={`mx-auto flex min-h-[100dvh] w-full flex-col px-5 py-6 sm:px-8 ${ANCHOS[ancho]}`}>
       <header className="flex items-baseline justify-between gap-3">
         <Link href="/" className="flex items-center gap-2">
           <Logo size={26} className="text-piedra" />
