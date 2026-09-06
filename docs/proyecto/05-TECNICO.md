@@ -90,6 +90,30 @@ Cada build imprime a qué resolvió:
 Es la única forma de verlo sin abrir la HTML publicada. Sale repetido una vez
 por worker de Next, que está bien.
 
+## Verificación después del deploy
+
+En el log del build de Vercel tienen que aparecer las dos líneas `[metadata]`:
+
+```
+[metadata] base = https://skincare-afiliados.vercel.app
+[metadata] pinterest = presente | AUSENTE
+```
+
+**Si `base` dice localhost, algo está mal configurado y los pins van a salir sin
+imagen.** Es el error más caro de este proyecto porque no se nota: el sitio
+carga bien, el link se comparte, y el preview aparece vacío.
+
+Sin acceso al dashboard, la misma verificación se hace desde afuera y es más
+fuerte, porque mira el resultado y no el paso intermedio:
+
+```bash
+curl -s https://skincare-afiliados.vercel.app/ | grep -o 'og:image" content="[^"]*"'
+```
+
+Tiene que devolver una URL absoluta con el dominio de producción. Si dice
+`localhost`, `base` resolvió mal. Después, que esa URL devuelva `200` y
+`image/png`.
+
 ## Convenciones de código
 
 **Los comentarios explican el porqué, no el qué.** Si un comentario describe lo
