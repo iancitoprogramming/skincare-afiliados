@@ -1,17 +1,17 @@
 # Estado y pendientes
 
-_Corte: 2026-09-05_
+_Corte: 2026-09-06_
 
 ## Dónde está
 
 | | |
 |---|---|
 | Producción | `skincare-afiliados.vercel.app` |
-| Páginas estáticas | 44 |
-| Productos activos | 25 + 2 kits de compra única |
-| Links que monetizan | 27 de 27 |
-| Tests | 29 en verde |
-| Tiers servibles | 1, 2 y 3 |
+| Páginas estáticas | 69 |
+| Productos en catálogo | 72 · 25 activos + 2 kits de compra única |
+| Links que monetizan | 28 de 28 activos · 46 pendientes |
+| Tests | 6 en verde |
+| Tiers servibles | 1 y 2 (son los dos que existen) |
 
 ## Bloqueantes para salir a vender
 
@@ -33,9 +33,6 @@ meta `p:domain_verify` ya está cableado: se pega el código en
 
 ## Pendiente de UX
 
-**Desktop.** Todo vive en `max-w-md`. Con una grilla de 25 productos, esa columna
-de 448px es el límite más visible que tiene el sitio. Es lo próximo.
-
 **Sistema visual.** La paleta y el logo ya están; falta la pasada de jerarquía,
 espaciado y densidad para competir en un feed de Pinterest.
 
@@ -48,9 +45,7 @@ en alta están en `assets/productos/`.
 
 ## Pendiente de catálogo
 
-- **Serum secundario y retinoide** → desbloquean el Tier 4
-- **Un tónico y un limpiador oleoso más**, y baratos → hoy hay uno de cada uno y
-  los dos son caros
+- **46 productos sin link de afiliado** → `npm run links-pendientes` los lista
 - **Protector solar mineral** → o renombrar la carpeta del vault
 - **Producto barato**: limpiador y protector abajo de $35.000
 - **Los coreanos casi no tienen prueba social** → buscar las mismas publicaciones
@@ -109,13 +104,10 @@ archivos que ninguno de los dos lados marcó.
 
 **Disparar el escudo de Vercel con polling.** Ver bloqueante 2.
 
-## Sin pushear
+## Lo próximo
 
-Dos commits locales esperando que vuelva la red:
-
-- `4ca8593` — el home vuelve a tres puertas
-- `58ce1a6` — brand kit: lectura botánica, logo, contraste accesible
-
-```bash
-git push origin main
-```
+1. Generar los 46 links de afiliado que faltan (`links-pendientes` → pegar →
+   `links-aplicar`).
+2. Perfil business de Pinterest con la URL de producción.
+3. Las 7 imágenes del carrusel y la prueba social del above the fold — necesita
+   producción de fotos y las respuestas de clientas a "¿qué casi te frena?".
