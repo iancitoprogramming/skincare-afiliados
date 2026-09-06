@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { Bricolage_Grotesque, Instrument_Sans, Space_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { copy } from "@/niches/skincare/copy";
-import { informarMetadata, urlDelSitio } from "@/engine/sitio";
+import { informarMetadata, urlDelSitio } from "@/lib/sitio";
 import "./globals.css";
 
 const bricolage = Bricolage_Grotesque({
@@ -27,6 +27,8 @@ const spaceMono = Space_Mono({
 // donde sirve verlo.
 informarMetadata();
 
+const verificacionPinterest = process.env.NEXT_PUBLIC_PINTEREST_VERIFY;
+
 export const metadata: Metadata = {
   metadataBase: new URL(urlDelSitio()),
   title: copy.meta.title,
@@ -38,13 +40,12 @@ export const metadata: Metadata = {
     locale: "es_AR",
     type: "website",
   },
-  other: {
-    // Pinterest da un código para reclamar el dominio. Se pega en la env var y
-    // listo: no hace falta tocar código ni volver a deployar a mano.
-    ...(process.env.NEXT_PUBLIC_PINTEREST_VERIFY
-      ? { "p:domain_verify": process.env.NEXT_PUBLIC_PINTEREST_VERIFY }
-      : {}),
-  },
+  // Condicional a propósito. Un <meta ... content=""> vacío es peor que no
+  // tener el tag: Pinterest lo encuentra, no coincide con el código, y el
+  // error dice "no verificado" sin explicar por qué.
+  ...(verificacionPinterest
+    ? { other: { "p:domain_verify": verificacionPinterest } }
+    : {}),
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

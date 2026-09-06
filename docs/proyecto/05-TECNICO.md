@@ -21,6 +21,8 @@
 src/
 ├── app/                        rutas
 ├── components/                 Shell · Logo · CatalogoGrid · BotonComprar · PruebaSocial
+├── lib/                        utilidades sueltas
+│   └── sitio.ts                URL absoluta del sitio + log del build
 ├── engine/                     lógica agnóstica del nicho
 │   ├── recomendacion.ts        el motor: cascada de fallbacks
 │   ├── kits.ts                 KitDef · KitUnico · armarKit
@@ -70,7 +72,7 @@ NEXT_PUBLIC_PINTEREST_VERIFY=     # código de reclamo de dominio
 email se descarta. Es el bloqueante para lanzar con medición.
 
 `metadataBase` resuelve dominio propio → dominio estable de Vercel → URL del
-deploy → localhost (`src/engine/sitio.ts`). Los del medio los setea Vercel solo.
+deploy → localhost (`src/lib/sitio.ts`). Los del medio los setea Vercel solo.
 
 El valor se **normaliza**: se le agrega `https://` si falta y se le saca la barra
 final. Sin eso, pegar `clubdepiel.com.ar` hace que `new URL()` tire y el build
