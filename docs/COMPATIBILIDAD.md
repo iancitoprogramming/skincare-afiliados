@@ -855,11 +855,36 @@ El sérum activo va antes que la doble limpieza a propósito: es lo único que a
 persona más allá de la base. La doble limpieza no mejora ningún objetivo, pero saca bien el
 protector solar de todos los días, que es una función real que esta tabla no mide.
 
-**Lo que la tabla no mide, y hay que decirlo.** "Cubre el objetivo" mide si algún producto de la
-rutina apunta a la preocupación elegida. No mide higiene, ni textura, ni si la persona disfruta la
-rutina — y disfrutarla es lo que hace que la sostenga. Por eso la doble limpieza sobrevivió a pesar
-de su +0 en cobertura, y por eso el Tier 4 no: una cosa es un paso que hace algo que no medimos,
-otra es un paso que además empeora lo que sí medimos.
+**La doble limpieza tampoco se lo ganó.** Sobrevivió un rato como escalón 3 con el argumento de que
+"saca bien el protector solar" —una función real que la tabla de arriba no mide—. Al corroborarlo
+contra fuentes serias, el argumento no se sostuvo como **paso necesario**:
+
+- **Cleveland Clinic**, Dra. Wu, dermatóloga: *«Double cleansing is usually not necessary»*;
+  lavarse una vez bien con un limpiador suave *«is more than adequate»*. Y advierte lo contrario de
+  lo que se supone: el sobrelavado seca, irrita y rompe la barrera.
+- La misma fuente ordena las prioridades sin vueltas: hay pasos más importantes, como el
+  antioxidante y el protector solar.
+- La **American Academy of Dermatology** recomienda lavarse la cara dos veces por día con un
+  limpiador suave. Una limpieza por vez, no dos.
+- El origen del hábito es cultural —de las geishas japonesas al régimen coreano de diez pasos—,
+  no clínico.
+
+Queda la parte que sí es cierta: un limpiador oleoso saca más residuo de protector solar en una
+sola pasada que uno al agua. Eso lo vuelve **una buena opción para quien usa maquillaje resistente
+al agua o un protector muy waterproof** — no un paso de la rutina de todas. Va al catálogo.
+
+Con eso, los escalones quedan en dos:
+
+```
+1 · Base            limpiador · hidratante · protector solar
+2 · + tratamiento   + sérum activo
+```
+
+**Lo que la tabla no mide, y hay que decirlo igual.** "Cubre el objetivo" mide si algún producto de
+la rutina apunta a la preocupación elegida. No mide higiene, ni textura, ni si la persona disfruta
+la rutina — y disfrutarla es lo que hace que la sostenga. Por eso ningún paso se saca sólo por su
+número: se saca cuando el número es malo **y** además la evidencia externa no lo respalda como
+necesario. Fue el caso del tónico, del Tier 4 y de la doble limpieza.
 
 **Dónde va lo que salió.** Al catálogo navegable (`/catalogo`), marcado como opcional y con el
 motivo escrito. No es descarte: el retinoide es el activo con más evidencia para arrugas. Está

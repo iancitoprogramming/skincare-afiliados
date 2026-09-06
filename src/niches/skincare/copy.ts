@@ -43,6 +43,12 @@ export const copy = {
     // Por qué cada categoría opcional quedó fuera del paso a paso. Se dice con
     // nombre y apellido: un "opcional" sin explicación se lee como "relleno".
     notaOpcional: {
+      limpiador_oleoso:
+        "La doble limpieza no es un paso necesario: es una costumbre que se popularizó con las " +
+        "rutinas coreanas, y los dermatólogos coinciden en que lavarse una vez bien con un " +
+        "limpiador suave alcanza. Lavarse de más reseca e irrita. Ahora bien, si usás maquillaje " +
+        "resistente al agua o un protector muy waterproof, un limpiador oleoso saca en una pasada " +
+        "lo que uno común deja. Ahí sí vale.",
       tonico:
         "Un tónico no es un paso necesario de ninguna rutina. Hidrata y prepara la piel, y eso " +
         "está bien, pero no hace nada que la crema no haga. Si te gusta la textura, sumalo; si no, " +
@@ -112,7 +118,7 @@ export const copy = {
   // porque alguien que googlea "rutina coreana" va a contar los pasos y va a
   // notar que le faltan.
   opcionales:
-    "Vas a ver rutinas por ahí que suman tónico y exfoliante. Los dejamos afuera a propósito: ninguno de los dos es un paso necesario, los dos suman un frasco y el exfoliante además suma riesgo de irritación. Preferimos que hagas cuatro pasos todos los días antes que seis tres veces por semana.",
+    "Vas a ver rutinas por ahí que suman tónico, doble limpieza y exfoliante. Los dejamos afuera a propósito: ninguno es un paso necesario. La doble limpieza en particular es una costumbre cultural, no una indicación: los dermatólogos coinciden en que lavarse una vez bien con un limpiador suave alcanza, y que lavarse de más reseca e irrita. Preferimos que hagas cuatro pasos todos los días antes que seis tres veces por semana.",
 
   // Bloque de combinación de activos. La promesa del sitio no es "te damos
   // productos", es "te damos productos que funcionan JUNTOS" — y eso hay que

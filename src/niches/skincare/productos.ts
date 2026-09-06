@@ -418,11 +418,20 @@ const productosCurados: Producto[] = [
     reputacion: "Tienda oficial",
     nombre: "Crema Hidratante de Dia FPS 30 50 g",
     marca: "Dermaglos",
-    categoria: "hidratante",
-    paso: 7,
+    // Era `hidratante` y quedaba inalcanzable por lo mismo que el sérum de
+    // Garnier: una crema de DÍA no puede llenar un slot "ambos", que pide un
+    // producto usable de día y de noche. Pero acá el `momento: "am"` no era el
+    // error —lleva FPS, de noche no tiene sentido—: el error era la categoría.
+    //
+    // Pasa a protector solar, que es donde "am" encaja. Es legítimo ahí: la
+    // American Academy of Dermatology recomienda FPS 30 o más. Va con prioridad
+    // baja porque el resto del catálogo es FPS 50, así que sólo lo elige quien
+    // necesita que un frasco haga las dos cosas.
+    categoria: "protector_solar",
+    paso: 4,
     momento: "am",
     tipos_piel: ["mixta", "normal", "seca"],
-    preocupaciones: ["deshidratacion"],
+    preocupaciones: ["deshidratacion", "manchas"],
     origen: "nacional",
     apto_sensible: false,
     rango_precio: 1,
@@ -431,9 +440,11 @@ const productosCurados: Producto[] = [
     imagen_hd: "https://http2.mlstatic.com/D_NQ_NP_2X_695563-MLU72756171168_112023-F.webp",
     link_afiliado: "https://meli.la/2kbgQEt",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA24692733",
-    por_que: "Hidratante con FPS 30 incorporado. Resuelve dos pasos si vas corriendo.",
-    como_usar: "A la mañana. Si vas a estar al sol, sumale un protector aparte.",
-    prioridad: 4,
+    por_que: "Hidrata y protege en un solo paso. La opción para el que no va a hacer dos.",
+    como_usar:
+      "A la mañana, como último paso. Es FPS 30: alcanza para el día a día, pero si vas a estar " +
+      "horas al sol conviene uno de 50.",
+    prioridad: 2,
     comodin: false,
     activo: true,
   },
@@ -659,8 +670,21 @@ const productosCurados: Producto[] = [
     nombre: "Serum Anti Manchas Vitamina C 30 ml",
     marca: "Garnier",
     categoria: "serum_activo",
-    paso: 4,
-    momento: "am",
+    // Paso 2: después de limpiar, antes de hidratar. Es el orden de aplicación
+    // de cualquier sérum.
+    paso: 2,
+    // Estaba en "am" y eso lo volvía INALCANZABLE: los slots de sérum son
+    // "ambos", y `momentoCompatible` exige que un slot "ambos" reciba un
+    // producto "ambos". O sea que el sérum más vendido del catálogo (66.616
+    // opiniones) tenía link de afiliado cargado y no se le mostraba a nadie.
+    //
+    // "ambos" es además lo correcto: no lleva vitamina C pura sino ascorbil
+    // glucósido, que no es fotosensibilizante, y su niacinamida y su salicílico
+    // se usan indistintamente de día o de noche. La recomendación de usarlo a
+    // la mañana es una preferencia —el antioxidante rinde más de día— y va en
+    // `como_usar`, que es donde corresponde: como consejo, no como restricción
+    // que lo saca del catálogo.
+    momento: "ambos",
     tipos_piel: ["grasa", "mixta", "normal", "seca"],
     preocupaciones: ["manchas", "textura"],
     origen: "europeo",
@@ -672,7 +696,9 @@ const productosCurados: Producto[] = [
     link_afiliado: "https://meli.la/2cvShSS",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA18957818",
     por_que: "Vitamina C accesible para trabajar sobre manchas y marcas.",
-    como_usar: "A la mañana, antes del protector. Empezá día por medio.",
+    como_usar:
+      "Después de limpiar y antes de la crema. Rinde más a la mañana, bajo el protector. " +
+      "Empezá día por medio.",
     prioridad: 4,
     comodin: false,
     activo: true,

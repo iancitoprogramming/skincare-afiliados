@@ -82,29 +82,39 @@ export const CATEGORIAS: Record<string, string> = {
 // catálogo y se ofrecen aparte, como lo que son: opcionales.
 //
 // Lo esencial son tres pasos —limpiador, hidratante y protector solar— y el
-// resto se gana el lugar o no entra. Los dos escalones que quedan están
-// ordenados por lo que aportan, no por tamaño: primero el sérum activo, que es
-// lo único que ataca el objetivo de la persona más allá de la base; después la
-// doble limpieza, que no mejora ningún objetivo pero sí saca bien el protector
-// solar de todos los días.
+// resto se gana el lugar o no entra.
+//
+// LA DOBLE LIMPIEZA TAMPOCO SE LO GANÓ. Estuvo un rato como escalón 3 con el
+// argumento de que "saca bien el protector solar", pero al corroborarlo contra
+// fuentes serias el argumento no se sostuvo como paso necesario:
+//
+//   · Cleveland Clinic (Dra. Wu, dermatóloga): "Double cleansing is usually not
+//     necessary"; lavarse una vez bien con un limpiador suave "is more than
+//     adequate". Y advierte lo contrario de lo que se supone: el sobrelavado
+//     seca, irrita y rompe la barrera.
+//   · La misma fuente ordena las prioridades sin vueltas: hay pasos más
+//     importantes, como el antioxidante y el protector solar.
+//   · La American Academy of Dermatology recomienda lavarse la cara dos veces
+//     por día con un limpiador suave. UNA limpieza por vez, no dos.
+//   · El origen del hábito es cultural —de las geishas japonesas al régimen
+//     coreano de diez pasos—, no clínico.
+//
+// Sigue teniendo una función real para quien usa maquillaje resistente al agua
+// o un protector muy waterproof: un limpiador oleoso saca más residuo en una
+// sola pasada. Eso lo vuelve una buena opción para algunas personas, no un paso
+// de la rutina de todas. Va al catálogo, como opcional.
 // ─────────────────────────────────────────────────────────────────────────────
-export const TIERS: Record<"1" | "2" | "3", RutinaSlot[]> = {
+export const TIERS: Record<"1" | "2", RutinaSlot[]> = {
   // Base · 3 productos — lo único que no es opcional
   "1": [
     { categoria: "limpiador", momento: "ambos" },
     { categoria: "hidratante", momento: "ambos" },
     { categoria: "protector_solar", momento: "am" },
   ],
-  // Base + tratamiento · 4 productos — el único paso que cambia el resultado
+  // Base + tratamiento · 4 productos — el único paso que cambia el resultado.
+  // El sérum va después de limpiar y antes de hidratar: es el orden de
+  // aplicación correcto y el que define este array.
   "2": [
-    { categoria: "limpiador", momento: "ambos" },
-    { categoria: "serum_activo", momento: "ambos" },
-    { categoria: "hidratante", momento: "ambos" },
-    { categoria: "protector_solar", momento: "am" },
-  ],
-  // Base + tratamiento + doble limpieza · 5 productos
-  "3": [
-    { categoria: "limpiador_oleoso", momento: "pm" },
     { categoria: "limpiador", momento: "ambos" },
     { categoria: "serum_activo", momento: "ambos" },
     { categoria: "hidratante", momento: "ambos" },
@@ -122,6 +132,7 @@ export const TIERS: Record<"1" | "2" | "3", RutinaSlot[]> = {
  * acompañamiento, genera más problemas que soluciones.
  */
 export const CATEGORIAS_OPCIONALES = [
+  "limpiador_oleoso",
   "tonico",
   "exfoliante",
   "serum_secundario",
@@ -135,13 +146,13 @@ export const CATEGORIAS_OPCIONALES = [
 // el 3 — quedó como no-op cuando se eliminó el Tier 4. Se deja porque el
 // mecanismo sigue siendo el correcto si algún día vuelve a haber un escalón por
 // encima, y porque borrarlo escondería una decisión que conviene tener a la vista.
-export const TECHO_POR_PIEL: Record<string, "1" | "2" | "3"> = {
-  sensible: "3",
+export const TECHO_POR_PIEL: Record<string, "1" | "2"> = {
+  sensible: "2",
 };
 
-export function tierEfectivo(tierElegido: string, piel: string): "1" | "2" | "3" {
+export function tierEfectivo(tierElegido: string, piel: string): "1" | "2" {
   const techo = TECHO_POR_PIEL[piel];
-  const t = (tierElegido in TIERS ? tierElegido : "1") as "1" | "2" | "3";
+  const t = (tierElegido in TIERS ? tierElegido : "1") as "1" | "2";
   if (!techo) return t;
   return Number(t) > Number(techo) ? techo : t;
 }
@@ -235,12 +246,6 @@ export const skincareQuiz: QuizConfig = {
           label: "Sumale un tratamiento",
           short: "con tratamiento",
           hint: "4 pasos: un sérum para lo que querés cambiar",
-        },
-        {
-          value: "3",
-          label: "Y doble limpieza de noche",
-          short: "con doble limpieza",
-          hint: "5 pasos: para sacar bien el protector solar",
         },
       ],
     },

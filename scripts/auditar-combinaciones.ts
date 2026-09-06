@@ -12,7 +12,7 @@
 // Correr con:  npm run auditar
 // Sólo lee. No toca ningún archivo.
 
-import { skincareQuiz } from "../src/niches/skincare/config";
+import { skincareQuiz, CATEGORIAS_OPCIONALES } from "../src/niches/skincare/config";
 import { productos } from "../src/niches/skincare/productos";
 import { catalogoActivos } from "../src/niches/skincare/activos";
 import { planSemanal } from "../src/niches/skincare/calendario";
@@ -212,17 +212,30 @@ linea();
 linea("── INVENTARIO ".padEnd(78, "─"));
 const alcanzables = new Set(filas.flatMap((f) => f.productos));
 const activosDelCatalogo = catalogo.filter((p) => p.activo);
-const muertos = activosDelCatalogo.filter((p) => !alcanzables.has(p.ml_id ?? p.id));
+const opcionales = new Set<string>(CATEGORIAS_OPCIONALES);
+const noElegidos = activosDelCatalogo.filter((p) => !alcanzables.has(p.ml_id ?? p.id));
+// Dos cosas muy distintas que antes se reportaban juntas:
+//   · categoría opcional — el quiz no lo ofrece a propósito, pero se vende en
+//     /catalogo. No es inventario muerto: es la decisión de producto funcionando.
+//   · pierde el desempate — está en una categoría que SÍ es paso de rutina y
+//     aun así nunca gana. Eso sí es plata parada y hay que decidir qué hacer.
+const enCatalogo = noElegidos.filter((p) => opcionales.has(p.categoria));
+const muertos = noElegidos.filter((p) => !opcionales.has(p.categoria));
 linea(`  Productos activos en el catálogo: ${activosDelCatalogo.length}`);
-linea(`  Alcanzables por alguna combinación: ${alcanzables.size}`);
+linea(`  Alcanzables por el quiz: ${alcanzables.size}`);
+linea(`  De categoría opcional — se venden en /catalogo, no en el quiz: ${enCatalogo.length}`);
+for (const p of enCatalogo) linea(`    · ${p.marca} ${p.nombre} (${p.categoria})`);
 if (muertos.length) {
-  linea(`  NUNCA se muestran (${muertos.length}):`);
+  linea(`  ⚠️  PIERDEN SIEMPRE el desempate y nadie los ve (${muertos.length}):`);
   for (const p of muertos) {
     linea(`    · ${p.marca} ${p.nombre}`);
-    linea(`      categoría ${p.categoria} · momento "${p.momento}" · ${p.ml_id}`);
+    linea(
+      `      categoría ${p.categoria} · momento "${p.momento}" · prioridad ${p.prioridad} · ${p.ml_id}`,
+    );
   }
+  linea("     Se arregla subiendo su prioridad, o sacándolos del catálogo.");
 } else {
-  linea("  Todos los productos activos son alcanzables.");
+  linea("  Ningún producto de una categoría de rutina queda sin mostrarse.");
 }
 
 // 3 · Cobertura de la capa de activos

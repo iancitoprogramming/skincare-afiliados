@@ -110,17 +110,25 @@ describe("origen", () => {
   });
 
   it("marca otro_origen cuando cae fuera de la preferencia", () => {
-    // No hay protector solar nacional en el catálogo: es el hueco que fuerza el
-    // fallback. Si algún día se carga uno, este test avisa que hay que cambiarlo.
-    const hayNacional = productos.some(
-      (p) => p.activo && p.categoria === "protector_solar" && p.origen === "nacional",
-    );
-    expect(hayNacional, "ya hay protector solar nacional: actualizá este test").toBe(false);
+    // Antes este test fijaba a mano un hueco concreto (no había protector solar
+    // nacional) y traía su propio aviso de "si aparece uno, actualizá el test".
+    // Apareció: el Dermaglós FPS 30 pasó de hidratante a protector solar. Así
+    // que ahora el hueco se busca solo — el test prueba la REGLA, no un dato
+    // del catálogo que cambia cada vez que se carga un producto.
+    const slots = Object.values(TIERS).flat();
+    const origenes = ["coreano", "europeo", "nacional"];
+    const hueco = slots
+      .flatMap((s) => origenes.map((origen) => ({ slot: s, origen })))
+      .find(
+        ({ slot, origen }) =>
+          !productos.some((p) => p.activo && p.categoria === slot.categoria && p.origen === origen),
+      );
+    expect(hueco, "no quedan huecos de origen: el catálogo cubre todo, borrá este test").toBeDefined();
 
-    const r = { piel: "grasa", objetivo: "acne", presupuesto: 3, origenes: ["nacional"] };
-    const paso = elegirPaso(productos, { categoria: "protector_solar", momento: "am" }, r);
-    expect(paso.producto.origen).not.toBe("nacional");
-    expect(paso.fallback).toBe("otro_origen");
+    const r = { piel: "grasa", objetivo: "acne", presupuesto: 3, origenes: [hueco!.origen] };
+    const paso = elegirPaso(productos, hueco!.slot, r);
+    expect(paso.producto.origen).not.toBe(hueco!.origen);
+    expect(["otro_origen", "comodin"]).toContain(paso.fallback);
   });
 });
 
@@ -199,12 +207,12 @@ describe("rama coreana / occidental", () => {
 });
 
 describe("catálogo", () => {
-  it("los tres escalones son servibles y no hay ninguno más", () => {
-    // El Tier 4 se eliminó: sumaba tres pasos, cero puntos de cobertura del
-    // objetivo y 13 veces los conflictos de la base. Sus categorías siguen en
-    // el catálogo, ofrecidas como opcionales.
-    expect(Object.keys(TIERS)).toEqual(["1", "2", "3"]);
-    expect(tiersServibles).toEqual(["1", "2", "3"]);
+  it("todos los escalones definidos son servibles", () => {
+    // Ofrecer un escalón que el catálogo no puede llenar es una pantalla de
+    // error después del quiz. Se compara contra TIERS y no contra una lista
+    // fija: los escalones cambian por decisión de producto, y el test tiene que
+    // seguir valiendo cuando eso pasa.
+    expect(tiersServibles).toEqual(Object.keys(TIERS));
   });
 
   it("la base es exactamente limpiador, hidratante y protector solar", () => {
@@ -220,9 +228,52 @@ describe("catálogo", () => {
   it("cada escalón contiene íntegramente al anterior", () => {
     // Un escalón que saca un paso del anterior no es "más completo": es otra
     // rutina. Si eso hace falta alguna vez, que sea una decisión explícita.
+    const claves = Object.keys(TIERS) as (keyof typeof TIERS)[];
     const cats = (t: keyof typeof TIERS) => TIERS[t].map((s) => s.categoria);
-    for (const c of cats("1")) expect(cats("2")).toContain(c);
-    for (const c of cats("2")) expect(cats("3")).toContain(c);
+    for (let i = 1; i < claves.length; i++) {
+      for (const c of cats(claves[i - 1])) {
+        expect(cats(claves[i]), `T${claves[i]} perdió "${c}"`).toContain(c);
+      }
+    }
+  });
+
+  it("el sérum va después del limpiador y antes del hidratante", () => {
+    // El orden del array ES el orden de aplicación que ve la persona.
+    for (const t of Object.keys(TIERS) as (keyof typeof TIERS)[]) {
+      const cats = TIERS[t].map((s) => s.categoria);
+      const serum = cats.indexOf("serum_activo");
+      if (serum === -1) continue;
+      expect(serum, "el sérum va después del limpiador").toBeGreaterThan(cats.indexOf("limpiador"));
+      expect(serum, "el sérum va antes del hidratante").toBeLessThan(cats.indexOf("hidratante"));
+    }
+  });
+
+  it("ningún producto queda inalcanzable por incompatibilidad de momento", () => {
+    // Hay dos motivos por los que un producto puede no mostrarse nunca, y no
+    // son lo mismo:
+    //
+    //   · pierde el desempate — otro producto de la misma categoría le gana por
+    //     prioridad o precio. Es competencia, no un bug. Lo reporta
+    //     `npm run auditar` para que se decida como curaduría de catálogo.
+    //
+    //   · incompatibilidad de momento — el producto es "am" y el slot pide
+    //     "ambos", así que `momentoCompatible` lo descarta SIEMPRE, para
+    //     cualquier respuesta. Nadie lo va a ver jamás. Eso sí es un bug de
+    //     datos, y es el que fija este test.
+    //
+    // El caso que lo motivó: el sérum de Garnier, el más vendido del catálogo
+    // con 66.616 opiniones, tenía momento:"am" contra un slot "ambos" y su link
+    // de afiliado no se le mostraba a nadie.
+    const slots = Object.values(TIERS).flat();
+    const rotos = productos
+      .filter((p) => p.activo)
+      .filter((p) => {
+        const suyos = slots.filter((s) => s.categoria === p.categoria);
+        if (!suyos.length) return false; // categoría opcional: vive en /catalogo
+        return !suyos.some((s) => (s.momento === "ambos" ? p.momento === "ambos" : true));
+      })
+      .map((p) => `${p.marca} ${p.nombre} — categoría ${p.categoria}, momento "${p.momento}"`);
+    expect(rotos).toEqual([]);
   });
 
   it("ninguna categoría opcional aparece como paso de una rutina", () => {

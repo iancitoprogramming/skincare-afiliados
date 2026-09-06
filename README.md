@@ -58,10 +58,18 @@ definen por lo que agregan y hay sólo tres:
 ```
 1 · Base            limpiador · hidratante · protector solar
 2 · + tratamiento   + sérum activo        ← lo único que ataca el objetivo
-3 · + doble limpieza + limpiador oleoso    ← saca bien el protector de todos los días
 ```
 
-Lo que quedó afuera —tónico, exfoliante, ampolla, contorno, retinoide— **no se descarta**: vive en
+El sérum va después del limpiador y antes del hidratante: es el orden de aplicación, y el orden del
+array ES lo que ve la persona. Hay un test que lo fija.
+
+La doble limpieza tampoco quedó. Corroborado contra Cleveland Clinic (*«Double cleansing is usually
+not necessary»*, y advierte que el sobrelavado rompe la barrera) y contra la AAD, que recomienda
+**una** limpieza suave dos veces por día. Es una costumbre cultural, no una indicación — aunque
+sigue siendo buena opción para quien usa maquillaje o protector waterproof.
+
+Lo que quedó afuera —doble limpieza, tónico, exfoliante, ampolla, contorno, retinoide— **no se
+descarta**: vive en
 `/catalogo`, marcado como opcional y con el motivo escrito. Esa página además es la pieza pensada
 para compartir en redes: tarjetas verticales 2:3, que es la proporción que Pinterest muestra sin
 recortar.
