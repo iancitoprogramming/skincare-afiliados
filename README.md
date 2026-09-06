@@ -68,6 +68,8 @@ npm test          # rutina nunca vacía + reglas de compatibilidad
 npm run auditar   # recorre las 540 rutinas posibles: conflictos, inventario muerto, calidad del match
 npm run auditar -- --proyectar   # lo mismo pero como si TODO el pipeline ya estuviera activo
 npm run auditar -- --sin-evitar  # con el armado viejo, para medir cuánto aporta evitar conflictos
+npm run huecos -- --proyectar    # qué conflicto NO se puede evitar y qué producto falta
+npm run ranking-compra           # ordena los candidatos de compra por conflictos que destraban
 npm run importar-organize -- "<ruta al vault Organize>"   # reimporta el catálogo de farmacia
 npm run cobertura # qué combos caen a comodín (dónde cargar el próximo link)
 npm run gen-seed  # regenera supabase/seed.sql desde productos.ts

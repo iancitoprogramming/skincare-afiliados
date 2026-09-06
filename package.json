@@ -13,7 +13,9 @@
     "importar-vault": "tsx scripts/importar-vault.ts",
     "check-links": "tsx scripts/check-links.ts",
     "auditar": "tsx scripts/auditar-combinaciones.ts",
-    "importar-organize": "tsx scripts/importar-organize.ts"
+    "importar-organize": "tsx scripts/importar-organize.ts",
+    "huecos": "tsx scripts/huecos-compatibilidad.ts",
+    "ranking-compra": "tsx scripts/ranking-compra.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0",

@@ -516,7 +516,7 @@ export function analizarRutina(
 // hacer.
 // ─────────────────────────────────────────────────────────────────────────────
 
-const ORDEN_DE_ELECCION = [
+export const ORDEN_DE_ELECCION = [
   "serum_activo", // el tratamiento: es el motivo por el que la persona vino
   "retinoide",
   "exfoliante",
