@@ -4,7 +4,10 @@
 > sobre mezclar activos. La versión ejecutable está en `src/niches/skincare/activos.ts`; si los
 > dos se contradicen, manda este documento y el código está desactualizado.
 >
-> Última revisión: 2026-09-05.
+> **Documento hermano:** `INGREDIENTES.md` dice qué hace cada activo y con qué nivel de evidencia.
+> Éste dice qué pasa cuando se juntan.
+>
+> Última revisión: 2026-09-06 · catálogo de 72 productos.
 
 ---
 
@@ -596,13 +599,18 @@ Todo lo que sigue sale de `npm run auditar`, que recorre las **540 rutinas** que
 generar hoy (5 pieles × 4 objetivos × 3 presupuestos × 3 ramas de origen × 3 tiers servibles) y le
 pasa el motor de compatibilidad a cada una. No son estimaciones.
 
+> **Actualización 2026-09-06.** El catálogo pasó de 26 a **72 productos** con la incorporación del
+> vault *Organize* (46 productos de dermocosmética de farmacia). Los 46 nuevos entran con
+> `activo: false` porque el vault no trae link de afiliado. Los números de abajo son de lo que hoy
+> se sirve; §8.6 proyecta qué pasa cuando se activen.
+
 ### 8.1 · La buena noticia: hoy es imposible que el sitio arme una rutina peligrosa
 
-**0 conflictos de severidad "separar" en 540 rutinas.** El catálogo no tiene retinoides, no tiene
-peróxido de benzoilo, y el único exfoliante fuerte —The Ordinary Glicólico 7%— está con
+**0 conflictos de severidad "separar" en 540 rutinas.** El catálogo servible no tiene retinoides, no
+tiene peróxido de benzoilo, y el único exfoliante fuerte —The Ordinary Glicólico 7%— está con
 `activo: false`. Las incompatibilidades de la §2 son todas relevantes y ninguna es alcanzable.
 
-**Esto cambia el día que se compre el retinoide del Tier 4.** El test
+**Esto cambia el día que se activen los retinoides del pipeline.** El test
 `compatibilidad.test.ts › ninguna rutina posible tiene un conflicto de severidad 'separar'` va a
 fallar en ese momento. Es a propósito: es el recordatorio de revisar los tiers antes de publicar.
 
@@ -669,7 +677,49 @@ manifestación numérica del bloqueante B1 de `ISSUES.md`: no hay ni un solo pro
 siete del catálogo son de filtro orgánico — verificado contra el INCI de cada uno, no contra la
 etiqueta de marketing.
 
-### 8.5 · Las compras, ordenadas por lo que destraban
+### 8.5 · La proyección: qué pasa cuando se active el pipeline
+
+`npm run auditar -- --proyectar` corre la auditoría como si los 72 productos ya tuvieran link. Es la
+forma de contestar antes, y no después, la pregunta de qué se rompe al terminar el catálogo.
+
+**Tres cosas cambian, y dos son bugs que hay que arreglar antes de publicar.**
+
+**1. Se abre el Tier 4 y el motor revienta en 48 combinaciones.**
+
+El pipeline llena `retinoide`, `serum_secundario` y `exfoliante` — justamente las tres categorías que
+hoy dejan el Tier 4 fuera de servicio. En cuanto se llenan, `configServible` lo habilita, las rutinas
+posibles pasan de 540 a **672**… y 48 de ellas levantan excepción:
+
+```
+Sin comodín para la categoría "serum_secundario" (momento ambos)
+```
+
+Los 46 productos importados entran con `comodin: false`, así que el motor se queda sin última opción.
+En producción eso es una pantalla de error justo después de que la persona respondió el quiz.
+**Arreglo:** marcar `comodin: true` en un producto activo de `serum_secundario` y otro de `retinoide`.
+El auditor ahora lo chequea de entrada, en la sección COMODINES.
+
+**2. Aparece el primer conflicto grave real: 57 rutinas (8,5%) con `retinoide-x-acidos`.**
+
+Es la incompatibilidad de §2.4, y llega apenas hay retinoides en el catálogo. No es un error: es el
+motor haciendo su trabajo. Lo que hay que decidir es si el Tier 4 debe poner un retinoide y un
+exfoliante la misma noche, o si el calendario semanal alcanza para gestionarlo.
+
+| | Hoy (540 rutinas) | Proyectado (672) |
+|---|---|---|
+| Sin ningún conflicto | 71,9% | 59,5% |
+| Con al menos un aviso | 28,1% | 40,5% |
+| Con al menos un **"separar"** | **0%** | **8,5%** |
+| Niacinamida repetida | 19,6% | 28,7% |
+| Irritantes acumulados | 14,4% | 26,8% |
+
+**3. Con el link de afiliado no alcanza: 44 de 72 productos seguirían sin mostrarse nunca.**
+
+Los importados entran con `tipos_piel: []`, `preocupaciones: []` y `prioridad: 3`. Sin eso pierden
+todos los desempates y el motor no los elige jamás. **Cargar el link es necesario y no suficiente**:
+hay que completar también tipo de piel, preocupación y prioridad, producto por producto.
+
+### 8.6 · Las compras, ordenadas por lo que destraban
 
 | # | Qué comprar | Qué destraba |
 |---|---|---|

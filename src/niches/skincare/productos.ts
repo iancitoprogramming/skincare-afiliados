@@ -1,4 +1,5 @@
 import type { Producto } from "@/engine/recomendacion";
+import { productosOrganize } from "./productos.organize";
 
 // CATALOGO — fuente de verdad. Editable a mano.
 //
@@ -14,7 +15,9 @@ import type { Producto } from "@/engine/recomendacion";
 // las páginas de los fabricantes. Excepción consciente a la regla
 // "químico → mineral" de la tabla de sustitutos del vault.
 
-export const productos: Producto[] = [
+// Los 26 curados a mano: link de afiliado pegado, precio relevado, copy escrito.
+// Son los únicos que hoy pueden salir con activo:true.
+const productosCurados: Producto[] = [
   {
     // #1 · MLA21801426 · Idraet
     id: "5d221906-39be-54cf-8a4b-a8451c1bc147",
@@ -800,3 +803,16 @@ export const productos: Producto[] = [
     activo: false,
   },
 ];
+
+// El catálogo que consume la app: lo curado más lo importado del vault
+// "Club de Piel / Organize" (46 productos de dermocosmética de farmacia).
+//
+// Los importados entran TODOS con `activo: false`, porque el vault no trae link
+// de afiliado ni precio. Están acá para que existan en la base —y para que la
+// capa de activos pueda razonar sobre ellos— pero el motor no los va a servir
+// hasta que alguien complete el link. Publicar un producto que no monetiza le
+// saca el lugar a uno que sí.
+//
+// Para activar uno: pegar link_afiliado y precio_ars en productos.organize.ts,
+// escribir por_que y como_usar, y poner activo:true.
+export const productos: Producto[] = [...productosCurados, ...productosOrganize];

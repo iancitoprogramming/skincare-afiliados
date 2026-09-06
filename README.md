@@ -19,7 +19,9 @@ El motor de recomendación elige qué producto va en cada paso. El de compatibil
 los productos elegidos **funcionen juntos**, que es una pregunta distinta y la que más consultan
 los usuarios.
 
-- `docs/COMPATIBILIDAD.md` — el criterio, con fuentes. Es la fuente de verdad.
+- `docs/INGREDIENTES.md` — qué hace cada activo del catálogo, a qué concentración y con qué
+  nivel de evidencia (escala A–D). **Regla: en la landing sólo se afirma lo que está en A o B.**
+- `docs/COMPATIBILIDAD.md` — qué pasa cuando se juntan. Es la fuente de verdad del criterio.
 - `src/niches/skincare/activos.ts` — la versión ejecutable: diccionario de activos, reglas,
   sinergias, mitos y el mapa `ml_id → activos`.
 - `src/engine/compatibilidad.ts` — el motor. Agnóstico del nicho.
@@ -57,15 +59,33 @@ Abre http://localhost:3000
 ```bash
 npm test          # rutina nunca vacía + reglas de compatibilidad
 npm run auditar   # recorre las 540 rutinas posibles: conflictos, inventario muerto, calidad del match
+npm run auditar -- --proyectar   # lo mismo pero como si TODO el pipeline ya estuviera activo
+npm run importar-organize -- "<ruta al vault Organize>"   # reimporta el catálogo de farmacia
 npm run cobertura # qué combos caen a comodín (dónde cargar el próximo link)
 npm run gen-seed  # regenera supabase/seed.sql desde productos.ts
 npm run sync      # sube productos.ts a Supabase (necesita .env)
 ```
 
-`npm run auditar` es el que conviene mirar antes de cargar un producto nuevo. Responde cuatro
-preguntas que a ojo no se pueden contestar: qué conflictos de activos genera el catálogo, qué
-productos el motor no puede elegir nunca (inventario muerto con link de afiliado cargado),
-qué productos no tienen activos mapeados, y cuántos pasos se resuelven con un comodín.
+`npm run auditar` es el que conviene mirar antes de cargar un producto nuevo. Responde preguntas
+que a ojo no se pueden contestar: qué conflictos de activos genera el catálogo, qué productos el
+motor no puede elegir nunca (inventario muerto con link de afiliado cargado), qué categorías se
+quedarían sin comodín, qué productos no tienen activos mapeados, y cuántos pasos se resuelven con
+un comodín.
+
+Con `--proyectar` corre como si los 72 productos ya tuvieran link de afiliado. Sirve para ver qué
+se rompe **antes** de terminar de cargar el catálogo, no después.
+
+## Catálogo: curado + pipeline
+
+`src/niches/skincare/productos.ts` tiene los 26 productos curados a mano (link de afiliado, precio
+y copy escritos) y concatena `productos.organize.ts`, que son 46 importados del vault de Obsidian.
+
+Los importados entran **todos con `activo: false`**: el vault trae la URL de catálogo de Mercado
+Libre, no el link de afiliado. Un producto sin link no monetiza y le saca el lugar a uno que sí.
+
+Para activar uno hacen falta cuatro cosas, no una: `link_afiliado`, `tipos_piel`, `preocupaciones`
+y `prioridad`. Sólo con el link, el motor pierde todos los desempates y nunca lo elige —
+`npm run auditar -- --proyectar` lo demuestra.
 
 ## Catálogo y links a mano
 
