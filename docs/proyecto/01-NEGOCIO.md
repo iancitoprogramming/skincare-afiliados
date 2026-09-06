@@ -34,6 +34,30 @@ vuelta una vez: se afirmó que `maurobilat` era la de Ian y se le dijo que habí
 mandado dos links mal etiquetados cuando en realidad los había mandado bien.
 El handle no dice el nombre, así que va escrito acá.
 
+### Las redes
+
+| Red | Handle | Estado |
+|---|---|---|
+| Pinterest | `pinterest.com/ClubDePiel` | business · dominio verificado |
+| Instagram | `@clubdepielok` | creada · vinculada a Pinterest |
+| TikTok | `@clubdepielok` | creada |
+| YouTube | `@clubdepiel` | creada |
+| Facebook | — | falta |
+
+El handle no es igual en todas y está bien: YouTube tenía libre el corto y las
+otras no. Lo que sí es igual en las cinco es el **nombre visible**, "Club de
+Piel", que es lo que la gente ve y busca. El handle sólo importa para citarse
+entre redes, y ahí las dos que se citan —Instagram y TikTok— coinciden.
+
+La verificación de dominio de Pinterest está hecha contra `https://clubdepiel.store`
+con el método de etiqueta HTML: el código vive en Vercel como
+`NEXT_PUBLIC_PINTEREST_VERIFY` y sale en el `<head>` desde `layout.tsx`. Si
+alguna vez el sitio deja de emitir esa etiqueta, Pinterest desverifica el
+dominio y se pierden las estadísticas y los pines enriquecidos.
+
+Los textos de perfil de cada red —nombre, bio con su límite de caracteres,
+primeras piezas— están fuera del repo, en el documento de redes.
+
 ### Cómo se ve un link que paga
 
 Los links son shortlinks **`meli.la`**, generados a mano desde el panel de
