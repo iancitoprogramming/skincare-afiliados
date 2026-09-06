@@ -16,6 +16,11 @@ export const PRESUPUESTO: Record<"1" | "2" | "3", string> = {
   "3": "Lo mejor que haya",
 };
 
+// Cuántos días vale un relevamiento antes de pedir revisión. Los precios de
+// Mercado Libre se mueven, pero poner la ventana demasiado corta hace que todo
+// esté siempre vencido y que la herramienta se termine ignorando.
+export const DIAS_FRESCURA = 30;
+
 // Procedencia. Es preferencia del usuario, no filtro duro: el motor la relaja si
 // no hay cobertura en esa categoría, y la card avisa cuando eso pasa.
 export const ORIGENES: Record<string, string> = {

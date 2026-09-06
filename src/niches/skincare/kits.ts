@@ -37,6 +37,7 @@ export const KITS_UNICOS: KitUnico[] = [
     link_afiliado: "https://meli.la/33qEnHo",
     vendedor: "PeluFan",
     mas_vendido: true,
+    relevado: "2026-09-05",
   },
   {
     slug: "libra-piel-mixta",
@@ -59,6 +60,7 @@ export const KITS_UNICOS: KitUnico[] = [
     link_afiliado: "https://meli.la/2yiV43y",
     vendedor: "CarlaQ",
     mas_vendido: true,
+    relevado: "2026-09-05",
   },
 ];
 

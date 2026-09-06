@@ -50,7 +50,9 @@ precio inventado es peor que un precio ausente.
    sensible vende peor a la larga y es deshonesto.
 
 5. **Los datos que envejecen llevan fecha.** Precios, ventas y calificaciones se
-   relevaron una vez y se ponen viejos solos.
+   relevaron una vez y se ponen viejos solos. Cada producto lleva `relevado`
+   (ISO) y `npm run frescura` avisa cuál pasó los 30 días. **Al tocar cualquiera
+   de esos números, actualizar `relevado` en el mismo edit.**
 
 ## Voz
 
@@ -69,4 +71,5 @@ del rubro, no sirve. Ver `02-MARCA.md`.
 - [ ] `npx vitest run` en verde
 - [ ] `npx next build` compila
 - [ ] `npm run check-links` sin rojos
+- [ ] `npm run frescura` — o al menos saber qué está vencido y por qué
 - [ ] Si es visible, se miró en el navegador — no sólo el HTML

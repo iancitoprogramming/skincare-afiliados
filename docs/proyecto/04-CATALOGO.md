@@ -38,6 +38,7 @@ el exfoliante salió de las rutinas. Está cargado entero — alcanza con poner
   url_referencia,               // URL de browse, sólo para identificar
   por_que, como_usar,           // escritos de cero, nunca copiados de ML
   rating, opiniones, vendidos, vendidos_aprox, reputacion,
+  relevado,                     // ISO — cuándo se copiaron los números de arriba
   prioridad, comodin, activo,
 }
 ```
@@ -115,4 +116,5 @@ carpetas, acá se cuenta si el motor puede armar una rutina completa.
    - original: `D_NQ_NP_2X_<base>-F.webp`
 4. Escribir `por_que` y `como_usar` **de cero**, sin copiar la ficha de ML
 5. Decidir `tipos_piel`, `preocupaciones`, `origen`, `apto_sensible`, `prioridad`
-6. `npm run check-links` y `npx tsx scripts/cobertura.ts`
+6. Poner `relevado` con la fecha de hoy
+7. `npm run check-links`, `npm run frescura` y `npx tsx scripts/cobertura.ts`

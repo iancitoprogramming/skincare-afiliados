@@ -50,6 +50,14 @@ export interface Producto {
   vendidos_aprox?: number;
   /** "Tienda oficial" | "MercadoLíder". */
   reputacion?: string;
+  /**
+   * Fecha del último relevamiento en Mercado Libre, ISO 'YYYY-MM-DD'.
+   *
+   * Obligatoria a propósito: precio, rating, opiniones, ventas y reputación se
+   * copiaron una vez y envejecen solos. Sin fecha no hay forma de saber si el
+   * número que se está mostrando todavía es cierto. `npm run frescura` la usa.
+   */
+  relevado: string;
 
   por_que?: string;
   como_usar?: string;

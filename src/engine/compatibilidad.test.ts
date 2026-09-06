@@ -30,6 +30,7 @@ function prod(id: string, categoria: string, momento: Producto["momento"]): Prod
     link_afiliado: "https://example.test",
     prioridad: 1,
     comodin: true,
+    relevado: "2026-09-05",
     activo: true,
   };
 }

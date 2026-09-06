@@ -34,6 +34,8 @@ export interface KitUnico {
   vendidos?: string;
   vendidos_aprox?: number;
   reputacion?: string;
+  /** Fecha del último relevamiento en ML, ISO. Mismo motivo que en Producto. */
+  relevado: string;
 }
 
 export interface KitDef {

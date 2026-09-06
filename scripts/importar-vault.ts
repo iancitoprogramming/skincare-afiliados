@@ -200,6 +200,7 @@ const cuerpo = filas
       `    url_referencia: ${JSON.stringify(f.url)},`,
       '    por_que: "", // TODO: una línea nuestra, en español. No copiar al fabricante.',
       '    como_usar: "", // TODO',
+      `    relevado: "${new Date().toISOString().slice(0, 10)}",`,
       "    prioridad: 3,",
       "    comodin: false,",
       "    activo: false, // se prende cuando esté completo",
