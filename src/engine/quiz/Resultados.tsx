@@ -5,6 +5,7 @@ import type { PasoRutina as Paso, Producto } from "@/engine/recomendacion";
 import { analizarRutina } from "@/engine/compatibilidad";
 import { catalogoActivos } from "@/niches/skincare/activos";
 import { planSemanal } from "@/niches/skincare/calendario";
+import { copy } from "@/niches/skincare/copy";
 import { guardarLead } from "@/engine/tracking";
 import { resolverRutina } from "./armar";
 import { Compatibilidad } from "./Compatibilidad";
@@ -101,6 +102,9 @@ export function Resultados({
       {nota ? (
         <section className="rounded-2xl border border-niebla bg-porcelana p-5">
           <p className="font-body text-sm leading-relaxed text-tinta/85">{nota}</p>
+          <p className="mt-3 font-body text-sm leading-relaxed text-tinta/70">
+            {copy.opcionales}
+          </p>
         </section>
       ) : null}
 

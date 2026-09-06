@@ -57,15 +57,26 @@ export const copy = {
 
   // Explicación de la rama coreana / occidental. Aparece con los resultados.
   // La idea no es vender una escuela sobre la otra: es que la persona entienda
-  // qué paso está haciendo y por qué, que es lo que hace que lo sostenga.
+  // qué está usando y por qué, que es lo que hace que lo sostenga.
+  //
+  // Antes estas tres notas explicaban las escuelas a través del tónico, porque
+  // el tónico era el paso que la rama agregaba o sacaba. Ya no: un tónico es
+  // completamente opcional y no ocupa un paso en ningún tier. La diferencia
+  // real entre las dos tradiciones es de formulación, y de eso hablan ahora.
   notas: {
     coreano:
-      "El tónico es el paso que más distingue una rutina coreana. Va después de limpiar y antes de la crema, y no limpia nada: hidrata y deja la piel húmeda para que lo que viene después entre mejor. Ojo con la confusión: los tónicos occidentales de los 90 eran astringentes, con alcohol, para sacar el resto del jabón. Por eso quedaron con mala fama. Los coreanos van al revés, son de hidratar.",
+      "Las fórmulas coreanas suelen ir por texturas livianas, en capas finas, y apoyarse mucho en calmantes como la centella y el pantenol. Eso las hace cómodas de sostener, sobre todo si tenés piel grasa o reactiva. Ojo con una confusión frecuente: la rutina de diez pasos que se hizo famosa no es un requisito de nada. Los pasos que hacen el trabajo son los mismos de siempre.",
     occidental:
-      "Te la armamos sin tónico, que es el paso que en occidente no se usa. Tu rutina queda más corta y no es peor por eso: limpiar, hidratar y protegerte del sol es la base que hace el 80% del trabajo. Si alguna vez tenés ganas de probar el paso extra, rehacé el quiz eligiendo coreanos.",
+      "Te la armamos con dermocosmética de farmacia: fórmulas más directas, con el activo declarado en porcentaje y respaldo clínico detrás. Suelen ser rutinas más cortas, y no son peores por eso — limpiar, hidratar y protegerte del sol es la base que hace el 80% del trabajo.",
     mixto:
-      "Elegimos el mejor de cada paso sin mirar de dónde viene. La diferencia principal entre las dos escuelas es el tónico: en las rutinas coreanas hidrata y prepara la piel entre la limpieza y la crema; en las occidentales ese paso directamente no existe. Ninguna es mejor — la que funciona es la que hacés todos los días.",
+      "Elegimos el mejor de cada paso sin mirar de dónde viene. La diferencia entre las dos tradiciones es de formulación, no de cuántos frascos: la coreana tiende a texturas livianas y calmantes, la de farmacia a activos declarados en porcentaje. Ninguna es mejor — la que funciona es la que hacés todos los días.",
   },
+
+  // Los pasos que NO están en ninguna rutina, y por qué. Se dice de frente
+  // porque alguien que googlea "rutina coreana" va a contar los pasos y va a
+  // notar que le faltan.
+  opcionales:
+    "Vas a ver rutinas por ahí que suman tónico y exfoliante. Los dejamos afuera a propósito: ninguno de los dos es un paso necesario, los dos suman un frasco y el exfoliante además suma riesgo de irritación. Preferimos que hagas cuatro pasos todos los días antes que seis tres veces por semana.",
 
   // Bloque de combinación de activos. La promesa del sitio no es "te damos
   // productos", es "te damos productos que funcionan JUNTOS" — y eso hay que

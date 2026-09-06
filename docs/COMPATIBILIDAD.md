@@ -799,6 +799,11 @@ Las dos últimas filas son las que importan tanto como las primeras: **la calida
 movió ni un punto**. La promesa se cumplió. Como efecto lateral, los productos alcanzables subieron
 de 51 a 57: al desempatar por conflicto en vez de por precio, la selección se reparte más.
 
+> **Actualización: sacar el tónico de los tiers superó a todo lo anterior.** Las cifras de la tabla
+> son de antes de esa decisión. Con el tónico fuera —y sin comprar nada— las rutinas sin ningún
+> conflicto pasaron de 77,6% a **90,9%** en el catálogo de hoy, y de 40,7% a **55,7%** en el
+> proyectado. El match limpio *también* subió, de 53,5% a 58,7%. Ver §8ter.
+
 ### Lo que queda sin poder evitarse, y está bien
 
 `pila-retinoide` no bajó nada (6,7% en los dos modos). El motivo es sano: en Tier 4, para el
@@ -808,6 +813,54 @@ apunta a su problema, y esa es exactamente la línea que decidimos no cruzar.
 
 **Para esos casos el aviso sigue estando.** Un conflicto inevitable se explica; uno evitable no
 debería llegar a la pantalla.
+
+---
+
+## 8ter · El paso que no debía existir
+
+Antes de aflojar el criterio de desempate del motor había que contestar una pregunta: los
+conflictos que quedan, ¿son por política o por catálogo? `npm run huecos` la contestó sin
+ambigüedad: de **912 conflictos residuales, los 912 eran "sin alternativa"** — ni uno solo era un
+caso donde existía la opción limpia y perdía por prioridad. Cambiar el desempate no habría
+arreglado nada.
+
+Después, `npm run ranking-compra` probó de a uno los candidatos de compra. El primero de la lista,
+por lejos, era el producto menos vistoso de todos:
+
+| Destraba | | Producto |
+|---|---|---|
+| **226** | 24,8% | Tónico neutro sin fragancia ni mentol ni niacinamida |
+| 116 | 12,7% | Bakuchiol |
+| 44 | 4,8% | Ácido azelaico |
+| 17 | 1,9% | Protector solar mineral |
+| **−37** | −4,1% | Retinol "limpio" — **empeora** |
+
+**Y la respuesta correcta no era comprar el tónico.** Un tónico nunca es un paso necesario: es
+completamente opcional. Estaba ocupando un slot obligatorio en los tiers 2, 3 y 4, había uno solo
+en el catálogo, y por lo tanto ese único producto metía su niacinamida y su mentol en cientos de
+rutinas sin que nadie lo hubiera decidido.
+
+Salió de los tiers, con el mismo criterio con el que antes había salido el exfoliante químico.
+
+| | antes | después |
+|---|---|---|
+| Rutinas sin ningún conflicto (hoy) | 77,6% | **90,9%** |
+| Rutinas sin ningún conflicto (proyectado) | 40,7% | **55,7%** |
+| Conflictos sin alternativa (proyectado) | 912 | **604** |
+| Pasos con match limpio (hoy) | 53,5% | **58,7%** |
+| Productos en Tier 2 / 3 / 4 | 5 / 6 / 9 | **4 / 5 / 8** |
+
+Mejor que cualquier compra, gratis, y con una rutina más corta y más barata para la persona.
+
+**La lección, que vale para las próximas decisiones:** cuando una herramienta señala que un paso es
+el cuello de botella, la primera pregunta no es "qué compro para ese paso" sino **"¿ese paso tiene
+que existir?"**. La herramienta mide bien y no sabe nada de producto: puede decirte con precisión
+cuál es el agujero sin poder decirte que el agujero sobra.
+
+**El costo, que hay que decirlo:** el TIRTIR Milk Skin Toner queda como inventario muerto. Es un
+producto activo, con link de afiliado, que el motor ya no puede mostrar. Si se lo quiere seguir
+ofreciendo, el lugar correcto es un bloque de extras opcionales fuera del paso a paso — nunca
+volviéndolo obligatorio.
 
 ---
 

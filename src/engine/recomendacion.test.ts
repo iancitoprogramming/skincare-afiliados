@@ -131,19 +131,28 @@ describe("rama coreana / occidental", () => {
       (s) => !(rama.quitarCategorias?.[respuesta] ?? []).includes(s.categoria),
     );
 
-  it("si no quiere coreanos, la rutina no lleva tónico en ningún tier", () => {
-    for (const tier of tiersServibles) {
-      expect(slotsDe(tier, "no").map((s) => s.categoria)).not.toContain("tonico");
+  // Antes acá había dos tests que fijaban que la rama coreana sumaba el tónico y
+  // la occidental lo sacaba. Quedaron obsoletos por una decisión de producto: un
+  // tónico nunca es un paso necesario, así que no ocupa un slot en ningún tier.
+  // Estos dos los reemplazan, y son más fuertes: en vez de fijar dónde va el
+  // tónico, fijan que NO va a ninguna parte.
+
+  it("ningún tier incluye tónico ni exfoliante: son pasos opcionales, no esenciales", () => {
+    for (const tier of Object.keys(TIERS) as (keyof typeof TIERS)[]) {
+      const categorias = TIERS[tier].map((s) => s.categoria);
+      expect(categorias).not.toContain("tonico");
+      expect(categorias).not.toContain("exfoliante");
     }
   });
 
-  it("si quiere coreanos, el tónico sigue estando donde el tier lo tiene", () => {
-    const conTonico = tiersServibles.filter((t) =>
-      TIERS[t as keyof typeof TIERS].some((s) => s.categoria === "tonico"),
-    );
-    expect(conTonico.length).toBeGreaterThan(0);
-    for (const tier of conTonico) {
-      expect(slotsDe(tier, "si").map((s) => s.categoria)).toContain("tonico");
+  it("la rama de origen ya no agrega ni saca pasos: sólo cambia la procedencia", () => {
+    // Si alguna vez vuelve a sacar categorías, que sea una decisión explícita y
+    // no un resto de la mecánica vieja del tónico.
+    expect(rama.quitarCategorias ?? {}).toEqual({});
+    for (const tier of tiersServibles) {
+      expect(slotsDe(tier, "si").map((s) => s.categoria)).toEqual(
+        slotsDe(tier, "no").map((s) => s.categoria),
+      );
     }
   });
 

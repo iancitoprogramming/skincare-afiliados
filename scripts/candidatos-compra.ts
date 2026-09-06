@@ -40,23 +40,15 @@ function base(id: string, categoria: string, momento: Producto["momento"]): Prod
 }
 
 export const CANDIDATOS_A_COMPRAR: CandidatoDeCompra[] = [
-  {
-    razon:
-      "EL HUECO MÁS GRANDE, y no es el que uno esperaría. Hay UN SOLO tónico en todo el " +
-      "catálogo, y trae niacinamida, menta y hamamelis. Como el paso es obligatorio en Tier 2, 3 " +
-      "y 4 de la rama coreana, ese único producto se mete en cientos de rutinas arrastrando su " +
-      "niacinamida y su menta. El motor no tiene con qué reemplazarlo.",
-    queBuscar:
-      "Tónico o esencia hidratante SIN fragancia, SIN mentol y SIN niacinamida: hialurónico, " +
-      "pantenol, centella o similar. La gracia es que no aporte nada que ya venga en otro paso.",
-    producto: {
-      ...base("Tónico hidratante neutro", "tonico", "ambos"),
-      preocupaciones: ["deshidratacion"],
-      prioridad: 5,
-      comodin: true,
-    },
-    activos: ["hialuronico", "panthenol", "centella"],
-  },
+  // RESUELTO SIN COMPRAR NADA — se deja documentado porque es el mejor ejemplo
+  // de para qué sirve medir antes de comprar.
+  //
+  // El tónico salía primero en este ranking con 226 conflictos, casi el 25% del
+  // total: había uno solo en el catálogo y era obligatorio en tres tiers. La
+  // conclusión automática era "comprar otro tónico". La correcta era que un
+  // tónico nunca es un paso necesario, así que el paso salió de los tiers y el
+  // hueco desapareció solo. Salió gratis y además le acortó la rutina a la
+  // persona. Ver config.ts › TIERS.
   {
     razon:
       "Los tres retinoides del catálogo traen fragancia, y dos traen alcohol denat. Para piel " +

@@ -42,10 +42,24 @@ export const CATEGORIAS: Record<string, string> = {
 // la primera mitad de la doble limpieza, así que es de noche. El retinoide va
 // marcado "no_diario": la UI lo muestra fuera del paso a paso.
 //
-// El exfoliante químico salió de todos los tiers por decisión de producto: suma
-// costo, riesgo de irritación y un paso más, para un beneficio que no justifica
-// la fricción en rutinas pensadas para que la gente las sostenga. La categoría
-// sigue definida en CATEGORIAS por si se vuelve atrás.
+// DOS PASOS QUE NO ESTÁN, Y ES A PROPÓSITO:
+//
+// · El exfoliante químico salió por decisión de producto: suma costo, riesgo de
+//   irritación y un paso más, para un beneficio que no justifica la fricción en
+//   rutinas pensadas para que la gente las sostenga.
+//
+// · El tónico salió por el mismo criterio. Un tónico nunca es un paso necesario:
+//   es completamente opcional, y no debería ocupar un slot esencial en ningún
+//   tier. Antes estaba en los tiers 2, 3 y 4 de la rama coreana, y eso tenía dos
+//   costos: le sumaba un frasco a la rutina sin sumarle resultado, y —como el
+//   catálogo tenía un solo tónico— metía sus activos en cientos de rutinas sin
+//   que nadie lo hubiera decidido. La medición de `npm run huecos` lo puso
+//   primero en la lista de "productos a comprar" con casi el 25% de los
+//   conflictos; la respuesta correcta no era comprar otro tónico, era sacar el
+//   paso. Sacarlo salió gratis y le bajó el costo a la persona.
+//
+// Las dos categorías siguen definidas en CATEGORIAS por si se vuelven atrás, o
+// para ofrecerlas alguna vez como extra opcional fuera del paso a paso.
 export const TIERS: Record<"1" | "2" | "3" | "4", RutinaSlot[]> = {
   // Tier 1 · Base — 3 productos
   "1": [
@@ -53,28 +67,25 @@ export const TIERS: Record<"1" | "2" | "3" | "4", RutinaSlot[]> = {
     { categoria: "hidratante", momento: "ambos" },
     { categoria: "protector_solar", momento: "am" },
   ],
-  // Tier 2 · Esencial — 5 productos
+  // Tier 2 · Esencial — 4 productos
   "2": [
     { categoria: "limpiador_oleoso", momento: "pm" },
     { categoria: "limpiador", momento: "ambos" },
-    { categoria: "tonico", momento: "ambos" },
     { categoria: "hidratante", momento: "ambos" },
     { categoria: "protector_solar", momento: "am" },
   ],
-  // Tier 3 · Completo — 6 productos
+  // Tier 3 · Completo — 5 productos
   "3": [
     { categoria: "limpiador_oleoso", momento: "pm" },
     { categoria: "limpiador", momento: "ambos" },
-    { categoria: "tonico", momento: "ambos" },
     { categoria: "serum_activo", momento: "ambos" },
     { categoria: "hidratante", momento: "ambos" },
     { categoria: "protector_solar", momento: "am" },
   ],
-  // Tier 4 · Máximo — 9 productos
+  // Tier 4 · Máximo — 8 productos
   "4": [
     { categoria: "limpiador_oleoso", momento: "pm" },
     { categoria: "limpiador", momento: "ambos" },
-    { categoria: "tonico", momento: "ambos" },
     { categoria: "serum_activo", momento: "ambos" },
     { categoria: "serum_secundario", momento: "ambos" },
     { categoria: "contorno", momento: "ambos" },
@@ -152,13 +163,13 @@ export const skincareQuiz: QuizConfig = {
           value: "si",
           label: "Sí, quiero probar",
           short: "con coreanos",
-          hint: "suma el tónico, el paso más típico de esas rutinas",
+          hint: "texturas más livianas y fórmulas con calmantes",
         },
         {
           value: "no",
           label: "Prefiero lo de siempre",
           short: "sin coreanos",
-          hint: "sin tónico, un paso menos",
+          hint: "dermocosmética de farmacia",
         },
         {
           value: "tanto",
@@ -173,9 +184,9 @@ export const skincareQuiz: QuizConfig = {
       title: "¿Cuántos pasos estás dispuesta a hacer?",
       options: [
         { value: "1", label: "Lo mínimo que funcione", hint: "3 productos" },
-        { value: "2", label: "Un poco más completo", hint: "4 o 5 productos" },
-        { value: "3", label: "Rutina en serio", hint: "5 o 6 productos" },
-        { value: "4", label: "Todo el ritual", hint: "8 o 9 productos" },
+        { value: "2", label: "Un poco más completo", hint: "4 productos" },
+        { value: "3", label: "Rutina en serio", hint: "5 productos" },
+        { value: "4", label: "Todo el ritual", hint: "8 productos" },
       ],
     },
   ],
@@ -194,12 +205,9 @@ export const skincareQuiz: QuizConfig = {
         no: ["europeo", "nacional"],
         tanto: [],
       },
-      // Si no quiere coreanos, el tónico se va: en occidente ese paso no se usa.
-      // La doble limpieza NO se saca — el aceite desmaquillante también se usa
-      // acá, sólo que no se lo llama "paso 1 de 2".
-      quitarCategorias: {
-        no: ["tonico"],
-      },
+      // Ya no saca ninguna categoría. Antes la rama occidental quitaba el
+      // tónico; ahora el tónico no está en ningún tier, así que la rama es lo
+      // que siempre debió ser: una preferencia de procedencia, nada más.
       nota: {
         si: copy.notas.coreano,
         no: copy.notas.occidental,
