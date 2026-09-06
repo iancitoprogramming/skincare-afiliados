@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { analizarRutina, type CatalogoActivos } from "./compatibilidad";
+import { analizarRutina, armarRutinaEvitandoConflictos, type CatalogoActivos } from "./compatibilidad";
 import type { PasoRutina, Producto, Rutina } from "./recomendacion";
 import { armarRutina } from "./recomendacion";
 import { productos } from "../niches/skincare/productos";
@@ -14,7 +14,12 @@ const clave = (p: PasoRutina) => p.producto.ml_id ?? p.producto.id;
 // cambia el catálogo, estos tests tienen que seguir diciendo lo mismo sobre las
 // REGLAS. Los tests contra el catálogo real están más abajo y son otra cosa.
 
-function prod(id: string, categoria: string, momento: Producto["momento"]): Producto {
+function prod(
+  id: string,
+  categoria: string,
+  momento: Producto["momento"],
+  extra: Partial<Producto> = {},
+): Producto {
   return {
     id,
     ml_id: id,
@@ -32,6 +37,7 @@ function prod(id: string, categoria: string, momento: Producto["momento"]): Prod
     comodin: true,
     relevado: "2026-09-05",
     activo: true,
+    ...extra,
   };
 }
 
@@ -218,6 +224,95 @@ describe("sinergias y mitos", () => {
     expect(analisis.conflictos.some((c) => c.productos.includes("A") && c.productos.includes("B"))).toBe(
       false,
     );
+  });
+});
+
+// ── Armado que evita conflictos ─────────────────────────────────────────────
+
+describe("armarRutinaEvitandoConflictos", () => {
+  const slots = [
+    { categoria: "serum_activo", momento: "pm" as const },
+    { categoria: "exfoliante", momento: "pm" as const },
+  ];
+  const r = { piel: "normal", objetivo: "textura", presupuesto: 3 };
+
+  it("elige el candidato que no choca, teniendo dos igual de buenos", () => {
+    const serum = prod("SERUM", "serum_activo", "pm");
+    const acido = prod("ACIDO", "exfoliante", "pm");
+    const suave = prod("SUAVE", "exfoliante", "pm");
+
+    const catalogo = catalogoDe({
+      SERUM: ["retinol"],
+      ACIDO: ["aha_glicolico"], // choca con el retinol: "separar"
+      SUAVE: ["pha_gluconolactona"], // no choca
+    });
+
+    const rutina = armarRutinaEvitandoConflictos(
+      [serum, acido, suave],
+      slots,
+      r,
+      catalogo,
+      clave,
+    );
+    const elegidos = rutina.pm.map((p) => p.producto.id);
+    expect(elegidos.includes("SUAVE")).toBe(true);
+    expect(elegidos.includes("ACIDO")).toBe(false);
+    expect(analizarRutina(rutina, catalogo, clave).conflictos.length).toBe(0);
+  });
+
+  it("NO degrada la calidad del match para esquivar un conflicto", () => {
+    // El único candidato que matchea la preocupación choca. La alternativa
+    // limpia no matchea. Tiene que ganar el que matchea: esquivar un conflicto
+    // no puede costarle a la persona el producto que pidió.
+    const serum = prod("SERUM", "serum_activo", "pm");
+    const acidoQueMatchea = prod("ACIDO", "exfoliante", "pm", { preocupaciones: ["textura"] });
+    const limpioQueNoMatchea = prod("LIMPIO", "exfoliante", "pm", { preocupaciones: ["acne"] });
+
+    const catalogo = catalogoDe({
+      SERUM: ["retinol"],
+      ACIDO: ["aha_glicolico"],
+      LIMPIO: ["panthenol"],
+    });
+
+    const rutina = armarRutinaEvitandoConflictos(
+      [serum, acidoQueMatchea, limpioQueNoMatchea],
+      slots,
+      r,
+      catalogo,
+      clave,
+    );
+    const exfoliante = rutina.pm.find((p) => p.slot.categoria === "exfoliante")!;
+    expect(exfoliante.producto.id).toBe("ACIDO");
+    expect(exfoliante.fallback).toBe("match");
+  });
+
+  it("devuelve los pasos en el orden de los slots, no en el de elección", () => {
+    // Internamente el sérum activo se elige antes que el limpiador, pero la
+    // rutina que ve la persona tiene que seguir el orden de aplicación.
+    const conLimpiador = [
+      { categoria: "limpiador", momento: "ambos" as const },
+      { categoria: "serum_activo", momento: "pm" as const },
+    ];
+    const rutina = armarRutinaEvitandoConflictos(
+      [prod("LIMP", "limpiador", "ambos"), prod("SERUM", "serum_activo", "pm")],
+      conLimpiador,
+      r,
+      catalogoDe({ LIMP: [], SERUM: ["niacinamida"] }),
+      clave,
+    );
+    expect(rutina.pm.map((p) => p.slot.categoria)).toEqual(["limpiador", "serum_activo"]);
+  });
+
+  it("es determinístico: la misma entrada da la misma rutina", () => {
+    const productos = [
+      prod("SERUM", "serum_activo", "pm"),
+      prod("A", "exfoliante", "pm"),
+      prod("B", "exfoliante", "pm"),
+    ];
+    const catalogo = catalogoDe({ SERUM: ["retinol"], A: ["aha_lactico"], B: ["aha_glicolico"] });
+    const uno = armarRutinaEvitandoConflictos(productos, slots, r, catalogo, clave);
+    const dos = armarRutinaEvitandoConflictos(productos, slots, r, catalogo, clave);
+    expect(uno.pm.map((p) => p.producto.id)).toEqual(dos.pm.map((p) => p.producto.id));
   });
 });
 

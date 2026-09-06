@@ -37,7 +37,7 @@ export default async function Home() {
           <h1 className="font-display text-[2.1rem] font-medium leading-[1.06] tracking-tight text-tinta sm:text-5xl">
             {copy.home.titulo}
           </h1>
-          <p className="font-body text-base leading-relaxed text-tinta/80">{copy.home.bajada}</p>
+          <p className="font-body text-base leading-relaxed text-tinta/80">{copy.home.bajada(preguntas)}</p>
 
           <ul className="flex flex-col gap-2">
             {copy.home.bullets.map((b) => (

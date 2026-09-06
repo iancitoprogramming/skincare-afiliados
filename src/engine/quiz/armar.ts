@@ -1,6 +1,8 @@
 import type { Answers, QuizConfig } from "./types";
-import type { Producto, Rutina } from "@/engine/recomendacion";
+import type { PasoRutina, Producto, Rutina } from "@/engine/recomendacion";
 import { armarRutina } from "@/engine/recomendacion";
+import { armarRutinaEvitandoConflictos } from "@/engine/compatibilidad";
+import { catalogoActivos } from "@/niches/skincare/activos";
 
 // Traduce respuestas del quiz a una rutina. Estaba embebido en Resultados.tsx;
 // se sacó acá porque la auditoría de combinaciones (`npm run auditar`) tiene que
@@ -23,11 +25,24 @@ export interface RutinaResuelta {
   nota?: string;
 }
 
+/** Clave estable del producto para la capa de activos. */
+const clave = (p: PasoRutina) => p.producto.ml_id ?? p.producto.id;
+
 export function resolverRutina(
   config: QuizConfig,
   productos: Producto[],
   answers: Answers,
+  opciones: {
+    /**
+     * Con true (por omisión) el armado elige, dentro del mismo nivel de match,
+     * el producto que menos choca con lo ya elegido. Con false usa el motor
+     * viejo, que elige cada paso por separado — sirve para medir cuánto aporta
+     * el cuidado, que es lo que hace `npm run auditar -- --sin-evitar`.
+     */
+    evitarConflictos?: boolean;
+  } = {},
 ): RutinaResuelta {
+  const evitar = opciones.evitarConflictos ?? true;
   const rec = config.recomendacion;
   const piel = answers[rec.pielKey];
   const objetivo = answers[rec.objetivoKey];
@@ -51,8 +66,12 @@ export function resolverRutina(
 
   const slots = (rec.rutinas[variante] ?? []).filter((s) => !quitadas.includes(s.categoria));
 
+  const r = { piel, objetivo, presupuesto, origenes };
+
   return {
-    rutina: armarRutina(productos, slots, { piel, objetivo, presupuesto, origenes }),
+    rutina: evitar
+      ? armarRutinaEvitandoConflictos(productos, slots, r, catalogoActivos, clave)
+      : armarRutina(productos, slots, r),
     variante,
     bajadaPorTecho,
     piel,

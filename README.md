@@ -19,7 +19,9 @@ El motor de recomendación elige qué producto va en cada paso. El de compatibil
 los productos elegidos **funcionen juntos**, que es una pregunta distinta y la que más consultan
 los usuarios.
 
-- `docs/COMPATIBILIDAD.md` — el criterio, con fuentes. Es la fuente de verdad.
+- `docs/INGREDIENTES.md` — qué hace cada activo del catálogo, a qué concentración y con qué
+  nivel de evidencia (escala A–D). **Regla: en la landing sólo se afirma lo que está en A o B.**
+- `docs/COMPATIBILIDAD.md` — qué pasa cuando se juntan. Es la fuente de verdad del criterio.
 - `src/niches/skincare/activos.ts` — la versión ejecutable: diccionario de activos, reglas,
   sinergias, mitos y el mapa `ml_id → activos`.
 - `src/engine/compatibilidad.ts` — el motor. Agnóstico del nicho.
@@ -32,9 +34,45 @@ la otra), **pH** (orden de aplicación), **irritación** (carga acumulada, se ar
 calendario) y **redundancia** (pagar dos veces por el mismo activo). El arreglo es distinto en
 cada caso, así que meterlas en la misma bolsa da consejos inútiles.
 
+**El motor no sólo avisa: elige para no chocar.** Al armar la rutina prefiere, dentro del mismo
+nivel de match, el producto que menos conflictos genera con lo ya elegido. La regla que lo
+gobierna: *esquivar un conflicto nunca cuesta calidad de match* — si alguien pidió algo para las
+manchas, se le da algo para las manchas. Medido con `npm run auditar -- --sin-evitar`: las rutinas
+sin ningún conflicto pasan de 71,9% a 77,6%, y la calidad del match no se mueve. Ver
+`docs/COMPATIBILIDAD.md` §8bis.
+
 **Regla de carga:** ningún activo entra al mapa por inferencia. Sin INCI verificado, el producto
 va con lista vacía y el motor no dice nada de él. Una advertencia inventada cuesta lo mismo en
 credibilidad que un claim inventado.
+
+## Rutinas y catálogo: dos cosas distintas
+
+**Lo esencial son tres pasos**: limpiador, hidratante y protector solar. Todo lo demás es opcional,
+y opcional no es gratis — cada paso trae activos que pueden chocar con los de al lado.
+
+`npm run rendimiento` lo mide. Sobre las mismas respuestas, la base de 3 pasos ya cubre el objetivo
+de la persona en el **98%** de los casos; el viejo Tier 4, con 8 pasos, cubría el 100% y traía
+**13× los conflictos**. Tres frascos más para empeorar el resultado. Por eso los tiers ahora se
+definen por lo que agregan y hay sólo tres:
+
+```
+1 · Base            limpiador · hidratante · protector solar
+2 · + tratamiento   + sérum activo        ← lo único que ataca el objetivo
+```
+
+El sérum va después del limpiador y antes del hidratante: es el orden de aplicación, y el orden del
+array ES lo que ve la persona. Hay un test que lo fija.
+
+La doble limpieza tampoco quedó. Corroborado contra Cleveland Clinic (*«Double cleansing is usually
+not necessary»*, y advierte que el sobrelavado rompe la barrera) y contra la AAD, que recomienda
+**una** limpieza suave dos veces por día. Es una costumbre cultural, no una indicación — aunque
+sigue siendo buena opción para quien usa maquillaje o protector waterproof.
+
+Lo que quedó afuera —doble limpieza, tónico, exfoliante, ampolla, contorno, retinoide— **no se
+descarta**: vive en
+`/catalogo`, marcado como opcional y con el motivo escrito. Esa página además es la pieza pensada
+para compartir en redes: tarjetas verticales 2:3, que es la proporción que Pinterest muestra sin
+recortar.
 
 ## Estado
 
@@ -57,15 +95,37 @@ Abre http://localhost:3000
 ```bash
 npm test          # rutina nunca vacía + reglas de compatibilidad
 npm run auditar   # recorre las 540 rutinas posibles: conflictos, inventario muerto, calidad del match
+npm run auditar -- --proyectar   # lo mismo pero como si TODO el pipeline ya estuviera activo
+npm run auditar -- --sin-evitar  # con el armado viejo, para medir cuánto aporta evitar conflictos
+npm run huecos -- --proyectar    # qué conflicto NO se puede evitar y qué producto falta
+npm run ranking-compra           # ordena los candidatos de compra por conflictos que destraban
+npm run rendimiento              # qué aporta cada paso extra: cobertura vs conflictos vs costo
+npm run importar-organize -- "<ruta al vault Organize>"   # reimporta el catálogo de farmacia
 npm run cobertura # qué combos caen a comodín (dónde cargar el próximo link)
 npm run gen-seed  # regenera supabase/seed.sql desde productos.ts
 npm run sync      # sube productos.ts a Supabase (necesita .env)
 ```
 
-`npm run auditar` es el que conviene mirar antes de cargar un producto nuevo. Responde cuatro
-preguntas que a ojo no se pueden contestar: qué conflictos de activos genera el catálogo, qué
-productos el motor no puede elegir nunca (inventario muerto con link de afiliado cargado),
-qué productos no tienen activos mapeados, y cuántos pasos se resuelven con un comodín.
+`npm run auditar` es el que conviene mirar antes de cargar un producto nuevo. Responde preguntas
+que a ojo no se pueden contestar: qué conflictos de activos genera el catálogo, qué productos el
+motor no puede elegir nunca (inventario muerto con link de afiliado cargado), qué categorías se
+quedarían sin comodín, qué productos no tienen activos mapeados, y cuántos pasos se resuelven con
+un comodín.
+
+Con `--proyectar` corre como si los 72 productos ya tuvieran link de afiliado. Sirve para ver qué
+se rompe **antes** de terminar de cargar el catálogo, no después.
+
+## Catálogo: curado + pipeline
+
+`src/niches/skincare/productos.ts` tiene los 26 productos curados a mano (link de afiliado, precio
+y copy escritos) y concatena `productos.organize.ts`, que son 46 importados del vault de Obsidian.
+
+Los importados entran **todos con `activo: false`**: el vault trae la URL de catálogo de Mercado
+Libre, no el link de afiliado. Un producto sin link no monetiza y le saca el lugar a uno que sí.
+
+Para activar uno hacen falta cuatro cosas, no una: `link_afiliado`, `tipos_piel`, `preocupaciones`
+y `prioridad`. Sólo con el link, el motor pierde todos los desempates y nunca lo elige —
+`npm run auditar -- --proyectar` lo demuestra.
 
 ## Catálogo y links a mano
 

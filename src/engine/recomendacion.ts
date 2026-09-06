@@ -138,24 +138,89 @@ function elegibles(productos: Producto[], slot: RutinaSlot): Producto[] {
   );
 }
 
+/**
+ * Todos los candidatos del mejor nivel disponible, sin elegir todavía.
+ *
+ * Se separa de `mejorDe` porque el armado que evita conflictos necesita ver la
+ * lista entera para poder elegir otro del MISMO nivel. Ese matiz es todo el
+ * punto: esquivar un choque de activos no puede costar calidad de match. Si
+ * alguien pidió algo para las manchas, se le da algo para las manchas; entre
+ * los que sirven para las manchas, se prefiere el que no choca.
+ */
+function candidatosDe(
+  pool: Producto[],
+  r: RespuestasRutina,
+): { productos: Producto[]; fallback: NivelFallback } | null {
+  const match = pool.filter(
+    (p) => p.tipos_piel.includes(r.piel) && p.preocupaciones.includes(r.objetivo),
+  );
+  if (match.length) return { productos: match, fallback: "match" };
+
+  const sinPreoc = pool.filter((p) => p.tipos_piel.includes(r.piel));
+  if (sinPreoc.length) return { productos: sinPreoc, fallback: "sin_preocupacion" };
+
+  if (pool.length) return { productos: pool, fallback: "sin_piel" };
+  return null;
+}
+
 // Busca dentro de un conjunto ya filtrado, relajando preocupación y después tipo de piel.
 function mejorDe(
   pool: Producto[],
   r: RespuestasRutina,
 ): { producto: Producto; fallback: NivelFallback } | null {
+  const c = candidatosDe(pool, r);
+  if (!c) return null;
+  return { producto: [...c.productos].sort(ordenador(r.preferencia))[0], fallback: c.fallback };
+}
+
+/**
+ * La misma cadena de relajación que `elegirPaso`, pero devolviendo el conjunto
+ * completo de candidatos empatados en nivel, ya ordenados por el criterio de
+ * siempre. El primero es exactamente lo que devolvería `elegirPaso`.
+ */
+export function candidatosPaso(
+  productos: Producto[],
+  slot: RutinaSlot,
+  r: RespuestasRutina,
+): { productos: Producto[]; fallback: NivelFallback } {
+  const enCategoria = elegibles(productos, slot);
+  const base = enCategoria.filter((p) => p.rango_precio <= r.presupuesto);
+  const sensible = r.piel === "sensible";
+  const aptos = sensible ? base.filter((p) => p.apto_sensible) : base;
   const ordenar = ordenador(r.preferencia);
 
-  const match = pool.filter(
-    (p) => p.tipos_piel.includes(r.piel) && p.preocupaciones.includes(r.objetivo),
+  if (r.origenes?.length) {
+    const delOrigen = candidatosDe(
+      aptos.filter((p) => r.origenes!.includes(p.origen)),
+      r,
+    );
+    if (delOrigen) {
+      return { productos: [...delOrigen.productos].sort(ordenar), fallback: delOrigen.fallback };
+    }
+  }
+
+  const cualquierOrigen = candidatosDe(aptos, r);
+  if (cualquierOrigen) {
+    return {
+      productos: [...cualquierOrigen.productos].sort(ordenar),
+      fallback: r.origenes?.length ? "otro_origen" : cualquierOrigen.fallback,
+    };
+  }
+
+  if (sensible) {
+    const igual = candidatosDe(base, r);
+    if (igual) {
+      return { productos: [...igual.productos].sort(ordenar), fallback: "no_apto_sensible" };
+    }
+  }
+
+  const comodines = enCategoria.filter((p) => p.comodin);
+  if (comodines.length) return { productos: [...comodines].sort(ordenar), fallback: "comodin" };
+
+  throw new Error(
+    `Sin comodín para la categoría "${slot.categoria}" (momento ${slot.momento}). ` +
+      `Cargá un producto con comodin=true en esa categoría.`,
   );
-  if (match.length) return { producto: match.sort(ordenar)[0], fallback: "match" };
-
-  const sinPreoc = pool.filter((p) => p.tipos_piel.includes(r.piel));
-  if (sinPreoc.length)
-    return { producto: sinPreoc.sort(ordenar)[0], fallback: "sin_preocupacion" };
-
-  if (pool.length) return { producto: pool.sort(ordenar)[0], fallback: "sin_piel" };
-  return null;
 }
 
 export function elegirPaso(

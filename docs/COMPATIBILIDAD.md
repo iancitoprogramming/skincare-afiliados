@@ -4,7 +4,10 @@
 > sobre mezclar activos. La versión ejecutable está en `src/niches/skincare/activos.ts`; si los
 > dos se contradicen, manda este documento y el código está desactualizado.
 >
-> Última revisión: 2026-09-05.
+> **Documento hermano:** `INGREDIENTES.md` dice qué hace cada activo y con qué nivel de evidencia.
+> Éste dice qué pasa cuando se juntan.
+>
+> Última revisión: 2026-09-06 · catálogo de 72 productos.
 
 ---
 
@@ -596,13 +599,18 @@ Todo lo que sigue sale de `npm run auditar`, que recorre las **540 rutinas** que
 generar hoy (5 pieles × 4 objetivos × 3 presupuestos × 3 ramas de origen × 3 tiers servibles) y le
 pasa el motor de compatibilidad a cada una. No son estimaciones.
 
+> **Actualización 2026-09-06.** El catálogo pasó de 26 a **72 productos** con la incorporación del
+> vault *Organize* (46 productos de dermocosmética de farmacia). Los 46 nuevos entran con
+> `activo: false` porque el vault no trae link de afiliado. Los números de abajo son de lo que hoy
+> se sirve; §8.6 proyecta qué pasa cuando se activen.
+
 ### 8.1 · La buena noticia: hoy es imposible que el sitio arme una rutina peligrosa
 
-**0 conflictos de severidad "separar" en 540 rutinas.** El catálogo no tiene retinoides, no tiene
-peróxido de benzoilo, y el único exfoliante fuerte —The Ordinary Glicólico 7%— está con
+**0 conflictos de severidad "separar" en 540 rutinas.** El catálogo servible no tiene retinoides, no
+tiene peróxido de benzoilo, y el único exfoliante fuerte —The Ordinary Glicólico 7%— está con
 `activo: false`. Las incompatibilidades de la §2 son todas relevantes y ninguna es alcanzable.
 
-**Esto cambia el día que se compre el retinoide del Tier 4.** El test
+**Esto cambia el día que se activen los retinoides del pipeline.** El test
 `compatibilidad.test.ts › ninguna rutina posible tiene un conflicto de severidad 'separar'` va a
 fallar en ese momento. Es a propósito: es el recordatorio de revisar los tiers antes de publicar.
 
@@ -669,7 +677,49 @@ manifestación numérica del bloqueante B1 de `ISSUES.md`: no hay ni un solo pro
 siete del catálogo son de filtro orgánico — verificado contra el INCI de cada uno, no contra la
 etiqueta de marketing.
 
-### 8.5 · Las compras, ordenadas por lo que destraban
+### 8.5 · La proyección: qué pasa cuando se active el pipeline
+
+`npm run auditar -- --proyectar` corre la auditoría como si los 72 productos ya tuvieran link. Es la
+forma de contestar antes, y no después, la pregunta de qué se rompe al terminar el catálogo.
+
+**Tres cosas cambian, y dos son bugs que hay que arreglar antes de publicar.**
+
+**1. Se abre el Tier 4 y el motor revienta en 48 combinaciones.**
+
+El pipeline llena `retinoide`, `serum_secundario` y `exfoliante` — justamente las tres categorías que
+hoy dejan el Tier 4 fuera de servicio. En cuanto se llenan, `configServible` lo habilita, las rutinas
+posibles pasan de 540 a **672**… y 48 de ellas levantan excepción:
+
+```
+Sin comodín para la categoría "serum_secundario" (momento ambos)
+```
+
+Los 46 productos importados entran con `comodin: false`, así que el motor se queda sin última opción.
+En producción eso es una pantalla de error justo después de que la persona respondió el quiz.
+**Arreglo:** marcar `comodin: true` en un producto activo de `serum_secundario` y otro de `retinoide`.
+El auditor ahora lo chequea de entrada, en la sección COMODINES.
+
+**2. Aparece el primer conflicto grave real: 57 rutinas (8,5%) con `retinoide-x-acidos`.**
+
+Es la incompatibilidad de §2.4, y llega apenas hay retinoides en el catálogo. No es un error: es el
+motor haciendo su trabajo. Lo que hay que decidir es si el Tier 4 debe poner un retinoide y un
+exfoliante la misma noche, o si el calendario semanal alcanza para gestionarlo.
+
+| | Hoy (540 rutinas) | Proyectado (672) |
+|---|---|---|
+| Sin ningún conflicto | 71,9% | 59,5% |
+| Con al menos un aviso | 28,1% | 40,5% |
+| Con al menos un **"separar"** | **0%** | **8,5%** |
+| Niacinamida repetida | 19,6% | 28,7% |
+| Irritantes acumulados | 14,4% | 26,8% |
+
+**3. Con el link de afiliado no alcanza: 44 de 72 productos seguirían sin mostrarse nunca.**
+
+Los importados entran con `tipos_piel: []`, `preocupaciones: []` y `prioridad: 3`. Sin eso pierden
+todos los desempates y el motor no los elige jamás. **Cargar el link es necesario y no suficiente**:
+hay que completar también tipo de piel, preocupación y prioridad, producto por producto.
+
+### 8.6 · Las compras, ordenadas por lo que destraban
 
 | # | Qué comprar | Qué destraba |
 |---|---|---|
@@ -683,6 +733,211 @@ etiqueta de marketing.
 Ojo con el orden: **el retinoide es el #4, no el #1**, aunque sea el activo más famoso. Comprarlo
 antes que los tres primeros mete la incompatibilidad más seria del documento (§2.1, §2.4) en un
 catálogo que todavía no puede armar una rutina de piel sensible.
+
+---
+
+## 8bis · El motor no sólo avisa: elige para no chocar
+
+Durante un tiempo el motor de compatibilidad sólo miraba. Armaba la rutina paso por paso, cada uno
+por su cuenta, y después contaba qué había chocado. Eso alcanzaba mientras el catálogo no podía
+generar un choque grave. Con retinoides y vitamina C pura adentro dejó de alcanzar: **avisarle a
+alguien "esto no lo uses junto" sobre una rutina que armamos nosotros es raro, y encima es
+evitable.**
+
+### La regla que gobierna el armado
+
+> **Esquivar un conflicto nunca cuesta calidad de match.**
+
+Si alguien pidió algo para las manchas, se le da algo para las manchas. Entre los que sirven para
+las manchas, se prefiere el que no choca. El motor elige siempre dentro del **mismo nivel de
+fallback** que hubiera elegido antes — nunca degrada la respuesta para quedar prolijo.
+
+El desempate, en orden:
+
+| | Criterio | Por qué ahí |
+|---|---|---|
+| 1 | Conflictos **"separar"** | Nunca se acepta uno si hay alternativa |
+| 2 | **Prioridad** del producto | Qué tan bueno es para ese paso |
+| 3 | Conflictos **"cuidado"** | Manejables: no valen sacrificar un mejor producto |
+| 4 | Conflictos **"nota"** | Redundancia; sólo pesa si todo lo demás empata |
+| 5 | Precio | El desempate de siempre |
+
+Que "cuidado" vaya **debajo** de prioridad es la decisión más discutible de todo esto, y es
+deliberada: un aviso de "separalos por momento" se resuelve con una instrucción de una línea,
+mientras que darle a alguien un producto peor no se resuelve con nada.
+
+### El orden en que se eligen los pasos
+
+Tampoco es el orden de aplicación. Primero se eligen los pasos que **definen** la rutina —el sérum
+activo, el retinoide— sobre su propio mérito; después los pasos de soporte se acomodan alrededor.
+Al revés, un limpiador cualquiera podría condicionar qué tratamiento recibe la persona, que es
+exactamente lo contrario de lo que hay que hacer.
+
+```
+serum_activo → retinoide → exfoliante → serum_secundario → protector_solar
+→ hidratante → tonico → contorno → limpiador → limpiador_oleoso
+```
+
+La rutina se devuelve igual en el orden de aplicación: el orden de elección es interno.
+
+### Cuánto cambia
+
+`npm run auditar -- --sin-evitar` corre el armado viejo para poder medirlo.
+
+| | Catálogo de hoy | | Proyectado (72 productos) | |
+|---|---|---|---|---|
+| | sin evitar | evitando | sin evitar | evitando |
+| Rutinas sin ningún conflicto | 71,9% | **77,6%** | 34,7% | **40,7%** |
+| Con al menos un "separar" | 0% | 0% | 21,3% | **15,3%** |
+| Retinoide + ácido la misma noche | — | — | 19,2% | **9,2%** |
+| Cobre + vitamina C pura | — | — | 2,2% | **0%** |
+| Vitamina C repetida | — | — | 16,7% | **10,7%** |
+| **Pasos con match limpio** | 53,5% | **53,5%** | 61,9% | **61,9%** |
+| **Pasos resueltos por comodín** | 14,4% | **14,4%** | 12,8% | **12,8%** |
+
+Las dos últimas filas son las que importan tanto como las primeras: **la calidad del match no se
+movió ni un punto**. La promesa se cumplió. Como efecto lateral, los productos alcanzables subieron
+de 51 a 57: al desempatar por conflicto en vez de por precio, la selección se reparte más.
+
+> **Actualización: sacar el tónico de los tiers superó a todo lo anterior.** Las cifras de la tabla
+> son de antes de esa decisión. Con el tónico fuera —y sin comprar nada— las rutinas sin ningún
+> conflicto pasaron de 77,6% a **90,9%** en el catálogo de hoy, y de 40,7% a **55,7%** en el
+> proyectado. El match limpio *también* subió, de 53,5% a 58,7%. Ver §8ter.
+
+### Lo que queda sin poder evitarse, y está bien
+
+`pila-retinoide` no bajó nada (6,7% en los dos modos). El motivo es sano: en Tier 4, para el
+objetivo "manchas", el único sérum activo que matchea es el Mela B3 —que lleva retinil palmitato—
+y el slot de retinoide trae otro retinoide. Evitarlo exigiría darle a la persona un sérum que no
+apunta a su problema, y esa es exactamente la línea que decidimos no cruzar.
+
+**Para esos casos el aviso sigue estando.** Un conflicto inevitable se explica; uno evitable no
+debería llegar a la pantalla.
+
+---
+
+## 8quater · Lo esencial son tres pasos, y lo medimos
+
+Una rutina esencial son tres cosas: **limpiador, hidratante y protector solar**. Todo lo demás es
+opcional. Y "opcional" no es gratis: cada paso que se suma trae activos nuevos, y esos activos
+pueden chocar entre sí. `npm run rendimiento` compara los cuatro tiers sobre las mismas respuestas.
+
+| tier | pasos | cubre el objetivo | activos | conflictos/rutina | graves/rutina |
+|---|---|---|---|---|---|
+| **T1 · base** | 3 | **98%** | 8,5 | 0,23 | 0,00 |
+| T2 | 4 | 99% | 10,0 | 0,23 | 0,00 |
+| T3 | 5 | 100% | 13,3 | 0,82 | 0,02 |
+| **T4** | 8 | **100%** | 20,5 | **3,09** | **0,76** |
+
+Lo marginal, que es lo que decide:
+
+| | pasos | cobertura | conflictos |
+|---|---|---|---|
+| T1 → T2 | +1 | +1 punto | +0,00 |
+| T2 → T3 | +1 | +1 punto | +0,59 |
+| **T3 → T4** | **+3** | **+0 puntos** | **+2,27** |
+
+**El Tier 4 sumaba tres pasos, cero puntos de cobertura y 13 veces los conflictos de la base.** Los
+pasos que agregaba —ampolla, contorno, retinoide— no atacaban nada que la rutina no atacara ya, y
+metían activos que chocan entre sí. Le vendíamos a la persona tres frascos más para empeorarle el
+resultado.
+
+Dejó de existir como rutina. Los tiers pasaron a definirse por **lo que agregan**, no por cuántos
+frascos son:
+
+```
+1 · Base                             limpiador · hidratante · protector solar
+2 · + tratamiento                    + sérum activo
+3 · + doble limpieza                 + limpiador oleoso de noche
+```
+
+El sérum activo va antes que la doble limpieza a propósito: es lo único que ataca el objetivo de la
+persona más allá de la base. La doble limpieza no mejora ningún objetivo, pero saca bien el
+protector solar de todos los días, que es una función real que esta tabla no mide.
+
+**La doble limpieza tampoco se lo ganó.** Sobrevivió un rato como escalón 3 con el argumento de que
+"saca bien el protector solar" —una función real que la tabla de arriba no mide—. Al corroborarlo
+contra fuentes serias, el argumento no se sostuvo como **paso necesario**:
+
+- **Cleveland Clinic**, Dra. Wu, dermatóloga: *«Double cleansing is usually not necessary»*;
+  lavarse una vez bien con un limpiador suave *«is more than adequate»*. Y advierte lo contrario de
+  lo que se supone: el sobrelavado seca, irrita y rompe la barrera.
+- La misma fuente ordena las prioridades sin vueltas: hay pasos más importantes, como el
+  antioxidante y el protector solar.
+- La **American Academy of Dermatology** recomienda lavarse la cara dos veces por día con un
+  limpiador suave. Una limpieza por vez, no dos.
+- El origen del hábito es cultural —de las geishas japonesas al régimen coreano de diez pasos—,
+  no clínico.
+
+Queda la parte que sí es cierta: un limpiador oleoso saca más residuo de protector solar en una
+sola pasada que uno al agua. Eso lo vuelve **una buena opción para quien usa maquillaje resistente
+al agua o un protector muy waterproof** — no un paso de la rutina de todas. Va al catálogo.
+
+Con eso, los escalones quedan en dos:
+
+```
+1 · Base            limpiador · hidratante · protector solar
+2 · + tratamiento   + sérum activo
+```
+
+**Lo que la tabla no mide, y hay que decirlo igual.** "Cubre el objetivo" mide si algún producto de
+la rutina apunta a la preocupación elegida. No mide higiene, ni textura, ni si la persona disfruta
+la rutina — y disfrutarla es lo que hace que la sostenga. Por eso ningún paso se saca sólo por su
+número: se saca cuando el número es malo **y** además la evidencia externa no lo respalda como
+necesario. Fue el caso del tónico, del Tier 4 y de la doble limpieza.
+
+**Dónde va lo que salió.** Al catálogo navegable (`/catalogo`), marcado como opcional y con el
+motivo escrito. No es descarte: el retinoide es el activo con más evidencia para arrugas. Está
+afuera del paso a paso porque meterlo en una rutina automática, junto a un exfoliante y sin
+acompañamiento, genera más problemas que soluciones.
+
+---
+
+## 8ter · El paso que no debía existir
+
+Antes de aflojar el criterio de desempate del motor había que contestar una pregunta: los
+conflictos que quedan, ¿son por política o por catálogo? `npm run huecos` la contestó sin
+ambigüedad: de **912 conflictos residuales, los 912 eran "sin alternativa"** — ni uno solo era un
+caso donde existía la opción limpia y perdía por prioridad. Cambiar el desempate no habría
+arreglado nada.
+
+Después, `npm run ranking-compra` probó de a uno los candidatos de compra. El primero de la lista,
+por lejos, era el producto menos vistoso de todos:
+
+| Destraba | | Producto |
+|---|---|---|
+| **226** | 24,8% | Tónico neutro sin fragancia ni mentol ni niacinamida |
+| 116 | 12,7% | Bakuchiol |
+| 44 | 4,8% | Ácido azelaico |
+| 17 | 1,9% | Protector solar mineral |
+| **−37** | −4,1% | Retinol "limpio" — **empeora** |
+
+**Y la respuesta correcta no era comprar el tónico.** Un tónico nunca es un paso necesario: es
+completamente opcional. Estaba ocupando un slot obligatorio en los tiers 2, 3 y 4, había uno solo
+en el catálogo, y por lo tanto ese único producto metía su niacinamida y su mentol en cientos de
+rutinas sin que nadie lo hubiera decidido.
+
+Salió de los tiers, con el mismo criterio con el que antes había salido el exfoliante químico.
+
+| | antes | después |
+|---|---|---|
+| Rutinas sin ningún conflicto (hoy) | 77,6% | **90,9%** |
+| Rutinas sin ningún conflicto (proyectado) | 40,7% | **55,7%** |
+| Conflictos sin alternativa (proyectado) | 912 | **604** |
+| Pasos con match limpio (hoy) | 53,5% | **58,7%** |
+| Productos en Tier 2 / 3 / 4 | 5 / 6 / 9 | **4 / 5 / 8** |
+
+Mejor que cualquier compra, gratis, y con una rutina más corta y más barata para la persona.
+
+**La lección, que vale para las próximas decisiones:** cuando una herramienta señala que un paso es
+el cuello de botella, la primera pregunta no es "qué compro para ese paso" sino **"¿ese paso tiene
+que existir?"**. La herramienta mide bien y no sabe nada de producto: puede decirte con precisión
+cuál es el agujero sin poder decirte que el agujero sobra.
+
+**El costo, que hay que decirlo:** el TIRTIR Milk Skin Toner queda como inventario muerto. Es un
+producto activo, con link de afiliado, que el motor ya no puede mostrar. Si se lo quiere seguir
+ofreciendo, el lugar correcto es un bloque de extras opcionales fuera del paso a paso — nunca
+volviéndolo obligatorio.
 
 ---
 

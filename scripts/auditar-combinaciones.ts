@@ -12,7 +12,7 @@
 // Correr con:  npm run auditar
 // Sólo lee. No toca ningún archivo.
 
-import { skincareQuiz } from "../src/niches/skincare/config";
+import { skincareQuiz, CATEGORIAS_OPCIONALES } from "../src/niches/skincare/config";
 import { productos } from "../src/niches/skincare/productos";
 import { catalogoActivos } from "../src/niches/skincare/activos";
 import { planSemanal } from "../src/niches/skincare/calendario";
@@ -24,9 +24,26 @@ import type { PasoRutina } from "../src/engine/recomendacion";
 
 const clave = (p: PasoRutina) => p.producto.ml_id ?? p.producto.id;
 
+// ── Modo proyección ─────────────────────────────────────────────────────────
+//
+//   npm run auditar -- --proyectar
+//
+// Corre la auditoría como si TODO el pipeline ya estuviera activo. Sirve para
+// contestar una pregunta que de otra forma se contesta tarde: ¿qué conflictos
+// van a aparecer cuando terminemos de cargar los links de afiliado?
+//
+// Importa porque el pipeline trae retinoides y vitamina C pura, y ésas son las
+// dos familias que activan las incompatibilidades serias de docs/COMPATIBILIDAD.md.
+// Hoy el catálogo no puede generar una rutina con un conflicto grave; en cuanto
+// se activen esos productos, sí va a poder.
+const PROYECTAR = process.argv.includes("--proyectar");
+/** Apaga el armado que evita conflictos, para medir cuánto aporta. */
+const SIN_EVITAR = process.argv.includes("--sin-evitar");
+const catalogo = PROYECTAR ? productos.map((p) => ({ ...p, activo: true })) : productos;
+
 // La config que ve el usuario, no la teórica: `configServible` recorta los tiers
 // que el catálogo no puede llenar. Auditar la teórica daría números que nadie ve.
-const config = configServible(skincareQuiz, productos);
+const config = configServible(skincareQuiz, catalogo);
 
 const valoresDe = (urlKey: string) =>
   config.questions.find((q) => q.urlKey === urlKey)?.options.map((o) => o.value) ?? [];
@@ -58,6 +75,8 @@ interface Fila {
 }
 
 const filas: Fila[] = [];
+/** Combinaciones que hacen reventar al motor. En producción son pantalla de error. */
+const reventadas: string[] = [];
 
 for (const piel of pieles) {
   for (const objetivo of objetivos) {
@@ -72,7 +91,19 @@ for (const piel of pieles) {
           };
           if (rec.rama && ramaValor) answers[rec.rama.key] = ramaValor;
 
-          const resuelta = resolverRutina(config, productos, answers);
+          // `elegirPaso` levanta excepción si una categoría no tiene comodín.
+          // En producción eso es una pantalla de error justo después de que la
+          // persona respondió el quiz, así que acá se captura y se reporta como
+          // hallazgo en vez de cortar la auditoría.
+          let resuelta;
+          try {
+            resuelta = resolverRutina(config, catalogo, answers, { evitarConflictos: !SIN_EVITAR });
+          } catch (e) {
+            reventadas.push(
+              `${piel} · ${objetivo} · $${presupuesto} · ${ramaValor} · T${tier}: ${(e as Error).message}`,
+            );
+            continue;
+          }
           const analisis = analizarRutina(resuelta.rutina, catalogoActivos, clave);
           const pasos = [...resuelta.rutina.am, ...resuelta.rutina.pm];
 
@@ -102,11 +133,46 @@ const pct = (n: number) => `${((n / filas.length) * 100).toFixed(1)}%`;
 
 linea("═".repeat(78));
 linea(`AUDITORÍA DE COMBINACIONES · ${filas.length} rutinas posibles`);
+linea(`modo: ${PROYECTAR ? "PROYECTADO (todo el pipeline activo)" : "catálogo servible de hoy"} · armado: ${SIN_EVITAR ? "SIN evitar conflictos" : "evitando conflictos"}`);
 linea(
   `${pieles.length} pieles × ${objetivos.length} objetivos × ${presupuestos.length} presupuestos ` +
     `× ${ramas.length} ramas × ${tiers.length} tiers`,
 );
 linea("═".repeat(78));
+
+// 0 · Lo que revienta. Va primero porque es lo único que la persona ve como
+// pantalla de error, y ninguna otra métrica importa si esto no está en cero.
+if (reventadas.length) {
+  linea();
+  linea("── ⛔ COMBINACIONES QUE REVIENTAN ".padEnd(78, "─"));
+  linea(`  ${reventadas.length} combinaciones levantan excepción.`);
+  const porMensaje = new Map<string, number>();
+  for (const r of reventadas) {
+    const msg = r.split(": ").slice(1).join(": ");
+    porMensaje.set(msg, (porMensaje.get(msg) ?? 0) + 1);
+  }
+  for (const [msg, n] of [...porMensaje].sort((a, b) => b[1] - a[1])) {
+    linea(`    ${String(n).padStart(4)} × ${msg}`);
+  }
+  linea(`  Ejemplo: ${reventadas[0]}`);
+}
+
+// 0b · Comodines. Toda categoría usada por algún tier necesita al menos un
+// producto activo con comodin:true, o el motor no tiene con qué cerrar el paso.
+linea();
+linea("── COMODINES ".padEnd(78, "─"));
+const categoriasUsadas = new Set(
+  Object.values(config.recomendacion.rutinas).flat().map((s) => s.categoria),
+);
+const sinComodin = [...categoriasUsadas].filter(
+  (c) => !catalogo.some((p) => p.activo && p.categoria === c && p.comodin),
+);
+if (sinComodin.length) {
+  linea(`  ⛔ Categorías SIN comodín activo: ${sinComodin.join(", ")}`);
+  linea("     Marcá comodin:true en un producto activo de cada una antes de publicar.");
+} else {
+  linea("  Todas las categorías de los tiers tienen comodín. El motor no puede quedarse sin opción.");
+}
 
 // 1 · Conflictos
 linea();
@@ -145,18 +211,31 @@ for (const piel of pieles) {
 linea();
 linea("── INVENTARIO ".padEnd(78, "─"));
 const alcanzables = new Set(filas.flatMap((f) => f.productos));
-const activosDelCatalogo = productos.filter((p) => p.activo);
-const muertos = activosDelCatalogo.filter((p) => !alcanzables.has(p.ml_id ?? p.id));
+const activosDelCatalogo = catalogo.filter((p) => p.activo);
+const opcionales = new Set<string>(CATEGORIAS_OPCIONALES);
+const noElegidos = activosDelCatalogo.filter((p) => !alcanzables.has(p.ml_id ?? p.id));
+// Dos cosas muy distintas que antes se reportaban juntas:
+//   · categoría opcional — el quiz no lo ofrece a propósito, pero se vende en
+//     /catalogo. No es inventario muerto: es la decisión de producto funcionando.
+//   · pierde el desempate — está en una categoría que SÍ es paso de rutina y
+//     aun así nunca gana. Eso sí es plata parada y hay que decidir qué hacer.
+const enCatalogo = noElegidos.filter((p) => opcionales.has(p.categoria));
+const muertos = noElegidos.filter((p) => !opcionales.has(p.categoria));
 linea(`  Productos activos en el catálogo: ${activosDelCatalogo.length}`);
-linea(`  Alcanzables por alguna combinación: ${alcanzables.size}`);
+linea(`  Alcanzables por el quiz: ${alcanzables.size}`);
+linea(`  De categoría opcional — se venden en /catalogo, no en el quiz: ${enCatalogo.length}`);
+for (const p of enCatalogo) linea(`    · ${p.marca} ${p.nombre} (${p.categoria})`);
 if (muertos.length) {
-  linea(`  NUNCA se muestran (${muertos.length}):`);
+  linea(`  ⚠️  PIERDEN SIEMPRE el desempate y nadie los ve (${muertos.length}):`);
   for (const p of muertos) {
     linea(`    · ${p.marca} ${p.nombre}`);
-    linea(`      categoría ${p.categoria} · momento "${p.momento}" · ${p.ml_id}`);
+    linea(
+      `      categoría ${p.categoria} · momento "${p.momento}" · prioridad ${p.prioridad} · ${p.ml_id}`,
+    );
   }
+  linea("     Se arregla subiendo su prioridad, o sacándolos del catálogo.");
 } else {
-  linea("  Todos los productos activos son alcanzables.");
+  linea("  Ningún producto de una categoría de rutina queda sin mostrarse.");
 }
 
 // 3 · Cobertura de la capa de activos
@@ -177,6 +256,33 @@ for (const ids of Object.values(catalogoActivos.porProducto)) {
   for (const id of ids) if (!catalogoActivos.activos[id]) huerfanos.add(id);
 }
 linea(`  Ids de activo sin definición: ${huerfanos.size ? [...huerfanos].join(", ") : "ninguno"}`);
+
+// 3b · Pipeline: lo que está cargado pero todavía no se sirve.
+linea();
+linea("── PIPELINE (activo:false) ".padEnd(78, "─"));
+const inactivos = productos.filter((p) => !p.activo);
+linea(`  Productos cargados pero no servibles: ${inactivos.length}`);
+const faltaLink = inactivos.filter((p) => !p.link_afiliado);
+const faltaPiel = inactivos.filter((p) => !p.tipos_piel.length);
+const faltaPreoc = inactivos.filter((p) => !p.preocupaciones.length);
+const conActivos = inactivos.filter((p) => (catalogoActivos.porProducto[p.ml_id!] ?? []).length > 0);
+linea(`    sin link de afiliado (no monetizan): ${faltaLink.length}`);
+linea(`    sin tipos de piel declarados:        ${faltaPiel.length}`);
+linea(`    sin preocupaciones declaradas:       ${faltaPreoc.length}`);
+linea(`    CON activos ya mapeados:             ${conActivos.length}`);
+const porCatInactivo = new Map<string, number>();
+for (const p of inactivos) porCatInactivo.set(p.categoria, (porCatInactivo.get(p.categoria) ?? 0) + 1);
+linea("  Por categoría:");
+for (const [c, n] of [...porCatInactivo].sort((a, b) => b[1] - a[1])) {
+  const activosHoy = productos.filter((p) => p.activo && p.categoria === c).length;
+  linea(`    ${c.padEnd(18)} ${String(n).padStart(3)} en pipeline · ${activosHoy} activos hoy`);
+}
+// Categorías que hoy no tienen NADA activo y el pipeline destrabaría.
+const conStockActivo = new Set(productos.filter((p) => p.activo).map((p) => p.categoria));
+const destraba = [...porCatInactivo.keys()].filter((c) => !conStockActivo.has(c));
+linea(
+  `  Categorías que hoy están vacías y el pipeline destrabaría: ${destraba.length ? destraba.join(", ") : "ninguna"}`,
+);
 
 // 4 · Fallbacks
 linea();
@@ -237,7 +343,7 @@ if (peores.length) {
   const peor = peores[0];
   linea();
   linea(`  La peor, paso por paso — ${peor.etiqueta}:`);
-  const resuelta = resolverRutina(config, productos, peor.answers);
+  const resuelta = resolverRutina(config, catalogo, peor.answers);
   const analisis = analizarRutina(resuelta.rutina, catalogoActivos, clave);
   const vistos = new Set<string>();
   for (const paso of [...resuelta.rutina.am, ...resuelta.rutina.pm]) {
