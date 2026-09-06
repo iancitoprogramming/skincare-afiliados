@@ -80,6 +80,7 @@ async function main() {
   }
 
   const total = [...porCuenta.values()].reduce((n, xs) => n + xs.length, 0);
+  const totalItems = productos.length + KITS_UNICOS.length;
 
   console.log(`\n${items.length} links · ${total} resueltos\n`);
   console.log("REPARTO");
@@ -88,16 +89,33 @@ async function main() {
     console.log(`  ${c.padEnd(18)} ${String(xs.length).padStart(3)}  ${pct}%  ${"█".repeat(Math.round(pct / 3))}`);
   }
 
-  // Con dos cuentas, parejo es la mitad para cada una. La diferencia es cuántos
-  // links habría que pasar de la que tiene de más a la que tiene de menos.
+  // El consejo tiene que contar los que TODAVÍA no tienen link: son los que se
+  // pueden repartir sin regenerar nada. Ignorarlos hace recomendar mover links
+  // ya cargados cuando alcanzaba con asignar bien los que faltan.
+  //
+  // Y con un total impar no existe el empate exacto: lo parejo es ceil/floor.
   if (porCuenta.size === 2) {
     const [[c1, a], [c2, b]] = [...porCuenta].sort((x, y) => y[1].length - x[1].length);
-    const mover = Math.floor((a.length - b.length) / 2);
-    console.log(
-      mover > 0
-        ? `\nPara emparejar: pasar ${mover} link(s) de ${c1} a ${c2}.`
-        : "\nEstá parejo.",
-    );
+    const pendientes = totalItems - total;
+    const alto = Math.ceil(totalItems / 2);
+    const bajo = Math.floor(totalItems / 2);
+
+    console.log(`
+${pendientes} sin link todavía · al completar serían ${totalItems}`);
+    console.log(`Reparto parejo posible: ${alto} / ${bajo}`);
+
+    const faltanAlMenor = bajo - b.length;
+    if (faltanAlMenor >= 0 && faltanAlMenor <= pendientes) {
+      const alOtro = pendientes - faltanAlMenor;
+      console.log(`
+Alcanza con repartir los pendientes, sin regenerar nada:`);
+      console.log(`  ${faltanAlMenor} para ${c2}`);
+      if (alOtro) console.log(`  ${alOtro} para ${c1}`);
+    } else {
+      const mover = Math.ceil((a.length - b.length - pendientes) / 2);
+      console.log(`
+No alcanza con los pendientes: hay que mover ${mover} de ${c1} a ${c2}.`);
+    }
   }
 
   // Cambios respecto de lo guardado en el catálogo: es lo que delata que un link
