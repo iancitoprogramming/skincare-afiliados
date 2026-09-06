@@ -46,7 +46,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: true,
     rango_precio: 3, // provisional, por marca
-    link_afiliado: "", // TODO: sin esto el producto NO monetiza
+    link_afiliado: "https://meli.la/1LRTaMn",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA23143346",
     relevado: "2026-09-06",
     prioridad: 5,
@@ -68,7 +68,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 2, // provisional, por marca
-    link_afiliado: "", // TODO: sin esto el producto NO monetiza
+    link_afiliado: "https://meli.la/1D8LvKN",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA21174873",
     relevado: "2026-09-06",
     prioridad: 4,
@@ -203,7 +203,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 2, // provisional, por marca
-    link_afiliado: "https://meli.la/1ZuPt7D",
+    link_afiliado: "https://meli.la/2PQYHsi",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA9196384",
     relevado: "2026-09-06",
     prioridad: 4,
@@ -248,7 +248,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: true,
     rango_precio: 1, // provisional, por marca
-    link_afiliado: "", // TODO: sin esto el producto NO monetiza
+    link_afiliado: "https://meli.la/2EeBV4a",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA20546060",
     relevado: "2026-09-06",
     prioridad: 3,
@@ -270,7 +270,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: true,
     rango_precio: 2, // provisional, por marca
-    link_afiliado: "", // TODO: sin esto el producto NO monetiza
+    link_afiliado: "https://meli.la/1rfMXV1",
     url_referencia: "https://www.mercadolibre.com.ar/up/MLAU141343879",
     relevado: "2026-09-06",
     prioridad: 4,
@@ -293,7 +293,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 2, // provisional, por marca
-    link_afiliado: "", // TODO: sin esto el producto NO monetiza
+    link_afiliado: "https://meli.la/2mjSuZ3",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA37349507",
     relevado: "2026-09-06",
     prioridad: 4,
@@ -316,7 +316,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 1, // provisional, por marca
-    link_afiliado: "", // TODO: sin esto el producto NO monetiza
+    link_afiliado: "https://meli.la/2hh95rn",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA47671534",
     relevado: "2026-09-06",
     prioridad: 3,
@@ -381,7 +381,7 @@ export const productosOrganize: Producto[] = [
     origen: "coreano",
     apto_sensible: true,
     rango_precio: 2, // provisional, por marca
-    link_afiliado: "", // TODO: sin esto el producto NO monetiza
+    link_afiliado: "https://meli.la/2enTXSc",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA35427636",
     relevado: "2026-09-06",
     prioridad: 4,
@@ -404,7 +404,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: true,
     rango_precio: 3, // provisional, por marca
-    link_afiliado: "", // TODO: sin esto el producto NO monetiza
+    link_afiliado: "https://meli.la/2XbQBQ8",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA20030752",
     relevado: "2026-09-06",
     prioridad: 5,
@@ -449,7 +449,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 2, // provisional, por marca
-    link_afiliado: "", // TODO: sin esto el producto NO monetiza
+    link_afiliado: "https://meli.la/1xyAzGu",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA19504960",
     relevado: "2026-09-06",
     prioridad: 4,
@@ -472,7 +472,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 3, // provisional, por marca
-    link_afiliado: "https://meli.la/1ZFq8kv",
+    link_afiliado: "https://meli.la/1pVjW5o",
     url_referencia: "https://www.mercadolibre.com.ar/up/MLAU3133622625",
     relevado: "2026-09-06",
     prioridad: 5,
@@ -518,7 +518,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 3, // provisional, por marca
-    link_afiliado: "https://meli.la/1SbSS1d",
+    link_afiliado: "https://meli.la/2AgbA84",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA58897902",
     relevado: "2026-09-06",
     prioridad: 5,
@@ -564,7 +564,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 2, // provisional, por marca
-    link_afiliado: "https://meli.la/2cPjGb7",
+    link_afiliado: "https://meli.la/2zvq95Y",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA58622882",
     relevado: "2026-09-06",
     prioridad: 4,
@@ -586,7 +586,7 @@ export const productosOrganize: Producto[] = [
     origen: "nacional",
     apto_sensible: false,
     rango_precio: 2, // provisional, por marca
-    link_afiliado: "", // TODO: sin esto el producto NO monetiza
+    link_afiliado: "https://meli.la/2XtPwss",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA20021768",
     relevado: "2026-09-06",
     prioridad: 3,
@@ -652,7 +652,7 @@ export const productosOrganize: Producto[] = [
     origen: "nacional",
     apto_sensible: true,
     rango_precio: 2, // provisional, por marca
-    link_afiliado: "", // TODO: sin esto el producto NO monetiza
+    link_afiliado: "https://meli.la/1Sgtcvw",
     url_referencia: "https://www.mercadolibre.com.ar/up/MLAU1655818860",
     relevado: "2026-09-06",
     prioridad: 4,
@@ -698,7 +698,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 3, // provisional, por marca
-    link_afiliado: "https://meli.la/1ZrSnwH",
+    link_afiliado: "https://meli.la/1XJg8Nt",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA47223033",
     relevado: "2026-09-06",
     prioridad: 4,
@@ -811,7 +811,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 3, // provisional, por marca
-    link_afiliado: "https://meli.la/1FxfS3a",
+    link_afiliado: "https://meli.la/2rXvDa4",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA26197969",
     relevado: "2026-09-06",
     prioridad: 4,
@@ -834,7 +834,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 3, // provisional, por marca
-    link_afiliado: "", // TODO: sin esto el producto NO monetiza
+    link_afiliado: "https://meli.la/1V91gHN",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA24840827",
     relevado: "2026-09-06",
     prioridad: 5,
@@ -879,7 +879,7 @@ export const productosOrganize: Producto[] = [
     origen: "nacional",
     apto_sensible: false,
     rango_precio: 2, // provisional, por marca
-    link_afiliado: "", // TODO: sin esto el producto NO monetiza
+    link_afiliado: "https://meli.la/1KU9QZY",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA45991792",
     relevado: "2026-09-06",
     prioridad: 3,
@@ -924,7 +924,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: true,
     rango_precio: 2, // provisional, por marca
-    link_afiliado: "", // TODO: sin esto el producto NO monetiza
+    link_afiliado: "https://meli.la/2iXjeCp",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA18964459",
     relevado: "2026-09-06",
     prioridad: 4,
@@ -947,7 +947,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 1, // provisional, por marca
-    link_afiliado: "https://meli.la/1UvkbhZ",
+    link_afiliado: "https://meli.la/17ssJ5t",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA22655637",
     relevado: "2026-09-06",
     prioridad: 3,
@@ -968,7 +968,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: true,
     rango_precio: 1, // provisional, por marca
-    link_afiliado: "https://meli.la/11cMuNn",
+    link_afiliado: "https://meli.la/2af2zRS",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA18956615",
     relevado: "2026-09-06",
     prioridad: 3,
@@ -991,7 +991,7 @@ export const productosOrganize: Producto[] = [
     origen: "coreano",
     apto_sensible: false,
     rango_precio: 2, // provisional, por marca
-    link_afiliado: "", // TODO: sin esto el producto NO monetiza
+    link_afiliado: "https://meli.la/2xDfY4m",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA38719413",
     relevado: "2026-09-06",
     prioridad: 4,

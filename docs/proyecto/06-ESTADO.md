@@ -9,7 +9,7 @@ _Corte: 2026-09-06_
 | Producción | `skincare-afiliados.vercel.app` |
 | Páginas estáticas | 69 |
 | Productos en catálogo | 72 · 25 activos + 2 kits de compra única |
-| Links que monetizan | 28 activos + 22 cargados · 23 pendientes |
+| Links que monetizan | 64 de 73 · 9 pendientes |
 | Tests | 56 en verde |
 | Tiers servibles | 1 y 2 (son los dos que existen) |
 
@@ -45,7 +45,7 @@ en alta están en `assets/productos/`.
 
 ## Pendiente de catálogo
 
-- **46 productos sin link de afiliado** → `npm run links-pendientes` los lista
+- **9 productos sin link de afiliado** → `npm run links-pendientes` los lista
 - **Protector solar mineral** → o renombrar la carpeta del vault
 - **Producto barato**: limpiador y protector abajo de $35.000
 - **Los coreanos casi no tienen prueba social** → buscar las mismas publicaciones
