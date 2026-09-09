@@ -1,19 +1,28 @@
-// Resuelve cada link de afiliado a la cuenta que cobra, y reporta el reparto.
+// Audita que todos los links de afiliado salgan de la cuenta principal.
 //
-//   npm run cuentas            sólo reporta
-//   npm run cuentas -- --guardar   además escribe `cuenta` en el catálogo
+//   npm run cuentas                 sólo reporta · sale 1 si hay alguno fuera
+//   npm run cuentas -- --guardar    además escribe `cuenta` en el catálogo
 //
 // Existe porque un shortlink meli.la no dice a quién le paga: hay que seguir el
-// redirect hasta /social/<cuenta>. Sin esto, el reparto entre las dos cuentas es
-// invisible, y regenerar un link puede moverlo de una a otra sin que se note.
+// redirect hasta /social/<cuenta>. Un link de otra cuenta monetiza igual, la
+// página funciona igual y nadie lo nota — lo que falla es más arriba, en que la
+// comisión se acredita a una cuenta que no declaró este sitio como Medio.
 //
-// Ya pasó: 8 productos cambiaron de goldenvalhalla a maurobilat al recargar los
-// links, y nadie lo vio hasta contarlos.
+// ANTES ESTE SCRIPT MEDÍA OTRA COSA. Reportaba el reparto entre dos cuentas y
+// aconsejaba cómo emparejarlas. Esa pregunta murió el 8/9/2026: soporte del
+// Programa indicó que un mismo proyecto opera con una sola cuenta afiliada, así
+// que no hay reparto que medir, y el consejo viejo —"mover N de una a otra"—
+// pasó a ser exactamente al revés de lo que hay que hacer. Ver 07-AFILIADOS.md.
+//
+// Ya pasó que 8 productos cambiaran de cuenta al recargar los links sin que
+// nadie lo viera hasta contarlos; por eso el chequeo sigue existiendo, sólo que
+// ahora tiene una respuesta correcta en vez de un reparto deseable.
 
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { productos } from "../src/niches/skincare/productos";
 import { KITS_UNICOS } from "../src/niches/skincare/kits";
+import { CUENTA_PRINCIPAL } from "../src/lib/links";
 
 const GUARDAR = process.argv.includes("--guardar");
 
@@ -80,42 +89,36 @@ async function main() {
   }
 
   const total = [...porCuenta.values()].reduce((n, xs) => n + xs.length, 0);
-  const totalItems = productos.length + KITS_UNICOS.length;
 
-  console.log(`\n${items.length} links · ${total} resueltos\n`);
-  console.log("REPARTO");
-  for (const [c, xs] of [...porCuenta].sort((a, b) => b[1].length - a[1].length)) {
-    const pct = Math.round((xs.length / total) * 100);
-    console.log(`  ${c.padEnd(18)} ${String(xs.length).padStart(3)}  ${pct}%  ${"█".repeat(Math.round(pct / 3))}`);
-  }
+  const fuera = items.filter((it) => {
+    const c = resueltas.get(it.ml_id);
+    return c !== undefined && c !== CUENTA_PRINCIPAL;
+  });
 
-  // El consejo tiene que contar los que TODAVÍA no tienen link: son los que se
-  // pueden repartir sin regenerar nada. Ignorarlos hace recomendar mover links
-  // ya cargados cuando alcanzaba con asignar bien los que faltan.
-  //
-  // Y con un total impar no existe el empate exacto: lo parejo es ceil/floor.
-  if (porCuenta.size === 2) {
-    const [[c1, a], [c2, b]] = [...porCuenta].sort((x, y) => y[1].length - x[1].length);
-    const pendientes = totalItems - total;
-    const alto = Math.ceil(totalItems / 2);
-    const bajo = Math.floor(totalItems / 2);
+  console.log(`
+${items.length} links · ${total} resueltos
+`);
+
+  if (!fuera.length) {
+    console.log(`Los ${total} salen de ${CUENTA_PRINCIPAL}. No hay nada que corregir.`);
+  } else {
+    console.log(`  ${CUENTA_PRINCIPAL.padEnd(18)} ${String(total - fuera.length).padStart(3)}`);
+    for (const [c, xs] of [...porCuenta].filter(([c]) => c !== CUENTA_PRINCIPAL)) {
+      console.log(`  ${c.padEnd(18)} ${String(xs.length).padStart(3)}  <- regenerar`);
+    }
 
     console.log(`
-${pendientes} sin link todavía · al completar serían ${totalItems}`);
-    console.log(`Reparto parejo posible: ${alto} / ${bajo}`);
+FUERA DE ${CUENTA_PRINCIPAL.toUpperCase()} — ${fuera.length}:`);
+    for (const it of fuera)
+      console.log(`  ${it.ml_id}  paga a ${resueltas.get(it.ml_id)}
+      ${it.etiqueta}`);
 
-    const faltanAlMenor = bajo - b.length;
-    if (faltanAlMenor >= 0 && faltanAlMenor <= pendientes) {
-      const alOtro = pendientes - faltanAlMenor;
-      console.log(`
-Alcanza con repartir los pendientes, sin regenerar nada:`);
-      console.log(`  ${faltanAlMenor} para ${c2}`);
-      if (alOtro) console.log(`  ${alOtro} para ${c1}`);
-    } else {
-      const mover = Math.ceil((a.length - b.length - pendientes) / 2);
-      console.log(`
-No alcanza con los pendientes: hay que mover ${mover} de ${c1} a ${c2}.`);
-    }
+    console.log(
+      `
+Se regeneran en el panel de Afiliados de ${CUENTA_PRINCIPAL} y se aplican con:` +
+        `
+  npm run links-pendientes && npm run links-aplicar`,
+    );
   }
 
   // Cambios respecto de lo guardado en el catálogo: es lo que delata que un link
@@ -157,6 +160,11 @@ No alcanza con los pendientes: hay que mover ${mover} de ${c1} a ${c2}.`);
     console.log("\n(sólo lectura — para escribirlo en el catálogo: npm run cuentas -- --guardar)\n");
   }
 
+
+  // Sale 1 para que sirva de compuerta, igual que check-links. Un link que no
+  // se pudo resolver cuenta como problema: no saber a quién le paga es lo mismo
+  // que saber que le paga mal.
+  if (fuera.length || sinResolver.length) process.exit(1);
 }
 
 main();

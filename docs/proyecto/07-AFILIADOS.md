@@ -48,9 +48,11 @@ Los pasos:
 2. Confirmar que el perfil social de ML de `maurobilat` siga branded "Club de
    Piel". La cláusula 3.3 permite configurarlo y aclara que no da derechos
    exclusivos.
-3. `npm run cuentas` cambia de trabajo: deja de medir equidad entre dos cuentas y
-   pasa a auditar que los 73 resuelvan a la misma. Un link que se cuele de la
-   otra es exactamente el error invisible que ese script sabe encontrar.
+3. `npm run cuentas` ya cambió de trabajo: dejó de medir equidad entre dos
+   cuentas y audita que los 73 resuelvan a `maurobilat`. Nombra al que se salga,
+   dice a qué cuenta le paga, y **sale con código 1** para que sirva de compuerta
+   igual que `check-links`. Un link que no se puede resolver también cuenta como
+   problema: no saber a quién le paga es lo mismo que saber que le paga mal.
 
 Consecuencia: **el reparto parejo deja de existir como problema.** Todo lo que se
 midió sobre 37/36 y 38/35 queda sin objeto.
@@ -193,5 +195,8 @@ Ojo con los retinoides: el retinol cosmético va, la tretinoína es medicamento.
 - [ ] Regenerar los 22 restantes, de productos inactivos. Sin apuro: no se le
       muestran a nadie hasta que se activen.
 - [ ] Declarar los Medios en `maurobilat`: el sitio y las cinco redes.
-- [ ] Retirar el scraping de `scripts/cuentas.ts`.
+- [ ] Retirar el scraping de `scripts/cuentas.ts`. Ojo: la resolución sólo lee
+      el `Location` del redirect, que es bastante más liviano que parsear el
+      HTML. Lo que sí parsea páginas es la verificación de producto, que se hace
+      a mano al aplicar una tanda.
 - [ ] Crear Facebook: vuelve a entrar como Medio (decisión del 8/9/2026).
