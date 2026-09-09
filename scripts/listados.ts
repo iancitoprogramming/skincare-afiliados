@@ -36,6 +36,9 @@ import { tokenML, cabeceras } from "../src/lib/ml-api";
 interface Candidato {
   id: string;
   nombre: string;
+  vendedores: number;
+  desde: number | null;
+  volumen: string;
 }
 
 /** Los términos con los que buscar: marca + nombre, sin la morralla del título de ML. */
@@ -48,15 +51,43 @@ function consulta(marca: string | undefined, nombre: string): string {
     .slice(0, 70);
 }
 
+/**
+ * Cuántos vendedores tiene una ficha de catálogo, y desde qué precio.
+ *
+ * Es el dato que decide todo. Una ficha de catálogo SIN vendedores es una
+ * página donde no se puede comprar: migrar ahí es peor que quedarse atado.
+ * Pasó de verdad — los candidatos de Vanicream y del Haruharu Airyfit tienen
+ * cero vendedores, porque son marcas importadas que casi nadie lista bajo
+ * catálogo. Para esos, la publicación del vendedor no es la opción mala: es la
+ * única.
+ */
+async function listados(id: string, H: Record<string, string>) {
+  const r = await fetch(`https://api.mercadolibre.com/products/${id}/items`, { headers: H });
+  if (!r.ok) return { vendedores: 0, desde: null as number | null };
+  const j = (await r.json()) as { results?: { price?: number }[] };
+  const precios = (j.results ?? []).map((x) => x.price).filter((x): x is number => x != null).sort((a, b) => a - b);
+  return { vendedores: precios.length, desde: precios[0] ?? null };
+}
+
 async function buscar(q: string, H: Record<string, string>): Promise<Candidato[]> {
   const url = `https://api.mercadolibre.com/products/search?status=active&site_id=MLA&q=${encodeURIComponent(q)}`;
   const r = await fetch(url, { headers: H });
   if (!r.ok) return [];
   const j = (await r.json()) as { results?: { catalog_product_id?: string; id?: string; name?: string }[] };
-  return (j.results ?? [])
-    .slice(0, 5)
-    .map((x) => ({ id: x.catalog_product_id ?? x.id ?? "", nombre: x.name ?? "" }))
-    .filter((x) => x.id);
+  const crudos = (j.results ?? []).slice(0, 5).map((x) => ({ id: x.catalog_product_id ?? x.id ?? "", nombre: x.name ?? "" })).filter((x) => x.id);
+
+  const out: Candidato[] = [];
+  for (const c of crudos) {
+    const { vendedores, desde } = await listados(c.id, H);
+    // El volumen es lo que distingue al producto de su pack de 2 y de la
+    // presentación de viaje. Sin eso el match es una corazonada.
+    const d = await fetch(`https://api.mercadolibre.com/products/${c.id}`, { headers: H });
+    const ficha = d.ok ? ((await d.json()) as { attributes?: { id?: string; value_name?: string }[] }) : {};
+    const vol = (ficha.attributes ?? []).find((a) => /VOLUME|CONTENT|WEIGHT/i.test(a.id ?? ""));
+    out.push({ ...c, vendedores, desde, volumen: vol?.value_name ?? "?" });
+  }
+  // Los que no tienen vendedores van al final: no son candidatos de verdad.
+  return out.sort((a, b) => b.vendedores - a.vendedores);
 }
 
 async function main() {
@@ -77,19 +108,27 @@ async function main() {
     const cands = await buscar(q, H);
     console.log(`  ${p.ml_id}  ${p.nombre.slice(0, 44)}`);
     if (!cands.length) console.log(`      sin candidatos para "${q}"`);
-    for (const c of cands) console.log(`      ${c.id.padEnd(14)} ${c.nombre.slice(0, 60)}`);
+    for (const c of cands)
+      console.log(
+        `      ${c.id.padEnd(14)} ${c.vendedores ? `${String(c.vendedores).padStart(2)} vend · desde $${Math.round(c.desde!).toLocaleString("es-AR")}`.padEnd(24) : "SIN VENDEDORES".padEnd(24)} ${c.volumen.padEnd(9)} ${c.nombre.slice(0, 44)}`,
+      );
+    if (cands.length && !cands[0].vendedores)
+      console.log(`      → ninguna ficha de catálogo tiene vendedores. Se queda como está.`);
 
     filas.push(
       `### ${p.nombre}\n\n` +
         `Hoy: \`${p.ml_id}\` · ${p.url_referencia}\n\n` +
         (cands.length
-          ? `| candidato | nombre en ML | abrir |\n|---|---|---|\n` +
+          ? `| candidato | vendedores | desde | tamaño | nombre en ML | abrir |\n|---|---|---|---|---|---|\n` +
             cands
               .map(
                 (c) =>
-                  `| \`${c.id}\` | ${c.nombre.replace(/\|/g, "/")} | [ML](https://www.mercadolibre.com.ar/p/${c.id}) |`,
+                  `| \`${c.id}\` | ${c.vendedores || "**ninguno**"} | ${c.desde ? "$" + Math.round(c.desde).toLocaleString("es-AR") : "—"} | ${c.volumen} | ${c.nombre.replace(/\|/g, "/")} | [ML](https://www.mercadolibre.com.ar/p/${c.id}) |`,
               )
-              .join("\n")
+              .join("\n") +
+            (cands[0].vendedores
+              ? ""
+              : "\n\n_Ninguna ficha de catálogo tiene vendedores: no se puede comprar ahí. Este producto se queda donde está._")
           : `_La búsqueda no devolvió candidatos para «${q}». Hay que buscarlo a mano en ML._`) +
         "\n",
     );
@@ -114,8 +153,13 @@ async function main() {
       "confirmar que es el mismo producto y el mismo tamaño, generá el link de",
       "afiliado desde esa página y pasámelo. Yo repunto la entrada.",
       "",
-      "Ojo con el ruido: la búsqueda de catálogo mezcla packs de 2 y presentaciones",
-      "distintas. El tamaño hay que mirarlo.",
+      "**Mirá la columna de vendedores antes que nada.** Una ficha de catálogo sin",
+      "vendedores es una página donde no se puede comprar: migrar ahí es peor que",
+      "quedarse atado. Pasa con las marcas importadas que casi nadie lista bajo",
+      "catálogo — Vanicream, Haruharu, CeraVe.",
+      "",
+      "Y ojo con el ruido: la búsqueda mezcla packs de 2 y presentaciones de viaje.",
+      "El tamaño hay que mirarlo.",
       "",
       "---",
       "",
