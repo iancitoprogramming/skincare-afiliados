@@ -73,6 +73,19 @@ export interface Producto {
   prioridad: number;
   comodin: boolean;
   activo: boolean;
+
+  // ── Criterio de orden. Los dos son DERIVADOS: no se cargan a mano. ─────────
+  //
+  // Los escribe el nicho al armar el catálogo (`conCriteriosDeOrden`), porque
+  // los dos necesitan saber de skincare: uno el mapa de activos, el otro los
+  // umbrales de opiniones. Son opcionales para que el motor siga andando con un
+  // catálogo que no los traiga —tests, un nicho nuevo, una fila vieja de
+  // Supabase—: sin ellos el orden es el de antes, sólo que sin esos desempates.
+
+  /** Qué tan bien respaldada está la fórmula. Ver `engine/calidad.ts`. */
+  calidad_formula?: number;
+  /** Cuánta gente ajena a nosotros la probó, graduada. Ver `engine/respaldo.ts`. */
+  respaldo_orden?: number;
 }
 
 export interface RutinaSlot {
@@ -127,14 +140,36 @@ function momentoCompatible(slot: Momento, producto: Momento): boolean {
   return producto === slot || producto === "ambos";
 }
 
-// Siempre gana la prioridad (qué tan buen match es). El desempate es por precio,
-// y hacia qué lado lo define la preferencia.
+/**
+ * El criterio de orden, explícito y en este orden:
+ *
+ *   1. prioridad          — qué tan buen match es. No la discute nadie.
+ *   2. calidad de fórmula — con qué está hecho, según la escala A–D.
+ *   3. respaldo           — cuánta gente ajena a nosotros lo probó.
+ *   4. precio             — la banda, hacia el lado que diga la preferencia.
+ *   5. id                 — para que el orden no dependa del archivo.
+ *
+ * ANTES ERA prioridad → precio → precio, y ahí estaba el problema. El precio era
+ * un proxy de "cuál es mejor": con `preferencia: "mejor"` se agarraba el más caro
+ * que entrara en el presupuesto, porque no había con qué medir "mejor". Ahora sí
+ * lo hay, y el proxy pasa a ser lo que siempre fue — un dato sobre el bolsillo,
+ * no sobre la fórmula. Por eso baja al cuarto lugar.
+ *
+ * El desempate por `id` no es decoración. Cuando los tres criterios anteriores
+ * empatan, `Array.sort` es estable y el que gana termina siendo el que está más
+ * arriba en `productos.ts`. Así fue como once productos del catálogo proyectado
+ * —el SkinCeuticals C E Ferulic entre ellos— no se le mostraban nunca a nadie:
+ * no perdían por peores, perdían porque el archivo los tenía abajo. Un orden
+ * arbitrario está bien; un orden arbitrario que además nadie ve, no.
+ */
 function ordenador(preferencia: RespuestasRutina["preferencia"]) {
   const signo = preferencia === "precio" ? -1 : 1;
   return (a: Producto, b: Producto): number =>
     b.prioridad - a.prioridad ||
+    (b.calidad_formula ?? 0) - (a.calidad_formula ?? 0) ||
+    (b.respaldo_orden ?? 0) - (a.respaldo_orden ?? 0) ||
     signo * (b.rango_precio - a.rango_precio) ||
-    signo * ((b.precio_ars ?? 0) - (a.precio_ars ?? 0));
+    a.id.localeCompare(b.id);
 }
 
 // Filtro duro: categoría y momento. Nunca se relaja.

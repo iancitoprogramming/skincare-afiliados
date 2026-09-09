@@ -2,8 +2,10 @@ import { notFound } from "next/navigation";
 import { Shell } from "@/components/Shell";
 import { BotonComprar } from "@/components/BotonComprar";
 import { PruebaSocial } from "@/components/PruebaSocial";
+import { RangoPrecio } from "@/components/RangoPrecio";
 import { getCatalogo } from "@/engine/catalogo";
 import { OG_POR_DEFECTO } from "@/lib/sitio";
+import { conCriteriosDeOrden } from "@/niches/skincare/calidad";
 import { armarKit } from "@/engine/kits";
 import { PasoRutina } from "@/engine/quiz/PasoRutina";
 import { copy } from "@/niches/skincare/copy";
@@ -29,8 +31,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     openGraph: { url: `/kits/${slug}`, images: OG_POR_DEFECTO },
   };
 }
-
-const precio = (n: number) => `$${n.toLocaleString("es-AR")}`;
 
 export default async function KitDetalle({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -62,15 +62,9 @@ export default async function KitDetalle({ params }: { params: Promise<{ slug: s
             className="h-56 w-full rounded-2xl border border-niebla bg-porcelana object-contain p-2"
           />
 
-          <div className="flex items-baseline gap-3">
-            <span className="font-display text-3xl font-medium text-tinta">
-              {precio(unico.precio_ars)}
-            </span>
-            {unico.precio_lista ? (
-              <span className="font-mono text-base text-piedra line-through">
-                {precio(unico.precio_lista)}
-              </span>
-            ) : null}
+          <div className="flex flex-col gap-1">
+            <RangoPrecio rango={unico.rango_precio} className="self-start" />
+            <p className="font-mono text-xs text-piedra">{copy.precio.dondeVerlo}</p>
           </div>
 
           {unico.incluye.length > 0 ? (
@@ -105,7 +99,7 @@ export default async function KitDetalle({ params }: { params: Promise<{ slug: s
   const def = KITS.find((k) => k.slug === slug);
   if (!def) notFound();
 
-  const productos = await getCatalogo(fallback);
+  const productos = await getCatalogo(fallback, conCriteriosDeOrden);
   const kit = armarKit(productos, def, TIERS);
   if (!kit) notFound();
 
@@ -114,8 +108,8 @@ export default async function KitDetalle({ params }: { params: Promise<{ slug: s
       <div className="flex flex-col gap-6">
         <header className="flex flex-col gap-2">
           <p className="font-mono text-xs text-piedra">
-            {copy.kits.pasos(kit.pasos.length)}
-            {kit.totalCompleto ? ` · ${copy.kits.total} ${precio(kit.total)}` : ""}
+            {copy.kits.pasos(kit.pasos.length)} ·{" "}
+            {copy.precio.rangoKit(copy.precio.rangos[kit.rango])}
           </p>
           <h1 className="font-display text-3xl font-medium leading-tight tracking-tight text-tinta">
             {def.nombre}

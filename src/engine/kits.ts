@@ -21,8 +21,17 @@ export interface KitUnico {
   incluye: string[];
   piel: string[];
   apto_sensible: boolean;
+  /**
+   * Precio relevado en Mercado Libre. **No se muestra.** Queda guardado como
+   * dato de relevamiento —`npm run frescura` lo usa— pero la UI publica la
+   * banda cualitativa, no el número. Ver `docs/PRECIO.md`.
+   */
   precio_ars: number;
+  /** Precio de lista al momento del relevamiento. Tampoco se muestra: un
+   * descuento tachado es lo primero que deja de ser cierto. */
   precio_lista?: number;
+  /** Banda de precio, 1 a 3. Es lo que sí se publica. */
+  rango_precio: number;
   imagen_url: string;
   /** Proporcion original y mayor resolucion, para piezas de diseno. */
   imagen_hd?: string;
@@ -53,9 +62,20 @@ export interface KitDef {
 export interface Kit {
   def: KitDef;
   pasos: PasoRutina[];
-  /** Suma de precios conocidos. Si algún producto no tiene precio, queda incompleto. */
-  total: number;
-  totalCompleto: boolean;
+  /**
+   * Banda de precio del conjunto, 1 a 3. Reemplaza a la suma de precios que
+   * había antes.
+   *
+   * Un total en pesos era el número más frágil del sitio: sumaba el error de
+   * cada precio relevado, se mostraba antes de que la persona abriera ninguna
+   * publicación, y quedaba viejo con cualquier descuento de cualquiera de los
+   * productos. Ver `docs/PRECIO.md`.
+   *
+   * Se redondea hacia arriba a propósito: un kit donde uno de los pasos es
+   * premium se siente premium, aunque los otros dos sean accesibles. Redondear
+   * hacia abajo prometería barato y sorprendería en el checkout.
+   */
+  rango: number;
 }
 
 /**
@@ -97,13 +117,9 @@ export function armarKit(
     return true;
   });
 
-  const precios = pasos.map((p) => p.producto.precio_ars);
-  return {
-    def,
-    pasos,
-    total: precios.reduce<number>((a, b) => a + (b ?? 0), 0),
-    totalCompleto: precios.every((p) => typeof p === "number"),
-  };
+  const rangos = pasos.map((p) => p.producto.rango_precio);
+  const promedio = rangos.reduce((a, b) => a + b, 0) / (rangos.length || 1);
+  return { def, pasos, rango: Math.min(3, Math.max(1, Math.ceil(promedio))) };
 }
 
 export function armarKits(

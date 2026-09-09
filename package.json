@@ -22,7 +22,9 @@
     "rendimiento": "tsx scripts/rendimiento-por-tier.ts",
     "cuentas": "tsx scripts/cuentas.ts",
     "copy-aplicar": "tsx scripts/copy-aplicar.ts",
-    "copy-verificar": "tsx scripts/copy-verificar.ts"
+    "copy-verificar": "tsx scripts/copy-verificar.ts",
+    "relevar-pendientes": "tsx scripts/relevar-pendientes.ts",
+    "relevar-aplicar": "tsx scripts/relevar-aplicar.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0",

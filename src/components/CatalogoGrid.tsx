@@ -6,6 +6,7 @@ import type { Producto } from "@/engine/recomendacion";
 import { slugProducto } from "@/engine/slug";
 import { PruebaSocial } from "@/components/PruebaSocial";
 import { ChipRespaldo } from "@/components/ChipRespaldo";
+import { RangoPrecio } from "@/components/RangoPrecio";
 import { respaldoDe, ORDEN_RESPALDO, type NivelRespaldo } from "@/engine/respaldo";
 import { UMBRALES_RESPALDO } from "@/niches/skincare/config";
 
@@ -13,7 +14,13 @@ import { UMBRALES_RESPALDO } from "@/niches/skincare/config";
 // miles. Traerlos todos y filtrar en memoria es instantáneo y no cuesta un
 // round-trip por cada toque de filtro, que en mobile se siente.
 
-type Orden = "relevancia" | "precio_asc" | "precio_desc";
+// "criterio" es el orden por omisión y es el argumento de la marca hecho lista:
+// primero con qué está hecho el producto, después cuánta gente lo probó, y
+// recién al final cuánto se vende. "vendidos" queda como opción aparte en vez de
+// mezclarse adentro de un "relevancia" que no explicaba qué era relevante — que
+// es lo que había antes, con la etiqueta "más vendidos" sobre un orden que
+// empezaba por el respaldo.
+type Orden = "criterio" | "vendidos" | "precio_asc" | "precio_desc";
 
 // Fijas, no salen del catálogo: son los tres niveles posibles, y que uno quede
 // en cero también es información.
@@ -42,7 +49,7 @@ export function CatalogoGrid({
   const [piel, setPiel] = useState<string | null>(null);
   const [paso, setPaso] = useState<string | null>(null);
   const [origen, setOrigen] = useState<string | null>(null);
-  const [orden, setOrden] = useState<Orden>("relevancia");
+  const [orden, setOrden] = useState<Orden>("criterio");
   const [respaldo, setRespaldo] = useState<string | null>(null);
 
   const visibles = useMemo(() => {
@@ -54,15 +61,27 @@ export function CatalogoGrid({
         (!respaldo || respaldoDe(p, UMBRALES_RESPALDO) === respaldo),
     );
     const orden_ = [...filtrados];
-    if (orden === "precio_asc") orden_.sort((a, b) => (a.precio_ars ?? 0) - (b.precio_ars ?? 0));
-    else if (orden === "precio_desc") orden_.sort((a, b) => (b.precio_ars ?? 0) - (a.precio_ars ?? 0));
+    // Se ordena por la BANDA, no por el precio relevado. Un orden por un número
+    // que no se muestra —y que además está viejo— pone los productos en una
+    // secuencia que la persona no puede verificar contra nada.
+    const porRespaldo = (a: Producto, b: Producto) =>
+      ORDEN_RESPALDO[respaldoDe(b, UMBRALES_RESPALDO)] -
+      ORDEN_RESPALDO[respaldoDe(a, UMBRALES_RESPALDO)];
+    const porVendidos = (a: Producto, b: Producto) =>
+      (b.vendidos_aprox ?? 0) - (a.vendidos_aprox ?? 0);
+
+    if (orden === "precio_asc") orden_.sort((a, b) => a.rango_precio - b.rango_precio);
+    else if (orden === "precio_desc") orden_.sort((a, b) => b.rango_precio - a.rango_precio);
+    else if (orden === "vendidos") orden_.sort((a, b) => porVendidos(a, b) || porRespaldo(a, b));
     else
-      // Relevancia = primero lo más respaldado, después lo más vendido.
+      // El mismo criterio con el que el motor arma la rutina, aplicado a la
+      // grilla: si el sitio ordena la grilla por popularidad y la rutina por
+      // criterio, son dos sitios distintos con la misma marca encima.
       orden_.sort(
         (a, b) =>
-          ORDEN_RESPALDO[respaldoDe(b, UMBRALES_RESPALDO)] -
-            ORDEN_RESPALDO[respaldoDe(a, UMBRALES_RESPALDO)] ||
-          (b.vendidos_aprox ?? 0) - (a.vendidos_aprox ?? 0),
+          (b.calidad_formula ?? 0) - (a.calidad_formula ?? 0) ||
+          porRespaldo(a, b) ||
+          porVendidos(a, b),
       );
     return orden_;
   }, [productos, piel, paso, origen, respaldo, orden]);
@@ -125,9 +144,10 @@ export function CatalogoGrid({
             onChange={(e) => setOrden(e.target.value as Orden)}
             className="rounded-lg border border-niebla bg-porcelana px-2 py-1 font-mono text-xs text-tinta"
           >
-            <option value="relevancia">más vendidos</option>
-            <option value="precio_asc">precio: menor a mayor</option>
-            <option value="precio_desc">precio: mayor a menor</option>
+            <option value="criterio">nuestro criterio</option>
+            <option value="vendidos">más vendidos</option>
+            <option value="precio_asc">precio: de accesible a premium</option>
+            <option value="precio_desc">precio: de premium a accesible</option>
           </select>
         </label>
       </div>
@@ -178,12 +198,8 @@ export function CatalogoGrid({
                   className="self-start"
                 />
 
-                <span className="mt-auto flex flex-col gap-1">
-                  {p.precio_ars ? (
-                    <span className="font-mono text-sm text-tinta">
-                      ${p.precio_ars.toLocaleString("es-AR")}
-                    </span>
-                  ) : null}
+                <span className="mt-auto flex flex-col items-start gap-1">
+                  <RangoPrecio rango={p.rango_precio} />
                   <PruebaSocial d={{ rating: p.rating, opiniones: p.opiniones }} />
                 </span>
               </Link>

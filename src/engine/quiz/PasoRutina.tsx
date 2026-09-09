@@ -3,6 +3,7 @@
 import type { PasoRutina as Paso } from "@/engine/recomendacion";
 import { copy } from "@/niches/skincare/copy";
 import { PruebaSocial } from "@/components/PruebaSocial";
+import { RangoPrecio } from "@/components/RangoPrecio";
 import { trackClick } from "@/engine/tracking";
 
 // Un paso de la rutina: producto + botón directo a Mercado Libre.
@@ -57,11 +58,7 @@ export function PasoRutina({
 
       <div className="mt-3 flex items-baseline justify-between gap-3">
         <h3 className="font-display text-xl font-medium leading-tight text-tinta">{p.nombre}</h3>
-        {p.precio_ars ? (
-          <span className="whitespace-nowrap font-mono text-sm text-tinta">
-            ~${p.precio_ars.toLocaleString("es-AR")}
-          </span>
-        ) : null}
+        <RangoPrecio rango={p.rango_precio} className="shrink-0" />
       </div>
       {p.marca ? <p className="font-mono text-xs text-piedra">{p.marca}</p> : null}
       <PruebaSocial d={p} className="mt-2" />

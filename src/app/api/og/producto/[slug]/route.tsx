@@ -2,6 +2,7 @@ import { ImageResponse } from "next/og";
 import { indicePorSlug, slugProducto } from "@/engine/slug";
 import { PALETA } from "@/niches/skincare/paleta";
 import { productos } from "@/niches/skincare/productos";
+import { copy } from "@/niches/skincare/copy";
 import { MarcaOG } from "@/components/og/MarcaOG";
 
 // La imagen que Pinterest y WhatsApp muestran al compartir una ficha.
@@ -103,11 +104,16 @@ export async function GET(_req: Request, ctx: { params: Promise<{ slug: string }
           </div>
 
           <div style={{ display: "flex", alignItems: "center", gap: "22px" }}>
-            {p.precio_ars ? (
+            {/* Acá había el precio en pesos, y era el peor lugar del sitio para
+                tenerlo: Pinterest cachea esta imagen y no la regenera sola, así
+                que un descuento la deja mintiendo en el feed durante meses, sin
+                que se note desde acá. La banda cualitativa dice lo mismo que el
+                número decía de verdad y no envejece. Ver `docs/PRECIO.md`. */}
+            {copy.precio.rangos[p.rango_precio] ? (
               <div
-                style={{ display: "flex", fontSize: "40px", fontWeight: 600, color: PALETA.tinta }}
+                style={{ display: "flex", fontSize: "34px", fontWeight: 600, color: PALETA.tinta }}
               >
-                ${p.precio_ars.toLocaleString("es-AR")}
+                {copy.precio.rangos[p.rango_precio]}
               </div>
             ) : null}
             {/* Mismo criterio que en el sitio: la calificación sólo con respaldo.

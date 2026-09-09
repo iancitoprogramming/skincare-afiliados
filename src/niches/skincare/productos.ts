@@ -1,5 +1,6 @@
 import type { Producto } from "@/engine/recomendacion";
 import { productosOrganize } from "./productos.organize";
+import { conCriteriosDeOrden } from "./calidad";
 
 // CATALOGO — fuente de verdad. Editable a mano.
 //
@@ -893,4 +894,8 @@ const productosCurados: Producto[] = [
 //
 // Para activar uno: pegar link_afiliado y precio_ars en productos.organize.ts,
 // escribir por_que y como_usar, y poner activo:true.
-export const productos: Producto[] = [...productosCurados, ...productosOrganize];
+// `conCriteriosDeOrden` completa `calidad_formula` y `respaldo_orden`. Se hace
+// acá y no en cada consumidor a propósito: son veinticuatro archivos los que
+// importan este catálogo, y uno que se olvidara de llamarla ordenaría peor sin
+// que nada fallara. Ver `docs/CALIDAD.md`.
+export const productos: Producto[] = conCriteriosDeOrden([...productosCurados, ...productosOrganize]);
