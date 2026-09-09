@@ -1,0 +1,58 @@
+# Los mismos comandos que corre alguien en su máquina, corridos por otro que no
+# se olvida. El agujero que cierra es concreto: dos errores de tipos vivieron en
+# `main` desde 53060cd porque `next build` no mira los archivos de test, `npm
+# test` era `vitest run` a secas —que transpila sin chequear tipos— y no había
+# nada más. Sólo aparecieron cuando alguien corrió `tsc --noEmit` a mano.
+#
+# No hacen falta secrets. El build no lee ninguna variable en tiempo de
+# compilación, y las dos auditorías son offline desde que `cuentas` dejó de
+# resolver contra Mercado Libre.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Un push nuevo sobre la misma rama cancela el run anterior: lo que importa es
+# el último commit, no la cola.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Instalar
+        run: npm ci
+
+      # `npm test` es `tsc --noEmit && vitest run`. Va entero, y no separado en
+      # dos pasos, justamente para que CI corra el mismo comando que corre una
+      # persona: si esa composición se rompe, acá se nota.
+      - name: Tipos y tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      # Compuerta de datos, con exit 1 por diseño: marca productos activos que
+      # no monetizan. Es offline, lee el catálogo del repo.
+      - name: Links activos
+        run: npm run check-links
+
+      # FALTA `npm run cuentas`, a propósito. Hoy resuelve la cuenta de cada link
+      # siguiendo el redirect de meli.la con un User-Agent de navegador puesto a
+      # mano, y ponerlo acá haría que los runners corran esa extracción en cada
+      # push y cada PR — más volumen y desde más IPs que lo que ya se decidió
+      # retirar. Cuando entre el PR que lo vuelve un auditor sin red, se agrega:
+      #
+      #   - name: Auditoría de cuentas
+      #     run: npm run cuentas
