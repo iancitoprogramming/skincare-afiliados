@@ -26,6 +26,7 @@ const conteo: Record<NivelFallback, number> = {
   match: 0,
   sin_preocupacion: 0,
   sin_piel: 0,
+  fuera_de_presupuesto: 0,
   otro_origen: 0,
   no_apto_sensible: 0,
   comodin: 0,
@@ -56,6 +57,9 @@ console.log(`\nCobertura sobre ${combos} combinaciones:\n`);
 console.log(`  match completo   : ${conteo.match}`);
 console.log(`  sin preocupación : ${conteo.sin_preocupacion}`);
 console.log(`  sin tipo de piel : ${conteo.sin_piel}`);
+// No es un paso flojo: es el criterio funcionando. Se muestra igual porque mide
+// cuánto le estamos pidiendo a la persona que se estire por encima de su banda.
+console.log(`  fuera de banda   : ${conteo.fuera_de_presupuesto}`);
 console.log(`  otro origen      : ${conteo.otro_origen}`);
 console.log(`  no apto sensible : ${conteo.no_apto_sensible}`);
 console.log(`  comodín          : ${conteo.comodin}`);
