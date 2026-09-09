@@ -9,6 +9,7 @@ import { RangoPrecio } from "@/components/RangoPrecio";
 import { TIERS } from "@/niches/skincare/config";
 import { KITS, KITS_UNICOS } from "@/niches/skincare/kits";
 import { productos as fallback } from "@/niches/skincare/productos";
+import { OG_POR_DEFECTO } from "@/lib/sitio";
 
 export const revalidate = 3600;
 
@@ -16,7 +17,7 @@ export const metadata = {
   title: `${copy.kits.titulo} · ${copy.marca}`,
   description: copy.kits.bajada,
   alternates: { canonical: "/kits" },
-  openGraph: { url: "/kits" },
+  openGraph: { url: "/kits", images: OG_POR_DEFECTO },
 };
 
 export default async function Kits() {

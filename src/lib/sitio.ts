@@ -8,8 +8,8 @@
  * Normaliza lo que se haya pegado en la variable de entorno: agrega https://
  * si falta y saca la barra final.
  *
- * Sin esto, pegar "clubdepiel.com.ar" hace que new URL() tire y el build falle
- * con un error que no explica nada, y pegar "https://clubdepiel.com.ar/" genera
+ * Sin esto, pegar "clubdepiel.store" hace que new URL() tire y el build falle
+ * con un error que no explica nada, y pegar "https://clubdepiel.store/" genera
  * og:image con doble barra. Los dos son errores de copiar y pegar, y los va a
  * cometer alguien apurado en el panel de Vercel.
  */
@@ -42,6 +42,25 @@ export function urlDelSitio(): string {
  * Se imprime en el log del build de Vercel. Es la única forma de ver a qué
  * resolvió metadataBase sin tener que abrir la HTML publicada y leerla.
  */
+/**
+ * La imagen de Open Graph del root, para las rutas que exportan `openGraph`.
+ *
+ * Next mergea la metadata campo por campo del primer nivel: una ruta que
+ * exporta `openGraph: { url: "/catalogo" }` **reemplaza** el openGraph heredado,
+ * y con él la imagen que aporta `app/opengraph-image.tsx`. La página queda sin
+ * `og:image` y se comparte sin preview.
+ *
+ * Así se rompió: /catalogo, /kits, /rutina y /combinaciones salieron sin imagen
+ * durante todo el tiempo que estuvieron publicadas, y no se nota navegando —
+ * sólo cuando alguien pega el link en Pinterest o Facebook. /producto no estaba
+ * afectado porque declara su imagen propia, y / tampoco porque el archivo
+ * opengraph-image.tsx vive en su mismo segmento.
+ *
+ * Es la misma clase de error que `base = localhost`: el sitio anda, el preview
+ * no. `og.test.ts` falla si alguna ruta vuelve a exportar openGraph sin imagen.
+ */
+export const OG_POR_DEFECTO = [{ url: "/opengraph-image", width: 1200, height: 630 }];
+
 export function informarMetadata(): void {
   console.log(`[metadata] base = ${urlDelSitio()}`);
   console.log(

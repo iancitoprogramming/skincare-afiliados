@@ -6,10 +6,10 @@ _Corte: 2026-09-06_
 
 | | |
 |---|---|
-| Producción | `skincare-afiliados.vercel.app` |
+| Producción | `clubdepiel.store` |
 | Páginas estáticas | 69 |
-| Productos en catálogo | 72 · 25 activos + 2 kits de compra única |
-| Links que monetizan | 64 de 73 · 9 pendientes |
+| Productos en catálogo | 71 · 25 activos + 2 kits de compra única |
+| Links que monetizan | 73 de 73 · 0 pendientes |
 | Tests | 56 en verde |
 | Tiers servibles | 1 y 2 (son los dos que existen) |
 

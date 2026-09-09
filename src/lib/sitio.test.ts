@@ -28,13 +28,13 @@ describe("urlDelSitio", () => {
   });
 
   it("le agrega https:// a un dominio pelado", () => {
-    process.env.NEXT_PUBLIC_SITE_URL = "clubdepiel.com.ar";
-    expect(urlDelSitio()).toBe("https://clubdepiel.com.ar");
+    process.env.NEXT_PUBLIC_SITE_URL = "clubdepiel.store";
+    expect(urlDelSitio()).toBe("https://clubdepiel.store");
   });
 
   it("saca la barra final, y las que haya de más", () => {
-    process.env.NEXT_PUBLIC_SITE_URL = "https://clubdepiel.com.ar///";
-    expect(urlDelSitio()).toBe("https://clubdepiel.com.ar");
+    process.env.NEXT_PUBLIC_SITE_URL = "https://clubdepiel.store///";
+    expect(urlDelSitio()).toBe("https://clubdepiel.store");
   });
 
   it("respeta http:// cuando viene explícito", () => {
@@ -49,10 +49,10 @@ describe("urlDelSitio", () => {
   });
 
   it("el dominio propio le gana al de producción de Vercel", () => {
-    process.env.NEXT_PUBLIC_SITE_URL = "clubdepiel.com.ar";
+    process.env.NEXT_PUBLIC_SITE_URL = "clubdepiel.store";
     process.env.VERCEL_PROJECT_PRODUCTION_URL = "club.vercel.app";
     process.env.VERCEL_URL = "club-abc123.vercel.app";
-    expect(urlDelSitio()).toBe("https://clubdepiel.com.ar");
+    expect(urlDelSitio()).toBe("https://clubdepiel.store");
   });
 
   it("el de producción le gana a la URL del deploy puntual", () => {
@@ -66,8 +66,8 @@ describe("urlDelSitio", () => {
   it("lo que devuelve siempre entra en new URL()", () => {
     const casos = [
       undefined,
-      "clubdepiel.com.ar",
-      "https://clubdepiel.com.ar/",
+      "clubdepiel.store",
+      "https://clubdepiel.store/",
       "http://localhost:4000",
       "CLUBDEPIEL.COM.AR",
     ];

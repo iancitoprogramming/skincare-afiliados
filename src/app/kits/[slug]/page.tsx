@@ -4,6 +4,7 @@ import { BotonComprar } from "@/components/BotonComprar";
 import { PruebaSocial } from "@/components/PruebaSocial";
 import { RangoPrecio } from "@/components/RangoPrecio";
 import { getCatalogo } from "@/engine/catalogo";
+import { OG_POR_DEFECTO } from "@/lib/sitio";
 import { conCriteriosDeOrden } from "@/niches/skincare/calidad";
 import { armarKit } from "@/engine/kits";
 import { PasoRutina } from "@/engine/quiz/PasoRutina";
@@ -27,7 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: `${k.nombre} · ${copy.marca}`,
     description: k.descripcion,
     alternates: { canonical: `/kits/${slug}` },
-    openGraph: { url: `/kits/${slug}` },
+    openGraph: { url: `/kits/${slug}`, images: OG_POR_DEFECTO },
   };
 }
 

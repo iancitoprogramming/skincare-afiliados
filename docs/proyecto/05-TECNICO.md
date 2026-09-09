@@ -13,7 +13,7 @@
 | Analytics | Vercel Analytics |
 
 **Repo:** `github.com/iancitoprogramming/skincare-afiliados`
-**Producción:** `skincare-afiliados.vercel.app`
+**Producción:** `clubdepiel.store`  ·  **Deploy previo:** `skincare-afiliados.vercel.app`
 
 ## Estructura
 
@@ -98,7 +98,7 @@ por worker de Next, que está bien.
 En el log del build de Vercel tienen que aparecer las dos líneas `[metadata]`:
 
 ```
-[metadata] base = https://skincare-afiliados.vercel.app
+[metadata] base = https://clubdepiel.store
 [metadata] pinterest = presente | AUSENTE
 ```
 
@@ -106,11 +106,22 @@ En el log del build de Vercel tienen que aparecer las dos líneas `[metadata]`:
 imagen.** Es el error más caro de este proyecto porque no se nota: el sitio
 carga bien, el link se comparte, y el preview aparece vacío.
 
+**Localhost no es la única forma de romperlo.** Al conectar `clubdepiel.store`
+pasó la variante que este documento no preveía: `base` resolvió a
+`https://www.clubdepiel.store` —el subdominio `www`, que en Vercel figuraba
+como dominio de producción pero **no tenía registro DNS**—. El apex servía el
+sitio con normalidad y el `og:image` apuntaba a un host inexistente. Mismo
+síntoma, causa distinta: el chequeo no es "¿dice localhost?" sino "¿ese host
+existe y devuelve la imagen?".
+
 Sin acceso al dashboard, la misma verificación se hace desde afuera y es más
 fuerte, porque mira el resultado y no el paso intermedio:
 
 ```bash
-curl -s https://skincare-afiliados.vercel.app/ | grep -o 'og:image" content="[^"]*"'
+curl -s https://clubdepiel.store/ | grep -o 'og:image" content="[^"]*"'
+
+# …y después pedir ESA url, que es lo que el chequeo anterior no hace:
+curl -sI "$(curl -s https://clubdepiel.store/ | grep -o 'og:image" content="[^"]*' | cut -d'"' -f3)" | head -1
 ```
 
 Tiene que devolver una URL absoluta con el dominio de producción. Si dice
