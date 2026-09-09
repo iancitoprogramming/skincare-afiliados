@@ -1198,6 +1198,10 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // sube el conflicto en todo el catálogo— o en ninguno salvo que sea exfoliante
   // de verdad. Hoy la convención de hecho es la segunda, y esto la sigue.
   MLA28943962: ["hialuronico", "panthenol", "alantoina", "ceramidas"],
+  // Vanicream Moisturizing Lotion: vacio a proposito. Once ingredientes y
+  // ninguno es un activo que el motor conozca — hidrata por oclusion, con
+  // petrolatum. No tener activos no es un dato faltante, es la formula.
+  MLAU3880810580: [],
   // Haruharu Pure Mineral: óxido de zinc como filtro físico. El Butyloctyl
   // Salicylate NO es salicílico, es emoliente, y por eso no está acá.
   MLA2068351806: ["filtro_mineral", "niacinamida", "hialuronico", "ceramidas", "tocoferol"],

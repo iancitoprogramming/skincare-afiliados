@@ -891,6 +891,40 @@ const productosCurados: Producto[] = [
   },
   {
     // Alta manual · 9/9/2026 · INCI aportado por Ian
+    //
+    // La publicación de ML se titula "Limpiador Líquido", pero el INCI no tiene
+    // un solo tensioactivo de limpieza: petrolatum y ceteareth-20 son oclusivo y
+    // emulsionante. Es la Vanicream Moisturizing Lotion. Va como hidratante,
+    // decidido por Ian con el INCI a la vista.
+    //
+    // Sin activos mapeados y es correcto: la fórmula no trae ninguno de los que
+    // el motor conoce. Hidrata por oclusión, que es justamente su propuesta.
+    id: "7886f8e1-7d6c-527b-ad0c-5ebc456ddc8c",
+    ml_id: "MLAU3880810580",
+    cuenta: "maurobilat",
+    nombre: "Moisturizing Lotion 236 ml",
+    marca: "Vanicream",
+    categoria: "hidratante",
+    paso: 7,
+    momento: "ambos",
+    tipos_piel: ["normal", "seca", "sensible"],
+    preocupaciones: ["deshidratacion"],
+    origen: "europeo",
+    apto_sensible: true,
+    rango_precio: 3,
+    imagen_url: "https://http2.mlstatic.com/D_Q_NP_2X_709072-MLA109055073636_032026-V.webp",
+    imagen_hd: "https://http2.mlstatic.com/D_NQ_NP_2X_709072-MLA109055073636_032026-F.webp",
+    link_afiliado: "https://meli.la/1cCwbEA",
+    url_referencia: "https://www.mercadolibre.com.ar/up/MLAU3880810580",
+    por_que: "Once ingredientes y ninguno de más: sin fragancia, sin colorante, sin lanolina. Hidrata tapando la pérdida de agua, que es lo que necesita una piel que se agrieta.",
+    como_usar: "Después de limpiar, sobre la piel todavía húmeda. Es densa: alcanza con poco.",
+    relevado: "2026-09-09",
+    prioridad: 4,
+    comodin: false,
+    activo: true,
+  },
+  {
+    // Alta manual · 9/9/2026 · INCI aportado por Ian
     id: "90c1aea1-3bfb-5a4e-a211-78985e1f3c48",
     ml_id: "MLA28943962",
     cuenta: "maurobilat",

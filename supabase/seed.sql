@@ -1,4 +1,4 @@
--- Seed de 74 productos de ejemplo. Generado por scripts/gen-seed.ts.
+-- Seed de 75 productos de ejemplo. Generado por scripts/gen-seed.ts.
 -- No editar a mano: cambiá src/niches/skincare/productos.ts y corré npm run gen-seed.
 
 insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
@@ -103,6 +103,10 @@ on conflict (id) do nothing;
 
 insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
 values ('ed3e0a91-2640-59fc-80d5-5008a15d65a5', 'Tónico Exfoliante de Ácido Glicólico 7 por ciento 100 ml', 'The Ordinary', 'exfoliante', 9, 'pm', array['grasa', 'mixta', 'normal'], array['textura', 'manchas'], 'europeo', false, 3, 57170, 'https://http2.mlstatic.com/D_Q_NP_2X_641467-MLU74154671501_012024-V.webp', 'https://meli.la/2cHLcue', 'https://www.mercadolibre.com.ar/p/MLA29493655', 'MLA29493655', 'Ácido glicólico al 7 por ciento: empareja la textura y ayuda a que las marcas se aclaren.', 'De noche, sobre la piel seca, 2 o 3 veces por semana. Nunca el mismo día que otro ácido.', '2026-09-05', 4, true, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('7886f8e1-7d6c-527b-ad0c-5ebc456ddc8c', 'Moisturizing Lotion 236 ml', 'Vanicream', 'hidratante', 7, 'ambos', array['normal', 'seca', 'sensible'], array['deshidratacion'], 'europeo', true, 3, null, 'https://http2.mlstatic.com/D_Q_NP_2X_709072-MLA109055073636_032026-V.webp', 'https://meli.la/1cCwbEA', 'https://www.mercadolibre.com.ar/up/MLAU3880810580', 'MLAU3880810580', 'Once ingredientes y ninguno de más: sin fragancia, sin colorante, sin lanolina. Hidrata tapando la pérdida de agua, que es lo que necesita una piel que se agrieta.', 'Después de limpiar, sobre la piel todavía húmeda. Es densa: alcanza con poco.', '2026-09-09', 4, false, true)
 on conflict (id) do nothing;
 
 insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
