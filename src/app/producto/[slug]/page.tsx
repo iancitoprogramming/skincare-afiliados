@@ -4,12 +4,13 @@ import { Shell } from "@/components/Shell";
 import { BotonComprar } from "@/components/BotonComprar";
 import { PruebaSocial } from "@/components/PruebaSocial";
 import { RespaldoDetalle } from "@/components/ChipRespaldo";
+import { RangoPrecio } from "@/components/RangoPrecio";
 import { respaldoDe } from "@/engine/respaldo";
 import { getCatalogo } from "@/engine/catalogo";
+import { conCriteriosDeOrden } from "@/niches/skincare/calidad";
 import { armarKits } from "@/engine/kits";
 import { indicePorSlug, slugProducto } from "@/engine/slug";
 import { copy } from "@/niches/skincare/copy";
-import { haceCuanto } from "@/lib/sitio";
 import { CATEGORIAS, ORIGENES, TIERS, UMBRALES_RESPALDO } from "@/niches/skincare/config";
 import { KITS } from "@/niches/skincare/kits";
 import { productos as fallback } from "@/niches/skincare/productos";
@@ -43,11 +44,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
-const precio = (n: number) => `$${n.toLocaleString("es-AR")}`;
-
 export default async function ProductoDetalle({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const productos = await getCatalogo(fallback);
+  const productos = await getCatalogo(fallback, conCriteriosDeOrden);
   const activos = productos.filter((p) => p.activo);
 
   const p = indicePorSlug(activos).get(slug);
@@ -79,16 +78,15 @@ export default async function ProductoDetalle({ params }: { params: Promise<{ sl
           <PruebaSocial d={p} />
         </header>
 
-        {p.precio_ars ? (
-          <div className="flex flex-col gap-1">
-            <p className="font-display text-3xl font-medium text-tinta">{precio(p.precio_ars)}</p>
-            {/* Un precio de ML sin fecha es una afirmación que no se puede
-                verificar. Con fecha, la persona decide cuánto confiar. */}
-            <p className="font-mono text-xs text-piedra">
-              precio visto en Mercado Libre {haceCuanto(p.relevado)}
-            </p>
-          </div>
-        ) : null}
+        {/* Antes acá iba el precio en pesos con la fecha del relevamiento al
+            pie. La fecha era honesta pero no arreglaba el problema: seguía
+            siendo un número que el sitio afirma y que Mercado Libre desmiente
+            al día siguiente. Ahora se afirma la banda —que no caduca— y el
+            número se busca donde siempre estuvo bien, en la publicación. */}
+        <div className="flex flex-col gap-1">
+          <RangoPrecio rango={p.rango_precio} className="self-start" />
+          <p className="font-mono text-xs text-piedra">{copy.precio.dondeVerlo}</p>
+        </div>
 
         <BotonComprar
           href={p.link_afiliado}
@@ -135,8 +133,7 @@ export default async function ProductoDetalle({ params }: { params: Promise<{ sl
               >
                 <span className="font-display text-lg font-medium text-tinta">{k.def.nombre}</span>
                 <span className="font-mono text-xs text-piedra">
-                  {copy.kits.pasos(k.pasos.length)}
-                  {k.totalCompleto ? ` · ${copy.kits.total} ${precio(k.total)}` : ""}
+                  {copy.kits.pasos(k.pasos.length)} · {copy.precio.rangoKit(copy.precio.rangos[k.rango])}
                 </span>
               </Link>
             ))}

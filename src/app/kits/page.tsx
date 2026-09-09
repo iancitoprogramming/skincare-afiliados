@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { Shell } from "@/components/Shell";
 import { getCatalogo } from "@/engine/catalogo";
+import { conCriteriosDeOrden } from "@/niches/skincare/calidad";
 import { armarKits } from "@/engine/kits";
 import { copy } from "@/niches/skincare/copy";
 import { PruebaSocial } from "@/components/PruebaSocial";
+import { RangoPrecio } from "@/components/RangoPrecio";
 import { TIERS } from "@/niches/skincare/config";
 import { KITS, KITS_UNICOS } from "@/niches/skincare/kits";
 import { productos as fallback } from "@/niches/skincare/productos";
@@ -18,10 +20,8 @@ export const metadata = {
   openGraph: { url: "/kits", images: OG_POR_DEFECTO },
 };
 
-const precio = (n: number) => `$${n.toLocaleString("es-AR")}`;
-
 export default async function Kits() {
-  const productos = await getCatalogo(fallback);
+  const productos = await getCatalogo(fallback, conCriteriosDeOrden);
   const kits = armarKits(productos, KITS, TIERS);
 
   return (
@@ -56,12 +56,11 @@ export default async function Kits() {
                 <span className="font-body text-sm text-tinta/75">{k.descripcion}</span>
                 <PruebaSocial d={k} className="mt-2" />
 
-                <span className="mt-2 flex items-baseline gap-2 font-mono text-sm">
-                  <span className="text-tinta">{precio(k.precio_ars)}</span>
-                  {k.precio_lista ? (
-                    <span className="text-piedra line-through">{precio(k.precio_lista)}</span>
-                  ) : null}
-                </span>
+                {/* Acá había precio y precio de lista tachado. Un descuento
+                    tachado es lo primero que deja de ser cierto: dura días y
+                    después el sitio está prometiendo una oferta que no existe.
+                    El descuento de hoy se ve en la publicación. */}
+                <RangoPrecio rango={k.rango_precio} className="mt-2 self-start" />
 
                 <span className="mt-3 font-body text-base font-medium text-terracota">
                   {copy.kits.unicos.ver} →
@@ -86,8 +85,8 @@ export default async function Kits() {
               className="flex flex-col gap-1 rounded-2xl border border-niebla bg-gel/25 p-5 transition-transform active:scale-[0.99]"
             >
               <span className="font-mono text-xs text-piedra">
-                {copy.kits.pasos(kit.pasos.length)}
-                {kit.totalCompleto ? ` · ${copy.kits.total} ${precio(kit.total)}` : ""}
+                {copy.kits.pasos(kit.pasos.length)} ·{" "}
+                {copy.precio.rangoKit(copy.precio.rangos[kit.rango])}
               </span>
               <span className="font-display text-xl font-medium leading-tight text-tinta">
                 {kit.def.nombre}

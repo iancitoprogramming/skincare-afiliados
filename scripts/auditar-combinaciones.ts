@@ -15,6 +15,7 @@
 import { skincareQuiz, CATEGORIAS_OPCIONALES } from "../src/niches/skincare/config";
 import { productos } from "../src/niches/skincare/productos";
 import { catalogoActivos } from "../src/niches/skincare/activos";
+import { calidadDe } from "../src/niches/skincare/calidad";
 import { planSemanal } from "../src/niches/skincare/calendario";
 import { resolverRutina } from "../src/engine/quiz/armar";
 import { configServible } from "../src/engine/quiz/servible";
@@ -256,6 +257,36 @@ for (const ids of Object.values(catalogoActivos.porProducto)) {
   for (const id of ids) if (!catalogoActivos.activos[id]) huerfanos.add(id);
 }
 linea(`  Ids de activo sin definición: ${huerfanos.size ? [...huerfanos].join(", ") : "ninguno"}`);
+
+// 3a-bis · Calidad de fórmula: el criterio con el que se desempata.
+//
+// Se lista por categoría porque comparar entre categorías no dice nada: un
+// limpiador con un solo activo bien respaldado no es peor que un sérum con
+// cuatro, es un limpiador. Lo que sí importa es quién gana adentro de cada paso,
+// que es exactamente lo que el motor va a elegir cuando todo lo demás empate.
+linea();
+linea("── CALIDAD DE FÓRMULA ".padEnd(78, "─"));
+const sinActivos = activosDelCatalogo.filter((p) => (p.calidad_formula ?? 0) === 0);
+linea(
+  `  Sin activos declarados, así que sin puntaje (empatan entre sí): ${sinActivos.length} de ${activosDelCatalogo.length}`,
+);
+const porCategoria = new Map<string, typeof activosDelCatalogo>();
+for (const p of activosDelCatalogo) {
+  porCategoria.set(p.categoria, [...(porCategoria.get(p.categoria) ?? []), p]);
+}
+for (const [categoria, ps] of [...porCategoria.entries()].sort()) {
+  const ordenados = [...ps].sort((a, b) => (b.calidad_formula ?? 0) - (a.calidad_formula ?? 0));
+  linea(`  ${categoria}`);
+  for (const p of ordenados.slice(0, 3)) {
+    const c = calidadDe(p);
+    const mejor = c.mejorNivel ? `nivel ${c.mejorNivel}` : "sin activos";
+    const lastre = c.restados.length ? ` · lastre: ${c.restados.map((r) => r.id).join(", ")}` : "";
+    linea(
+      `    ${(p.calidad_formula ?? 0).toFixed(2).padStart(6)}  ${mejor.padEnd(11)} ${p.nombre.slice(0, 40)}${lastre}`,
+    );
+  }
+  if (ordenados.length > 3) linea(`           … y ${ordenados.length - 3} más`);
+}
 
 // 3b · Pipeline: lo que está cargado pero todavía no se sirve.
 linea();

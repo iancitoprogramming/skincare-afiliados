@@ -47,7 +47,7 @@ El handle no dice el nombre, así que va escrito acá.
 | Instagram | `@clubdepielok` | creada · vinculada a Pinterest |
 | TikTok | `@clubdepielok` | creada |
 | YouTube | `@clubdepiel` | creada |
-| Facebook | — | descartada por ahora |
+| Facebook | — | a crear |
 
 El handle no es igual en todas y está bien: YouTube tenía libre el corto y las
 otras no. Lo que sí es igual en las cinco es el **nombre visible**, "Club de

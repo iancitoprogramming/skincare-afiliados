@@ -125,21 +125,28 @@ vacías se ignoran, así que se puede completar de a poco.
 **`links-aplicar` se niega a escribir un link que no monetiza.** Si se pega una
 URL de browse, la rechaza y lo dice, en vez de dejarla entrar en silencio.
 
-## Reparto entre cuentas
+## Una sola cuenta
 
-Los links salen de dos cuentas de afiliado, y **el reparto tiene que ser parejo
-entre las dos**. El problema es que un shortlink `meli.la` no dice a quién le
-paga: hay que seguir el redirect hasta `/social/<cuenta>`.
+**Todos los links tienen que salir de `maurobilat`.** Cada afiliado cobra sólo
+por los canales que declaró en su propia cuenta, así que un link de otra cuenta
+monetiza igual pero la comisión queda expuesta a no pagarse. El razonamiento
+completo, con las respuestas de soporte, está en `07-AFILIADOS.md`.
+
+El reparto parejo entre dos cuentas **ya no es un problema**: dejó de haber dos.
 
 ```bash
-npm run cuentas              # reporta el reparto
-npm run cuentas -- --guardar # además escribe `cuenta` en el catálogo
+npm run cuentas   # audita que los 73 declaren maurobilat · exit 1 si alguno no
 ```
 
-**Regenerar un link puede moverlo de una cuenta a la otra sin que se note.** Ya
-pasó: al recargar una tanda, 8 productos pasaron de `goldenvalhalla` a
-`maurobilat`. Por eso `cuenta` se guarda en el catálogo — con el valor anterior
-escrito, el script compara y avisa cuáles cambiaron.
+La cuenta no se descubre, se declara: `npm run links-aplicar` escribe `cuenta`
+cuando escribe el link, que es cuando se sabe de qué panel salió. Antes se
+resolvía siguiendo el redirect contra Mercado Libre, y eso se retiró por la
+obligación (e) del Programa.
+
+**Lo que ya no se detecta solo:** que un link cambie de cuenta en Mercado Libre
+sin que nadie toque el repo. Ya pasó una vez —al recargar una tanda, 8 productos
+pasaron de `goldenvalhalla` a `maurobilat` y nadie lo vio hasta contarlos—. Hoy
+la defensa es que hay un solo panel y que queda constancia al aplicar.
 
 Y `links-aplicar` avisa cuando reemplaza un link que ya existía, que es el
 momento en que puede moverse la comisión.

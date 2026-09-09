@@ -30,7 +30,38 @@ import type {
 //    producto va con lista vacía. Recomendar de más es peor que no avisar: una
 //    advertencia inventada tiene el mismo costo de credibilidad que un claim
 //    inventado.
+//
+// 4. Cada activo declara su NIVEL DE EVIDENCIA (A–D). La escala está definida en
+//    `docs/INGREDIENTES.md` §0 y los grados salen de ahí, sección por sección;
+//    los pocos que el documento no cubre van marcados uno por uno con el motivo.
+//    Estaba escrito y sin codificar: el documento decía "sólo se afirma lo que
+//    está en A o B" y el motor no tenía forma de saber qué era A ni qué era B,
+//    así que la regla no se podía aplicar a nada. Ahora `calidadFormula()` la
+//    usa para ordenar.
 // ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Los que NO llevan nivel de evidencia, y por qué. Es una decisión, no un olvido:
+ * la escala A–D mide cuánto respalda la literatura un BENEFICIO, y estas cosas
+ * no están en la fórmula por un beneficio que nosotros afirmemos.
+ *
+ * El test de `activos.test.ts` cruza esta lista contra el diccionario, así que un
+ * activo nuevo sin grado y sin exención rompe el build en vez de contarse como
+ * cero en silencio.
+ */
+export const SIN_NIVEL_DE_EVIDENCIA: Record<string, string> = {
+  fragancia: "No es un activo: es la primera causa de dermatitis de contacto alérgica en cosmética.",
+  alcohol_denat: "Aporta textura, no resultado. En un leave-on el argumento de la textura casi no pesa.",
+  aceite_esencial_tea_tree:
+    "Tiene evidencia razonable para acné (INGREDIENTES.md §9.3), pero el documento lo trata en el " +
+    "capítulo de lo que no aporta y sí suma riesgo, y acá manda el documento. Cuenta como lastre.",
+  aceite_esencial_romero: "Aceite esencial sin beneficio tópico documentado.",
+  menta: "La sensación de fresco no es un beneficio: es la señal de que algo está irritando.",
+  hamamelis: "Astringente tradicional sin beneficio afirmable; se declara para explicar tolerancia.",
+  cobre_gluconato:
+    "Está en el diccionario para explicar un conflicto —el cobre oxida al ascorbato— y no porque " +
+    "afirmemos que el gluconato de cobre haga algo por la piel.",
+};
 
 export const ACTIVOS: Record<string, Activo> = {
   // ── Exfoliantes ────────────────────────────────────────────────────────────
@@ -40,6 +71,7 @@ export const ACTIVOS: Record<string, Activo> = {
   // propósito: son el reemplazo suave, no el problema.
   aha_glicolico: {
     id: "aha_glicolico",
+    nivelEvidencia: "A",
     nombre: "Ácido glicólico",
     familia: "aha",
     grupos: ["exfoliante", "acido-libre", "renovador"],
@@ -51,6 +83,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   aha_lactico: {
     id: "aha_lactico",
+    nivelEvidencia: "A",
     nombre: "Ácido láctico",
     familia: "aha",
     grupos: ["exfoliante", "acido-libre", "renovador"],
@@ -60,6 +93,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   aha_mandelico: {
     id: "aha_mandelico",
+    nivelEvidencia: "B",
     nombre: "Ácido mandélico",
     familia: "aha",
     grupos: ["exfoliante", "acido-libre"],
@@ -71,6 +105,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   aha_citrico: {
     id: "aha_citrico",
+    nivelEvidencia: "D",
     nombre: "Ácido cítrico",
     familia: "aha",
     grupos: ["exfoliante"],
@@ -81,6 +116,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   bha_salicilico: {
     id: "bha_salicilico",
+    nivelEvidencia: "A",
     nombre: "Ácido salicílico",
     familia: "bha",
     grupos: ["exfoliante", "acido-libre", "renovador"],
@@ -92,6 +128,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   bha_betaina_salicilato: {
     id: "bha_betaina_salicilato",
+    nivelEvidencia: "C", // el documento gradúa el salicílico (A), no esta versión suave, que no tiene ensayos propios
     nombre: "Betaína salicilato",
     familia: "bha",
     grupos: ["exfoliante"],
@@ -102,6 +139,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   bha_lha: {
     id: "bha_lha",
+    nivelEvidencia: "B",
     nombre: "LHA (capriloil salicílico)",
     familia: "bha",
     grupos: ["exfoliante"],
@@ -114,6 +152,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   aha_malico: {
     id: "aha_malico",
+    nivelEvidencia: "D",
     nombre: "Ácido málico",
     familia: "aha",
     grupos: ["exfoliante", "acido-libre"],
@@ -121,6 +160,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   aha_tartarico: {
     id: "aha_tartarico",
+    nivelEvidencia: "D",
     nombre: "Ácido tartárico",
     familia: "aha",
     grupos: ["exfoliante", "acido-libre"],
@@ -128,6 +168,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   acido_fitico: {
     id: "acido_fitico",
+    nivelEvidencia: "C",
     nombre: "Ácido fítico",
     familia: "aha",
     grupos: ["exfoliante", "despigmentante"],
@@ -138,6 +179,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   pha_gluconolactona: {
     id: "pha_gluconolactona",
+    nivelEvidencia: "B",
     nombre: "PHA (gluconolactona)",
     familia: "pha",
     // A propósito NO está en el grupo "exfoliante", que es el que cuenta carga
@@ -160,6 +202,7 @@ export const ACTIVOS: Record<string, Activo> = {
   // misma bolsa haría que el motor dé un consejo falso.
   retinol: {
     id: "retinol",
+    nivelEvidencia: "A",
     nombre: "Retinol",
     familia: "retinoide",
     grupos: ["exfoliante", "renovador", "retinoide-oxidable"],
@@ -170,6 +213,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   retinal: {
     id: "retinal",
+    nivelEvidencia: "B", // no está en INGREDIENTES.md ni en el catálogo; el retinaldehído tiene ensayos propios pero menos que el retinol
     nombre: "Retinaldehído",
     familia: "retinoide",
     grupos: ["exfoliante", "renovador", "retinoide-oxidable"],
@@ -179,6 +223,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   retinil_ester: {
     id: "retinil_ester",
+    nivelEvidencia: "C",
     nombre: "Retinil palmitato",
     familia: "retinoide",
     grupos: ["renovador", "retinoide-oxidable"],
@@ -200,6 +245,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   tretinoina: {
     id: "tretinoina",
+    nivelEvidencia: "A", // fármaco de referencia, fuera del catálogo: está para que las reglas de retinoide tengan a quién apuntar
     nombre: "Tretinoína",
     familia: "retinoide",
     grupos: ["exfoliante", "renovador", "retinoide-oxidable"],
@@ -211,6 +257,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   adapaleno: {
     id: "adapaleno",
+    nivelEvidencia: "A",
     nombre: "Adapaleno",
     familia: "retinoide",
     grupos: ["exfoliante", "renovador"],
@@ -221,6 +268,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   bakuchiol: {
     id: "bakuchiol",
+    nivelEvidencia: "B",
     nombre: "Bakuchiol",
     familia: "retinoide-alternativa",
     grupos: ["renovador"],
@@ -233,6 +281,7 @@ export const ACTIVOS: Record<string, Activo> = {
   // ── Vitamina C ─────────────────────────────────────────────────────────────
   vit_c_laa: {
     id: "vit_c_laa",
+    nivelEvidencia: "A",
     nombre: "Vitamina C pura (ácido L-ascórbico)",
     familia: "vitamina-c",
     grupos: ["antioxidante", "despigmentante"],
@@ -244,6 +293,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   vit_c_derivado: {
     id: "vit_c_derivado",
+    nivelEvidencia: "B",
     nombre: "Derivado de vitamina C",
     familia: "vitamina-c",
     grupos: ["antioxidante", "despigmentante"],
@@ -257,6 +307,7 @@ export const ACTIVOS: Record<string, Activo> = {
   // ── Despigmentantes y reguladores ──────────────────────────────────────────
   niacinamida: {
     id: "niacinamida",
+    nivelEvidencia: "A",
     nombre: "Niacinamida",
     familia: "niacinamida",
     grupos: ["despigmentante", "barrera-reparadora"],
@@ -268,6 +319,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   azelaico: {
     id: "azelaico",
+    nivelEvidencia: "A",
     nombre: "Ácido azelaico",
     familia: "azelaico",
     grupos: ["despigmentante", "renovador"],
@@ -278,6 +330,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   tranexamico: {
     id: "tranexamico",
+    nivelEvidencia: "B",
     nombre: "Ácido tranexámico",
     familia: "tranexamico",
     grupos: ["despigmentante"],
@@ -288,6 +341,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   arbutina: {
     id: "arbutina",
+    nivelEvidencia: "B",
     nombre: "Alfa-arbutina",
     familia: "despigmentante",
     grupos: ["despigmentante"],
@@ -295,6 +349,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   melasyl: {
     id: "melasyl",
+    nivelEvidencia: "B",
     nombre: "Melasyl (2-mercaptonicotinoil glicina)",
     familia: "despigmentante",
     grupos: ["despigmentante"],
@@ -307,6 +362,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   tiosulfato_sodio: {
     id: "tiosulfato_sodio",
+    nivelEvidencia: "D",
     nombre: "Tiosulfato de sodio",
     familia: "despigmentante",
     grupos: ["despigmentante"],
@@ -317,6 +373,7 @@ export const ACTIVOS: Record<string, Activo> = {
   // ── Humectantes y reparadores de barrera con mecanismo propio ─────────────
   urea: {
     id: "urea",
+    nivelEvidencia: "A",
     nombre: "Urea",
     familia: "humectante",
     grupos: ["barrera-reparadora"],
@@ -328,6 +385,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   glicerilo_glucosido: {
     id: "glicerilo_glucosido",
+    nivelEvidencia: "B",
     nombre: "Gliceril glucósido",
     familia: "humectante",
     grupos: ["barrera-reparadora"],
@@ -337,9 +395,10 @@ export const ACTIVOS: Record<string, Activo> = {
       "estimula la expresión de acuaporina-3, el canal por el que el agua circula entre células. " +
       "Hay trabajo publicado midiendo el aumento de AQP3 en queratinocitos y en piel humana.",
   },
-  escualano: { id: "escualano", nombre: "Escualano", familia: "emoliente", grupos: [], carga: 0 },
+  escualano: { id: "escualano", nivelEvidencia: "B", nombre: "Escualano", familia: "emoliente", grupos: [], carga: 0 },
   fitoesfingosina: {
     id: "fitoesfingosina",
+    nivelEvidencia: "A",
     nombre: "Fitoesfingosina",
     familia: "barrera",
     grupos: ["barrera-reparadora"],
@@ -347,6 +406,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   colesterol: {
     id: "colesterol",
+    nivelEvidencia: "A",
     nombre: "Colesterol",
     familia: "barrera",
     grupos: ["barrera-reparadora"],
@@ -357,6 +417,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   manteca_karite: {
     id: "manteca_karite",
+    nivelEvidencia: "C", // no está graduada en el documento; emoliente clásico, buena tolerancia, sin ensayos que sostengan más
     nombre: "Manteca de karité",
     familia: "emoliente",
     grupos: [],
@@ -364,6 +425,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   resorcinol_fenetil: {
     id: "resorcinol_fenetil",
+    nivelEvidencia: "B",
     nombre: "Fenetil resorcinol",
     familia: "despigmentante",
     grupos: ["despigmentante"],
@@ -372,6 +434,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   zinc_pca: {
     id: "zinc_pca",
+    nivelEvidencia: "C",
     nombre: "Zinc PCA",
     familia: "seborregulador",
     grupos: [],
@@ -381,6 +444,7 @@ export const ACTIVOS: Record<string, Activo> = {
   // ── Oxidantes y péptidos ───────────────────────────────────────────────────
   peroxido_benzoilo: {
     id: "peroxido_benzoilo",
+    nivelEvidencia: "A", // el documento no lo gradúa porque no está en el catálogo; es estándar de tratamiento en acné
     nombre: "Peróxido de benzoilo",
     familia: "peroxido",
     grupos: ["oxidante", "renovador"],
@@ -394,6 +458,7 @@ export const ACTIVOS: Record<string, Activo> = {
   // péptido, y meterlos en el mismo grupo es la manera de no confundirlo.
   peptidos_cobre: {
     id: "peptidos_cobre",
+    nivelEvidencia: "C",
     nombre: "Péptidos de cobre (GHK-Cu)",
     familia: "peptido",
     grupos: ["cobre"],
@@ -415,6 +480,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   peptidos: {
     id: "peptidos",
+    nivelEvidencia: "D",
     nombre: "Péptidos de señal",
     familia: "peptido",
     grupos: [],
@@ -426,6 +492,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   zinc_gluconato: {
     id: "zinc_gluconato",
+    nivelEvidencia: "C",
     nombre: "Gluconato de zinc",
     familia: "seborregulador",
     grupos: [],
@@ -437,6 +504,7 @@ export const ACTIVOS: Record<string, Activo> = {
   // importan sobre todo por las sinergias — son lo que hace tolerable un activo.
   centella: {
     id: "centella",
+    nivelEvidencia: "B",
     nombre: "Centella asiática",
     familia: "calmante",
     grupos: ["barrera-reparadora"],
@@ -444,6 +512,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   panthenol: {
     id: "panthenol",
+    nivelEvidencia: "B",
     nombre: "Pantenol (vitamina B5)",
     familia: "calmante",
     grupos: ["barrera-reparadora"],
@@ -451,6 +520,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   ceramidas: {
     id: "ceramidas",
+    nivelEvidencia: "A",
     nombre: "Ceramidas",
     familia: "barrera",
     grupos: ["barrera-reparadora"],
@@ -458,6 +528,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   hialuronico: {
     id: "hialuronico",
+    nivelEvidencia: "B",
     nombre: "Ácido hialurónico",
     familia: "humectante",
     grupos: [],
@@ -466,18 +537,22 @@ export const ACTIVOS: Record<string, Activo> = {
       "Otro que no exfolia pese al nombre. Es un humectante: atrae agua y hay que sellarlo con " +
       "algo encima, sobre todo en ambientes secos.",
   },
-  alantoina: { id: "alantoina", nombre: "Alantoína", familia: "calmante", grupos: [], carga: 0 },
+  alantoina: { id: "alantoina", nivelEvidencia: "C", nombre: "Alantoína", familia: "calmante", grupos: [], carga: 0 },
   mucina_caracol: {
     id: "mucina_caracol",
+    nivelEvidencia: "C",
     nombre: "Mucina de caracol",
     familia: "calmante",
     grupos: ["barrera-reparadora"],
     carga: 0,
   },
-  adenosina: { id: "adenosina", nombre: "Adenosina", familia: "calmante", grupos: [], carga: 0 },
-  cafeina: { id: "cafeina", nombre: "Cafeína", familia: "calmante", grupos: [], carga: 0 },
+  // adenosina: no está en el documento; aprobado como antiarrugas en Corea, sin réplica independiente fuerte
+  adenosina: { id: "adenosina", nivelEvidencia: "C", nombre: "Adenosina", familia: "calmante", grupos: [], carga: 0 },
+  // cafeina: no está en el documento; el efecto sobre ojeras es transitorio y vasoconstrictor
+  cafeina: { id: "cafeina", nivelEvidencia: "D", nombre: "Cafeína", familia: "calmante", grupos: [], carga: 0 },
   licochalcona: {
     id: "licochalcona",
+    nivelEvidencia: "B",
     nombre: "Licochalcona A",
     familia: "calmante",
     grupos: [],
@@ -486,6 +561,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   glicirretinico: {
     id: "glicirretinico",
+    nivelEvidencia: "B",
     nombre: "Ácido glicirretínico",
     familia: "calmante",
     grupos: [],
@@ -493,6 +569,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   tocoferol: {
     id: "tocoferol",
+    nivelEvidencia: "C",
     nombre: "Vitamina E (tocoferol)",
     familia: "antioxidante",
     grupos: ["antioxidante"],
@@ -500,6 +577,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   ferulico: {
     id: "ferulico",
+    nivelEvidencia: "B",
     nombre: "Ácido ferúlico",
     familia: "antioxidante",
     grupos: ["antioxidante"],
@@ -510,6 +588,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   madecassosido: {
     id: "madecassosido",
+    nivelEvidencia: "B",
     nombre: "Madecasósido",
     familia: "calmante",
     grupos: ["barrera-reparadora"],
@@ -521,15 +600,17 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   glicirricinato: {
     id: "glicirricinato",
+    nivelEvidencia: "C",
     nombre: "Glicirricinato dipotásico",
     familia: "calmante",
     grupos: [],
     carga: 0,
     evidencia: "Derivado de regaliz. Antiinflamatorio suave, muy bien tolerado.",
   },
-  bisabolol: { id: "bisabolol", nombre: "Bisabolol", familia: "calmante", grupos: [], carga: 0 },
+  bisabolol: { id: "bisabolol", nivelEvidencia: "C", nombre: "Bisabolol", familia: "calmante", grupos: [], carga: 0 },
   carnosina: {
     id: "carnosina",
+    nivelEvidencia: "D",
     nombre: "Carnosina",
     familia: "antioxidante",
     grupos: ["antioxidante"],
@@ -538,6 +619,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   avena: {
     id: "avena",
+    nivelEvidencia: "A",
     nombre: "Avena coloidal",
     familia: "calmante",
     grupos: ["barrera-reparadora"],
@@ -545,6 +627,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   agua_termal: {
     id: "agua_termal",
+    nivelEvidencia: "D",
     nombre: "Agua termal",
     familia: "calmante",
     grupos: [],
@@ -555,17 +638,21 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   noni: {
     id: "noni",
+    nivelEvidencia: "D",
     nombre: "Extracto de noni",
     familia: "antioxidante",
     grupos: ["antioxidante"],
     carga: 0,
     evidencia: "Antioxidante vegetal. Evidencia tópica escasa; se usa como base de fórmula.",
   },
-  aloe: { id: "aloe", nombre: "Aloe vera", familia: "calmante", grupos: [], carga: 0 },
-  creatina: { id: "creatina", nombre: "Creatina", familia: "otros", grupos: [], carga: 0 },
-  ginseng: { id: "ginseng", nombre: "Ginseng", familia: "antioxidante", grupos: [], carga: 0 },
+  // aloe: no está en el documento; calmante bien tolerado, evidencia mayormente abierta
+  aloe: { id: "aloe", nivelEvidencia: "C", nombre: "Aloe vera", familia: "calmante", grupos: [], carga: 0 },
+  // creatina: no está en el documento; sólo mecanismo
+  creatina: { id: "creatina", nivelEvidencia: "D", nombre: "Creatina", familia: "otros", grupos: [], carga: 0 },
+  ginseng: { id: "ginseng", nivelEvidencia: "D", nombre: "Ginseng", familia: "antioxidante", grupos: [], carga: 0 },
   arroz_fermentado: {
     id: "arroz_fermentado",
+    nivelEvidencia: "D", // no está en el documento; fermentado de marca, sin literatura independiente
     nombre: "Extracto de arroz fermentado",
     familia: "antioxidante",
     grupos: [],
@@ -642,6 +729,7 @@ export const ACTIVOS: Record<string, Activo> = {
   // haría que el sitio dijera nada distinto.
   filtro_quimico: {
     id: "filtro_quimico",
+    nivelEvidencia: "A", // el documento describe los filtros uno por uno sin ponerles letra; la fotoprotección es lo mejor documentado del rubro
     nombre: "Filtros solares orgánicos",
     familia: "filtro",
     grupos: [],
@@ -649,6 +737,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   filtro_mineral: {
     id: "filtro_mineral",
+    nivelEvidencia: "A", // ídem filtros orgánicos
     nombre: "Filtros solares minerales",
     familia: "filtro",
     grupos: [],
@@ -660,6 +749,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   filtro_avobenzona: {
     id: "filtro_avobenzona",
+    nivelEvidencia: "A", // ídem; su problema es la fotoestabilidad, no la evidencia
     nombre: "Avobenzona",
     familia: "filtro",
     grupos: [],
@@ -671,6 +761,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   filtro_uva_400: {
     id: "filtro_uva_400",
+    nivelEvidencia: "B",
     nombre: "Filtro de UVA ultra-largo (Mexoryl 400)",
     familia: "filtro",
     grupos: [],
@@ -682,6 +773,7 @@ export const ACTIVOS: Record<string, Activo> = {
   },
   oxidos_de_hierro: {
     id: "oxidos_de_hierro",
+    nivelEvidencia: "B",
     nombre: "Óxidos de hierro (color)",
     familia: "pigmento",
     grupos: [],
