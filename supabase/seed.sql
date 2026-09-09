@@ -1,4 +1,4 @@
--- Seed de 71 productos de ejemplo. Generado por scripts/gen-seed.ts.
+-- Seed de 74 productos de ejemplo. Generado por scripts/gen-seed.ts.
 -- No editar a mano: cambiá src/niches/skincare/productos.ts y corré npm run gen-seed.
 
 insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
@@ -103,6 +103,18 @@ on conflict (id) do nothing;
 
 insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
 values ('ed3e0a91-2640-59fc-80d5-5008a15d65a5', 'Tónico Exfoliante de Ácido Glicólico 7 por ciento 100 ml', 'The Ordinary', 'exfoliante', 9, 'pm', array['grasa', 'mixta', 'normal'], array['textura', 'manchas'], 'europeo', false, 3, 57170, 'https://http2.mlstatic.com/D_Q_NP_2X_641467-MLU74154671501_012024-V.webp', 'https://meli.la/2cHLcue', 'https://www.mercadolibre.com.ar/p/MLA29493655', 'MLA29493655', 'Ácido glicólico al 7 por ciento: empareja la textura y ayuda a que las marcas se aclaren.', 'De noche, sobre la piel seca, 2 o 3 veces por semana. Nunca el mismo día que otro ácido.', '2026-09-05', 4, true, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('90c1aea1-3bfb-5a4e-a211-78985e1f3c48', 'Dokdo Cleanser 150 ml', 'Round Lab', 'limpiador', 2, 'ambos', array['grasa', 'mixta', 'normal', 'seca', 'sensible'], array['deshidratacion'], 'coreano', true, 2, null, 'https://http2.mlstatic.com/D_Q_NP_2X_839222-MLU73333939622_122023-V.webp', 'https://meli.la/21y4VAu', 'https://www.mercadolibre.com.ar/p/MLA28943962', 'MLA28943962', 'Limpia con pH 5,0–6,0, el de la piel, y repone mientras lava: trae ceramidas, pantenol y hialurónico. Es de los pocos que no dejan tirante.', 'Mañana y noche sobre la cara húmeda. Espuma poco y alcanza con poco.', '2026-09-09', 4, false, true)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('eec70d65-de2c-5f00-86fc-69a5f5cc3aee', 'Black Rice Pure Mineral Sunscreen SPF50 50 ml', 'Haruharu Wonder', 'protector_solar', 4, 'am', array['grasa', 'mixta', 'normal', 'seca', 'sensible'], array['manchas', 'deshidratacion'], 'coreano', true, 2, null, 'https://http2.mlstatic.com/D_Q_NP_2X_811162-MPE105596328131_012026-V.webp', 'https://meli.la/2qmJQ4m', 'https://www.mercadolibre.com.ar/p/MLA2068351806', 'MLA2068351806', 'Filtro mineral de óxido de zinc, que protege por barrera física en vez de por reacción química. Es la opción para piel que reacciona a los filtros químicos.', 'A la mañana, como último paso. El velo blanco del zinc se va masajeando. Reponer cada dos horas si estás al sol.', '2026-09-09', 4, false, true)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('9d03794b-8bd6-5d34-b1ce-f10495736d43', 'Black Rice Gel Limpiador 100 ml', 'Haruharu Wonder', 'limpiador', 2, 'ambos', array['grasa', 'mixta', 'normal', 'seca', 'sensible'], array['deshidratacion'], 'coreano', true, 1, null, 'https://http2.mlstatic.com/D_Q_NP_2X_793416-MLU77148106703_062024-V.webp', 'https://meli.la/1YH8C4k', 'https://www.mercadolibre.com.ar/p/MLA37826532', 'MLA37826532', 'Sin jabón y sin fragancia, con tensioactivos de coco. Limpia sin llevarse el aceite propio, que es lo que deja la piel tirante después de lavarse.', 'Mañana y noche. Masajear treinta segundos sobre la piel húmeda y enjuagar con agua tibia.', '2026-09-09', 4, false, true)
 on conflict (id) do nothing;
 
 insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)

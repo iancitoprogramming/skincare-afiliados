@@ -40,9 +40,22 @@ import { tokenML, cabeceras } from "../src/lib/ml-api";
 
 const MD = resolve(process.cwd(), "docs/relevar-pendientes.md");
 
-/** `D_NQ_NP_<id>-F.jpg` de la API → la variante en alta que el validador acepta. */
+/**
+ * La URL de la API → la variante en alta que el validador acepta.
+ *
+ * ML sirve dos formatos de nombre y hay que contemplar los dos: el habitual
+ * `D_NQ_NP_<id>-F.jpg` y el corto `D_<id>-V.webp`, que aparece en publicaciones
+ * nuevas. Al segundo le falta el prefijo entero, así que reemplazarlo sólo por
+ * `D_NQ_NP_` no alcanzaba y la URL salía sin `_2X_` — o sea, rechazada como
+ * miniatura. Pasó con el protector de Haruharu.
+ */
 function enAlta(url: string): string {
-  return url.replace(/D_NQ_NP_/, "D_NQ_NP_2X_").replace(/-[A-Z]\.(jpg|jpeg|png|webp)$/i, "-F.webp");
+  const conPrefijo = /D_(NQ_)?N?P_/.test(url)
+    ? url.replace(/D_NQ_NP_/, "D_NQ_NP_2X_")
+    : url.replace(/\/D_/, "/D_NQ_NP_2X_");
+  return conPrefijo
+    .replace(/D_NQ_NP_(?!2X_)/, "D_NQ_NP_2X_")
+    .replace(/-[A-Z]\.(jpg|jpeg|png|webp)$/i, "-F.webp");
 }
 
 /** Que la URL derivada exista de verdad. Escribir una que da 404 es peor que no escribirla. */

@@ -1184,6 +1184,25 @@ export const MITOS: Mito[] = [
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
+  // ── Altas manuales del 9/9/2026, mapeadas desde el INCI completo ──────────
+  // Round Lab Dokdo: hialurónico en tres formas, pantenol, alantoína y ceramida NP.
+  //
+  // El ácido cítrico del INCI NO se mapea, y la decisión vale para los dos
+  // limpiadores de esta tanda. Aparece al final de la lista, entre conservantes:
+  // es ajustador de pH a menos de medio por ciento, no un exfoliante. Mapearlo
+  // sumaba carga al grupo "exfoliante" y ensuciaba 19 rutinas con un aviso que no
+  // le sirve a nadie.
+  //
+  // Ojo con la inconsistencia que esto deja a la vista: de 74 productos, uno solo
+  // declara aha_citrico. O se mapea en todos los INCI donde aparece —y entonces
+  // sube el conflicto en todo el catálogo— o en ninguno salvo que sea exfoliante
+  // de verdad. Hoy la convención de hecho es la segunda, y esto la sigue.
+  MLA28943962: ["hialuronico", "panthenol", "alantoina", "ceramidas"],
+  // Haruharu Pure Mineral: óxido de zinc como filtro físico. El Butyloctyl
+  // Salicylate NO es salicílico, es emoliente, y por eso no está acá.
+  MLA2068351806: ["filtro_mineral", "niacinamida", "hialuronico", "ceramidas", "tocoferol"],
+  // Haruharu Black Rice: arroz fermentado (Aspergillus ferment) y ginseng.
+  MLA37826532: ["arroz_fermentado", "ginseng"],
   // ── Limpiadores ────────────────────────────────────────────────────────────
   // Idraet Espuma Extra Suave · sin activos declarados, y está bien que así sea:
   // un limpiador que se enjuaga no es el lugar para poner activos.
