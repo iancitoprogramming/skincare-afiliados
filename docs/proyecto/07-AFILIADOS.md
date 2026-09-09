@@ -12,8 +12,9 @@
 
 ## 0 · Lo que hay que resolver
 
-**Todos los links tienen que salir de una sola cuenta.** Hoy salen de dos:
-`maurobilat` (Alex) 38 y `goldenvalhalla` (Ian) 35, sobre el mismo sitio.
+**Todos los links tienen que salir de una sola cuenta.** Resuelto el 9/9/2026:
+los 73 salen de `maurobilat`. Antes eran 38 de `maurobilat` y 35 de
+`goldenvalhalla` sobre el mismo sitio.
 
 Soporte del Programa, consultado el 6/9/2026:
 
@@ -189,11 +190,8 @@ Ojo con los retinoides: el retinol cosmético va, la tretinoína es medicamento.
 
 - [x] Decidir la cuenta única: `maurobilat`.
 - [x] Confirmar que el titular sea monotributista.
-- [ ] **Regenerar 13 links activos** desde `maurobilat`. Son los que hoy están
-      publicados cobrando a la cuenta equivocada. `npm run links-pendientes` los
-      lista arriba de todo.
-- [ ] Regenerar los 22 restantes, de productos inactivos. Sin apuro: no se le
-      muestran a nadie hasta que se activen.
+- [x] Regenerar los 35 links desde `maurobilat`. Cerrado el 9/9/2026: los 73
+      resuelven a la cuenta única y `npm run cuentas` sale 0.
 - [ ] Declarar los Medios en `maurobilat`: el sitio y las cinco redes.
 - [ ] Retirar el scraping de `scripts/cuentas.ts`. Ojo: la resolución sólo lee
       el `Location` del redirect, que es bastante más liviano que parsear el

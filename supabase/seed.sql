@@ -6,7 +6,7 @@ values ('5d221906-39be-54cf-8a4b-a8451c1bc147', 'Espuma Facial Extra Suave Mouss
 on conflict (id) do nothing;
 
 insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
-values ('177a52d8-37db-52eb-91a0-588b515f3170', 'Gel Limpiador Facial Espumoso 236 ml', 'CeraVe', 'limpiador', 2, 'ambos', array['grasa', 'mixta', 'normal'], array['acne', 'textura'], 'europeo', true, 3, 55620, 'https://http2.mlstatic.com/D_Q_NP_2X_831598-MLA48269275817_112021-V.webp', 'https://meli.la/2Y8r46h', 'https://www.mercadolibre.com.ar/p/MLAU140993030', 'MLAU140993030', 'Gel espumoso para piel grasa o mixta, con ceramidas para no romper la barrera.', 'Mañana y noche. Si te reseca, dejalo solo de noche.', '2026-09-05', 4, false, true)
+values ('bbab9cd3-0891-5ed1-95f2-4ece713b533b', 'Gel Limpiador Facial Espumoso 236 ml', 'CeraVe', 'limpiador', 2, 'ambos', array['grasa', 'mixta', 'normal'], array['acne', 'textura'], 'europeo', true, 3, 55620, 'https://http2.mlstatic.com/D_Q_NP_2X_831598-MLA48269275817_112021-V.webp', 'https://meli.la/2k4hF9V', 'https://www.mercadolibre.com.ar/p/MLA25800983', 'MLA25800983', 'Gel espumoso para piel grasa o mixta, con ceramidas para no romper la barrera.', 'Mañana y noche. Si te reseca, dejalo solo de noche.', '2026-09-05', 4, false, true)
 on conflict (id) do nothing;
 
 insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)

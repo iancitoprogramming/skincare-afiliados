@@ -52,10 +52,10 @@ const productosCurados: Producto[] = [
     activo: true,
   },
   {
-    // #3 · MLAU140993030 · CeraVe
-    id: "177a52d8-37db-52eb-91a0-588b515f3170",
-    ml_id: "MLAU140993030",
-    cuenta: "goldenvalhalla",
+    // #3 · MLA25800983 (antes MLAU140993030) · CeraVe
+    id: "bbab9cd3-0891-5ed1-95f2-4ece713b533b",
+    ml_id: "MLA25800983",
+    cuenta: "maurobilat",
     rating: 4.8,
     opiniones: 3207,
     vendidos: "+10 mil",
@@ -74,8 +74,8 @@ const productosCurados: Producto[] = [
     precio_ars: 55620,
     imagen_url: "https://http2.mlstatic.com/D_Q_NP_2X_831598-MLA48269275817_112021-V.webp",
     imagen_hd: "https://http2.mlstatic.com/D_NQ_NP_2X_831598-MLA48269275817_112021-F.webp",
-    link_afiliado: "https://meli.la/2Y8r46h",
-    url_referencia: "https://www.mercadolibre.com.ar/p/MLAU140993030",
+    link_afiliado: "https://meli.la/2k4hF9V",
+    url_referencia: "https://www.mercadolibre.com.ar/p/MLA25800983",
     por_que: "Gel espumoso para piel grasa o mixta, con ceramidas para no romper la barrera.",
     como_usar: "Mañana y noche. Si te reseca, dejalo solo de noche.",
     relevado: "2026-09-05",

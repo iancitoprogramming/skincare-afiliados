@@ -1189,7 +1189,7 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // un limpiador que se enjuaga no es el lugar para poner activos.
   MLA21801426: [],
   // CeraVe Gel Limpiador Espumoso [INCI]
-  MLAU140993030: ["ceramidas", "niacinamida", "hialuronico"],
+  MLA25800983: ["ceramidas", "niacinamida", "hialuronico"],
   // COSRX Low pH Good Morning [INCI] — el BHA suave + tea tree que lo saca de
   // las rutinas de piel sensible.
   MLA11139349: ["bha_betaina_salicilato", "aceite_esencial_tea_tree"],

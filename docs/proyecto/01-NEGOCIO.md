@@ -29,10 +29,11 @@ Los links salen de dos cuentas de afiliado distintas:
 | `goldenvalhalla` | **Ian** | — | Mix europeo y nacional |
 | `maurobilat` | **Alex** | **Club de Piel** | Mayoría coreana |
 
-> **Están migrando a una sola.** Soporte del Programa indicó que un mismo
-> proyecto debe operar con una única cuenta afiliada, porque cada afiliado cobra
-> sólo por los canales declarados en la suya. Quedó `maurobilat`; `goldenvalhalla`
-> sale. Faltan regenerar 35 links, 13 de ellos activos. Ver `07-AFILIADOS.md`.
+> **Ya migraron a una sola.** Soporte del Programa indicó que un mismo proyecto
+> debe operar con una única cuenta afiliada, porque cada afiliado cobra sólo por
+> los canales declarados en la suya. Desde el 9/9/2026 los 73 links salen de
+> `maurobilat`; `goldenvalhalla` quedó fuera del proyecto. La tabla de abajo es
+> historia: sirve para saber de quién es cada handle. Ver `07-AFILIADOS.md`.
 
 De quién es cada cuenta estaba sólo en la cabeza de los dos, y eso ya se dio
 vuelta una vez: se afirmó que `maurobilat` era la de Ian y se le dijo que había

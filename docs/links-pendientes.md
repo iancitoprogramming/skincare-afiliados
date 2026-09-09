@@ -7,7 +7,7 @@
 > figuran como REGENERAR ya monetizan, pero le pagan a la otra cuenta, que no
 > declaró este sitio como Medio. Ver `docs/proyecto/07-AFILIADOS.md`.
 
-73 ítems en el catálogo · **72 ya monetizan** · **1 pendientes**
+73 ítems en el catálogo · **73 ya monetizan** · **0 pendientes**
 
 ## Cómo se completa
 
@@ -20,6 +20,4 @@ No toques la columna `ml_id`: es con lo que el script vuelve a encontrar cada
 producto. Las filas que dejes vacías se ignoran, así que se puede ir de a poco.
 ## Pendientes
 
-| ml_id | producto | estado | abrir | pegar acá |
-|---|---|---|---|---|
-| `MLAU140993030` | CeraVe Gel Limpiador Facial Espumoso 236 ml | REGENERAR · el link es de la otra cuenta | [ML](https://www.mercadolibre.com.ar/up/MLAU140993030) | |
+Ninguno. Todo el catálogo monetiza.
