@@ -10,7 +10,13 @@ import { writeFileSync, mkdirSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { productos } from "../src/niches/skincare/productos";
 import { KITS_UNICOS } from "../src/niches/skincare/kits";
-import { clasificar, urlPublicacion, ETIQUETA, type Veredicto } from "../src/lib/links";
+import {
+  clasificarConCuenta,
+  urlPublicacion,
+  ETIQUETA,
+  CUENTA_PRINCIPAL,
+  type Veredicto,
+} from "../src/lib/links";
 
 interface Fila {
   ml_id: string;
@@ -23,13 +29,13 @@ const filas: Fila[] = [
   ...productos.map((p) => ({
     ml_id: p.ml_id ?? "",
     etiqueta: `${p.marca ?? ""} ${p.nombre}`.trim(),
-    estado: clasificar(p.link_afiliado, p.activo),
+    estado: clasificarConCuenta(p.link_afiliado, p.activo, p.cuenta),
     activo: p.activo,
   })),
   ...KITS_UNICOS.map((k) => ({
     ml_id: k.ml_id,
     etiqueta: `[kit] ${k.marca} ${k.nombre}`,
-    estado: clasificar(k.link_afiliado, true),
+    estado: clasificarConCuenta(k.link_afiliado, true, k.cuenta),
     activo: true,
   })),
 ];
@@ -45,6 +51,10 @@ const md = [
   "",
   "> Generado por `npm run links-pendientes`. **Se puede editar**: pegá cada link",
   "> en la última columna y después corré `npm run links-aplicar`.",
+  "",
+  `> Todos los links tienen que salir de la cuenta **${CUENTA_PRINCIPAL}**. Los que`,
+  "> figuran como REGENERAR ya monetizan, pero le pagan a la otra cuenta, que no",
+  "> declaró este sitio como Medio. Ver `docs/proyecto/07-AFILIADOS.md`.",
   "",
   `${filas.length} ítems en el catálogo · **${listos} ya monetizan** · **${pendientes.length} pendientes**`,
   "",

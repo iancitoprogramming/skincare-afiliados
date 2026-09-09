@@ -32,17 +32,21 @@ cuentas sobre un mismo sitio la mitad de las ventas queda expuesta a no pagarse.
 El riesgo es asimétrico: no se pierde una funcionalidad, se pierden comisiones ya
 generadas.
 
-**Cuál de las dos cuentas queda es una decisión de negocio, no técnica**: quien
-tenga la cuenta cobra todo en su Mercado Pago y factura, y arregla con el otro
-por fuera del Programa. Pendiente entre Ian y Alex.
+**Decidido el 8/9/2026: queda `maurobilat`.** Es la cuenta cuyo perfil social de
+ML ya está branded "Club de Piel", y su titular es monotributista, que lo exige
+la cláusula 2.1. `goldenvalhalla` sale del proyecto.
 
-Cuando se decida:
+Consecuencia a tener presente: las comisiones se acreditan en el Mercado Pago de
+`maurobilat` y factura su titular. El reparto entre los dos socios pasa a ser un
+acuerdo por fuera del Programa — el Programa ya no lo modela.
 
-1. Regenerar a mano, en el panel de Afiliados de la cuenta elegida, los links de
-   la otra. `npm run links-pendientes` arma la lista y `npm run links-aplicar`
+Los pasos:
+
+1. Regenerar a mano, en el panel de Afiliados de `maurobilat`, los 35 links de
+   `goldenvalhalla`. `npm run links-pendientes` arma la lista y `npm run links-aplicar`
    los escribe.
-2. Rebrandear el perfil social de ML de esa cuenta como "Club de Piel" si no lo
-   está. La cláusula 3.3 permite configurarlo y aclara que no da derechos
+2. Confirmar que el perfil social de ML de `maurobilat` siga branded "Club de
+   Piel". La cláusula 3.3 permite configurarlo y aclara que no da derechos
    exclusivos.
 3. `npm run cuentas` cambia de trabajo: deja de medir equidad entre dos cuentas y
    pasa a auditar que los 73 resuelvan a la misma. Un link que se cuele de la
@@ -175,8 +179,13 @@ Ojo con los retinoides: el retinol cosmético va, la tretinoína es medicamento.
 
 ## Pendientes
 
-- [ ] Decidir la cuenta única y unificar los 73 links.
-- [ ] Declarar los Medios en esa cuenta.
-- [ ] Confirmar que quien quede como titular sea monotributista.
+- [x] Decidir la cuenta única: `maurobilat`.
+- [x] Confirmar que el titular sea monotributista.
+- [ ] **Regenerar 13 links activos** desde `maurobilat`. Son los que hoy están
+      publicados cobrando a la cuenta equivocada. `npm run links-pendientes` los
+      lista arriba de todo.
+- [ ] Regenerar los 22 restantes, de productos inactivos. Sin apuro: no se le
+      muestran a nadie hasta que se activen.
+- [ ] Declarar los cinco Medios en `maurobilat`.
 - [ ] Retirar el scraping de `scripts/cuentas.ts`.
-- [ ] Crear Facebook, la única red que falta.
+- [ ] ~~Crear Facebook~~ — descartado por ahora.

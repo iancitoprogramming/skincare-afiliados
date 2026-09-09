@@ -29,10 +29,10 @@ Los links salen de dos cuentas de afiliado distintas:
 | `goldenvalhalla` | **Ian** | — | Mix europeo y nacional |
 | `maurobilat` | **Alex** | **Club de Piel** | Mayoría coreana |
 
-> **Esto tiene que cambiar.** Soporte del Programa indicó que un mismo proyecto
-> debe operar con una sola cuenta afiliada para todos los links: cada afiliado
-> cobra únicamente por los canales declarados en su propia cuenta. Cuál de las
-> dos queda está pendiente entre Ian y Alex. Ver `07-AFILIADOS.md`.
+> **Están migrando a una sola.** Soporte del Programa indicó que un mismo
+> proyecto debe operar con una única cuenta afiliada, porque cada afiliado cobra
+> sólo por los canales declarados en la suya. Quedó `maurobilat`; `goldenvalhalla`
+> sale. Faltan regenerar 35 links, 13 de ellos activos. Ver `07-AFILIADOS.md`.
 
 De quién es cada cuenta estaba sólo en la cabeza de los dos, y eso ya se dio
 vuelta una vez: se afirmó que `maurobilat` era la de Ian y se le dijo que había
@@ -47,7 +47,7 @@ El handle no dice el nombre, así que va escrito acá.
 | Instagram | `@clubdepielok` | creada · vinculada a Pinterest |
 | TikTok | `@clubdepielok` | creada |
 | YouTube | `@clubdepiel` | creada |
-| Facebook | — | falta |
+| Facebook | — | descartada por ahora |
 
 El handle no es igual en todas y está bien: YouTube tenía libre el corto y las
 otras no. Lo que sí es igual en las cinco es el **nombre visible**, "Club de

@@ -7,6 +7,7 @@
 
 export type Veredicto =
   | "afiliado"
+  | "otra_cuenta"
   | "placeholder"
   | "browse"
   | "sin_cargar"
@@ -15,12 +16,28 @@ export type Veredicto =
 
 export const ETIQUETA: Record<Veredicto, string> = {
   afiliado: "OK · link de afiliado",
+  otra_cuenta: "REGENERAR · el link es de la otra cuenta",
   placeholder: "PENDIENTE · todavía es el placeholder",
   browse: "NO MONETIZA · URL copiada de la búsqueda de ML",
   sin_cargar: "SIN CARGAR · producto nuevo, todavía sin link",
   vacio: "ROTO · sin link",
   desconocido: "REVISAR · no parece de afiliado",
 };
+
+/**
+ * La cuenta desde la que tienen que salir TODOS los links.
+ *
+ * Soporte del Programa indicó que un mismo proyecto debe operar con una sola
+ * cuenta afiliada, porque cada afiliado cobra únicamente por los canales que
+ * declaró en su propia cuenta. Con links de dos cuentas sobre un mismo sitio,
+ * la mitad de las ventas queda expuesta a no pagarse. El detalle está en
+ * `docs/proyecto/07-AFILIADOS.md`.
+ *
+ * Es una constante y no una variable de entorno a propósito: cambiar de cuenta
+ * obliga a regenerar los 73 links a mano, así que no es algo que se configure
+ * — es algo que se decide una vez y se ve en el diff.
+ */
+export const CUENTA_PRINCIPAL = "maurobilat";
 
 /**
  * Un link del Programa de Afiliados de ML es un shortlink `meli.la`, un
@@ -46,6 +63,28 @@ export function clasificar(link: string, activo = true): Veredicto {
 
 export function monetiza(link: string): boolean {
   return clasificar(link) === "afiliado";
+}
+
+/**
+ * Igual que `clasificar`, pero además exige que el link salga de la cuenta
+ * principal.
+ *
+ * Un link de la otra cuenta monetiza perfectamente — por eso `clasificar` lo da
+ * por bueno y por eso el problema es invisible. Lo que falla es más arriba: la
+ * comisión se le acredita a una cuenta que no declaró este sitio como Medio.
+ *
+ * La cuenta la resuelve `npm run cuentas` siguiendo el redirect y la guarda en
+ * el catálogo. Un ítem sin `cuenta` resuelta no se marca: no sabemos, y gritar
+ * sobre lo que no sabemos entrena a ignorar la lista.
+ */
+export function clasificarConCuenta(
+  link: string,
+  activo: boolean,
+  cuenta?: string,
+): Veredicto {
+  const veredicto = clasificar(link, activo);
+  if (veredicto !== "afiliado") return veredicto;
+  return cuenta && cuenta !== CUENTA_PRINCIPAL ? "otra_cuenta" : veredicto;
 }
 
 /** URL de la publicación, para poder abrirla y generar el link de afiliado. */
