@@ -13,7 +13,7 @@ export const productosOrganize: Producto[] = [
     // FPS 30 en un hidratante, no reemplaza al protector · Sin INCI verificado: no se le mapean activos y el motor no opina sobre su fórmula.
     id: "d47c5c7f-88f8-5547-8ee2-440abda55985",
     ml_id: "MLA67629151",
-    cuenta: "goldenvalhalla",
+    cuenta: "maurobilat",
     nombre: "Avene Hydrance Spf30 Crema Facial Hidratante Piel Sensible",
     marca: "Avène",
     categoria: "hidratante",
@@ -24,7 +24,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: true,
     rango_precio: 3, // provisional, por marca
-    link_afiliado: "https://meli.la/2vucCrR",
+    link_afiliado: "https://meli.la/2qCihSr",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA67629151",
     relevado: "2026-09-06",
     por_que: "Hidratante con FPS 30 para piel sensible: cubre dos pasos cuando la rutina tiene que ser corta.",
@@ -90,7 +90,7 @@ export const productosOrganize: Producto[] = [
     // no va a → seca: gel anti-imperfecciones con salicílico y alcohol: le saca a una piel seca lo poco que le queda
     id: "786825f8-fa3a-5ae3-9a12-3514acff04d9",
     ml_id: "MLA35115621",
-    cuenta: "goldenvalhalla",
+    cuenta: "maurobilat",
     nombre: "Crema Gel Hidratante Anti-imperfecciones Garnier 50ml",
     marca: "Garnier",
     categoria: "hidratante",
@@ -101,7 +101,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 1, // provisional, por marca
-    link_afiliado: "https://meli.la/2tBuQVW",
+    link_afiliado: "https://meli.la/2JZyLDC",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA35115621",
     relevado: "2026-09-06",
     por_que: "Gel liviano con niacinamida y salicílico: hidrata sin cargar y trabaja sobre los granitos al mismo tiempo.",
@@ -115,7 +115,7 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: Alcohol denat
     id: "808e43ee-9a93-5cf2-ae71-8210102219b0",
     ml_id: "MLA9210936",
-    cuenta: "goldenvalhalla",
+    cuenta: "maurobilat",
     nombre: "Crema Hidratante Eucerin Aquaporin Active para piel mixta-normal de 50mL",
     marca: "Eucerin",
     categoria: "hidratante",
@@ -126,7 +126,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 2, // provisional, por marca
-    link_afiliado: "https://meli.la/1BRdsTo",
+    link_afiliado: "https://meli.la/1M3qgpD",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA9210936",
     relevado: "2026-09-06",
     por_que: "Su activo no atrae agua: estimula los canales por los que el agua circula entre las células. Es un mecanismo distinto al del resto del catálogo.",
@@ -145,7 +145,7 @@ export const productosOrganize: Producto[] = [
     // mismo listado, si no la persona compra otra cosa de la que vio.
     id: "df0d5355-4ed9-5030-953a-4a710c56fd04",
     ml_id: "MLA28531465",
-    cuenta: "goldenvalhalla",
+    cuenta: "maurobilat",
     nombre: "Recarga Crema Hidratante Facial Neutrogena Hydro Boost 50 GR",
     marca: "Neutrogena",
     categoria: "hidratante",
@@ -156,7 +156,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 1, // provisional, por marca
-    link_afiliado: "https://meli.la/1D1MXGd",
+    link_afiliado: "https://meli.la/31Dwh9j",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA28531465",
     relevado: "2026-09-06",
     por_que: "El gel de hialurónico de siempre, en formato recarga: mismo producto, menos plástico y menos plata.",
@@ -171,7 +171,7 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: filtro solar químico, Alcohol denat, Fragancia
     id: "d0d3332a-fc59-5b58-96c8-77f6fb8eabde",
     ml_id: "MLA9855881",
-    cuenta: "goldenvalhalla",
+    cuenta: "maurobilat",
     nombre: "Eucerin Hyaluron - Filler Día Piel Normal a Mixta Fps15 X 50m",
     marca: "Eucerin",
     categoria: "hidratante",
@@ -182,7 +182,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 3, // provisional, por marca
-    link_afiliado: "https://meli.la/22Mh3Rb",
+    link_afiliado: "https://meli.la/2QfMmn6",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA9855881",
     relevado: "2026-09-06",
     por_que: "Hidratante de día con hialurónico. El FPS 15 es un extra, no reemplaza al protector solar.",
@@ -195,7 +195,7 @@ export const productosOrganize: Producto[] = [
     // ORIENTADOS A PIEL SECA
     id: "9e56836d-95e8-5f74-b707-65927d4d01c0",
     ml_id: "MLA22990183",
-    cuenta: "goldenvalhalla",
+    cuenta: "maurobilat",
     nombre: "Gel Crema Hidratante Facial Piel Sensible Seca - Mixta Aveno 50g",
     marca: "Aveno",
     categoria: "hidratante",
@@ -206,7 +206,7 @@ export const productosOrganize: Producto[] = [
     origen: "nacional",
     apto_sensible: true,
     rango_precio: 1, // provisional, por marca
-    link_afiliado: "https://meli.la/31jBrGU",
+    link_afiliado: "https://meli.la/2buZJKi",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA22990183",
     relevado: "2026-09-06",
     por_que: "Avena coloidal, que es de los calmantes con más respaldo, en una textura gel que no pesa.",
@@ -248,7 +248,7 @@ export const productosOrganize: Producto[] = [
     // no va a → seca: agua micelar con salicílico: le saca a una piel seca lo poco que le queda
     id: "3b6b8c59-405a-5357-b92f-37f1e9ee58bc",
     ml_id: "MLA24300545",
-    cuenta: "goldenvalhalla",
+    cuenta: "maurobilat",
     nombre: "Agua Micelar Anti-imperfecciones Con Ácido Salicílico Garnier 400ml",
     marca: "Garnier",
     categoria: "limpiador",
@@ -259,7 +259,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 1, // provisional, por marca
-    link_afiliado: "https://meli.la/2FJaxYb",
+    link_afiliado: "https://meli.la/22GvuCY",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA24300545",
     relevado: "2026-09-06",
     por_que: "Agua micelar con salicílico: saca el maquillaje y de paso trabaja sobre los granitos.",
@@ -374,7 +374,7 @@ export const productosOrganize: Producto[] = [
     // ORIENTADOS A PIEL SECA
     id: "7787bab2-6a2e-5aae-be68-d587cba8588e",
     ml_id: "MLA53897352",
-    cuenta: "goldenvalhalla",
+    cuenta: "maurobilat",
     nombre: "Gel limpiador hidratante Neutrogena Hydro Boost, 150 ml, para todo tipo de piel",
     marca: "Neutrogena",
     categoria: "limpiador",
@@ -385,7 +385,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: true,
     rango_precio: 1, // provisional, por marca
-    link_afiliado: "https://meli.la/1a13fk3",
+    link_afiliado: "https://meli.la/1C7GjFA",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA53897352",
     relevado: "2026-09-06",
     por_que: "Limpia sin activos y sin dejar la piel tirante. Cuando la rutina ya tiene bastante, el limpiador es el lugar para no sumar nada.",
@@ -400,7 +400,7 @@ export const productosOrganize: Producto[] = [
     // no va a → grasa: textura rica
     id: "5c1c9584-f216-5825-abea-fdcaca926992",
     ml_id: "MLAU376385300",
-    cuenta: "goldenvalhalla",
+    cuenta: "maurobilat",
     nombre: "La Roche-Posay Lipikar Syndet Ap+ Gel Limpiador X 200 Ml",
     marca: "La Roche-Posay",
     categoria: "limpiador",
@@ -411,7 +411,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: true,
     rango_precio: 2, // provisional, por marca
-    link_afiliado: "https://meli.la/1RixJw8",
+    link_afiliado: "https://meli.la/1fEFWNk",
     url_referencia: "https://www.mercadolibre.com.ar/up/MLAU376385300",
     relevado: "2026-09-06",
     por_que: "Syndet sin jabón, con karité y niacinamida. Está formulado para piel atópica, que es el estándar más exigente de suavidad.",
@@ -475,7 +475,7 @@ export const productosOrganize: Producto[] = [
     // no va a → grasa: textura rica
     id: "8293ef2d-878f-5dc7-85df-5254c10d8812",
     ml_id: "MLA37598876",
-    cuenta: "goldenvalhalla",
+    cuenta: "maurobilat",
     nombre: "Limpiador Hidratante Cerave Piel Normal A Seca X 236ml",
     marca: "CeraVe",
     categoria: "limpiador",
@@ -486,7 +486,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: true,
     rango_precio: 2, // provisional, por marca
-    link_afiliado: "https://meli.la/1HXhaNM",
+    link_afiliado: "https://meli.la/17jJUUD",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA37598876",
     relevado: "2026-09-06",
     por_que: "Limpiador cremoso con el set completo de ceramidas. Para piel seca, que es donde un gel espumoso suele pasarse.",
@@ -553,7 +553,7 @@ export const productosOrganize: Producto[] = [
     // no va a → seca: efecto mate: le saca a una piel seca lo poco que le queda
     id: "f2c98169-24cf-59e5-8ceb-eebd40f7720c",
     ml_id: "MLA16048263",
-    cuenta: "goldenvalhalla",
+    cuenta: "maurobilat",
     nombre: "La Roche-Posay Anthelios Fps50 Ultra Fluido Con Color X 50 Ml",
     marca: "La Roche-Posay",
     categoria: "protector_solar",
@@ -564,7 +564,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 3, // provisional, por marca
-    link_afiliado: "https://meli.la/1Z5wwA4",
+    link_afiliado: "https://meli.la/2i65yF5",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA16048263",
     relevado: "2026-09-06",
     por_que: "El único del catálogo que suma dióxido de titanio como filtro, no sólo como color. Fórmula mixta, para quien no se lleva bien con los filtros orgánicos solos.",
@@ -606,7 +606,7 @@ export const productosOrganize: Producto[] = [
     // no va a → seca: anti-imperfecciones con salicílico: le saca a una piel seca lo poco que le queda
     id: "d56c81d0-185e-5694-8352-fb09eaf5cd27",
     ml_id: "MLA38098313",
-    cuenta: "goldenvalhalla",
+    cuenta: "maurobilat",
     nombre: "Garnier Protector Solar Super Uv Fluido Invisible Fps50 40 Ml",
     categoria: "protector_solar",
     paso: 0,
@@ -616,7 +616,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 2, // provisional, por marca
-    link_afiliado: "https://meli.la/12kE7AR",
+    link_afiliado: "https://meli.la/2Arth2T",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA38098313",
     relevado: "2026-09-06",
     por_que: "Protector con niacinamida y salicílico adentro. Es poco común, y buena idea si tenés piel grasa y no querés sumar otro frasco.",
@@ -682,7 +682,7 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: Retinol, Retinil palmitato, Alcohol denat, Fragancia
     id: "24fe4638-63d5-5fd1-8e2d-07c15ffabda3",
     ml_id: "MLAU244146565",
-    cuenta: "goldenvalhalla",
+    cuenta: "maurobilat",
     nombre: "La Roche Posay Retinol B3 Sérum Regenerador X 30 Ml Todo Tipo De Piel, Incluso Sensible.",
     marca: "La Roche-Posay",
     categoria: "retinoide",
@@ -693,7 +693,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 3, // provisional, por marca
-    link_afiliado: "https://meli.la/1cLRPsP",
+    link_afiliado: "https://meli.la/2b8ob3n",
     url_referencia: "https://www.mercadolibre.com.ar/up/MLAU244146565",
     relevado: "2026-09-06",
     por_que: "Retinol puro y gradual con vitamina B3. Ojo con la etiqueta: dice apto para piel sensible y lleva alcohol denat y fragancia.",
@@ -707,7 +707,7 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: Fragancia
     id: "826faa38-3298-5428-927d-639265ebb5e6",
     ml_id: "MLAU209241342",
-    cuenta: "goldenvalhalla",
+    cuenta: "maurobilat",
     nombre: "Dermaglós Serum Facial Niacinamida X 30 Ml Todo Tipo De Piel Día-noche",
     marca: "Dermaglós",
     categoria: "serum_activo",
@@ -718,7 +718,7 @@ export const productosOrganize: Producto[] = [
     origen: "nacional",
     apto_sensible: false,
     rango_precio: 1, // provisional, por marca
-    link_afiliado: "https://meli.la/1QPrueC",
+    link_afiliado: "https://meli.la/2kjU9Yg",
     url_referencia: "https://www.mercadolibre.com.ar/up/MLAU209241342",
     relevado: "2026-09-06",
     por_que: "Niacinamida con zinc, fórmula corta y precio accesible. La niacinamida es el activo que mejor se lleva con todo lo demás.",
@@ -757,7 +757,7 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: Ácido glicólico (AHA/BHA), Ácido láctico (AHA/BHA), Ácido málico (AHA/BHA), Ácido tartárico (AHA/BHA), Alcohol denat, Fragancia
     id: "4bc1f9e9-cd68-5e76-9a87-6187919f6287",
     ml_id: "MLA29882074",
-    cuenta: "goldenvalhalla",
+    cuenta: "maurobilat",
     nombre: "Eximia Hyalu-n Concentre X 15 Ml Tipo de piel Todo tipo de piel",
     marca: "Eximia",
     categoria: "serum_activo",
@@ -768,7 +768,7 @@ export const productosOrganize: Producto[] = [
     origen: "nacional",
     apto_sensible: false,
     rango_precio: 2, // provisional, por marca
-    link_afiliado: "https://meli.la/2Z3JW7S",
+    link_afiliado: "https://meli.la/26Y4Xsf",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA29882074",
     relevado: "2026-09-06",
     por_que: "Se vende como sérum de niacinamida y además trae tranexámico y un complejo de AHA. Exfolia más de lo que parece.",
@@ -808,7 +808,7 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: vitamina C pura
     id: "f97e6ed9-4133-50a5-b4fe-4f5780557aab",
     ml_id: "MLA19710676",
-    cuenta: "goldenvalhalla",
+    cuenta: "maurobilat",
     nombre: "Liftactiv Supreme Vitamina C Serum 20ml Vichy",
     marca: "Vichy",
     categoria: "serum_activo",
@@ -819,7 +819,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 3, // provisional, por marca
-    link_afiliado: "https://meli.la/2RZ82c3",
+    link_afiliado: "https://meli.la/2FSEDu1",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA19710676",
     relevado: "2026-09-06",
     por_que: "Vitamina C pura al 16% con vitamina E, que la estabiliza y la potencia.",
@@ -834,7 +834,7 @@ export const productosOrganize: Producto[] = [
     // no va a → seca: apila BHA, AHA y alcohol: le saca a una piel seca lo poco que le queda
     id: "e7bb0026-7146-514d-8ac0-056f82a5f465",
     ml_id: "MLA22843182",
-    cuenta: "goldenvalhalla",
+    cuenta: "maurobilat",
     nombre: "Sérum Anti-imperfecciones con Ácido Salicílico de Garnier 30ml",
     marca: "Garnier",
     categoria: "serum_activo",
@@ -845,7 +845,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 1, // provisional, por marca
-    link_afiliado: "https://meli.la/1DCQJzi",
+    link_afiliado: "https://meli.la/1k8SB8y",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA22843182",
     relevado: "2026-09-06",
     por_que: "Apila salicílico, láctico, fítico y niacinamida. Es el producto con más activos por mililitro del catálogo, y eso corta para los dos lados.",
@@ -859,7 +859,7 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: vitamina C pura
     id: "72651e35-bd63-5f51-880b-30cbc19cb5c4",
     ml_id: "MLA45672941",
-    cuenta: "goldenvalhalla",
+    cuenta: "maurobilat",
     nombre: "Sérum Brightening Kosmos Vitamina C Pura",
     marca: "Kosmos",
     categoria: "serum_activo",
@@ -870,7 +870,7 @@ export const productosOrganize: Producto[] = [
     origen: "nacional",
     apto_sensible: false,
     rango_precio: 2, // provisional, por marca
-    link_afiliado: "https://meli.la/1Cxs4p7",
+    link_afiliado: "https://meli.la/2tUhzCr",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA45672941",
     relevado: "2026-09-06",
     por_que: "Repite el trío con más respaldo que existe —vitamina C pura, vitamina E y ácido ferúlico— y suma ceramidas.",
@@ -962,7 +962,7 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: Aceite esencial de romero
     id: "04b77f59-3bf6-5b04-9a5e-e7662616f848",
     ml_id: "MLA45338822",
-    cuenta: "goldenvalhalla",
+    cuenta: "maurobilat",
     nombre: "Celimax The Real Noni Energy Ampoule Serum",
     marca: "Celimax",
     categoria: "serum_secundario",
@@ -973,7 +973,7 @@ export const productosOrganize: Producto[] = [
     origen: "coreano",
     apto_sensible: false,
     rango_precio: 2, // provisional, por marca
-    link_afiliado: "https://meli.la/1wqWqrz",
+    link_afiliado: "https://meli.la/2ZZeJju",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA45338822",
     relevado: "2026-09-06",
     por_que: "Casi tres cuartos de extracto de noni, con ceramidas, escualano y colesterol. Trabaja la barrera más que una preocupación puntual.",
@@ -1014,7 +1014,7 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: Alcohol denat, Fragancia
     id: "0547f1a8-4a58-521a-8f70-b5d8621b4a1d",
     ml_id: "MLA59802317",
-    cuenta: "goldenvalhalla",
+    cuenta: "maurobilat",
     nombre: "La Roche-Posay Hyalu B5 Suractivated Serum 30 Ml",
     marca: "La Roche-Posay",
     categoria: "serum_secundario",
@@ -1025,7 +1025,7 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: false,
     rango_precio: 3, // provisional, por marca
-    link_afiliado: "https://meli.la/1CyrL3C",
+    link_afiliado: "https://meli.la/2pSRQ1q",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA59802317",
     relevado: "2026-09-06",
     por_que: "Cuatro tipos de hialurónico con pantenol y madecasósido, que es el componente de centella con más respaldo propio.",
@@ -1140,7 +1140,7 @@ export const productosOrganize: Producto[] = [
     // no va a → seca: minimiza poros, control de aceite: le saca a una piel seca lo poco que le queda
     id: "c88d5ad8-e7da-51ac-96c9-0f015dddfed2",
     ml_id: "MLA43183566",
-    cuenta: "goldenvalhalla",
+    cuenta: "maurobilat",
     nombre: "Skin1004 Poremizing Fresh Ampoule",
     marca: "Skin1004",
     categoria: "serum_secundario",
@@ -1151,7 +1151,7 @@ export const productosOrganize: Producto[] = [
     origen: "coreano",
     apto_sensible: true,
     rango_precio: 2, // provisional, por marca
-    link_afiliado: "https://meli.la/31D3Hmf",
+    link_afiliado: "https://meli.la/1kRJsbt",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA43183566",
     relevado: "2026-09-06",
     por_que: "Ampolla liviana con centella y péptidos, orientada a la apariencia del poro. Trae cobre, así que mejor no cruzarla con vitamina C pura.",

@@ -1196,7 +1196,7 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // Mixsoon Centella Cleansing Foam [vault] — trae salicílico de verdad.
   MLAU3453545171: ["centella", "bha_salicilico"],
   // Skin1004 Centella Ampoule Foam [vault] — el cítrico está como ajuste de pH.
-  MLAU3856054670: ["centella", "aha_citrico", "hialuronico"],
+  MLA47129399: ["centella", "aha_citrico", "hialuronico"],
   // Cleanex Free Gel · no verificado.
   MLA27603374: [],
   // Beauty of Joseon Ginseng Cleansing Oil [vault]
@@ -1244,7 +1244,7 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // Lidherma Hyaluronic 4D · humectante puro.
   MLA19474747: ["hialuronico"],
   // COSRX Advanced Snail 92 [vault]
-  MLA45253335: ["mucina_caracol", "panthenol", "alantoina", "adenosina", "hialuronico"],
+  MLAU3849329943: ["mucina_caracol", "panthenol", "alantoina", "adenosina", "hialuronico"],
   // Dermaglós Crema Hidratante de Día FPS 30 · lleva filtro, no verificamos cuál.
   MLA24692733: ["filtro_quimico"],
 
