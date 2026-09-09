@@ -75,6 +75,12 @@ Hay que declarar en la cuenta, antes de publicar:
 | Instagram | `@clubdepielok` |
 | TikTok | `@clubdepielok` |
 | YouTube | `@clubdepiel` |
+| Facebook | a crear |
+
+**El sitio va en la lista.** Es el Medio principal —es donde viven las 69 páginas
+y los 73 links— y es el que más fácil se olvida, porque uno piensa en "redes"
+cuando lee la palabra Medios. Sin declararlo, la cláusula 3.2 dice que nada de lo
+que salga de ahí cuenta.
 
 No declararlos no rompe nada visible: los links funcionan, la gente compra, y la
 comisión puede no contarse como Transacción Válida.
@@ -186,6 +192,6 @@ Ojo con los retinoides: el retinol cosmético va, la tretinoína es medicamento.
       lista arriba de todo.
 - [ ] Regenerar los 22 restantes, de productos inactivos. Sin apuro: no se le
       muestran a nadie hasta que se activen.
-- [ ] Declarar los cinco Medios en `maurobilat`.
+- [ ] Declarar los Medios en `maurobilat`: el sitio y las cinco redes.
 - [ ] Retirar el scraping de `scripts/cuentas.ts`.
-- [ ] ~~Crear Facebook~~ — descartado por ahora.
+- [ ] Crear Facebook: vuelve a entrar como Medio (decisión del 8/9/2026).
