@@ -52,8 +52,33 @@ export const copy = {
     criterios: "cómo decidimos qué combina con qué",
   },
 
+  // ───────────────────────────────────────────────────────────────────────────
+  // PRECIO
+  //
+  // No publicamos el número. La razón está en `docs/PRECIO.md`: un precio de
+  // Mercado Libre copiado a mano queda viejo en días, y cuando queda viejo no
+  // falla de a poco — miente sobre lo único que la persona va a verificar en el
+  // clic siguiente. La banda cualitativa dice lo que el número decía de verdad
+  // ("¿me alcanza?") y no caduca.
+  //
+  // Las etiquetas van en minúscula y sin signo $: son una categoría, no un
+  // monto, y escribirlas como monto invitaría a leerlas como uno.
+  precio: {
+    rangos: { 1: "accesible", 2: "equilibrado", 3: "premium" } as Record<number, string>,
+    // Va junto a la banda, en la ficha. Es la promesa que sí podemos cumplir:
+    // el precio de hoy, con el descuento de hoy, está a un clic.
+    dondeVerlo: "el precio de hoy y los descuentos, en Mercado Libre",
+    // La versión larga, para quien se pregunta por qué no está el número.
+    porQue:
+      "No publicamos precios: Mercado Libre los cambia todos los días y un número copiado acá " +
+      "quedaría viejo sin que se note. Preferimos decirte en qué rango está y que el precio real " +
+      "lo veas en la publicación, con el descuento que haya en ese momento.",
+    // Para un kit armado por nosotros: la banda del conjunto, no una suma.
+    rangoKit: (etiqueta: string) => `rango ${etiqueta}`,
+  },
+
   // Catálogo navegable. Es la pieza que se comparte en redes: cada tarjeta se
-  // sostiene sola, con foto, precio y el porqué en una línea.
+  // sostiene sola, con foto, banda de precio y el porqué en una línea.
   catalogo: {
     titulo: "Todo el catálogo",
     bajadaHome: "Mirá producto por producto y elegí vos.",
@@ -113,11 +138,16 @@ export const copy = {
     },
     bajada: "Cada kit es una rutina completa elegida para un tipo de piel.",
     pasos: (n: number) => `${n} paso${n === 1 ? "" : "s"}`,
-    total: "total aprox.",
     // En Mercado Libre cada producto es una compra distinta. Decirlo antes de que
     // la persona lo descubra en el checkout.
+    //
+    // Antes acá había un "total aprox.": la suma de los precios relevados. Era
+    // el peor lugar posible para un número viejo, porque un total suma el error
+    // de cada producto y se muestra antes de que nadie haya abierto una sola
+    // publicación. Ahora se dice cuántos pasos son y en qué rango caen.
     aclaracionCompra:
-      "Cada producto se compra por separado en Mercado Libre: son varios checkouts y varios envíos. El total es la suma de todos.",
+      "Cada producto se compra por separado en Mercado Libre: son varios checkouts y varios envíos. " +
+      "El precio de cada uno lo ves en su publicación, con el descuento que tenga hoy.",
     ver: "Ver el kit",
     volver: "todos los kits",
   },

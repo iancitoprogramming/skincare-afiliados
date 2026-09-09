@@ -1,6 +1,7 @@
 import { Shell } from "@/components/Shell";
 import { CatalogoGrid, type OpcionFiltro } from "@/components/CatalogoGrid";
 import { getCatalogo } from "@/engine/catalogo";
+import { conCriteriosDeOrden } from "@/niches/skincare/calidad";
 import { copy } from "@/niches/skincare/copy";
 import { CATEGORIAS, ORIGENES, skincareQuiz } from "@/niches/skincare/config";
 import { productos as fallback } from "@/niches/skincare/productos";
@@ -15,7 +16,7 @@ export const metadata = {
 };
 
 export default async function Catalogo() {
-  const productos = (await getCatalogo(fallback)).filter((p) => p.activo);
+  const productos = (await getCatalogo(fallback, conCriteriosDeOrden)).filter((p) => p.activo);
 
   // Las opciones salen de lo que el catálogo tiene de verdad, no de una lista
   // fija: un filtro que devuelve cero resultados siempre es culpa nuestra.

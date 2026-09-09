@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { armarRutina, elegirPaso, type Rutina } from "./recomendacion";
+import { armarRutina, elegirPaso, type Producto, type Rutina } from "./recomendacion";
 import { productos } from "../niches/skincare/productos";
 import { TIERS, tierEfectivo, skincareQuiz, CATEGORIAS_OPCIONALES } from "../niches/skincare/config";
 
@@ -289,5 +289,77 @@ describe("catálogo", () => {
       const tiene = productos.some((p) => p.activo && p.comodin && p.categoria === c);
       expect(tiene, `falta comodín en "${c}"`).toBe(true);
     }
+  });
+});
+
+// ── El criterio de orden ────────────────────────────────────────────────────
+//
+// Antes de esto el desempate era prioridad → banda de precio → precio, y cuando
+// los tres empataban decidía el orden del archivo. Once productos del catálogo
+// proyectado no se le mostraban nunca a nadie por eso.
+
+describe("criterio de orden", () => {
+  const base = {
+    nombre: "x",
+    categoria: "hidratante",
+    paso: 1,
+    momento: "ambos" as const,
+    tipos_piel: ["normal"],
+    preocupaciones: ["hidratacion"],
+    origen: "nacional",
+    apto_sensible: true,
+    link_afiliado: "https://ejemplo",
+    relevado: "2026-09-06",
+    prioridad: 3,
+    comodin: false,
+    activo: true,
+  };
+  const slot = { categoria: "hidratante", momento: "ambos" as const };
+  const r = { piel: "normal", objetivo: "hidratacion", presupuesto: 3 };
+  const elegido = (ps: Producto[]) => elegirPaso(ps, slot, r).producto.id;
+
+  it("a igual match, gana la fórmula mejor respaldada aunque sea más barata", () => {
+    expect(
+      elegido([
+        { ...base, id: "caro-flojo", rango_precio: 3, calidad_formula: 2 },
+        { ...base, id: "barato-bueno", rango_precio: 1, calidad_formula: 7 },
+      ]),
+    ).toBe("barato-bueno");
+  });
+
+  it("la prioridad sigue mandando sobre la calidad", () => {
+    expect(
+      elegido([
+        { ...base, id: "mejor-match", rango_precio: 1, prioridad: 5, calidad_formula: 1 },
+        { ...base, id: "mejor-formula", rango_precio: 1, prioridad: 3, calidad_formula: 9 },
+      ]),
+    ).toBe("mejor-match");
+  });
+
+  it("a igual calidad desempata el respaldo, y recién después el precio", () => {
+    expect(
+      elegido([
+        { ...base, id: "sin-opiniones", rango_precio: 3, calidad_formula: 5, respaldo_orden: 0 },
+        { ...base, id: "muy-probado", rango_precio: 1, calidad_formula: 5, respaldo_orden: 2 },
+      ]),
+    ).toBe("muy-probado");
+  });
+
+  // El bug de fondo: con todo empatado, `Array.sort` es estable y ganaba el que
+  // estuviera más arriba en productos.ts. Un orden arbitrario está bien; uno que
+  // además depende de dónde alguien pegó el bloque, no.
+  it("con todo empatado el orden no depende de la posición en el archivo", () => {
+    const a = { ...base, id: "aaa", rango_precio: 2, calidad_formula: 5 };
+    const z = { ...base, id: "zzz", rango_precio: 2, calidad_formula: 5 };
+    expect(elegido([a, z])).toBe(elegido([z, a]));
+  });
+
+  it("un catálogo sin los campos derivados sigue eligiendo, sin romperse", () => {
+    expect(
+      elegido([
+        { ...base, id: "uno", rango_precio: 1 },
+        { ...base, id: "dos", rango_precio: 2 },
+      ]),
+    ).toBe("dos"); // preferencia "mejor" por omisión: la banda más alta que entre
   });
 });

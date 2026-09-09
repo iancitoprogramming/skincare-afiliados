@@ -51,6 +51,28 @@ export const severidadPeso: Record<Severidad, number> = {
   nota: 1,
 };
 
+/**
+ * Cuánto respalda la literatura lo que el activo dice hacer. La escala está
+ * definida y argumentada en `docs/INGREDIENTES.md` §0:
+ *
+ *   A — ensayos aleatorizados replicados por grupos independientes, o revisión
+ *       sistemática. Se puede afirmar.
+ *   B — al menos un ensayo aleatorizado serio, o varios controlados chicos que
+ *       apuntan al mismo lado. Se puede afirmar con matices.
+ *   C — estudios abiertos, in vitro con plausibilidad fuerte, o consenso clínico
+ *       sin ensayo formal. Se puede sugerir, no afirmar.
+ *   D — mecanismo plausible y poco más. No se promete nada.
+ *
+ * Regla de la casa: en la landing sólo se afirma lo que está en A o B.
+ *
+ * OJO CON EL SALTO DE ESCALA, que es el error más fácil de cometer acá: el nivel
+ * de evidencia de una MOLÉCULA no es el nivel de evidencia de un PRODUCTO. El
+ * retinol tiene A; una crema con retinol al 0,01% en envase transparente no
+ * hereda esa A. Por eso `calidadFormula()` se llama así y no "calidad del
+ * producto": mide con qué está construida la fórmula, no cuánto rinde.
+ */
+export type NivelEvidencia = "A" | "B" | "C" | "D";
+
 export interface Activo {
   id: string;
   /** Cómo se le dice en la card, en castellano. */
@@ -75,6 +97,14 @@ export interface Activo {
   soloNoche?: boolean;
   /** Rango de pH en el que la fórmula suele trabajar. Informativo. */
   ph?: [number, number];
+  /**
+   * Nivel de evidencia A–D. Se declara ausente a propósito —no por olvido— en lo
+   * que no es un activo con beneficio afirmable: irritantes, pigmentos, vehículos
+   * y metales que sólo están para explicar un conflicto. Un test verifica que
+   * cada activo tenga nivel o esté en la lista explícita de exentos, así que
+   * agregar uno nuevo sin decidir esto rompe el build en vez de pasar de largo.
+   */
+  nivelEvidencia?: NivelEvidencia;
   /** Qué respalda la clasificación. Se muestra en la página pública de criterios. */
   evidencia?: string;
 }
@@ -550,7 +580,7 @@ function rutinaDePasos(pasos: PasoRutina[]): Rutina {
  *   2. prioridad del producto — qué tan bueno es para ese paso
  *   3. conflictos "cuidado"  — manejables; no valen sacrificar un mejor producto
  *   4. conflictos "nota"     — redundancia; sólo importa si todo lo demás empata
- *   5. precio                — el desempate de siempre
+ *   5. el orden de `candidatos` — calidad de fórmula, respaldo, precio, id
  *
  * Que "cuidado" vaya DEBAJO de prioridad es la decisión más discutible de todo
  * esto, y es deliberada: un aviso de "separalos por momento" se resuelve con una
@@ -593,9 +623,16 @@ export function armarRutinaEvitandoConflictos(
         else nota++;
       }
 
-      // `candidatos` ya viene ordenado por prioridad y precio, así que para
-      // desempatar esos dos alcanza con quedarse con el primero que gane: se
-      // usa el índice como sustituto del orden original.
+      // `candidatos` ya viene ordenado por el criterio completo —prioridad,
+      // calidad de fórmula, respaldo, banda de precio, id— así que alcanza con
+      // quedarse con el PRIMERO que gane: el orden de la lista hace de quinto
+      // desempate sin tener que repetirlo acá.
+      //
+      // Ojo con lo que este armado no puede ver: elige paso por paso, en el
+      // orden de ORDEN_DE_ELECCION, contra lo ya elegido. El hidratante se
+      // decide DESPUÉS del protector solar, así que una redundancia que aparece
+      // recién cuando entra el hidratante no se podía esquivar al elegir el
+      // protector. Es el precio de ser voraz, y se paga en avisos de "nota".
       const puntaje: [number, number, number, number] = [
         separar,
         -producto.prioridad,

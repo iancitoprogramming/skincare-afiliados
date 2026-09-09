@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Shell } from "@/components/Shell";
 import { getCatalogo } from "@/engine/catalogo";
+import { conCriteriosDeOrden } from "@/niches/skincare/calidad";
 import { armarKits } from "@/engine/kits";
 import { copy } from "@/niches/skincare/copy";
 import { TIERS } from "@/niches/skincare/config";
@@ -21,7 +22,7 @@ export const metadata = {
 // Puerta de entrada: dos caminos y nada mas. El que llega de una red social
 // decide en un toque, sin buscar ni scrollear un catalogo.
 export default async function Home() {
-  const productos = await getCatalogo(fallback);
+  const productos = await getCatalogo(fallback, conCriteriosDeOrden);
   const kits = armarKits(productos, KITS, TIERS);
   const total = kits.length + KITS_UNICOS.length;
   const activos = productos.filter((p) => p.activo).length;

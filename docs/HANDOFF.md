@@ -47,10 +47,10 @@ ingredientes y el herramental de auditoría.
 
 ```
 tsc --noEmit      exit 0
-npm test          65/65 en verde
+npm test          101/101 en verde
 npm run build     exit 0 · 69 páginas estáticas
 npm audit         0 vulnerabilities
-check-links       los 25 activos monetizan
+copy-verificar    45 productos, sin claims prohibidos
 ```
 
 **Catálogo: 71 productos.**
@@ -91,15 +91,40 @@ Archivos:
 - `src/niches/skincare/matriz.ts` — la tabla pública se **deriva** de las mismas
   reglas, para que no pueda contradecir al motor
 - `docs/COMPATIBILIDAD.md` · `docs/INGREDIENTES.md` — el criterio, con fuentes
+- `docs/CALIDAD.md` — cómo se ordena · `docs/PRECIO.md` — por qué no hay precios
 
 **El motor no sólo avisa: elige para no chocar.** Al armar la rutina prefiere,
 dentro del mismo nivel de match, el producto que menos conflictos genera. La
 regla que lo gobierna: *esquivar un conflicto nunca cuesta calidad de match.*
 
+### El criterio de orden
+
+Entre dos productos que sirven igual, cuál se muestra:
+
+```
+prioridad  →  calidad de fórmula  →  respaldo  →  banda de precio  →  id
+```
+
+Los 72 activos del diccionario llevan su nivel de evidencia A–D en el campo
+`nivelEvidencia`, tomado sección por sección de `INGREDIENTES.md`.
+`src/engine/calidad.ts` lo convierte en un puntaje: cuenta una vez por familia
+—cuatro fuentes de niacinamida no son cuatro beneficios— y cada familia
+siguiente vale la mitad que la anterior, así que apilar renglones de INCI no
+gana. Después resta el lastre: fragancia, aceites esenciales y alcohol denat,
+pesados por cuánto tiempo quedan sobre la piel.
+
+El `id` al final del desempate no es decoración: antes, cuando todo empataba,
+decidía el orden del archivo. `docs/CALIDAD.md` tiene el cálculo, lo que se
+midió al encenderlo y —importante— **lo que el número no mide**: el nivel de
+evidencia es de la molécula, no del producto, y la concentración no se puede
+puntuar sin inventarla.
+
 ### La investigación
 
 `docs/INGREDIENTES.md` cubre los 114 tokens de activo/filtro/irritante que
-aparecen en las listas INCI, **con escala de evidencia A–D explícita**.
+aparecen en las listas INCI, **con escala de evidencia A–D explícita**. Desde el
+2026-09-06 la escala está además **codificada**, y un test verifica que el
+documento y el diccionario no se puedan separar.
 
 > **Regla de la casa: en la landing sólo se afirma lo que está en A o B.**
 
@@ -128,7 +153,13 @@ npm run huecos -- --proyectar    # qué conflicto NO se puede evitar y qué falt
 npm run ranking-compra           # ordena candidatos de compra por impacto medido
 npm run rendimiento              # qué aporta cada paso extra
 npm run copy-verificar           # claims prohibidos en el copy de producto
+npm run relevar-pendientes       # arma la lista de imagen y precio que falta
+npm run relevar-aplicar          # la escribe de vuelta, derivando la banda
 ```
+
+`npm run auditar` ahora incluye una tabla de **calidad de fórmula por categoría**:
+quién gana adentro de cada paso y por qué, con el activo mejor respaldado y el
+lastre que arrastra. Es lo que hay que mirar antes de tocar una `prioridad`.
 
 ---
 
@@ -147,79 +178,56 @@ esta línea de trabajo.)
 | **Orientación, no restricción** | Las carpetas dicen "ORIENTADOS A". Clasificación **inclusiva por defecto**: se excluye sólo con motivo de fórmula. Piel normal y mixta quedan en 46/46 |
 | **Nada entra por inferencia** | Sin INCI verificado, la lista de activos va vacía. Una advertencia inventada cuesta lo mismo que un claim inventado |
 | **Sin claims médicos** | Ningún producto "trata", "cura", "repara" ni "elimina". `npm run copy-verificar` lo valida |
+| **El precio no se publica** | Mercado Libre prohíbe scrapear, la API pide OAuth y encima está retirando el campo `price`. Un precio fijo de catálogo miente justo sobre lo que la persona verifica en el clic siguiente. Se publica la banda cualitativa. Ver `docs/PRECIO.md` |
+| **El orden es calidad + reputación, después precio** | El precio era un proxy de "cuál es mejor" porque no había con qué medir "mejor". Ahora lo hay. Ver `docs/CALIDAD.md` |
 
 ---
 
-## 6 · LA DECISIÓN ABIERTA: el precio
+## 6 · El precio: decidido
 
-**Esto es lo primero que hay que resolver.** Quedó planteado y sin decidir.
+**Cerrado el 2026-09-06. El detalle completo, con fuentes, está en `docs/PRECIO.md`.**
 
-### Lo que pidió el usuario
+El pedido original era el correcto: hacía falta el precio fresco, porque un precio fijo de
+catálogo no ve los descuentos y rompe la mecánica. Lo que no se puede es traerlo.
 
-Un *pathway* de dos links: uno **no afiliado** para traer datos frescos de la
-publicación (precio, descuento, reputación) y otro **de afiliado** para el botón
-"Ver en Mercado Libre". El argumento es correcto y es el corazón del proyecto:
+- Los Términos para Desarrolladores de Mercado Libre **prohíben el scraping** con todas las
+  letras, y el `robots.txt` bloquea con `Disallow: /` a ClaudeBot, GPTBot y compañía.
+- La API oficial pide OAuth, desde abril de 2025 ni la búsqueda anda sin token, y Mercado Libre
+  está **retirando `price`, `base_price` y `original_price` de `/items`**. El camino legítimo
+  apunta justo al campo que están desmantelando.
+- El riesgo es asimétrico: un scraper detectado no rompe una feature, puede costar la cuenta de
+  afiliados y con ella los 69 links.
 
-> *"Si llegáramos a poner un precio fijo de catálogo, no tendríamos acceso a los
-> descuentos ni a las actualizaciones de precio. Eso rompería la mecánica
-> fundamental."*
+**Se implementó la opción B: banda cualitativa** —accesible · equilibrado · premium— y el número
+en pesos salió de las seis superficies donde estaba, empezando por la imagen de Open Graph. Las
+bandas están medidas, no inventadas: sobre los 26 productos con precio relevado los tres grupos se
+parten solos, sin superponerse.
 
-### El blocker que encontré
-
-**Mercado Libre prohíbe scrapear, explícitamente**, en sus Términos para
-desarrolladores: *"robots, harvesters, spiders, scraping u otra tecnología para
-acceder al Contenido de Mercado Libre"*.
-
-Y el camino oficial tampoco está abierto como esperábamos:
-
-- La API exige **OAuth 2.0**; desde abril de 2025 ni la búsqueda anda sin token.
-- ML está **eliminando `price` de `/items`** progresivamente.
-- El `robots.txt` bloquea por completo a los bots de IA (`ClaudeBot`, `GPTBot`).
-
-**Por qué importa más de lo que parece:** el activo del negocio es la cuenta de
-afiliados. Un scraper detectado no rompe una feature — puede costar la cuenta, y
-con ella los 73 links. Riesgo asimétrico.
-
-### Las tres opciones
-
-- **A · No mostrar precio.** Es lo que el proyecto ya había decidido en
-  `ISSUES.md` §N2. El precio vive donde siempre está bien: en ML, a un clic.
-- **B · Rango cualitativo.** El campo `rango_precio` (1-3) ya existe. Mostrar
-  "accesible / equilibrado / premium". No caduca. **Recomendada.**
-- **C · API oficial con OAuth.** Legítimo, pero necesita credenciales de ellos,
-  refresco de token cada 6 h, y ML está desmantelando justo el campo que quieren.
-
-### Consecuencias de la decisión
-
-- **`precio_ars` se usa en 5 lugares de la UI**, incluido
-  `/api/og/producto/[slug]` — **la imagen de Open Graph**. Pinterest cachea esas
-  imágenes y no se regeneran solas: un descuento las deja mintiendo en el feed.
-  **Ese caso hay que sacarlo elijan lo que elijan.**
-- La herramienta `relevar-pendientes` / `relevar-aplicar` (commit `2fd9e78`, sin
-  mergear) escribe `precio_ars` fijo — o sea, hace exactamente lo que el usuario
-  no quiere. **Su mitad de imagen sigue siendo válida** (las fotos no cambian);
-  la de precio depende de esta decisión. Está probada de punta a punta y tiene 9
-  tests, así que se puede recuperar parcialmente.
-
----
+`precio_ars` sigue guardado como dato de relevamiento (lo usa `npm run frescura`) pero no llega a
+la pantalla, y `src/lib/precio.test.ts` falla si alguna vez vuelve. `npm run relevar-aplicar`
+ahora escribe también `rango_precio`, derivado del precio con `bandaDePrecio()`.
 
 ## 7 · Lo próximo, priorizado
 
-1. **Decidir el precio** (§6) y sacarlo de la imagen de OG.
-2. **Ranking por calidad + reputación.** Es lo que quedó pedido y no empezado.
-   Hoy `src/engine/respaldo.ts` gradúa la prueba social (opiniones + rating),
-   pero **la calidad de fórmula no entra en ningún ranking**. La escala A–D está
-   documentada en `INGREDIENTES.md` pero **sin codificar**: el motor no la puede
-   usar. Habría que:
-   - codificar el grado de evidencia en cada activo del diccionario;
-   - derivar un score de calidad por producto (qué activos trae, con qué
-     respaldo, penalizando fragancia/alcohol en leave-on/aceites esenciales);
-   - combinarlo con el respaldo social en un criterio de orden explícito.
+Los dos primeros del handoff anterior —decidir el precio y el ranking por calidad— están hechos.
+Lo que queda:
 
-   Esto además arregla algo ya medido: **11 productos pierden siempre el
-   desempate y nadie los ve**, incluido el SkinCeuticals C E Ferulic, que es el
-   único producto del catálogo con una afirmación de nivel A.
-3. **Relevar precio e imagen de los 45** (según lo que se decida en §6).
+1. **Relevar imagen y banda de los 45.** Es lo único que separa a esos productos de poder
+   activarse: link, categoría, tipos de piel, preocupaciones, activos y copy ya los tienen.
+   `npm run relevar-pendientes` arma la lista y `relevar-aplicar` la escribe de vuelta; ahora
+   además deriva `rango_precio` del precio pegado, así que no hay que traducir a mano.
+2. **Revisar los 13 que no gana nunca nadie en proyectado.** Con el criterio nuevo ninguno pierde
+   por orden de archivo: pierden contra alguien de mejor prioridad o de mejor fórmula. La palanca
+   es editorial —subirles `prioridad` o sacarlos—, y ahora `npm run auditar` imprime la tabla de
+   calidad por categoría para decidirlo mirando números. Los tres casos que más conviene mirar
+   están en `docs/CALIDAD.md` §5: los filtros solares se aplastan en una sola familia, un
+   limpiador minimalista queda mal parado, y "verificamos y no tiene activos" puntúa igual que
+   "no verificamos".
+3. **Las pilas que subieron en proyectado.** Al preferir fórmulas con más activos bien
+   respaldados, los avisos de redundancia suben (vitamina C 33 → 45, exfoliante 83 → 85). No es
+   del puntaje: es que `armarRutinaEvitandoConflictos` es voraz y el hidratante se elige después
+   del protector solar. Si se quiere corregir, la palanca es subir `nota` por encima de
+   `-prioridad` en el desempate de ese armado — hoy está al revés a propósito y está documentado.
 4. **Las compras que destraban compatibilidad**, medidas y ordenadas:
    bakuchiol (116 conflictos) → SPF mineral (17, pero es el único que destraba
    piel sensible) → ácido azelaico (44). **Ojo: un retinol "limpio" da −37,
@@ -266,6 +274,19 @@ se ve perfectamente normal en un JSON. Nadie lo nota hasta que alguien compra.
 
 **No correr `npm audit fix --force`.** Sube a Next 16 (breaking). El problema de
 postcss ya se resolvió con `overrides` (PR #2, mergeado).
+
+**Vitest no resuelve el alias `@/`.** No hay `vitest.config.ts`, así que el alias
+sólo funciona para imports de TIPO —que TypeScript borra— y revienta en cualquier
+import de valor. Por eso `activos.ts` puede hacer `import type … from
+"@/engine/compatibilidad"` y `calidad.ts` tiene que hacer `import { calidadFormula }
+from "../../engine/calidad"`. El error que tira (`Cannot find package '@/…'`) no
+dice nada de esto y manda a buscar un archivo que existe.
+
+**No correr `npm run build` con el server de dev levantado.** Los dos escriben
+`.next` y el de dev queda pidiendo chunks que el build borró: todas las páginas
+empiezan a tirar `MODULE_NOT_FOUND` sobre código que está perfecto. Se arregla con
+`rm -rf .next` y levantándolo de nuevo, pero se pierden veinte minutos buscando un
+bug que no existe.
 
 ---
 

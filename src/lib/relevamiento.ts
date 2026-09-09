@@ -74,3 +74,28 @@ export function normalizarImagen(
 export function hoy(): string {
   return new Date().toISOString().slice(0, 10);
 }
+
+/**
+ * De precio relevado a banda publicable (1 accesible · 2 equilibrado · 3 premium).
+ *
+ * Existe porque el precio en pesos no llega a la pantalla —ver `docs/PRECIO.md`—
+ * y la banda sí. Si el relevamiento cargara sólo el número, estaríamos anotando
+ * el dato que se guarda y no el que se publica, y alguien tendría que traducir a
+ * mano 45 veces.
+ *
+ * Los cortes están MEDIDOS sobre los 26 productos que ya tenían banda asignada a
+ * mano, no elegidos de arriba: los tres grupos se parten solos, sin superponerse
+ * (1 llega hasta $32.999 · 2 arranca en $36.719 y llega a $54.739 · 3 arranca en
+ * $55.620). Los cortes caen en el medio de esos dos huecos.
+ *
+ * Que sean pesos argentinos y que la inflación los mueva es exactamente por qué
+ * la banda vive en el dato y no se recalcula al vuelo: cuando los cortes queden
+ * viejos, se corrigen acá una vez, a la vista, en vez de que cambien solos.
+ */
+export const CORTES_BANDA = { accesible: 35_000, equilibrado: 55_000 };
+
+export function bandaDePrecio(precio: number): 1 | 2 | 3 {
+  if (precio <= CORTES_BANDA.accesible) return 1;
+  if (precio <= CORTES_BANDA.equilibrado) return 2;
+  return 3;
+}

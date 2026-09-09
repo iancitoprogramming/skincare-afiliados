@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { normalizarPrecio, normalizarImagen } from "./relevamiento";
+import { normalizarPrecio, normalizarImagen, bandaDePrecio } from "./relevamiento";
 
 describe("normalizarPrecio", () => {
   it("acepta los formatos que uno copia de Mercado Libre", () => {
@@ -58,5 +58,27 @@ describe("normalizarImagen", () => {
     expect(
       normalizarImagen("https://http2.mlstatic.com/D_Q_NP_832048-MLA104005799796_012026-V.webp"),
     ).toEqual({ error: "imagen_miniatura" });
+  });
+});
+
+// La banda es lo único de precio que se publica (docs/PRECIO.md), así que el
+// relevamiento tiene que producirla, no dejarla para traducir a mano.
+describe("bandaDePrecio", () => {
+  it("respeta los tres grupos medidos del catálogo", () => {
+    expect(bandaDePrecio(15_488)).toBe(1); // el más barato del rango 1
+    expect(bandaDePrecio(32_999)).toBe(1); // el más caro del rango 1
+    expect(bandaDePrecio(36_719)).toBe(2); // el más barato del rango 2
+    expect(bandaDePrecio(54_739)).toBe(2); // el más caro del rango 2
+    expect(bandaDePrecio(55_620)).toBe(3); // el más barato del rango 3
+    expect(bandaDePrecio(114_414)).toBe(3); // el más caro del catálogo
+  });
+
+  it("clasifica igual que la mano en los 26 productos que ya tenían banda", async () => {
+    const { productos } = await import("../niches/skincare/productos");
+    const discrepan = productos
+      .filter((p) => typeof p.precio_ars === "number")
+      .filter((p) => bandaDePrecio(p.precio_ars!) !== p.rango_precio)
+      .map((p) => `${p.nombre}: $${p.precio_ars} → ${bandaDePrecio(p.precio_ars!)} vs ${p.rango_precio}`);
+    expect(discrepan).toEqual([]);
   });
 });

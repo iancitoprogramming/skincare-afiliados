@@ -12,7 +12,7 @@
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { productos } from "../src/niches/skincare/productos";
-import { normalizarPrecio, normalizarImagen, hoy, MOTIVO } from "../src/lib/relevamiento";
+import { normalizarPrecio, normalizarImagen, bandaDePrecio, hoy, MOTIVO } from "../src/lib/relevamiento";
 
 const ESCRIBIR = process.argv.includes("--escribir");
 const MD = resolve(process.cwd(), "docs/relevar-pendientes.md");
@@ -100,7 +100,13 @@ for (const archivo of CATALOGOS) {
       );
     };
 
-    if (item.precio !== undefined) set("precio_ars", String(item.precio));
+    // El precio se guarda como dato de relevamiento (lo usa `npm run frescura`)
+    // pero lo que se publica es la banda, así que se escriben los dos. Ver
+    // `docs/PRECIO.md`.
+    if (item.precio !== undefined) {
+      set("precio_ars", String(item.precio));
+      set("rango_precio", String(bandaDePrecio(item.precio)));
+    }
     if (item.imagen) {
       set("imagen_url", JSON.stringify(item.imagen.url));
       set("imagen_hd", JSON.stringify(item.imagen.hd));

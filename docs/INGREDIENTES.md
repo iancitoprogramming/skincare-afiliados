@@ -32,6 +32,14 @@ nivel de evidencia de un producto.** El retinol tiene evidencia A; una crema con
 en un envase transparente no hereda esa A. Donde el producto concreto no permite sostener la
 afirmación, se dice.
 
+> **Esta escala está codificada desde el 2026-09-06.** Cada activo de
+> `src/niches/skincare/activos.ts` lleva su letra en el campo `nivelEvidencia`, y el motor la usa
+> para desempatar entre productos que sirven igual. Un test verifica que ningún activo se quede sin
+> letra —o sin una exención escrita— y fija los grados de las secciones que sostienen afirmaciones
+> del sitio, así que **cambiar una letra acá obliga a cambiarla allá, y viceversa.** Cómo se
+> convierte en un orden está en `docs/CALIDAD.md`, con la segunda regla de arriba puesta como
+> límite explícito del cálculo.
+
 ---
 
 ## 1 · Renovadores
