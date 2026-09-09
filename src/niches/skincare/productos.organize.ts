@@ -13,6 +13,8 @@ export const productosOrganize: Producto[] = [
     // FPS 30 en un hidratante, no reemplaza al protector · Sin INCI verificado: no se le mapean activos y el motor no opina sobre su fórmula.
     id: "d47c5c7f-88f8-5547-8ee2-440abda55985",
     ml_id: "MLA67629151",
+    rating: 4.9,
+    opiniones: 11,
     cuenta: "maurobilat",
     nombre: "Avene Hydrance Spf30 Crema Facial Hidratante Piel Sensible",
     marca: "Avène",
@@ -68,6 +70,8 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: Ácido láctico (AHA/BHA), vitamina C pura, Fragancia
     id: "0dd6a780-c079-5225-a8ba-abf771937d09",
     ml_id: "MLA21174873",
+    rating: 4.9,
+    opiniones: 111,
     cuenta: "maurobilat",
     nombre: "Crema Facial Isdin Ureadin Fusion Melting Cream 50ml - Piel Normal",
     marca: "ISDIN",
@@ -96,6 +100,8 @@ export const productosOrganize: Producto[] = [
     // no va a → seca: gel anti-imperfecciones con salicílico y alcohol: le saca a una piel seca lo poco que le queda
     id: "786825f8-fa3a-5ae3-9a12-3514acff04d9",
     ml_id: "MLA35115621",
+    rating: 4.8,
+    opiniones: 2618,
     cuenta: "maurobilat",
     nombre: "Crema Gel Hidratante Anti-imperfecciones Garnier 50ml",
     marca: "Garnier",
@@ -123,6 +129,8 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: Alcohol denat
     id: "808e43ee-9a93-5cf2-ae71-8210102219b0",
     ml_id: "MLA9210936",
+    rating: 4.9,
+    opiniones: 1120,
     cuenta: "maurobilat",
     nombre: "Crema Hidratante Eucerin Aquaporin Active para piel mixta-normal de 50mL",
     marca: "Eucerin",
@@ -155,6 +163,8 @@ export const productosOrganize: Producto[] = [
     // mismo listado, si no la persona compra otra cosa de la que vio.
     id: "df0d5355-4ed9-5030-953a-4a710c56fd04",
     ml_id: "MLA28531465",
+    rating: 4.9,
+    opiniones: 4603,
     cuenta: "maurobilat",
     nombre: "Recarga Crema Hidratante Facial Neutrogena Hydro Boost 50 GR",
     marca: "Neutrogena",
@@ -183,6 +193,8 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: filtro solar químico, Alcohol denat, Fragancia
     id: "d0d3332a-fc59-5b58-96c8-77f6fb8eabde",
     ml_id: "MLA9855881",
+    rating: 4.9,
+    opiniones: 699,
     cuenta: "maurobilat",
     nombre: "Eucerin Hyaluron - Filler Día Piel Normal a Mixta Fps15 X 50m",
     marca: "Eucerin",
@@ -209,6 +221,8 @@ export const productosOrganize: Producto[] = [
     // ORIENTADOS A PIEL SECA
     id: "9e56836d-95e8-5f74-b707-65927d4d01c0",
     ml_id: "MLA22990183",
+    rating: 4.8,
+    opiniones: 3253,
     cuenta: "maurobilat",
     nombre: "Gel Crema Hidratante Facial Piel Sensible Seca - Mixta Aveno 50g",
     marca: "Aveno",
@@ -238,6 +252,8 @@ export const productosOrganize: Producto[] = [
     // no va a → seca: matificante con LHA y alcohol: le saca a una piel seca lo poco que le queda
     id: "353d07b5-d81e-5866-8a98-4e8801e5fd0a",
     ml_id: "MLA9196384",
+    rating: 4.8,
+    opiniones: 3309,
     cuenta: "maurobilat",
     nombre: "La Roche-Posay Effaclar Mat 40 mL",
     marca: "La Roche-Posay",
@@ -266,6 +282,8 @@ export const productosOrganize: Producto[] = [
     // no va a → seca: agua micelar con salicílico: le saca a una piel seca lo poco que le queda
     id: "3b6b8c59-405a-5357-b92f-37f1e9ee58bc",
     ml_id: "MLA24300545",
+    rating: 4.8,
+    opiniones: 1031,
     cuenta: "maurobilat",
     nombre: "Agua Micelar Anti-imperfecciones Con Ácido Salicílico Garnier 400ml",
     marca: "Garnier",
@@ -293,6 +311,8 @@ export const productosOrganize: Producto[] = [
     // Sin INCI verificado.
     id: "8fe63985-3796-5e78-9de6-de0a82281a49",
     ml_id: "MLA20546060",
+    rating: 4.8,
+    opiniones: 4442,
     cuenta: "maurobilat",
     nombre: "Agua Micelar Todo en 1 Garnier 400ml",
     marca: "Garnier",
@@ -376,6 +396,8 @@ export const productosOrganize: Producto[] = [
     // no va a → seca: gel anti-imperfecciones con salicílico: le saca a una piel seca lo poco que le queda
     id: "069e085b-93f0-5e5e-a907-a409f3e4f8d9",
     ml_id: "MLA47671534",
+    rating: 4.8,
+    opiniones: 3108,
     cuenta: "maurobilat",
     nombre: "Gel Limpiador Crema Hidratante Anti Imperfecciones Garnier 250ml",
     marca: "Garnier",
@@ -402,6 +424,8 @@ export const productosOrganize: Producto[] = [
     // ORIENTADOS A PIEL SECA
     id: "7787bab2-6a2e-5aae-be68-d587cba8588e",
     ml_id: "MLA53897352",
+    rating: 4.8,
+    opiniones: 156,
     cuenta: "maurobilat",
     nombre: "Gel limpiador hidratante Neutrogena Hydro Boost, 150 ml, para todo tipo de piel",
     marca: "Neutrogena",
@@ -456,6 +480,8 @@ export const productosOrganize: Producto[] = [
     // ORIENTADOS A PIEL GRASA
     id: "677a05dc-1afc-5840-8b42-4a09c03ee1cd",
     ml_id: "MLA35427636",
+    rating: 4.6,
+    opiniones: 15,
     cuenta: "maurobilat",
     nombre: "Limpiador en Gel Beauty Of Joseon Ciruela Verde 100ml Piel Grasa",
     marca: "Beauty of Joseon",
@@ -484,6 +510,8 @@ export const productosOrganize: Producto[] = [
     // no va a → grasa: textura rica
     id: "4be59db9-22f1-56c6-9ffe-21301474f42c",
     ml_id: "MLA20030752",
+    rating: 4.6,
+    opiniones: 39,
     cuenta: "maurobilat",
     nombre: "Limpiador Facial y Corporal Restaurador de la Piel Cetaphil Pro Ad Restoraderm para Pieles Atópicas",
     marca: "Cetaphil",
@@ -511,6 +539,8 @@ export const productosOrganize: Producto[] = [
     // no va a → grasa: textura rica
     id: "8293ef2d-878f-5dc7-85df-5254c10d8812",
     ml_id: "MLA37598876",
+    rating: 4.8,
+    opiniones: 2004,
     cuenta: "maurobilat",
     nombre: "Limpiador Hidratante Cerave Piel Normal A Seca X 236ml",
     marca: "CeraVe",
@@ -539,6 +569,8 @@ export const productosOrganize: Producto[] = [
     // no va a → seca: oil control: le saca a una piel seca lo poco que le queda
     id: "0cd46bf5-012f-5327-a946-2f0f6fdce296",
     ml_id: "MLA19504960",
+    rating: 4.8,
+    opiniones: 3689,
     cuenta: "maurobilat",
     nombre: "Eucerin Sun Oil Control Protector Solar Facial Tono medio FPS 50 x 50 ml",
     marca: "Eucerin",
@@ -595,6 +627,8 @@ export const productosOrganize: Producto[] = [
     // no va a → seca: efecto mate: le saca a una piel seca lo poco que le queda
     id: "f2c98169-24cf-59e5-8ceb-eebd40f7720c",
     ml_id: "MLA16048263",
+    rating: 4.7,
+    opiniones: 1998,
     cuenta: "maurobilat",
     nombre: "La Roche-Posay Anthelios Fps50 Ultra Fluido Con Color X 50 Ml",
     marca: "La Roche-Posay",
@@ -623,6 +657,8 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: filtro solar químico, Alcohol denat
     id: "5d60fad9-e033-5346-8f50-790dc29d6f3a",
     ml_id: "MLA58897902",
+    rating: 4.7,
+    opiniones: 256,
     cuenta: "maurobilat",
     nombre: "Protector solar La Roche-Posay Anthelios UVMUNE 400 50FPS en crema 50mL con COLOR",
     marca: "La Roche-Posay",
@@ -652,6 +688,8 @@ export const productosOrganize: Producto[] = [
     // no va a → seca: anti-imperfecciones con salicílico: le saca a una piel seca lo poco que le queda
     id: "d56c81d0-185e-5694-8352-fb09eaf5cd27",
     ml_id: "MLA38098313",
+    rating: 4.8,
+    opiniones: 842,
     cuenta: "maurobilat",
     nombre: "Garnier Protector Solar Super Uv Fluido Invisible Fps50 40 Ml",
     categoria: "protector_solar",
@@ -679,6 +717,8 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: Retinol, Fragancia
     id: "463f3803-17e2-566e-8226-254fe7546889",
     ml_id: "MLA58622882",
+    rating: 4.8,
+    opiniones: 196,
     cuenta: "maurobilat",
     nombre: "Crema Retinol Boost Anti-arrugas Neutrogena 30ml Todo Tipo De Piel Día-noche",
     marca: "Neutrogena",
@@ -706,6 +746,8 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: Retinol, Retinil palmitato, Fragancia
     id: "07628bc3-918c-5cca-a643-60ef9be1a864",
     ml_id: "MLA20021768",
+    rating: 4.7,
+    opiniones: 933,
     cuenta: "maurobilat",
     nombre: "Eximia Hyalu-r Concentre Serum Antiedad X 15 Ml",
     marca: "Eximia",
@@ -819,6 +861,8 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: Ácido glicólico (AHA/BHA), Ácido láctico (AHA/BHA), Ácido málico (AHA/BHA), Ácido tartárico (AHA/BHA), Alcohol denat, Fragancia
     id: "4bc1f9e9-cd68-5e76-9a87-6187919f6287",
     ml_id: "MLA29882074",
+    rating: 4.8,
+    opiniones: 866,
     cuenta: "maurobilat",
     nombre: "Eximia Hyalu-n Concentre X 15 Ml Tipo de piel Todo tipo de piel",
     marca: "Eximia",
@@ -847,6 +891,8 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: vitamina C pura, Ácido salicílico (AHA/BHA), Alcohol denat, Fragancia
     id: "f9972d79-114b-5a31-b8e5-3b4b3ab140a6",
     ml_id: "MLA47223033",
+    rating: 4.9,
+    opiniones: 368,
     cuenta: "maurobilat",
     nombre: "La Roche Posay Pure Vitamin C12 Serum",
     marca: "La Roche-Posay",
@@ -874,6 +920,8 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: vitamina C pura
     id: "f97e6ed9-4133-50a5-b4fe-4f5780557aab",
     ml_id: "MLA19710676",
+    rating: 4.6,
+    opiniones: 1308,
     cuenta: "maurobilat",
     nombre: "Liftactiv Supreme Vitamina C Serum 20ml Vichy",
     marca: "Vichy",
@@ -902,6 +950,8 @@ export const productosOrganize: Producto[] = [
     // no va a → seca: apila BHA, AHA y alcohol: le saca a una piel seca lo poco que le queda
     id: "e7bb0026-7146-514d-8ac0-056f82a5f465",
     ml_id: "MLA22843182",
+    rating: 4.7,
+    opiniones: 12968,
     cuenta: "maurobilat",
     nombre: "Sérum Anti-imperfecciones con Ácido Salicílico de Garnier 30ml",
     marca: "Garnier",
@@ -929,6 +979,8 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: vitamina C pura
     id: "72651e35-bd63-5f51-880b-30cbc19cb5c4",
     ml_id: "MLA45672941",
+    rating: 4.7,
+    opiniones: 822,
     cuenta: "maurobilat",
     nombre: "Sérum Brightening Kosmos Vitamina C Pura",
     marca: "Kosmos",
@@ -957,6 +1009,8 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: Retinil palmitato, LHA (capriloil salicílico) (AHA/BHA), Fragancia
     id: "bd3180fa-aaaf-5bf7-a6ac-dd0e6cfd92da",
     ml_id: "MLA34459961",
+    rating: 4.6,
+    opiniones: 2891,
     cuenta: "maurobilat",
     nombre: "Sérum La Roche-Posay Mela B3 Antimanchas con Niacinamida 30ml",
     marca: "La Roche-Posay",
@@ -985,6 +1039,8 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: Retinil palmitato, LHA (capriloil salicílico) (AHA/BHA), Fragancia
     id: "ecd8932e-d99a-5c53-ad94-edcbeba21fb4",
     ml_id: "MLA26197969",
+    rating: 4.6,
+    opiniones: 8,
     cuenta: "maurobilat",
     nombre: "Sérum La Roche-Posay Mela B3 Antimanchas con Niacinamida 30ml Opcion 2",
     marca: "La Roche-Posay",
@@ -1013,6 +1069,8 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: vitamina C pura
     id: "f0b2811c-90dc-544d-b3db-3d7711faf69f",
     ml_id: "MLA24840827",
+    rating: 5,
+    opiniones: 3,
     cuenta: "maurobilat",
     nombre: "Skinceuticals C E Ferulic Sérum De Ácido Ferúlico 30ml Todo Tipo De Piel Día-noche",
     marca: "SkinCeuticals",
@@ -1040,6 +1098,8 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: Aceite esencial de romero
     id: "04b77f59-3bf6-5b04-9a5e-e7662616f848",
     ml_id: "MLA45338822",
+    rating: 4.8,
+    opiniones: 284,
     cuenta: "maurobilat",
     nombre: "Celimax The Real Noni Energy Ampoule Serum",
     marca: "Celimax",
@@ -1068,6 +1128,8 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: Fragancia
     id: "dd122b0b-ead4-5bef-a516-ce238f45ae57",
     ml_id: "MLA45991792",
+    rating: 4.9,
+    opiniones: 97,
     cuenta: "maurobilat",
     nombre: "Eximia Hyalu B Concentré Serum Antiedad X 30ml",
     marca: "Eximia",
@@ -1096,6 +1158,8 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: Alcohol denat, Fragancia
     id: "0547f1a8-4a58-521a-8f70-b5d8621b4a1d",
     ml_id: "MLA59802317",
+    rating: 4.9,
+    opiniones: 762,
     cuenta: "maurobilat",
     nombre: "La Roche-Posay Hyalu B5 Suractivated Serum 30 Ml",
     marca: "La Roche-Posay",
@@ -1123,6 +1187,8 @@ export const productosOrganize: Producto[] = [
     // booster hidratante, no lleva activo dirigido · Comodín de la categoría: lista corta, sin fragancia, le sirve a cualquier piel.
     id: "5603d4f7-3e32-586b-8655-8e6acffe2468",
     ml_id: "MLA18964459",
+    rating: 4.8,
+    opiniones: 10118,
     cuenta: "maurobilat",
     nombre: "Sérum Ácido Hialurónico Vichy Minéral 89 Booster Hidratante Gel 50ml",
     marca: "Vichy",
@@ -1151,6 +1217,8 @@ export const productosOrganize: Producto[] = [
     // no va a → sensible: Fragancia
     id: "914fa2b9-679c-50cb-a01e-e7713bfcbba3",
     ml_id: "MLA22655637",
+    rating: 4.8,
+    opiniones: 1852,
     cuenta: "maurobilat",
     nombre: "Serum Hidratante Concentrado Neutrogena® Hydro Boost 30 Ml",
     marca: "Neutrogena",
@@ -1232,6 +1300,8 @@ export const productosOrganize: Producto[] = [
     // no va a → seca: minimiza poros, control de aceite: le saca a una piel seca lo poco que le queda
     id: "c88d5ad8-e7da-51ac-96c9-0f015dddfed2",
     ml_id: "MLA43183566",
+    rating: 4.7,
+    opiniones: 528,
     cuenta: "maurobilat",
     nombre: "Skin1004 Poremizing Fresh Ampoule",
     marca: "Skin1004",

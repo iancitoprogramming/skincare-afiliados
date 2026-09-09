@@ -26,7 +26,8 @@
     "relevar-pendientes": "tsx scripts/relevar-pendientes.ts",
     "relevar-aplicar": "tsx scripts/relevar-aplicar.ts",
     "relevar-api": "tsx scripts/relevar-api.ts",
-    "activar": "tsx scripts/activar.ts"
+    "activar": "tsx scripts/activar.ts",
+    "respaldo-api": "tsx scripts/respaldo-api.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0",

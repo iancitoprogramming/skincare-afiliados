@@ -25,64 +25,20 @@
 // Probado también contra /user-products/ y /items/, los tres cerrados. Esos van
 // a mano. Hoy son 6 de 45.
 //
-// EL PRECIO NO VIENE, Y NO HACE FALTA
+// EL PRECIO NO SALE DE ACÁ, Y NO HACE FALTA
 //
-// `buy_box_winner` llega en `null` en todos los productos que probamos. Da igual:
-// el sitio publica la banda cualitativa y no el número — ver `docs/PRECIO.md`.
-// Este script no toca la columna de precio.
+// `buy_box_winner` llega en `null` en todos los productos que probamos, así que
+// de `/products/{id}` no sale el precio. Sí sale de `/products/{id}/items`, que
+// devuelve un precio por listado — pero da igual: el sitio publica la banda
+// cualitativa y no el número, ver `docs/PRECIO.md`. Este script no toca la
+// columna de precio.
 
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { productos } from "../src/niches/skincare/productos";
+import { tokenML, cabeceras } from "../src/lib/ml-api";
 
 const MD = resolve(process.cwd(), "docs/relevar-pendientes.md");
-
-// ── Credenciales ────────────────────────────────────────────────────────────
-// tsx no carga .env.local solo, así que se lee a mano. Se acepta también el
-// entorno, para que corra igual en un runner donde las variables ya estén.
-function credenciales(): { id: string; secret: string } {
-  let id = process.env.ML_CLIENT_ID ?? "";
-  let secret = process.env.ML_CLIENT_SECRET ?? "";
-
-  const local = resolve(process.cwd(), ".env.local");
-  if ((!id || !secret) && existsSync(local)) {
-    for (const linea of readFileSync(local, "utf8").split("\n")) {
-      const t = linea.trim();
-      if (!t || t.startsWith("#")) continue;
-      const i = t.indexOf("=");
-      if (i === -1) continue;
-      const clave = t.slice(0, i).trim();
-      const valor = t.slice(i + 1).trim().replace(/^["']|["']$/g, "");
-      if (clave === "ML_CLIENT_ID" && !id) id = valor;
-      if (clave === "ML_CLIENT_SECRET" && !secret) secret = valor;
-    }
-  }
-
-  if (!id || !secret) {
-    console.error(
-      "\nFaltan ML_CLIENT_ID y ML_CLIENT_SECRET.\n" +
-        "Van en .env.local, que ya está en .gitignore. Los da\n" +
-        "developers.mercadolibre.com.ar en la app registrada.\n",
-    );
-    process.exit(1);
-  }
-  return { id, secret };
-}
-
-async function token(): Promise<string> {
-  const { id, secret } = credenciales();
-  const r = await fetch("https://api.mercadolibre.com/oauth/token", {
-    method: "POST",
-    headers: { "content-type": "application/x-www-form-urlencoded", accept: "application/json" },
-    body: new URLSearchParams({ grant_type: "client_credentials", client_id: id, client_secret: secret }),
-  });
-  const j = (await r.json().catch(() => ({}))) as { access_token?: string; message?: string };
-  if (!r.ok || !j.access_token) {
-    console.error(`\nNo se pudo obtener el token (HTTP ${r.status}). ${j.message ?? ""}\n`);
-    process.exit(1);
-  }
-  return j.access_token;
-}
 
 /** `D_NQ_NP_<id>-F.jpg` de la API → la variante en alta que el validador acepta. */
 function enAlta(url: string): string {
@@ -119,8 +75,7 @@ async function main() {
     return;
   }
 
-  const t = await token();
-  const H = { Authorization: `Bearer ${t}`, accept: "application/json" };
+  const H = cabeceras(await tokenML());
 
   const encontradas = new Map<string, string>();
   const fallaron: { ml_id: string; etiqueta: string; motivo: string }[] = [];
