@@ -7,7 +7,7 @@
 
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
-import { clasificar, ETIQUETA } from "../src/lib/links";
+import { clasificar, ETIQUETA, CUENTA_PRINCIPAL } from "../src/lib/links";
 
 const MD = resolve(process.cwd(), "docs/links-pendientes.md");
 // Los tres archivos donde puede vivir un `link_afiliado`. El de organize es el
@@ -61,6 +61,14 @@ if (!pegados.length && !rechazados.length) {
 }
 
 // Reemplaza `link_afiliado` dentro del bloque que tiene ese ml_id, y sólo ahí.
+//
+// Escribe además `cuenta`, y ese es el cambio que reemplaza al scraping. La
+// cuenta se sabe con certeza JUSTO ACÁ y en ningún otro momento: el link se
+// acaba de generar en el panel de Afiliados de una cuenta concreta, que hoy es
+// una sola. Antes se descubría después, siguiendo el redirect contra Mercado
+// Libre — acceso automatizado que la obligación (e) del Programa prohíbe. Anotar
+// el dato donde nace cuesta una línea; reconstruirlo desde afuera costaba una
+// violación de los términos. Ver `docs/proyecto/07-AFILIADOS.md` §4.
 function aplicar(fuente: string, ml_id: string, link: string): string | null {
   const i = fuente.indexOf(`ml_id: "${ml_id}"`);
   if (i === -1) return null;
@@ -72,9 +80,41 @@ function aplicar(fuente: string, ml_id: string, link: string): string | null {
   if (desde === -1 || (finBloque !== -1 && desde > finBloque)) return null;
 
   const fin = fuente.indexOf("\n", desde);
-  const sangria = "    ";
-  return fuente.slice(0, desde) + `link_afiliado: "${link}",` + fuente.slice(fin);
-  void sangria;
+  const sangria = /\n(\s*)link_afiliado:/.exec(fuente.slice(i - 1, desde + 20))?.[1] ?? "    ";
+  const conLink =
+    fuente.slice(0, desde) + `link_afiliado: "${link}",` + fuente.slice(fin);
+
+  return conCuenta(conLink, ml_id, sangria);
+}
+
+/**
+ * Deja `cuenta: CUENTA_PRINCIPAL` en el bloque del producto, creándolo si no
+ * estaba y corrigiéndolo si decía otra cosa.
+ *
+ * Que corrija en vez de sólo crear es a propósito: el caso que importa es
+ * justamente el del link que se regenera desde la cuenta única para reemplazar
+ * uno de la otra. Si sólo creara, el campo viejo sobreviviría al link nuevo y
+ * `npm run cuentas` seguiría marcando como ajeno algo que ya se arregló.
+ */
+function conCuenta(fuente: string, ml_id: string, sangria: string): string {
+  const i = fuente.indexOf(`ml_id: "${ml_id}"`);
+  const finBloque = fuente.indexOf("\n  },", i);
+  const bloque = fuente.slice(i, finBloque === -1 ? undefined : finBloque);
+
+  const ya = /\n\s*cuenta: "([^"]*)",/.exec(bloque);
+  if (ya) {
+    if (ya[1] === CUENTA_PRINCIPAL) return fuente;
+    return (
+      fuente.slice(0, i) +
+      bloque.replace(ya[0], `\n${sangria}cuenta: "${CUENTA_PRINCIPAL}",`) +
+      fuente.slice(i + bloque.length)
+    );
+  }
+
+  // Va pegado al link, que es el dato del que habla.
+  const desde = fuente.indexOf("link_afiliado:", i);
+  const fin = fuente.indexOf("\n", desde);
+  return fuente.slice(0, fin) + `\n${sangria}cuenta: "${CUENTA_PRINCIPAL}",` + fuente.slice(fin);
 }
 
 let aplicados = 0;
