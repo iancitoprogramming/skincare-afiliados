@@ -374,10 +374,13 @@ describe("en_rutina", () => {
     for (const piel of ["grasa", "mixta", "normal", "seca", "sensible"]) {
       for (const objetivo of ["acne", "manchas", "textura", "deshidratacion"]) {
         for (const presupuesto of [1, 2, 3]) {
-          for (const tier of [1, 2]) {
+          // Las claves de TIERS son strings ("1", "2"), y `tierEfectivo` recibe
+          // string. Iterar con números obligaba a indexar un Record<"1"|"2">
+          // con un number, que es lo que rompía el chequeo de tipos.
+          for (const tier of ["1", "2"] as const) {
             const r = armarRutina(
               productos,
-              TIERS[tierEfectivo(tier, piel)] ?? TIERS[tier],
+              TIERS[tierEfectivo(tier, piel)],
               { piel, objetivo, presupuesto } as never,
             );
             for (const paso of [...r.am, ...r.pm]) recomendados.add(paso.producto.id);
