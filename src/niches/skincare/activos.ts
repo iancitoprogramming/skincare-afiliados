@@ -1202,6 +1202,14 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // ninguno es un activo que el motor conozca — hidrata por oclusion, con
   // petrolatum. No tener activos no es un dato faltante, es la formula.
   MLAU3880810580: [],
+  // Haruharu Airyfit: filtros quimicos. El Butyloctyl Salicylate del INCI es
+  // emoliente, no salicilico, asi que no suma carga exfoliante.
+  MLAU3860746273: ["filtro_quimico", "niacinamida", "adenosina", "ceramidas", "tocoferol"],
+  // Vanicream Vitamin C: tetrahexyldecyl ascorbate es derivado, no acido ascorbico.
+  MLAU4347154318: ["vit_c_derivado", "ceramidas", "carnosina"],
+  MLAU4938195565: ["escualano", "hialuronico", "ceramidas", "carnosina"],
+  // Vanicream Gentle Cleanser: vacio a proposito, son tensioactivos suaves.
+  MLAU3382695636: [],
   // Haruharu Pure Mineral: óxido de zinc como filtro físico. El Butyloctyl
   // Salicylate NO es salicílico, es emoliente, y por eso no está acá.
   MLA2068351806: ["filtro_mineral", "niacinamida", "hialuronico", "ceramidas", "tocoferol"],

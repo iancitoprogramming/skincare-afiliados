@@ -1,4 +1,4 @@
--- Seed de 75 productos de ejemplo. Generado por scripts/gen-seed.ts.
+-- Seed de 79 productos de ejemplo. Generado por scripts/gen-seed.ts.
 -- No editar a mano: cambiá src/niches/skincare/productos.ts y corré npm run gen-seed.
 
 insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
@@ -103,6 +103,22 @@ on conflict (id) do nothing;
 
 insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
 values ('ed3e0a91-2640-59fc-80d5-5008a15d65a5', 'Tónico Exfoliante de Ácido Glicólico 7 por ciento 100 ml', 'The Ordinary', 'exfoliante', 9, 'pm', array['grasa', 'mixta', 'normal'], array['textura', 'manchas'], 'europeo', false, 3, 57170, 'https://http2.mlstatic.com/D_Q_NP_2X_641467-MLU74154671501_012024-V.webp', 'https://meli.la/2cHLcue', 'https://www.mercadolibre.com.ar/p/MLA29493655', 'MLA29493655', 'Ácido glicólico al 7 por ciento: empareja la textura y ayuda a que las marcas se aclaren.', 'De noche, sobre la piel seca, 2 o 3 veces por semana. Nunca el mismo día que otro ácido.', '2026-09-05', 4, true, false)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('84e9ad7f-2c97-5bc7-b82e-d57d5588020f', 'Black Rice Moisture Airyfit Daily Sunscreen SPF50 50 ml', 'Haruharu Wonder', 'protector_solar', 4, 'am', array['grasa', 'mixta', 'normal', 'seca', 'sensible'], array['manchas', 'deshidratacion'], 'coreano', true, 2, null, 'https://http2.mlstatic.com/D_Q_NP_2X_870272-MLA109556736477_032026-V.webp', 'https://meli.la/1EwKYvW', 'https://www.mercadolibre.com.ar/up/MLAU3860746273', 'MLAU3860746273', 'Filtros químicos de última generación, sin velo blanco y sin alcohol. Es el que se pone quien abandonó el protector porque le pesaba en la cara.', 'A la mañana, después de la crema. Dos dedos de producto para cara y cuello. Reponer cada dos horas si estás al sol.', '2026-09-09', 4, false, true)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('58ac99a1-c8fc-5142-8191-e65f0308cb18', 'Vitamin C Serum 35 ml', 'Vanicream', 'serum_activo', 4, 'ambos', array['mixta', 'normal', 'seca', 'sensible'], array['manchas', 'textura'], 'europeo', true, 3, null, 'https://http2.mlstatic.com/D_Q_NP_2X_659348-MLA114674049009_072026-V.webp', 'https://meli.la/2NKGikn', 'https://www.mercadolibre.com.ar/up/MLAU4347154318', 'MLAU4347154318', 'Vitamina C en derivado y no pura: aguanta mejor el frasco abierto y pica bastante menos. Trae cinco ceramidas, que es raro en un sérum de vitamina C.', 'A la mañana, antes de la crema. Viene en pump sin aire, así que no se oxida como los de gotero.', '2026-09-09', 4, false, true)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('c9bf19f6-4127-554f-9dba-abe0e9511f5e', 'Daily Facial Moisturizer 89 ml', 'Vanicream', 'hidratante', 7, 'ambos', array['grasa', 'mixta', 'normal', 'seca', 'sensible'], array['deshidratacion'], 'europeo', true, 3, null, 'https://http2.mlstatic.com/D_Q_NP_2X_907259-MLA116757739997_082026-V.webp', 'https://meli.la/1q9QJnm', 'https://www.mercadolibre.com.ar/up/MLAU4938195565', 'MLAU4938195565', 'Cinco ceramidas, escualano y hialurónico, sin fragancia ni colorante. Liviana para lo que hidrata: se puede usar debajo del maquillaje.', 'Mañana y noche, después del sérum. Sobre la piel todavía húmeda rinde más.', '2026-09-09', 4, false, true)
+on conflict (id) do nothing;
+
+insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
+values ('c7e57edb-ab77-579c-b522-623c9bcbe89d', 'Gentle Facial Cleanser 236 ml', 'Vanicream', 'limpiador', 2, 'ambos', array['normal', 'seca', 'sensible'], array['deshidratacion'], 'europeo', true, 3, null, 'https://http2.mlstatic.com/D_Q_NP_2X_709813-MLA90424165534_082025-V.webp', 'https://meli.la/1ckP6R4', 'https://www.mercadolibre.com.ar/up/MLAU3382695636', 'MLAU3382695636', 'Doce ingredientes, tensioactivos de coco y nada más. Es el limpiador para la piel que reacciona a todo, incluso a los que se venden como suaves.', 'Mañana y noche sobre la cara húmeda. No hace espuma abundante y está bien que no la haga.', '2026-09-09', 4, false, true)
 on conflict (id) do nothing;
 
 insert into productos (id, nombre, marca, categoria, paso, momento, tipos_piel, preocupaciones, origen, apto_sensible, rango_precio, precio_ars, imagen_url, link_afiliado, url_referencia, ml_id, por_que, como_usar, relevado, prioridad, comodin, activo)
