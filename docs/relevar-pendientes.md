@@ -8,7 +8,7 @@
 > columna queda por compatibilidad; dejala vacía. El porqué está en
 > `docs/PRECIO.md`.
 
-71 productos · **65 completos** · **6 pendientes**
+71 productos · **71 completos** · **0 pendientes**
 
 ## Cómo se completa
 
@@ -29,11 +29,4 @@ Un par de cosas que ahorran trabajo:
   miniatura. Te dice cuál y por qué, y no escribe nada de esa fila.
 ## Pendientes
 
-| ml_id | producto | falta | abrir | precio | imagen |
-|---|---|---|---|---|---|
-| `MLAU141343879` | _(inactivo)_ CeraVe Cerave Gel Limpiador Espumoso | imagen | [ML](https://www.mercadolibre.com.ar/up/MLAU141343879) | | |
-| `MLAU209241342` | _(inactivo)_ Dermaglós Dermaglós Serum Facial Niacinamida X 30 Ml Todo Tipo De Piel Día-noche | imagen | [ML](https://www.mercadolibre.com.ar/up/MLAU209241342) | | |
-| `MLAU1655818860` | _(inactivo)_ Detenage Detenage N 10% Niacinamida Serum Facial Antiedad 30ml | imagen | [ML](https://www.mercadolibre.com.ar/up/MLAU1655818860) | | |
-| `MLAU244146565` | _(inactivo)_ La Roche-Posay La Roche Posay Retinol B3 Sérum Regenerador X 30 Ml Todo Tipo De Piel, Incluso Sensible. | imagen | [ML](https://www.mercadolibre.com.ar/up/MLAU244146565) | | |
-| `MLAU376385300` | _(inactivo)_ La Roche-Posay La Roche-Posay Lipikar Syndet Ap+ Gel Limpiador X 200 Ml | imagen | [ML](https://www.mercadolibre.com.ar/up/MLAU376385300) | | |
-| `MLAU3133622625` | _(inactivo)_ La Roche-Posay Protector Solar Anthelios Oil Control Fps50+ 50 Ml | imagen | [ML](https://www.mercadolibre.com.ar/up/MLAU3133622625) | | |
+Ninguno. Todo el catálogo tiene precio e imagen.
