@@ -32,9 +32,25 @@ const CARPETAS = ["src", "scripts"];
  * exhiba. Queda anotado igual porque es la excepción, y una excepción sin nombre
  * es una puerta abierta.
  */
-const PERMITIDO = [{ archivo: "src/app/api/og/producto/[slug]/route.tsx", host: "mlstatic.com" }];
+const PERMITIDO = [
+  { archivo: "src/app/api/og/producto/[slug]/route.tsx", host: "mlstatic.com" },
+  // El reporte de `npm run listados` escribe un link a la publicación para que
+  // se pueda abrir a mano. Es una URL impresa en un markdown, no una llamada:
+  // el archivo cae en este chequeo sólo porque además consulta la API oficial.
+  { archivo: "scripts/listados.ts", host: "www.mercadolibre.com.ar" },
+];
 
-const HOSTS = /https?:\/\/[^"'`\s]*(mercadolibre\.com|mercadolibre\.com\.ar|meli\.la|mlstatic\.com)/gi;
+/**
+ * La API oficial no es scraping: es acceso autorizado por otro acuerdo, que es
+ * precisamente lo que 07-AFILIADOS.md §4 señala como el camino cuando hace falta
+ * consultar algo de Mercado Libre. Va con OAuth (`src/lib/ml-api.ts`) y se
+ * permite en cualquier archivo — lo que este test impide es el otro camino.
+ */
+const API_OFICIAL = "api.mercadolibre.com";
+
+// Se captura el host completo, no el dominio: `api.mercadolibre.com` y
+// `www.mercadolibre.com.ar` son la diferencia entre pedir y extraer.
+const HOSTS = /https?:\/\/([^\/"'`\s]*(?:mercadolibre\.com(?:\.ar)?|meli\.la|mlstatic\.com))/gi;
 
 function archivos(dir: string, ext: string[]): string[] {
   return readdirSync(dir).flatMap((n) => {
@@ -65,7 +81,9 @@ function llamadasDeRed(): { archivo: string; host: string }[] {
 describe("nada le extrae datos a Mercado Libre", () => {
   it("ningún archivo hace una llamada de red a un dominio de ML fuera de la excepción", () => {
     const infractores = llamadasDeRed().filter(
-      (x) => !PERMITIDO.some((p) => p.archivo === x.archivo && x.host.includes(p.host)),
+      (x) =>
+        x.host !== API_OFICIAL &&
+        !PERMITIDO.some((p) => p.archivo === x.archivo && x.host.includes(p.host)),
     );
     expect(infractores).toEqual([]);
   });

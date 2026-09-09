@@ -260,6 +260,69 @@ describe("armarRutinaEvitandoConflictos", () => {
     expect(analizarRutina(rutina, catalogo, clave).conflictos.length).toBe(0);
   });
 
+  it("en piel sensible prefiere no repetir el activo, aunque el otro tenga más prioridad", () => {
+    // La regla que motiva esto: el catálogo ya entrega niacinamida en varios
+    // pasos, así que sumar otro producto que la repite agrega exposición sin
+    // agregar resultado. En piel sensible eso pesa más que medio punto de
+    // prioridad. Ver INGREDIENTES.md 3.1.
+    //
+    // OJO CON LO QUE ESTA REGLA NO PUEDE HACER. El armado es voraz y sigue
+    // ORDEN_DE_ELECCION, que pone serum_activo PRIMERO y el hidratante sexto.
+    // Cuando se elige el sérum la rutina está vacía, así que una redundancia
+    // que recién aparece con la crema no se puede esquivar ahí. La regla actúa
+    // sobre los pasos que se eligen DESPUÉS, que es lo que prueba este test.
+    // Tres, porque `pila-niacinamida` tiene `desde: 3`: recién es redundancia
+    // cuando el activo aparece en tres pasos.
+    const slots = [
+      { categoria: "serum_activo", momento: "pm" as const },
+      { categoria: "serum_secundario", momento: "pm" as const },
+      { categoria: "contorno", momento: "pm" as const },
+    ];
+    const base = prod("BASE", "serum_activo", "pm", { tipos_piel: ["sensible"] });
+    const base2 = prod("BASE2", "serum_secundario", "pm", { tipos_piel: ["sensible"] });
+    // El que repite es MEJOR match: sin la regla, gana él.
+    const repetido = prod("REPETIDO", "contorno", "pm", {
+      tipos_piel: ["sensible"],
+      prioridad: 5,
+    });
+    const distinto = prod("DISTINTO", "contorno", "pm", {
+      tipos_piel: ["sensible"],
+      prioridad: 4,
+    });
+
+    const catalogo = catalogoDe({
+      BASE: ["niacinamida"],
+      BASE2: ["niacinamida"],
+      REPETIDO: ["niacinamida"], // redundancia: severidad "nota"
+      DISTINTO: ["hialuronico"],
+    });
+
+    const sensible = armarRutinaEvitandoConflictos(
+      [base, base2, repetido, distinto],
+      slots,
+      { piel: "sensible", objetivo: "deshidratacion", presupuesto: 3 },
+      catalogo,
+      clave,
+    );
+    expect(sensible.pm.map((x) => x.producto.id)).toContain("DISTINTO");
+
+    // En cualquier otra piel sigue mandando la prioridad: repetir un activo ahí
+    // es plata tirada, no carga sobre una barrera que no da abasto.
+    const normal = armarRutinaEvitandoConflictos(
+      [
+        prod("BASE", "serum_activo", "pm"),
+        prod("BASE2", "serum_secundario", "pm"),
+        prod("REPETIDO", "contorno", "pm", { prioridad: 5 }),
+        prod("DISTINTO", "contorno", "pm", { prioridad: 4 }),
+      ],
+      slots,
+      { piel: "normal", objetivo: "deshidratacion", presupuesto: 3 },
+      catalogo,
+      clave,
+    );
+    expect(normal.pm.map((x) => x.producto.id)).toContain("REPETIDO");
+  });
+
   it("NO degrada la calidad del match para esquivar un conflicto", () => {
     // El único candidato que matchea la preocupación choca. La alternativa
     // limpia no matchea. Tiene que ganar el que matchea: esquivar un conflicto

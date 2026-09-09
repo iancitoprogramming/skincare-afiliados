@@ -92,6 +92,27 @@ export interface Producto {
   calidad_formula?: number;
   /** Cuánta gente ajena a nosotros la probó, graduada. Ver `engine/respaldo.ts`. */
   respaldo_orden?: number;
+  /**
+   * Si es `false`, el producto se vende pero no se recomienda.
+   *
+   * Sigue en el catálogo, con su página, su foto y su link: se puede navegar y
+   * comprar como cualquier otro. Lo que no hace es entrar al pool del motor,
+   * así que ninguna rutina se lo va a proponer a nadie.
+   *
+   * POR QUÉ EXISTE. El catálogo tiene dos trabajos que no son el mismo. Uno es
+   * recomendar: ahí manda el criterio, y un producto que choca con la mitad de
+   * las rutinas hace más daño que bien. El otro es vender: si alguien llega
+   * buscando un producto concreto y lo tenemos, se lo vendemos, aunque nosotros
+   * no se lo hubiéramos sugerido.
+   *
+   * Es exactamente lo que promete el segundo bullet de la home —"te decimos
+   * cuándo un producto no es para tu piel, aunque lo tengamos en el catálogo"—
+   * y hasta ahora esa frase no tenía cómo cumplirse: `activo` prendía y apagaba
+   * las dos cosas juntas.
+   *
+   * Ausente o `true` significa que entra en rutinas, que es lo normal.
+   */
+  en_rutina?: boolean;
 }
 
 export interface RutinaSlot {
@@ -178,11 +199,12 @@ function ordenador(preferencia: RespuestasRutina["preferencia"]) {
     a.id.localeCompare(b.id);
 }
 
-// Filtro duro: categoría y momento. Nunca se relaja.
+// Filtro duro: categoría, momento y si entra en rutinas. Nunca se relaja.
 function elegibles(productos: Producto[], slot: RutinaSlot): Producto[] {
   return productos.filter(
     (p) =>
       p.activo &&
+      p.en_rutina !== false &&
       p.categoria === slot.categoria &&
       momentoCompatible(slot.momento, p.momento),
   );

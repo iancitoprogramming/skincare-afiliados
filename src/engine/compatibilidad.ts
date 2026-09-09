@@ -586,6 +586,27 @@ function rutinaDePasos(pasos: PasoRutina[]): Rutina {
  * esto, y es deliberada: un aviso de "separalos por momento" se resuelve con una
  * instrucción de una línea, mientras que darle a alguien un producto peor no se
  * resuelve con nada.
+ *
+ * EN PIEL SENSIBLE, LA REDUNDANCIA SUBE AL SEGUNDO LUGAR.
+ *
+ * Para el resto de las pieles, repetir un activo es plata tirada y nada más. En
+ * piel sensible es además un frasco más de carga sobre una barrera que no da
+ * abasto, y el paso que se agrega suele ser el que menos aporta.
+ *
+ * El caso que lo motiva es la niacinamida. `INGREDIENTES.md` §3.1: 2–5% cubre
+ * casi todo, sobre 5% no hay evidencia de más beneficio y sí más reportes de
+ * rubor, y el 10% es un número de marketing. El panel del Cosmetic Ingredient
+ * Review no encuentra irritación hasta 5% y sí potencial "marginal a leve" por
+ * encima. El 10% suelto se tolera bien; el riesgo aparece apilado con ácidos,
+ * retinoides o vitamina C — que es justo lo que arma una rutina.
+ *
+ * Y el catálogo ya la entrega por vías más suaves: hay niacinamida en
+ * limpiadores, protectores y tónicos aptos para sensible. Cuando la rutina ya
+ * la trae, sumar un sérum dedicado al 10% agrega exposición sin agregar
+ * resultado. Es el mismo criterio con el que el tónico salió de los tiers.
+ *
+ * Sólo cambia el ORDEN de los mismos cuatro números: "separar" sigue primero y
+ * la calidad de fórmula sigue decidiendo al final.
  */
 export function armarRutinaEvitandoConflictos(
   productos: Producto[],
@@ -633,12 +654,10 @@ export function armarRutinaEvitandoConflictos(
       // decide DESPUÉS del protector solar, así que una redundancia que aparece
       // recién cuando entra el hidratante no se podía esquivar al elegir el
       // protector. Es el precio de ser voraz, y se paga en avisos de "nota".
-      const puntaje: [number, number, number, number] = [
-        separar,
-        -producto.prioridad,
-        cuidado,
-        nota,
-      ];
+      const puntaje: [number, number, number, number] =
+        r.piel === "sensible"
+          ? [separar, nota, -producto.prioridad, cuidado]
+          : [separar, -producto.prioridad, cuidado, nota];
 
       if (!mejorPuntaje || menor(puntaje, mejorPuntaje)) {
         mejor = paso;

@@ -362,4 +362,33 @@ describe("criterio de orden", () => {
       ]),
     ).toBe("dos"); // preferencia "mejor" por omisión: la banda más alta que entre
   });
+
+describe("en_rutina", () => {
+  it("un producto marcado en_rutina:false no aparece en ninguna rutina", () => {
+    const fuera = productos.filter((p) => p.activo && p.en_rutina === false);
+    expect(fuera.length).toBeGreaterThan(0); // si no hay ninguno, el test no prueba nada
+
+    const ids = new Set(fuera.map((p) => p.id));
+    const recomendados = new Set<string>();
+
+    for (const piel of ["grasa", "mixta", "normal", "seca", "sensible"]) {
+      for (const objetivo of ["acne", "manchas", "textura", "deshidratacion"]) {
+        for (const presupuesto of [1, 2, 3]) {
+          for (const tier of [1, 2]) {
+            const r = armarRutina(
+              productos,
+              TIERS[tierEfectivo(tier, piel)] ?? TIERS[tier],
+              { piel, objetivo, presupuesto } as never,
+            );
+            for (const paso of [...r.am, ...r.pm]) recomendados.add(paso.producto.id);
+          }
+        }
+      }
+    }
+
+    // Se venden, pero no se recomiendan: es toda la diferencia entre las dos
+    // cosas que hace el catálogo.
+    expect([...ids].filter((id) => recomendados.has(id))).toEqual([]);
+  });
+});
 });

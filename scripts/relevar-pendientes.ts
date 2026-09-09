@@ -1,4 +1,4 @@
-// Arma docs/relevar-pendientes.md con todo lo que le falta precio o imagen.
+// Arma docs/relevar-pendientes.md con todo lo que le falta la imagen.
 //
 // Mismo ida y vuelta que `links-pendientes`: se abre el .md, se pega el precio
 // y la URL de la foto de cada publicación, y después `npm run relevar-aplicar`
@@ -23,8 +23,13 @@ interface Fila {
 
 const filas: Fila[] = productos
   .map((p) => {
+    // Sólo la imagen. El precio en pesos dejó de perseguirse cuando se decidió
+    // publicar la banda cualitativa (docs/PRECIO.md): no lo muestra la card, ni
+    // la página de producto, ni el total de los kits, que también pasó a banda.
+    // Pedir 45 precios a mano para un campo que no se renderiza es trabajo que
+    // además nace viejo. La columna sigue en la tabla porque relevar-aplicar la
+    // lee por posición, y sirve si alguna vez hace falta uno suelto.
     const falta: string[] = [];
-    if (!p.precio_ars) falta.push("precio");
     if (!p.imagen_url) falta.push("imagen");
     return {
       ml_id: p.ml_id ?? "",
@@ -43,21 +48,24 @@ filas.sort(
 const completos = productos.length - filas.length;
 
 const md = [
-  "# Relevamiento pendiente: precio e imagen",
+  "# Relevamiento pendiente: imágenes",
   "",
-  "> Generado por `npm run relevar-pendientes`. **Se puede editar**: pegá el precio",
-  "> y la imagen en las últimas dos columnas y después corré `npm run relevar-aplicar`.",
+  "> Generado por `npm run relevar-pendientes`. **Se puede editar**: pegá la URL",
+  "> de la imagen en la última columna y después corré `npm run relevar-aplicar`.",
+  "",
+  "> **El precio no hace falta.** El sitio publica una banda cualitativa y no el",
+  "> número en pesos, así que `precio_ars` no se renderiza en ninguna parte. La",
+  "> columna queda por compatibilidad; dejala vacía. El porqué está en",
+  "> `docs/PRECIO.md`.",
   "",
   `${productos.length} productos · **${completos} completos** · **${filas.length} pendientes**`,
   "",
   "## Cómo se completa",
   "",
   "1. Abrí la publicación con el link de la columna *abrir*.",
-  "2. Copiá el precio tal cual lo muestra ML. Da igual el formato: `24.693`,",
-  "   `$24.693` y `24693` se entienden los tres.",
-  "3. Click derecho sobre la foto grande → *Copiar dirección de la imagen*, y",
+  "2. Click derecho sobre la foto grande → *Copiar dirección de la imagen*, y",
   "   pegala en la última columna.",
-  "4. Guardá el archivo y corré `npm run relevar-aplicar`.",
+  "3. Guardá el archivo y corré `npm run relevar-aplicar`.",
   "",
   "Un par de cosas que ahorran trabajo:",
   "",
@@ -67,9 +75,8 @@ const md = [
   "- **Las filas vacías se ignoran**, así que se puede ir de a poco.",
   "- **No toques la columna `ml_id`**: es con lo que el script vuelve a encontrar",
   "  cada producto.",
-  "- El script **rechaza** un precio que no entienda o que esté fuera de rango, y",
-  "  una URL que no sea de Mercado Libre o que sea la miniatura. Te dice cuál y",
-  "  por qué, y no escribe nada de esa fila.",
+  "- El script **rechaza** una URL que no sea de Mercado Libre o que sea la",
+  "  miniatura. Te dice cuál y por qué, y no escribe nada de esa fila.",
   "",
 ].join("\n");
 

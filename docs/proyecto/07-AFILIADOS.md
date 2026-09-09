@@ -12,8 +12,9 @@
 
 ## 0 · Lo que hay que resolver
 
-**Todos los links tienen que salir de una sola cuenta.** Hoy salen de dos:
-`maurobilat` (Alex) 38 y `goldenvalhalla` (Ian) 35, sobre el mismo sitio.
+**Todos los links tienen que salir de una sola cuenta.** Resuelto el 9/9/2026:
+los 73 salen de `maurobilat`. Antes eran 38 de `maurobilat` y 35 de
+`goldenvalhalla` sobre el mismo sitio.
 
 Soporte del Programa, consultado el 6/9/2026:
 
@@ -48,9 +49,11 @@ Los pasos:
 2. Confirmar que el perfil social de ML de `maurobilat` siga branded "Club de
    Piel". La cláusula 3.3 permite configurarlo y aclara que no da derechos
    exclusivos.
-3. `npm run cuentas` cambia de trabajo: deja de medir equidad entre dos cuentas y
-   pasa a auditar que los 73 resuelvan a la misma. Un link que se cuele de la
-   otra es exactamente el error invisible que ese script sabe encontrar.
+3. `npm run cuentas` ya cambió de trabajo: dejó de medir equidad entre dos
+   cuentas y audita que los 73 resuelvan a `maurobilat`. Nombra al que se salga,
+   dice a qué cuenta le paga, y **sale con código 1** para que sirva de compuerta
+   igual que `check-links`. Un link que no se puede resolver también cuenta como
+   problema: no saber a quién le paga es lo mismo que saber que le paga mal.
 
 Consecuencia: **el reparto parejo deja de existir como problema.** Todo lo que se
 midió sobre 37/36 y 38/35 queda sin objeto.
@@ -157,9 +160,13 @@ links. Hoy la defensa es otra: un solo panel, y constancia escrita al aplicar. S
 alguna vez hace falta verificar contra ML, el camino es la API oficial con OAuth.
 
 `src/lib/sin-scraping.test.ts` falla si vuelve a aparecer una llamada de red a un
-dominio de Mercado Libre o un User-Agent falseado. La única excepción declarada es
-la descarga de la foto del producto para la imagen de Open Graph, que es un asset
-que ya mostramos y no extracción de datos.
+dominio de página de Mercado Libre o un User-Agent falseado. El test distingue por
+host, no por dominio: `api.mercadolibre.com` está permitida en cualquier archivo
+—es la API oficial con OAuth, el camino sancionado— y `www.mercadolibre.com.ar` o
+`meli.la` no lo están en ninguno. Las dos excepciones nominadas son la descarga de
+la foto del producto para la imagen de Open Graph, que es un asset que ya mostramos
+y no extracción de datos, y el link a la publicación que `npm run listados` imprime
+en su reporte, que es una URL escrita en un markdown y no una llamada.
 
 Es una de las razones para preferir la API oficial: acceso autorizado por otro
 acuerdo, en vez de extracción no autorizada por ninguno.
@@ -212,11 +219,11 @@ Ojo con los retinoides: el retinol cosmético va, la tretinoína es medicamento.
 
 - [x] Decidir la cuenta única: `maurobilat`.
 - [x] Confirmar que el titular sea monotributista.
-- [ ] **Regenerar 13 links activos** desde `maurobilat`. Son los que hoy están
-      publicados cobrando a la cuenta equivocada. `npm run links-pendientes` los
-      lista arriba de todo.
-- [ ] Regenerar los 22 restantes, de productos inactivos. Sin apuro: no se le
-      muestran a nadie hasta que se activen.
+- [x] Regenerar los 35 links desde `maurobilat`. Cerrado el 9/9/2026: los 73
+      resuelven a la cuenta única y `npm run cuentas` sale 0.
 - [ ] Declarar los Medios en `maurobilat`: el sitio y las cinco redes.
-- [x] Retirar el scraping de `scripts/cuentas.ts`.
+- [x] Retirar el scraping de `scripts/cuentas.ts`. La cuenta pasa a declararse
+      al cargar el link y el script sólo audita lo declarado.
+- [ ] Revisar la verificación de producto, que sí parsea páginas y hoy se hace
+      a mano al aplicar una tanda.
 - [ ] Crear Facebook: vuelve a entrar como Medio (decisión del 8/9/2026).

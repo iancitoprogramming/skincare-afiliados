@@ -1184,19 +1184,50 @@ export const MITOS: Mito[] = [
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
+  // ── Altas manuales del 9/9/2026, mapeadas desde el INCI completo ──────────
+  // Round Lab Dokdo: hialurónico en tres formas, pantenol, alantoína y ceramida NP.
+  //
+  // El ácido cítrico del INCI NO se mapea, y la decisión vale para los dos
+  // limpiadores de esta tanda. Aparece al final de la lista, entre conservantes:
+  // es ajustador de pH a menos de medio por ciento, no un exfoliante. Mapearlo
+  // sumaba carga al grupo "exfoliante" y ensuciaba 19 rutinas con un aviso que no
+  // le sirve a nadie.
+  //
+  // Ojo con la inconsistencia que esto deja a la vista: de 74 productos, uno solo
+  // declara aha_citrico. O se mapea en todos los INCI donde aparece —y entonces
+  // sube el conflicto en todo el catálogo— o en ninguno salvo que sea exfoliante
+  // de verdad. Hoy la convención de hecho es la segunda, y esto la sigue.
+  MLA28943962: ["hialuronico", "panthenol", "alantoina", "ceramidas"],
+  // Vanicream Moisturizing Lotion: vacio a proposito. Once ingredientes y
+  // ninguno es un activo que el motor conozca — hidrata por oclusion, con
+  // petrolatum. No tener activos no es un dato faltante, es la formula.
+  MLAU3880810580: [],
+  // Haruharu Airyfit: filtros quimicos. El Butyloctyl Salicylate del INCI es
+  // emoliente, no salicilico, asi que no suma carga exfoliante.
+  MLAU3860746273: ["filtro_quimico", "niacinamida", "adenosina", "ceramidas", "tocoferol"],
+  // Vanicream Vitamin C: tetrahexyldecyl ascorbate es derivado, no acido ascorbico.
+  MLAU4347154318: ["vit_c_derivado", "ceramidas", "carnosina"],
+  MLAU4938195565: ["escualano", "hialuronico", "ceramidas", "carnosina"],
+  // Vanicream Gentle Cleanser: vacio a proposito, son tensioactivos suaves.
+  MLAU3382695636: [],
+  // Haruharu Pure Mineral: óxido de zinc como filtro físico. El Butyloctyl
+  // Salicylate NO es salicílico, es emoliente, y por eso no está acá.
+  MLA2068351806: ["filtro_mineral", "niacinamida", "hialuronico", "ceramidas", "tocoferol"],
+  // Haruharu Black Rice: arroz fermentado (Aspergillus ferment) y ginseng.
+  MLA37826532: ["arroz_fermentado", "ginseng"],
   // ── Limpiadores ────────────────────────────────────────────────────────────
   // Idraet Espuma Extra Suave · sin activos declarados, y está bien que así sea:
   // un limpiador que se enjuaga no es el lugar para poner activos.
   MLA21801426: [],
   // CeraVe Gel Limpiador Espumoso [INCI]
-  MLAU140993030: ["ceramidas", "niacinamida", "hialuronico"],
+  MLA25800983: ["ceramidas", "niacinamida", "hialuronico"],
   // COSRX Low pH Good Morning [INCI] — el BHA suave + tea tree que lo saca de
   // las rutinas de piel sensible.
   MLA11139349: ["bha_betaina_salicilato", "aceite_esencial_tea_tree"],
   // Mixsoon Centella Cleansing Foam [vault] — trae salicílico de verdad.
   MLAU3453545171: ["centella", "bha_salicilico"],
   // Skin1004 Centella Ampoule Foam [vault] — el cítrico está como ajuste de pH.
-  MLAU3856054670: ["centella", "aha_citrico", "hialuronico"],
+  MLA47129399: ["centella", "aha_citrico", "hialuronico"],
   // Cleanex Free Gel · no verificado.
   MLA27603374: [],
   // Beauty of Joseon Ginseng Cleansing Oil [vault]
@@ -1252,7 +1283,7 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // Los siete son de filtro orgánico. Ninguno lleva óxido de zinc ni dióxido de
   // titanio como filtro: no hay un solo protector mineral en el catálogo.
   // Beauty of Joseon Relief Sun Rice + Probiotics [vault]
-  MLAU3480823224: ["filtro_quimico", "niacinamida", "arroz_fermentado", "tocoferol"],
+  MLA21801065: ["filtro_quimico", "niacinamida", "arroz_fermentado", "tocoferol"],
   // ISDIN Fusion Water Magic [INCI]
   MLA26916726: ["filtro_quimico"],
   // COSRX Ultra-Light Invisible [INCI]
@@ -1401,7 +1432,7 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // La Roche-Posay Lipikar Syndet AP+ — niacinamida + karité, sin fragancia.
   MLA16135276: ["niacinamida", "manteca_karite"],
   // Misma crema, otra publicación de ML. Reemplazó a la anterior en el catálogo.
-  MLAU376385300: ["niacinamida", "manteca_karite"],
+  MLA20663979: ["niacinamida", "manteca_karite"],
   // Cetaphil Pro AD Restoraderm — niacinamida + alantoína + karité.
   MLA20030752: ["niacinamida", "alantoina", "manteca_karite", "tocoferol"],
 

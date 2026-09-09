@@ -29,10 +29,11 @@ Los links salen de dos cuentas de afiliado distintas:
 | `goldenvalhalla` | **Ian** | — | Mix europeo y nacional |
 | `maurobilat` | **Alex** | **Club de Piel** | Mayoría coreana |
 
-> **Están migrando a una sola.** Soporte del Programa indicó que un mismo
-> proyecto debe operar con una única cuenta afiliada, porque cada afiliado cobra
-> sólo por los canales declarados en la suya. Quedó `maurobilat`; `goldenvalhalla`
-> sale. Faltan regenerar 35 links, 13 de ellos activos. Ver `07-AFILIADOS.md`.
+> **Ya migraron a una sola.** Soporte del Programa indicó que un mismo proyecto
+> debe operar con una única cuenta afiliada, porque cada afiliado cobra sólo por
+> los canales declarados en la suya. Desde el 9/9/2026 los 73 links salen de
+> `maurobilat`; `goldenvalhalla` quedó fuera del proyecto. La tabla de abajo es
+> historia: sirve para saber de quién es cada handle. Ver `07-AFILIADOS.md`.
 
 De quién es cada cuenta estaba sólo en la cabeza de los dos, y eso ya se dio
 vuelta una vez: se afirmó que `maurobilat` era la de Ian y se le dijo que había
@@ -135,11 +136,23 @@ Cuando esté prendido, lo que importa:
 
 ## Riesgos conocidos
 
-**Los coreanos casi no tienen prueba social en ML.** Los europeos y nacionales
-venden decenas de miles de unidades; los coreanos están entre 5 y 100. Tres de
-ellos tienen 5,0 estrellas con **una sola opinión**. Es el choque más serio con
-el posicionamiento K-beauty: los productos que la marca quiere empujar son los
-que menos respaldo muestran en la plataforma donde se compran.
+**Buena parte del catálogo no tiene prueba social en ML, y no es cosa de los
+coreanos.** Con 25 productos activos parecía que sí: los de poca prueba eran
+todos coreanos y la lectura era "todavía no vendieron acá". Al prender la
+primera tanda aparecieron europeos y nacionales con la misma señal —Anthelios,
+SkinCeuticals, Vichy, Neutrogena, L'Oréal—, marcas que venden decenas de miles
+de unidades.
+
+**Y la causa no es la que parecía.** `respaldoDe` devuelve `poca_prueba` cuando
+no hay `rating`, sin distinguir "tiene pocas opiniones" de "no cargamos el dato".
+Los 30 de la primera tanda vienen del vault, que no trae ni rating ni opiniones.
+O sea que la señal hoy mide **si cargamos el dato**, no cuánto se probó el
+producto. Un Anthelios sale "poca prueba" teniendo miles de opiniones en ML.
+
+Cuesta plata de dos formas: la card muestra menos respaldo del que el producto
+tiene, y el motor no puede preferir al más vendido porque el desempate por
+respaldo queda ciego en 30 de 55 productos activos. Cargar `rating`, `opiniones`
+y `vendidos` de esos 30 es la acción de mayor retorno del catálogo.
 
 Por eso la calificación sólo se muestra con 10 o más opiniones. Las ventas y la
 reputación del vendedor van siempre, que no tienen ese problema.

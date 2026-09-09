@@ -24,7 +24,11 @@
     "copy-aplicar": "tsx scripts/copy-aplicar.ts",
     "copy-verificar": "tsx scripts/copy-verificar.ts",
     "relevar-pendientes": "tsx scripts/relevar-pendientes.ts",
-    "relevar-aplicar": "tsx scripts/relevar-aplicar.ts"
+    "relevar-aplicar": "tsx scripts/relevar-aplicar.ts",
+    "relevar-api": "tsx scripts/relevar-api.ts",
+    "activar": "tsx scripts/activar.ts",
+    "respaldo-api": "tsx scripts/respaldo-api.ts",
+    "listados": "tsx scripts/listados.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0",
