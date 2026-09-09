@@ -48,11 +48,11 @@ jobs:
       - name: Links activos
         run: npm run check-links
 
-      # FALTA `npm run cuentas`, a propósito. Hoy resuelve la cuenta de cada link
-      # siguiendo el redirect de meli.la con un User-Agent de navegador puesto a
-      # mano, y ponerlo acá haría que los runners corran esa extracción en cada
-      # push y cada PR — más volumen y desde más IPs que lo que ya se decidió
-      # retirar. Cuando entre el PR que lo vuelve un auditor sin red, se agrega:
-      #
-      #   - name: Auditoría de cuentas
-      #     run: npm run cuentas
+      # La compuerta de cumplimiento: marca links que acreditan comisión a una
+      # cuenta que no declaró este sitio como Medio. Estuvo comentada mientras
+      # `cuentas` resolvía siguiendo el redirect de meli.la, porque ponerla en CI
+      # habría hecho que los runners corran esa extracción en cada push y cada
+      # PR. En esta rama ya no hay red: lee el `cuenta` declarado en el catálogo,
+      # así que entra como cualquier otro chequeo.
+      - name: Auditoría de cuentas
+        run: npm run cuentas

@@ -73,9 +73,13 @@ export function monetiza(link: string): boolean {
  * por bueno y por eso el problema es invisible. Lo que falla es más arriba: la
  * comisión se le acredita a una cuenta que no declaró este sitio como Medio.
  *
- * La cuenta la resuelve `npm run cuentas` siguiendo el redirect y la guarda en
- * el catálogo. Un ítem sin `cuenta` resuelta no se marca: no sabemos, y gritar
- * sobre lo que no sabemos entrena a ignorar la lista.
+ * La cuenta la declara `npm run links-aplicar` cuando escribe el link, que es el
+ * único momento en que se sabe con certeza de qué panel salió. Antes la resolvía
+ * `npm run cuentas` siguiendo el redirect contra Mercado Libre; eso se retiró por
+ * la obligación (e) del Programa. Ver `docs/proyecto/07-AFILIADOS.md` §4.
+ *
+ * Un ítem sin `cuenta` declarada no se marca: no sabemos, y gritar sobre lo que
+ * no sabemos entrena a ignorar la lista.
  */
 export function clasificarConCuenta(
   link: string,

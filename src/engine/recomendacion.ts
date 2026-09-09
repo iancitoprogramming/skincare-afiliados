@@ -36,12 +36,18 @@ export interface Producto {
   /** Link del Programa de Afiliados. Es el único que monetiza. */
   link_afiliado: string;
   /**
-   * Cuenta de afiliado que cobra por este link. Se resuelve siguiendo el
-   * redirect del shortlink, con `npm run cuentas -- --guardar`.
+   * Cuenta de afiliado que cobra por este link. Lo escribe
+   * `npm run links-aplicar` en el mismo momento en que escribe el link, que es
+   * cuando se sabe de qué panel salió.
    *
-   * Guardarlo importa porque un `meli.la` no dice a quién le paga: regenerar un
-   * link puede moverlo de una cuenta a la otra sin que se note. Con el campo
-   * escrito, el script compara y avisa.
+   * Guardarlo importa porque un `meli.la` no dice a quién le paga, y todos los
+   * links tienen que salir de una sola cuenta: una comisión acreditada a una
+   * cuenta que no declaró este sitio como Medio puede no pagarse.
+   * `npm run cuentas` audita el campo contra `CUENTA_PRINCIPAL`.
+   *
+   * Antes esto se resolvía siguiendo el redirect del shortlink contra Mercado
+   * Libre. Se retiró: es acceso automatizado para extraer información, que la
+   * obligación (e) del Programa prohíbe. Ver `docs/proyecto/07-AFILIADOS.md` §4.
    */
   cuenta?: string;
   /** URL de browse de ML, sólo para identificar el producto al cargar el afiliado. NO monetiza. */

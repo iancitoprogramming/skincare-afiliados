@@ -134,13 +134,42 @@ Obligación (e): prohibida
 > extracción de datos para acceder, consultar, recopilar o utilizar la propiedad
 > intelectual y/o información de Mercado Libre, incluyendo […] **web scraping**
 
-`scripts/cuentas.ts` pide páginas de Mercado Libre y les parsea el HTML para
-sacar el `polycards` y resolver a qué cuenta y a qué producto va cada link. Eso
-es scraping y cae bajo esta obligación.
+`scripts/cuentas.ts` resolvía la cuenta de cada link siguiendo el redirect del
+shortlink `meli.la` hasta `/social/<cuenta>`, con un User-Agent de navegador
+puesto a mano porque sin él el `Location` no llegaba. **Retirado el 8/9/2026.**
+
+Precisión sobre lo que hacía, porque la versión anterior de este documento lo
+describía mal: no parseaba HTML ni sacaba el `polycards` — leía el header de la
+redirección. Los `polycard_client` que aparecen en el repo son URLs guardadas en
+`productos.importados.ts` y una regex en `src/lib/links.ts` que clasifica una URL
+ya almacenada; ninguna de las dos cosas toca la red. Igual cae bajo esta
+obligación: era acceso automatizado para extraer información de Mercado Libre, y
+que hiciera falta falsear el User-Agent para obtener la respuesta era la señal más
+clara de que el camino no estaba sancionado.
+
+**Qué lo reemplaza.** La cuenta pasa de descubrirse a declararse:
+`npm run links-aplicar` escribe `cuenta` en el mismo momento en que escribe el
+link, que es cuando de verdad se sabe de qué panel salió. `npm run cuentas` deja
+de resolver y pasa a auditar lo declarado contra `CUENTA_PRINCIPAL`, sin red, y
+devuelve exit 1 cuando encuentra links de otra cuenta.
+
+**Qué se pierde, dicho sin vueltas.** Ya no se detecta que un link cambió de
+cuenta *en Mercado Libre* sin que nadie tocara el repo — que es exactamente el
+caso que motivó el script, cuando 8 productos se movieron solos al recargar los
+links. Hoy la defensa es otra: un solo panel, y constancia escrita al aplicar. Si
+alguna vez hace falta verificar contra ML, el camino es la API oficial con OAuth.
+
+`src/lib/sin-scraping.test.ts` falla si vuelve a aparecer una llamada de red a un
+dominio de página de Mercado Libre o un User-Agent falseado. El test distingue por
+host, no por dominio: `api.mercadolibre.com` está permitida en cualquier archivo
+—es la API oficial con OAuth, el camino sancionado— y `www.mercadolibre.com.ar` o
+`meli.la` no lo están en ninguno. Las dos excepciones nominadas son la descarga de
+la foto del producto para la imagen de Open Graph, que es un asset que ya mostramos
+y no extracción de datos, y el link a la publicación que `npm run listados` imprime
+en su reporte, que es una URL escrita en un markdown y no una llamada.
 
 Es una de las razones para preferir la API oficial: acceso autorizado por otro
-acuerdo, en vez de extracción no autorizada por ninguno. Con o sin API, el
-scraping hay que retirarlo.
+acuerdo, en vez de extracción no autorizada por ninguno.
 
 ## 5 · Lo que no se puede hacer en redes
 
@@ -193,8 +222,8 @@ Ojo con los retinoides: el retinol cosmético va, la tretinoína es medicamento.
 - [x] Regenerar los 35 links desde `maurobilat`. Cerrado el 9/9/2026: los 73
       resuelven a la cuenta única y `npm run cuentas` sale 0.
 - [ ] Declarar los Medios en `maurobilat`: el sitio y las cinco redes.
-- [ ] Retirar el scraping de `scripts/cuentas.ts`. Ojo: la resolución sólo lee
-      el `Location` del redirect, que es bastante más liviano que parsear el
-      HTML. Lo que sí parsea páginas es la verificación de producto, que se hace
+- [x] Retirar el scraping de `scripts/cuentas.ts`. La cuenta pasa a declararse
+      al cargar el link y el script sólo audita lo declarado.
+- [ ] Revisar la verificación de producto, que sí parsea páginas y hoy se hace
       a mano al aplicar una tanda.
 - [ ] Crear Facebook: vuelve a entrar como Medio (decisión del 8/9/2026).
