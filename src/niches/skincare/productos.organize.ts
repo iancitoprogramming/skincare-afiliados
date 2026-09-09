@@ -33,7 +33,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "A la mañana, como último paso. Si vas a estar horas al sol, mejor un protector de 50 aparte.",
     prioridad: 4,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // ORIENTADOS A PIEL SECA
@@ -61,7 +61,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "Mañana y noche. Si tenés la piel irritada, usala sola unos días antes de volver a sumar activos.",
     prioridad: 5,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // (raíz)
@@ -143,7 +143,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "Mañana y noche, sobre la piel limpia.",
     prioridad: 4,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // (raíz)
@@ -175,7 +175,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "Mañana y noche. Sobre la piel todavía húmeda rinde más.",
     prioridad: 3,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // ORIENTADOS A PIEL GRASA
@@ -203,7 +203,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "A la mañana. Si vas a estar al sol, ponete un protector de 50 encima.",
     prioridad: 3,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // ORIENTADOS A PIEL SECA
@@ -229,7 +229,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "Mañana y noche. Va bien incluso cuando la piel está reactiva.",
     prioridad: 4,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // ORIENTADOS A PIEL GRASA
@@ -313,7 +313,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "Con un algodón, como primer paso de la noche. Después, el limpiador.",
     prioridad: 3,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // Orientados a piel mixta
@@ -340,7 +340,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "Mañana y noche sobre la cara húmeda. Sin fragancia.",
     prioridad: 4,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // ORIENTADOS A PIEL GRASA
@@ -422,7 +422,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "Mañana y noche sobre la cara húmeda.",
     prioridad: 3,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // ORIENTADOS A PIEL SECA
@@ -450,7 +450,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "Mañana y noche, o sólo de noche si tenés la piel muy seca. Sin fragancia.",
     prioridad: 5,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // ORIENTADOS A PIEL GRASA
@@ -476,7 +476,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "Mañana y noche sobre la cara húmeda.",
     prioridad: 4,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // ORIENTADOS A PIEL SECA
@@ -504,7 +504,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "Mañana y noche. Sin fragancia.",
     prioridad: 5,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // ORIENTADOS A PIEL SECA
@@ -531,7 +531,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "De noche siempre; a la mañana sólo si tu piel lo pide. Sin fragancia.",
     prioridad: 5,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // ORIENTADOS A PIEL GRASA
@@ -559,7 +559,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "A la mañana, último paso y en cantidad generosa. Lleva alcohol: si tenés la piel seca, buscá otro.",
     prioridad: 4,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // ORIENTADOS A PIEL GRASA
@@ -587,7 +587,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "A la mañana, último paso. Dos dedos alcanzan para toda la cara.",
     prioridad: 5,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // ORIENTADOS A PIEL GRASA
@@ -615,7 +615,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "A la mañana, último paso. Lleva alcohol denat, así que no es para piel muy seca.",
     prioridad: 4,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // ORIENTADOS A PIEL GRASA
@@ -643,7 +643,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "A la mañana, último paso y en cantidad generosa. Reponé si vas a estar muchas horas afuera.",
     prioridad: 5,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // (raíz)
@@ -781,7 +781,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "Mañana y noche, después de limpiar y antes de la crema.",
     prioridad: 3,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // Niacinamidas
@@ -807,7 +807,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "Mañana y noche, después de limpiar. Si te da calor en la cara, bajá a una vez por día.",
     prioridad: 4,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // Niacinamidas
@@ -890,7 +890,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "A la mañana, antes del protector solar. Guardala lejos de la luz.",
     prioridad: 4,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // ORIENTADOS A PIEL GRASA
@@ -945,7 +945,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "A la mañana, antes del protector. Si el color vira a naranja, descartala.",
     prioridad: 5,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // Niacinamidas
@@ -1029,7 +1029,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "A la mañana, sobre la piel limpia y seca, antes del protector. Cuatro o cinco gotas alcanzan.",
     prioridad: 5,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // Ampoules
@@ -1056,7 +1056,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "De noche, después del sérum. Trae aceite esencial de romero: si tu piel reacciona, salteala.",
     prioridad: 4,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // Acido Hialuronico
@@ -1084,7 +1084,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "De noche, si de mañana usás vitamina C. Después de limpiar y antes de la crema.",
     prioridad: 3,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // Acido Hialuronico
@@ -1112,7 +1112,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "Mañana y noche, sobre la piel todavía húmeda, y sellá con crema encima.",
     prioridad: 4,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // ORIENTADOS A PIEL GRASA
@@ -1139,7 +1139,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "Mañana y noche, sobre la piel húmeda, antes de la crema.",
     prioridad: 4,
     comodin: true,
-    activo: false,
+    activo: true,
   },
   {
     // Acido Hialuronico
@@ -1167,7 +1167,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "Mañana y noche sobre la piel húmeda. Sellalo con crema: si no, en ambiente seco puede jugarte en contra.",
     prioridad: 3,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // Acido Hialuronico
@@ -1193,7 +1193,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "Mañana y noche, después de limpiar.",
     prioridad: 3,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // Ampoules
@@ -1221,7 +1221,7 @@ export const productosOrganize: Producto[] = [
     como_usar: "De noche, después de limpiar. Si tu piel reacciona fácil, probala primero en una zona chica.",
     prioridad: 4,
     comodin: false,
-    activo: false,
+    activo: true,
   },
   {
     // Ampoules
@@ -1248,6 +1248,6 @@ export const productosOrganize: Producto[] = [
     como_usar: "De noche, si de mañana usás vitamina C. Sobre la piel limpia.",
     prioridad: 3,
     comodin: false,
-    activo: false,
+    activo: true,
   },
 ];

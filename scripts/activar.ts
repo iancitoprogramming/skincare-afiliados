@@ -1,7 +1,20 @@
 // Prende los productos que ya están completos.
 //
-//   npm run activar               simula y lista
-//   npm run activar -- --escribir aplica
+//   npm run activar                    simula y lista
+//   npm run activar -- --escribir      aplica
+//   npm run activar -- --sin-acidos    sólo los que no suman carga exfoliante
+//
+// LAS TANDAS
+//
+// Prender los 46 completos de una vez rompe el invariante de compatibilidad:
+// aparecen rutinas con un conflicto de severidad "separar", que el proyecto
+// garantiza que no existan. Por eso se prende de a tandas, midiendo con
+// `npm run auditar` entre una y otra.
+//
+// El corte natural es la carga exfoliante. El grupo "exfoliante" de activos.ts
+// junta AHA, BHA **y retinoides** —los tres suman a la misma cuenta— y es esa
+// suma la que dispara pila-exfoliante y retinoide-x-acidos. Un producto que no
+// aporta nada a esa cuenta no puede crear ninguno de los dos.
 //
 // Un producto se muestra cuando `activo: true`. Ese flag se puso a mano desde
 // que existe el catálogo, y a mano es donde se cuela el que todavía no tiene
@@ -26,8 +39,19 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { productos } from "../src/niches/skincare/productos";
 import { monetiza } from "../src/lib/links";
+import { ACTIVOS, ACTIVOS_POR_PRODUCTO } from "../src/niches/skincare/activos";
 
 const ESCRIBIR = process.argv.includes("--escribir");
+const SIN_ACIDOS = process.argv.includes("--sin-acidos");
+
+/** Cuánto suma un producto a la cuenta exfoliante: AHA + BHA + retinoides. */
+function cargaExfoliante(ml_id: string): number {
+  const suyos = (ACTIVOS_POR_PRODUCTO as Record<string, string[]>)[ml_id] ?? [];
+  return suyos.reduce((n, id) => {
+    const a = (ACTIVOS as Record<string, { grupos?: string[]; carga?: number }>)[id];
+    return n + (a?.grupos?.includes("exfoliante") ? (a.carga ?? 0) : 0);
+  }, 0);
+}
 
 const CATALOGOS = [
   "src/niches/skincare/productos.ts",
@@ -42,6 +66,7 @@ interface Falta {
 
 const listos: { ml_id: string; etiqueta: string }[] = [];
 const incompletos: Falta[] = [];
+const postergados: { ml_id: string; etiqueta: string; carga: number }[] = [];
 
 for (const p of productos) {
   if (p.activo) continue;
@@ -55,8 +80,15 @@ for (const p of productos) {
   if (!p.como_usar) falta.push("como_usar");
   if (!p.rango_precio) falta.push("banda");
 
-  if (falta.length) incompletos.push({ ml_id, etiqueta, falta });
-  else listos.push({ ml_id, etiqueta });
+  if (falta.length) {
+    incompletos.push({ ml_id, etiqueta, falta });
+    continue;
+  }
+  if (SIN_ACIDOS && cargaExfoliante(ml_id) > 0) {
+    postergados.push({ ml_id, etiqueta, carga: cargaExfoliante(ml_id) });
+    continue;
+  }
+  listos.push({ ml_id, etiqueta });
 }
 
 const yaActivos = productos.filter((p) => p.activo).length;

@@ -28,13 +28,25 @@ describe("respaldoDe", () => {
   });
 
   // Deja constancia del problema que este componente existe para hacer visible.
-  // Si algún día deja de ser cierto —porque se cargaron coreanos con volumen o
-  // se sumó un occidental nuevo— el test avisa y hay que revisar el copy.
-  it("hoy los de poca prueba son todos coreanos", () => {
+  //
+  // ESTO CAMBIÓ, Y EL CAMBIO IMPORTA. Hasta que el catálogo tuvo 25 productos
+  // activos, los de poca prueba eran todos coreanos, y la lectura era "los
+  // coreanos todavía no vendieron acá". Al prender los 30 de la primera tanda
+  // aparecieron europeos y nacionales con la misma señal: Anthelios,
+  // SkinCeuticals, Vichy, Neutrogena, L'Oréal.
+  //
+  // O sea que "poca prueba" no mide origen: mide qué tan nueva es la
+  // publicación en Mercado Libre. Un Anthelios con 8 opiniones no es un
+  // producto sin respaldo, es un listado reciente. El componente sigue estando
+  // bien —no muestra la calificación con menos de 10 opiniones— pero el copy
+  // que lo explique no puede decir "coreano".
+  it("la poca prueba ya no es cosa de un solo origen", () => {
     const flojos = productos
       .filter((p) => p.activo && respaldoDe(p, U) === "poca_prueba")
       .map((p) => p.origen);
     expect(flojos.length).toBeGreaterThan(0);
-    expect([...new Set(flojos)]).toEqual(["coreano"]);
+    // Si volviera a quedar un solo origen, el catálogo cambió de forma y hay
+    // que revisar el copy otra vez.
+    expect(new Set(flojos).size).toBeGreaterThan(1);
   });
 });

@@ -136,11 +136,18 @@ Cuando esté prendido, lo que importa:
 
 ## Riesgos conocidos
 
-**Los coreanos casi no tienen prueba social en ML.** Los europeos y nacionales
-venden decenas de miles de unidades; los coreanos están entre 5 y 100. Tres de
-ellos tienen 5,0 estrellas con **una sola opinión**. Es el choque más serio con
-el posicionamiento K-beauty: los productos que la marca quiere empujar son los
-que menos respaldo muestran en la plataforma donde se compran.
+**Buena parte del catálogo no tiene prueba social en ML, y no es cosa de los
+coreanos.** Con 25 productos activos parecía que sí: los de poca prueba eran
+todos coreanos y la lectura era "todavía no vendieron acá". Al prender la
+primera tanda aparecieron europeos y nacionales con la misma señal —Anthelios,
+SkinCeuticals, Vichy, Neutrogena, L'Oréal—, marcas que venden decenas de miles
+de unidades.
+
+Lo que "poca prueba" mide es **qué tan nueva es la publicación**, no qué tan
+probado está el producto. Un Anthelios con 8 opiniones es un listado reciente,
+no un protector sin respaldo. Sigue siendo un problema de comunicación —la card
+muestra menos respaldo del que el producto tiene— pero el remedio no es cambiar
+de origen, es elegir mejor la publicación cuando hay varias del mismo producto.
 
 Por eso la calificación sólo se muestra con 10 o más opiniones. Las ventas y la
 reputación del vendedor van siempre, que no tienen ese problema.
