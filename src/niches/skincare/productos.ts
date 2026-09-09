@@ -887,7 +887,8 @@ const productosCurados: Producto[] = [
     comodin: true,
     // Ningún tier usa `exfoliante` desde que salió de las rutinas. Queda cargado
     // y listo: alcanza con poner true y devolver el slot a TIERS.
-    activo: false,
+    en_rutina: false, // se vende, no se recomienda
+    activo: true,
   },
   {
     // Alta manual · 9/9/2026 · INCI aportado por Ian

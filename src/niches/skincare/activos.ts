@@ -1432,7 +1432,7 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // La Roche-Posay Lipikar Syndet AP+ — niacinamida + karité, sin fragancia.
   MLA16135276: ["niacinamida", "manteca_karite"],
   // Misma crema, otra publicación de ML. Reemplazó a la anterior en el catálogo.
-  MLAU376385300: ["niacinamida", "manteca_karite"],
+  MLA20663979: ["niacinamida", "manteca_karite"],
   // Cetaphil Pro AD Restoraderm — niacinamida + alantoína + karité.
   MLA20030752: ["niacinamida", "alantoina", "manteca_karite", "tocoferol"],
 

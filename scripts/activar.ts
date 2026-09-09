@@ -3,6 +3,17 @@
 //   npm run activar                    simula y lista
 //   npm run activar -- --escribir      aplica
 //   npm run activar -- --sin-acidos    sólo los que no suman carga exfoliante
+//   npm run activar -- --solo-catalogo prende los que quedan, para vender pero
+//                                      no recomendar (`en_rutina: false`)
+//
+// VENDER SIN RECOMENDAR
+//
+// El catálogo tiene dos trabajos que no son el mismo: recomendar y vender. Un
+// producto que choca con media docena de rutinas no debería entrar al motor,
+// pero eso no es razón para esconderlo: si alguien llega buscándolo y lo
+// tenemos, se le vende. `--solo-catalogo` prende esos con `en_rutina: false`,
+// así aparecen en el catálogo con su página, su foto y su link, y el motor no
+// los ve.
 //
 // LAS TANDAS
 //
@@ -43,6 +54,7 @@ import { ACTIVOS, ACTIVOS_POR_PRODUCTO } from "../src/niches/skincare/activos";
 
 const ESCRIBIR = process.argv.includes("--escribir");
 const SIN_ACIDOS = process.argv.includes("--sin-acidos");
+const SOLO_CATALOGO = process.argv.includes("--solo-catalogo");
 
 /** Cuánto suma un producto a la cuenta exfoliante: AHA + BHA + retinoides. */
 function cargaExfoliante(ml_id: string): number {
@@ -84,7 +96,7 @@ for (const p of productos) {
     incompletos.push({ ml_id, etiqueta, falta });
     continue;
   }
-  if (SIN_ACIDOS && cargaExfoliante(ml_id) > 0) {
+  if (!SOLO_CATALOGO && SIN_ACIDOS && cargaExfoliante(ml_id) > 0) {
     postergados.push({ ml_id, etiqueta, carga: cargaExfoliante(ml_id) });
     continue;
   }
@@ -132,7 +144,13 @@ for (const archivo of CATALOGOS) {
     const bloque = s.slice(i, fin === -1 ? undefined : fin);
     const j = bloque.indexOf("activo: false");
     if (j === -1) continue;
-    s = s.slice(0, i + j) + bloque.slice(j).replace("activo: false", "activo: true") + s.slice(fin);
+    // En modo catálogo el producto se prende PERO se marca fuera de rutinas, en
+    // la misma línea: si se escribieran por separado, un producto quedaría
+    // prendido y recomendable durante el rato que hay entre las dos escrituras.
+    const reemplazo = SOLO_CATALOGO
+      ? "en_rutina: false, // se vende, no se recomienda\n    activo: true"
+      : "activo: true";
+    s = s.slice(0, i + j) + bloque.slice(j).replace("activo: false", reemplazo) + s.slice(fin);
     tocado = true;
     prendidos++;
   }

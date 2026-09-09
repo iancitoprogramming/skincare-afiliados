@@ -92,7 +92,8 @@ export const productosOrganize: Producto[] = [
     como_usar: "De noche, sobre la piel limpia. Trae fragancia: si tu piel reacciona, probala primero en el cuello.",
     prioridad: 4,
     comodin: false,
-    activo: false,
+    en_rutina: false, // se vende, no se recomienda
+    activo: true,
   },
   {
     // (raíz)
@@ -122,7 +123,8 @@ export const productosOrganize: Producto[] = [
     como_usar: "Mañana y noche. Lleva alcohol, así que si tenés la piel seca o tirante conviene otra.",
     prioridad: 4,
     comodin: false,
-    activo: false,
+    en_rutina: false, // se vende, no se recomienda
+    activo: true,
   },
   {
     // ORIENTADOS A PIEL SECA
@@ -274,7 +276,8 @@ export const productosOrganize: Producto[] = [
     como_usar: "Mañana y noche. Está pensada para piel grasa: si tenés la piel seca te va a tirar.",
     prioridad: 4,
     comodin: false,
-    activo: false,
+    en_rutina: false, // se vende, no se recomienda
+    activo: true,
   },
   {
     // (raíz)
@@ -304,7 +307,8 @@ export const productosOrganize: Producto[] = [
     como_usar: "Con un algodón, antes del limpiador. No hace falta enjuagar, pero si te tira, enjuagá.",
     prioridad: 3,
     comodin: false,
-    activo: false,
+    en_rutina: false, // se vende, no se recomienda
+    activo: true,
   },
   {
     // (raíz)
@@ -388,7 +392,8 @@ export const productosOrganize: Producto[] = [
     como_usar: "Mañana y noche. Si te deja la piel chirriando, bajá a una vez por día.",
     prioridad: 4,
     comodin: false,
-    activo: false,
+    en_rutina: false, // se vende, no se recomienda
+    activo: true,
   },
   {
     // (raíz)
@@ -418,7 +423,8 @@ export const productosOrganize: Producto[] = [
     como_usar: "Mañana y noche sobre la cara húmeda.",
     prioridad: 3,
     comodin: false,
-    activo: false,
+    en_rutina: false, // se vende, no se recomienda
+    activo: true,
   },
   {
     // ORIENTADOS A PIEL SECA
@@ -452,8 +458,12 @@ export const productosOrganize: Producto[] = [
     // ORIENTADOS A PIEL SECA
     // Syndet sin jabón, pensado para piel atópica. Sin fragancia.
     // no va a → grasa: textura rica
-    id: "5c1c9584-f216-5825-abea-fdcaca926992",
-    ml_id: "MLAU376385300",
+    id: "73bc98d7-a4df-514b-9b0f-f04101cd842c",
+    // Migrado de MLAU376385300 a la ficha de catalogo: 13 vendedores compitiendo
+    // en vez de uno solo.
+    ml_id: "MLA20663979",
+    rating: 4.8,
+    opiniones: 232,
     cuenta: "maurobilat",
     nombre: "La Roche-Posay Lipikar Syndet Ap+ Gel Limpiador X 200 Ml",
     marca: "La Roche-Posay",
@@ -465,15 +475,16 @@ export const productosOrganize: Producto[] = [
     origen: "europeo",
     apto_sensible: true,
     rango_precio: 2, // provisional, por marca
-    link_afiliado: "https://meli.la/1fEFWNk",
-    imagen_url: "https://http2.mlstatic.com/D_Q_NP_2X_946672-MLA81335047993_122024-V.webp",
-    imagen_hd: "https://http2.mlstatic.com/D_NQ_NP_2X_946672-MLA81335047993_122024-F.webp",
+    link_afiliado: "https://meli.la/2TvmrnF",
+    imagen_url: "https://http2.mlstatic.com/D_Q_NP_2X_846426-MLU75720861116_042024-V.webp",
+    imagen_hd: "https://http2.mlstatic.com/D_NQ_NP_2X_846426-MLU75720861116_042024-F.webp",
     relevado: "2026-09-09",
-    url_referencia: "https://www.mercadolibre.com.ar/up/MLAU376385300",
+    url_referencia: "https://www.mercadolibre.com.ar/p/MLA20663979",
     por_que: "Syndet sin jabón, con karité y niacinamida. Está formulado para piel atópica, que es el estándar más exigente de suavidad.",
     como_usar: "Mañana y noche, o sólo de noche si tenés la piel muy seca. Sin fragancia.",
     prioridad: 5,
     comodin: false,
+    en_rutina: false, // se vende, no se recomienda
     activo: true,
   },
   {
@@ -709,7 +720,8 @@ export const productosOrganize: Producto[] = [
     como_usar: "A la mañana, último paso. Si ya usás un sérum con salicílico, con uno de los dos alcanza.",
     prioridad: 4,
     comodin: false,
-    activo: false,
+    en_rutina: false, // se vende, no se recomienda
+    activo: true,
   },
   {
     // Retinoles
@@ -739,7 +751,8 @@ export const productosOrganize: Producto[] = [
     como_usar: "De noche, sobre la piel seca. Dos veces por semana las primeras dos semanas, después subí. Protector solar al día siguiente, sin excepción.",
     prioridad: 4,
     comodin: true,
-    activo: false,
+    en_rutina: false, // se vende, no se recomienda
+    activo: true,
   },
   {
     // Retinoles
@@ -768,7 +781,8 @@ export const productosOrganize: Producto[] = [
     como_usar: "De noche, sobre la piel seca, empezando dos veces por semana. Nunca la misma noche que un exfoliante.",
     prioridad: 3,
     comodin: false,
-    activo: false,
+    en_rutina: false, // se vende, no se recomienda
+    activo: true,
   },
   {
     // Retinoles
@@ -796,7 +810,8 @@ export const productosOrganize: Producto[] = [
     como_usar: "De noche, sobre la piel seca, empezando dos veces por semana. Protector solar al día siguiente.",
     prioridad: 5,
     comodin: false,
-    activo: false,
+    en_rutina: false, // se vende, no se recomienda
+    activo: true,
   },
   {
     // Orientados a piel mixta
@@ -883,7 +898,8 @@ export const productosOrganize: Producto[] = [
     como_usar: "De noche. No lo uses la misma noche que otro exfoliante ni que un retinoide.",
     prioridad: 3,
     comodin: false,
-    activo: false,
+    en_rutina: false, // se vende, no se recomienda
+    activo: true,
   },
   {
     // Vitamina C
@@ -913,7 +929,8 @@ export const productosOrganize: Producto[] = [
     como_usar: "A la mañana, antes del protector. Si el líquido vira a naranja se oxidó: ahí ya no sirve.",
     prioridad: 4,
     comodin: false,
-    activo: false,
+    en_rutina: false, // se vende, no se recomienda
+    activo: true,
   },
   {
     // Vitamina C
@@ -972,7 +989,8 @@ export const productosOrganize: Producto[] = [
     como_usar: "De noche, empezando día por medio. No lo combines con otro exfoliante.",
     prioridad: 4,
     comodin: false,
-    activo: false,
+    en_rutina: false, // se vende, no se recomienda
+    activo: true,
   },
   {
     // Vitamina C
@@ -1031,7 +1049,8 @@ export const productosOrganize: Producto[] = [
     como_usar: "Mañana y noche, después de limpiar. Trae retinil palmitato: si ya usás un retinoide, estás usando dos.",
     prioridad: 5,
     comodin: false,
-    activo: false,
+    en_rutina: false, // se vende, no se recomienda
+    activo: true,
   },
   {
     // Niacinamidas
@@ -1061,6 +1080,9 @@ export const productosOrganize: Producto[] = [
     como_usar: "Mañana y noche, después de limpiar. Trae retinil palmitato: si ya usás un retinoide, estás usando dos.",
     prioridad: 4,
     comodin: false,
+    // NO se publica: es Pure Niacinamide 10 con la copy y los activos del
+    // Mela B3. Publicarlo afirmaria el mecanismo de otro producto, que es lo
+    // que prohibe la clausula 3.1. Se arregla con el INCI real.
     activo: false,
   },
   {
