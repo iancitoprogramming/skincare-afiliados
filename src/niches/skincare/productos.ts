@@ -766,7 +766,11 @@ const productosCurados: Producto[] = [
     tipos_piel: ["grasa", "mixta", "normal", "seca", "sensible"],
     preocupaciones: ["acne", "manchas", "textura"],
     origen: "europeo",
-    apto_sensible: true,
+    // Niacinamida al 10%: sobre 5% no hay evidencia de mas beneficio y si mas reportes
+    // de rubor. No es inseguro suelto, pero no puede ser LA eleccion para piel
+    // sensible cuando el catalogo entrega niacinamida en limpiadores y
+    // protectores mas suaves. Ver INGREDIENTES.md 3.1.
+    apto_sensible: false,
     rango_precio: 2,
     precio_ars: 39999,
     imagen_url: "https://http2.mlstatic.com/D_Q_NP_2X_670477-MLU69223240175_052023-V.webp",

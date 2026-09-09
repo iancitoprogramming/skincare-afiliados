@@ -143,11 +143,16 @@ primera tanda aparecieron europeos y nacionales con la misma señal —Anthelios
 SkinCeuticals, Vichy, Neutrogena, L'Oréal—, marcas que venden decenas de miles
 de unidades.
 
-Lo que "poca prueba" mide es **qué tan nueva es la publicación**, no qué tan
-probado está el producto. Un Anthelios con 8 opiniones es un listado reciente,
-no un protector sin respaldo. Sigue siendo un problema de comunicación —la card
-muestra menos respaldo del que el producto tiene— pero el remedio no es cambiar
-de origen, es elegir mejor la publicación cuando hay varias del mismo producto.
+**Y la causa no es la que parecía.** `respaldoDe` devuelve `poca_prueba` cuando
+no hay `rating`, sin distinguir "tiene pocas opiniones" de "no cargamos el dato".
+Los 30 de la primera tanda vienen del vault, que no trae ni rating ni opiniones.
+O sea que la señal hoy mide **si cargamos el dato**, no cuánto se probó el
+producto. Un Anthelios sale "poca prueba" teniendo miles de opiniones en ML.
+
+Cuesta plata de dos formas: la card muestra menos respaldo del que el producto
+tiene, y el motor no puede preferir al más vendido porque el desempate por
+respaldo queda ciego en 30 de 55 productos activos. Cargar `rating`, `opiniones`
+y `vendidos` de esos 30 es la acción de mayor retorno del catálogo.
 
 Por eso la calificación sólo se muestra con 10 o más opiniones. Las ventas y la
 reputación del vendedor van siempre, que no tienen ese problema.

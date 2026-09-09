@@ -35,11 +35,12 @@ describe("respaldoDe", () => {
   // aparecieron europeos y nacionales con la misma señal: Anthelios,
   // SkinCeuticals, Vichy, Neutrogena, L'Oréal.
   //
-  // O sea que "poca prueba" no mide origen: mide qué tan nueva es la
-  // publicación en Mercado Libre. Un Anthelios con 8 opiniones no es un
-  // producto sin respaldo, es un listado reciente. El componente sigue estando
-  // bien —no muestra la calificación con menos de 10 opiniones— pero el copy
-  // que lo explique no puede decir "coreano".
+  // O sea que "poca prueba" no mide origen. Pero tampoco mide antigüedad del
+  // listado, que fue la segunda lectura equivocada: `respaldoDe` devuelve
+  // `poca_prueba` en cuanto falta `rating`, y los 30 de la primera tanda vienen
+  // del vault, que no trae ni rating ni opiniones. Hoy la señal mide **si
+  // cargamos el dato**. Hasta que se carguen, un Anthelios con miles de
+  // opiniones en ML se muestra igual que un coreano con una.
   it("la poca prueba ya no es cosa de un solo origen", () => {
     const flojos = productos
       .filter((p) => p.activo && respaldoDe(p, U) === "poca_prueba")
