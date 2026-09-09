@@ -404,8 +404,10 @@ const productosCurados: Producto[] = [
   },
   {
     // #21 · MLAU3849329943 (antes MLA45253335) · sin vendedor destacado
-    id: "a35fb8ba-c2f2-5e6f-94fa-2e96744d3fdc",
-    ml_id: "MLAU3849329943",
+    // Migrado de MLAU3849329943 a la ficha de catalogo: ahi compiten varios
+    // vendedores y ML muestra al que gana. La publicacion suelta ataba a uno.
+    id: "fb6c8719-ae28-51c3-a2b7-185729019a95",
+    ml_id: "MLA45253335",
     cuenta: "maurobilat",
     rating: 4.8,
     opiniones: 53,
@@ -425,8 +427,8 @@ const productosCurados: Producto[] = [
     precio_ars: 32999,
     imagen_url: "https://http2.mlstatic.com/D_Q_NP_2X_843019-MLA115354367281_072026-V.webp",
     imagen_hd: "https://http2.mlstatic.com/D_NQ_NP_2X_843019-MLA115354367281_072026-F.webp",
-    link_afiliado: "https://meli.la/2341vy4",
-    url_referencia: "https://www.mercadolibre.com.ar/up/MLAU3849329943",
+    link_afiliado: "https://meli.la/1R63wV7",
+    url_referencia: "https://www.mercadolibre.com.ar/p/MLA45253335",
     por_que: "Mucina de caracol: hidrata y ayuda a que las marcas se vayan emparejando. Muy versátil.",
     como_usar: "Después de limpiar, mañana y noche.",
     relevado: "2026-09-05",
@@ -479,11 +481,13 @@ const productosCurados: Producto[] = [
   },
   {
     // #8 · MLAU3480823224 · SKINKO
-    id: "ef88803e-f240-5ac9-a0c7-6dc45023f5cb",
-    ml_id: "MLAU3480823224",
+    // Migrado de MLAU3480823224 a la ficha de catalogo: ahi compiten varios
+    // vendedores y ML muestra al que gana. La publicacion suelta ataba a uno.
+    id: "42b66c15-8843-58a2-b3e2-4f706bfc23e4",
+    ml_id: "MLA21801065",
     cuenta: "maurobilat",
-    rating: 5.0,
-    opiniones: 1,
+    rating: 4.8,
+    opiniones: 80,
     vendidos: "+50",
     vendidos_aprox: 50,
     reputacion: "Tienda oficial",
@@ -498,10 +502,10 @@ const productosCurados: Producto[] = [
     apto_sensible: true,
     rango_precio: 2,
     precio_ars: 51999,
-    imagen_url: "https://http2.mlstatic.com/D_Q_NP_2X_957567-MLA94539763645_102025-V.webp",
-    imagen_hd: "https://http2.mlstatic.com/D_NQ_NP_2X_957567-MLA94539763645_102025-F.webp",
-    link_afiliado: "https://meli.la/1B2LZaE",
-    url_referencia: "https://www.mercadolibre.com.ar/p/MLAU3480823224",
+    imagen_url: "https://http2.mlstatic.com/D_Q_NP_2X_612292-MLA99841798565_112025-V.webp",
+    imagen_hd: "https://http2.mlstatic.com/D_NQ_NP_2X_612292-MLA99841798565_112025-F.webp",
+    link_afiliado: "https://meli.la/1wTKxWM",
+    url_referencia: "https://www.mercadolibre.com.ar/p/MLA21801065",
     por_que: "Filtro coreano de textura liviana, no deja blanco ni sensación pegajosa.",
     como_usar: "Último paso de la mañana, todos los días.",
     relevado: "2026-09-05",

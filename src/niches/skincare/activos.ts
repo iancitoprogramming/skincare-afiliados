@@ -1263,7 +1263,7 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // Lidherma Hyaluronic 4D · humectante puro.
   MLA19474747: ["hialuronico"],
   // COSRX Advanced Snail 92 [vault]
-  MLAU3849329943: ["mucina_caracol", "panthenol", "alantoina", "adenosina", "hialuronico"],
+  MLA45253335: ["mucina_caracol", "panthenol", "alantoina", "adenosina", "hialuronico"],
   // Dermaglós Crema Hidratante de Día FPS 30 · lleva filtro, no verificamos cuál.
   MLA24692733: ["filtro_quimico"],
 
@@ -1271,7 +1271,7 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // Los siete son de filtro orgánico. Ninguno lleva óxido de zinc ni dióxido de
   // titanio como filtro: no hay un solo protector mineral en el catálogo.
   // Beauty of Joseon Relief Sun Rice + Probiotics [vault]
-  MLAU3480823224: ["filtro_quimico", "niacinamida", "arroz_fermentado", "tocoferol"],
+  MLA21801065: ["filtro_quimico", "niacinamida", "arroz_fermentado", "tocoferol"],
   // ISDIN Fusion Water Magic [INCI]
   MLA26916726: ["filtro_quimico"],
   // COSRX Ultra-Light Invisible [INCI]
