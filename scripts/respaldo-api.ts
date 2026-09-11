@@ -5,19 +5,13 @@
 //
 // POR QUÉ ESTE SCRIPT EXISTE
 //
-// `respaldoDe` devuelve `poca_prueba` en cuanto falta `rating`, sin distinguir
-// "tiene pocas opiniones" de "no cargamos el dato". Los productos que vinieron
-// del vault no traen ninguno de los dos, así que se muestran como si nadie los
-// hubiera probado. Un Anthelios con 1.998 opiniones y 4,7 estrellas sale igual
-// que un coreano con una sola.
+// Los productos que vinieron del vault no traen rating ni opiniones, así que su
+// ficha queda muda donde otras muestran estrellas. Un Anthelios con 1.998
+// opiniones y 4,7 se ve igual que un coreano con una sola.
 //
-// Cuesta plata de dos formas, y las dos importan:
-//
-//   1. La card muestra menos respaldo del que el producto tiene, justo donde la
-//      persona decide si confía.
-//   2. El motor ordena por `respaldo` en el tercer desempate, después de
-//      prioridad y calidad de fórmula. Sin el dato, ese criterio queda ciego y
-//      el más vendido no puede ganar aunque lo merezca.
+// Es un dato de Mercado Libre, no una calificación nuestra. Desde que la
+// popularidad salió del criterio, esto NO cambia qué se recomienda ni en qué
+// orden: sólo completa lo que la ficha muestra, atribuido a ML.
 //
 // DE DÓNDE SALE EL DATO
 //
@@ -27,15 +21,12 @@
 // Anthelios devuelven los mismos 1.998— así que alcanza con el primero.
 //
 // `sold_quantity` NO se puede: `/items/{id}` responde 403 para items ajenos. O
-// sea que `vendidos` se sigue cargando a mano. Las opiniones alcanzan para lo
-// que el motor necesita, que es `respaldoDe(rating, opiniones)`.
+// sea que `vendidos` se sigue cargando a mano.
 
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { productos } from "../src/niches/skincare/productos";
 import { tokenML, cabeceras } from "../src/lib/ml-api";
-import { respaldoDe } from "../src/engine/respaldo";
-import { UMBRALES_RESPALDO } from "../src/niches/skincare/config";
 
 const ESCRIBIR = process.argv.includes("--escribir");
 
@@ -49,8 +40,6 @@ interface Hallazgo {
   etiqueta: string;
   rating: number;
   opiniones: number;
-  antes: string;
-  despues: string;
 }
 
 async function main() {
@@ -99,12 +88,9 @@ async function main() {
         continue;
       }
 
-      const antes = respaldoDe(p, UMBRALES_RESPALDO);
-      const despues = respaldoDe({ rating, opiniones }, UMBRALES_RESPALDO);
-      hallazgos.push({ ml_id, etiqueta, rating, opiniones, antes, despues });
-      const flecha = antes === despues ? "  " : "→ ";
+      hallazgos.push({ ml_id, etiqueta, rating, opiniones });
       console.log(
-        `  ${String(opiniones).padStart(5)} op · ${rating.toFixed(1)} ★  ${flecha}${despues.padEnd(12)} ${etiqueta.slice(0, 44)}`,
+        `  ${String(opiniones).padStart(5)} op · ${rating.toFixed(1)} ★  ${etiqueta.slice(0, 44)}`,
       );
     } catch (e) {
       fallaron.push({ ml_id, etiqueta, motivo: String((e as Error).message).slice(0, 50) });
@@ -112,11 +98,8 @@ async function main() {
   }
 
   // ── Resumen de lo que cambia ─────────────────────────────────────────────
-  const suben = hallazgos.filter((h) => h.antes !== h.despues);
-  console.log(`\n${hallazgos.length} con datos · ${suben.length} cambian de nivel de respaldo`);
-  const porNivel: Record<string, number> = {};
-  for (const h of hallazgos) porNivel[h.despues] = (porNivel[h.despues] ?? 0) + 1;
-  for (const [n, c] of Object.entries(porNivel)) console.log(`  ${String(c).padStart(3)}  ${n}`);
+  console.log(`
+${hallazgos.length} productos con rating y opiniones para escribir`);
 
   if (fallaron.length) {
     console.log(`\nSIN DATO — ${fallaron.length}:`);
@@ -133,8 +116,7 @@ async function main() {
   }
 
   // Se escriben dentro del bloque de cada ml_id, después de `nombre`, y sólo si
-  // no estaban ya. `respaldo_orden` NO se escribe: lo calcula `calidad.ts` a
-  // partir de estos dos, y guardarlo sería tener el mismo dato en dos lugares.
+  // no estaban ya.
   let escritos = 0;
   for (const archivo of CATALOGOS) {
     let s = readFileSync(archivo, "utf8");

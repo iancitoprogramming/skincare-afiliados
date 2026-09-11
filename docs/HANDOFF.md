@@ -102,7 +102,7 @@ regla que lo gobierna: *esquivar un conflicto nunca cuesta calidad de match.*
 Entre dos productos que sirven igual, cuál se muestra:
 
 ```
-prioridad  →  calidad de fórmula  →  respaldo  →  banda de precio  →  id
+prioridad  →  calidad de fórmula  →  banda de precio  →  id
 ```
 
 Los 72 activos del diccionario llevan su nivel de evidencia A–D en el campo

@@ -90,8 +90,6 @@ export interface Producto {
 
   /** Qué tan bien respaldada está la fórmula. Ver `engine/calidad.ts`. */
   calidad_formula?: number;
-  /** Cuánta gente ajena a nosotros la probó, graduada. Ver `engine/respaldo.ts`. */
-  respaldo_orden?: number;
   /**
    * Si es `false`, el producto se vende pero no se recomienda.
    *
@@ -173,9 +171,15 @@ function momentoCompatible(slot: Momento, producto: Momento): boolean {
  *
  *   1. prioridad          — qué tan buen match es. No la discute nadie.
  *   2. calidad de fórmula — con qué está hecho, según la escala A–D.
- *   3. respaldo           — cuánta gente ajena a nosotros lo probó.
- *   4. precio             — la banda, hacia el lado que diga la preferencia.
- *   5. id                 — para que el orden no dependa del archivo.
+ *   3. precio             — la banda, hacia el lado que diga la preferencia.
+ *   4. id                 — para que el orden no dependa del archivo.
+ *
+ * ACÁ HABÍA UN CRITERIO MÁS, EL RESPALDO, Y SE RETIRÓ. Graduaba cuánta gente
+ * había comprado el producto en Mercado Libre, así que la popularidad decidía
+ * cada vez que dos fórmulas empataban. Que algo se venda mucho no prueba que sea
+ * bueno: un producto excelente y todavía desconocido acá perdía por desconocido.
+ * El rating y las opiniones se siguen mostrando como dato atribuido a ML, que es
+ * distinto de usarlos para calificar la fórmula.
  *
  * ANTES ERA prioridad → precio → precio, y ahí estaba el problema. El precio era
  * un proxy de "cuál es mejor": con `preferencia: "mejor"` se agarraba el más caro
@@ -195,7 +199,6 @@ function ordenador(preferencia: RespuestasRutina["preferencia"]) {
   return (a: Producto, b: Producto): number =>
     b.prioridad - a.prioridad ||
     (b.calidad_formula ?? 0) - (a.calidad_formula ?? 0) ||
-    (b.respaldo_orden ?? 0) - (a.respaldo_orden ?? 0) ||
     signo * (b.rango_precio - a.rango_precio) ||
     a.id.localeCompare(b.id);
 }

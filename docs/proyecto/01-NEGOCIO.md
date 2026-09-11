@@ -136,6 +136,16 @@ Cuando esté prendido, lo que importa:
 
 ## Riesgos conocidos
 
+**La popularidad dejó de clasificar y de ordenar.** Hasta el 11/9/2026 el sitio
+mostraba etiquetas —"muy probado", "probado", "poca prueba todavía"— calculadas
+sólo con la cantidad de opiniones en Mercado Libre, y ese mismo número desempataba
+qué producto se recomendaba. Se retiró: las ventas no miden la calidad de una
+fórmula, y un producto excelente todavía desconocido acá perdía por desconocido.
+El rating y las ventas siguen a la vista como dato atribuido a ML.
+
+Lo que sigue queda como registro de por qué esa señal no servía ni siquiera para
+lo que decía medir:
+
 **Buena parte del catálogo no tiene prueba social en ML, y no es cosa de los
 coreanos.** Con 25 productos activos parecía que sí: los de poca prueba eran
 todos coreanos y la lectura era "todavía no vendieron acá". Al prender la
@@ -149,10 +159,8 @@ Los 30 de la primera tanda vienen del vault, que no trae ni rating ni opiniones.
 O sea que la señal hoy mide **si cargamos el dato**, no cuánto se probó el
 producto. Un Anthelios sale "poca prueba" teniendo miles de opiniones en ML.
 
-Cuesta plata de dos formas: la card muestra menos respaldo del que el producto
-tiene, y el motor no puede preferir al más vendido porque el desempate por
-respaldo queda ciego en 30 de 55 productos activos. Cargar `rating`, `opiniones`
-y `vendidos` de esos 30 es la acción de mayor retorno del catálogo.
+O sea que la señal medía si habíamos cargado el dato, no cuánto se probó el
+producto. Era una razón más para sacarla del criterio.
 
 Por eso la calificación sólo se muestra con 10 o más opiniones. Las ventas y la
 reputación del vendedor van siempre, que no tienen ese problema.

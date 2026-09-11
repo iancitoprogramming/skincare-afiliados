@@ -24,11 +24,6 @@ describe("calidad de fórmula sobre el catálogo real", () => {
     expect(sinCampo.map((p) => p.nombre)).toEqual([]);
   });
 
-  it("todo producto sale con el orden de respaldo calculado", () => {
-    const sinCampo = productos.filter((p) => typeof p.respaldo_orden !== "number");
-    expect(sinCampo.map((p) => p.nombre)).toEqual([]);
-  });
-
   // La trampa №5 de INGREDIENTES.md §10.3: el sérum con más activos por
   // mililitro del catálogo. Que apile no puede alcanzarle para ganar.
   it("apilar activos no gana: el Garnier no supera a la fórmula del paper", () => {
