@@ -72,15 +72,32 @@ de mañana y de noche. **Nunca deja un paso vacío.**
 
 ### Cascada de relajación
 
-1. Match completo (tipo de piel **y** preocupación)
-2. Relaja preocupación
-3. Relaja tipo de piel
-4. Relaja origen → marca `otro_origen`
-5. Relaja apto para sensible → marca `no_apto_sensible`
-6. Comodín de la categoría, ignorando presupuesto → marca `comodin`
+1. Match completo (tipo de piel **y** preocupación), dentro de la banda pedida
+2. Match completo **fuera de la banda** → marca `fuera_de_presupuesto`
+3. Relaja preocupación (misma lógica de banda adentro)
+4. Relaja tipo de piel
+5. Relaja origen → marca `otro_origen`
+6. Relaja apto para sensible → marca `no_apto_sensible`
+7. Comodín de la categoría → marca `comodin`
 
 **Categoría y momento nunca se relajan**: sin eso la rutina deja de tener
 sentido.
+
+### Por qué el presupuesto cede antes que el tipo de piel
+
+Era al revés: la banda era filtro duro y `apto_sensible` se relajaba. Eso hacía
+que alguien de piel sensible con presupuesto accesible recibiera un protector
+químico marcado como no apto, en vez del mineral de banda 2 que sí le servía —y
+no había ninguno apto en banda 1, así que no era un hueco de catálogo sino el
+precio de mercado.
+
+Se prioriza la necesidad y el objetivo de la persona por sobre la banda, y **las
+bandas se mezclan entre sí** dentro de una misma rutina. La banda se respeta
+mientras haya algo del mismo nivel de match que entre; sólo cuando ninguno de los
+que sirven entra, se ofrece el que sirve y se avisa.
+
+Medido al hacer el cambio: los pasos marcados `no_apto_sensible` pasaron de 16 a
+**0**, a cambio de 54 pasos que se van de banda, cada uno con su aviso.
 
 Cada nivel devuelve una señal, y **la interfaz la muestra**. Si el kit de piel
 sensible tiene un protector que no es apto, lo dice.

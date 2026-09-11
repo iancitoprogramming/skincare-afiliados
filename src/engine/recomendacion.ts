@@ -126,6 +126,7 @@ export type NivelFallback =
   | "match"
   | "sin_preocupacion"
   | "sin_piel"
+  | "fuera_de_presupuesto"
   | "otro_origen"
   | "no_apto_sensible"
   | "comodin";
@@ -219,19 +220,45 @@ function elegibles(productos: Producto[], slot: RutinaSlot): Producto[] {
  * alguien pidió algo para las manchas, se le da algo para las manchas; entre
  * los que sirven para las manchas, se prefiere el que no choca.
  */
+/**
+ * La señal que ve la persona, calculada sobre el producto que quedó elegido y no
+ * sobre el pool. Es la única forma de que "se va de tu banda" sea cierto: el pool
+ * mezcla bandas a propósito, así que sólo el elegido sabe si se fue.
+ */
+function senal(producto: Producto, r: RespuestasRutina, nivel: NivelFallback): NivelFallback {
+  if (nivel === "no_apto_sensible" || nivel === "comodin" || nivel === "otro_origen") return nivel;
+  return producto.rango_precio > r.presupuesto ? "fuera_de_presupuesto" : nivel;
+}
+
 function candidatosDe(
   pool: Producto[],
   r: RespuestasRutina,
 ): { productos: Producto[]; fallback: NivelFallback } | null {
-  const match = pool.filter(
-    (p) => p.tipos_piel.includes(r.piel) && p.preocupaciones.includes(r.objetivo),
-  );
-  if (match.length) return { productos: match, fallback: "match" };
+  // Los tres niveles de calidad de match, del mejor al peor. El presupuesto NO
+  // los precede: se aplica adentro de cada uno.
+  const niveles: [Producto[], NivelFallback][] = [
+    [
+      pool.filter((p) => p.tipos_piel.includes(r.piel) && p.preocupaciones.includes(r.objetivo)),
+      "match",
+    ],
+    [pool.filter((p) => p.tipos_piel.includes(r.piel)), "sin_preocupacion"],
+    [pool, "sin_piel"],
+  ];
 
-  const sinPreoc = pool.filter((p) => p.tipos_piel.includes(r.piel));
-  if (sinPreoc.length) return { productos: sinPreoc, fallback: "sin_preocupacion" };
-
-  if (pool.length) return { productos: pool, fallback: "sin_piel" };
+  for (const [productos, nivel] of niveles) {
+    if (!productos.length) continue;
+    const dentro = productos.filter((p) => p.rango_precio <= r.presupuesto);
+    // Mientras haya algo en la banda pedida, se respeta. Sólo cuando NINGUNO de
+    // los que sirven entra, se ofrece el que sirve y se avisa.
+    //
+    // Se probaron las dos alternativas y las dos miden peor. Devolver el nivel
+    // entero mezclado y ordenar por banda hace que lo barato le gane a lo bueno
+    // (rutinas sin conflicto 291 -> 274); ordenar por preferencia y dejar la
+    // banda de desempate ignora el presupuesto casi siempre (54 -> 170 pasos
+    // fuera de banda). Excluir por nivel es lo que sostiene las dos cosas.
+    if (dentro.length) return { productos: dentro, fallback: nivel };
+    return { productos, fallback: "fuera_de_presupuesto" };
+  }
   return null;
 }
 
@@ -242,7 +269,8 @@ function mejorDe(
 ): { producto: Producto; fallback: NivelFallback } | null {
   const c = candidatosDe(pool, r);
   if (!c) return null;
-  return { producto: [...c.productos].sort(ordenador(r.preferencia))[0], fallback: c.fallback };
+  const elegido = [...c.productos].sort(ordenador(r.preferencia))[0];
+  return { producto: elegido, fallback: senal(elegido, r, c.fallback) };
 }
 
 /**
@@ -256,9 +284,8 @@ export function candidatosPaso(
   r: RespuestasRutina,
 ): { productos: Producto[]; fallback: NivelFallback } {
   const enCategoria = elegibles(productos, slot);
-  const base = enCategoria.filter((p) => p.rango_precio <= r.presupuesto);
   const sensible = r.piel === "sensible";
-  const aptos = sensible ? base.filter((p) => p.apto_sensible) : base;
+  const aptos = sensible ? enCategoria.filter((p) => p.apto_sensible) : enCategoria;
   const ordenar = ordenador(r.preferencia);
 
   if (r.origenes?.length) {
@@ -267,20 +294,22 @@ export function candidatosPaso(
       r,
     );
     if (delOrigen) {
-      return { productos: [...delOrigen.productos].sort(ordenar), fallback: delOrigen.fallback };
+      const ps = [...delOrigen.productos].sort(ordenar);
+      return { productos: ps, fallback: senal(ps[0], r, delOrigen.fallback) };
     }
   }
 
   const cualquierOrigen = candidatosDe(aptos, r);
   if (cualquierOrigen) {
+    const ps = [...cualquierOrigen.productos].sort(ordenar);
     return {
-      productos: [...cualquierOrigen.productos].sort(ordenar),
-      fallback: r.origenes?.length ? "otro_origen" : cualquierOrigen.fallback,
+      productos: ps,
+      fallback: r.origenes?.length ? "otro_origen" : senal(ps[0], r, cualquierOrigen.fallback),
     };
   }
 
   if (sensible) {
-    const igual = candidatosDe(base, r);
+    const igual = candidatosDe(enCategoria, r);
     if (igual) {
       return { productos: [...igual.productos].sort(ordenar), fallback: "no_apto_sensible" };
     }
@@ -301,9 +330,8 @@ export function elegirPaso(
   r: RespuestasRutina,
 ): PasoRutina {
   const enCategoria = elegibles(productos, slot);
-  const base = enCategoria.filter((p) => p.rango_precio <= r.presupuesto);
   const sensible = r.piel === "sensible";
-  const aptos = sensible ? base.filter((p) => p.apto_sensible) : base;
+  const aptos = sensible ? enCategoria.filter((p) => p.apto_sensible) : enCategoria;
 
   // 1. Con la preferencia de origen puesta. Se agota acá antes de cambiar de origen:
   // si alguien pidió coreano, es mejor darle un coreano que no matchea la preocupación
@@ -328,7 +356,7 @@ export function elegirPaso(
   // del catálogo (típico: falta un protector solar mineral). Damos el mejor que hay
   // pero marcado, para que la UI lo aclare en vez de venderlo como apto.
   if (sensible) {
-    const igual = mejorDe(base, r);
+    const igual = mejorDe(enCategoria, r);
     if (igual) return { slot, producto: igual.producto, fallback: "no_apto_sensible" };
   }
 

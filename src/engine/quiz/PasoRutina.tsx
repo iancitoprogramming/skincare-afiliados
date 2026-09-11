@@ -35,7 +35,9 @@ export function PasoRutina({
       ? copy.avisos.no_apto_sensible
       : paso.fallback === "otro_origen"
         ? copy.avisos.otro_origen
-        : null;
+        : paso.fallback === "fuera_de_presupuesto"
+          ? copy.avisos.fuera_de_presupuesto
+          : null;
 
   return (
     <div className="rounded-2xl border border-niebla bg-gel/25 p-5">

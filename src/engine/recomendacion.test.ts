@@ -64,12 +64,40 @@ describe("armarRutina", () => {
     });
   });
 
-  it("respeta el presupuesto salvo cuando cae al comodín", () => {
+  // El contrato viejo era "nunca se pasa del presupuesto". Cambió a propósito: la
+  // banda cede ante el tipo de piel y el objetivo, porque hay pasos que no existen
+  // en banda accesible —el protector para piel sensible es el caso— y ofrecer uno
+  // que no sirve para ahorrar es peor que ofrecer uno que sirve y decir el precio.
+  //
+  // Lo que sigue siendo obligatorio es que NUNCA se pase en silencio.
+  it("si un paso se va del presupuesto, lo dice", () => {
+    const avisan = ["fuera_de_presupuesto", "comodin", "no_apto_sensible", "otro_origen"];
     cadaCombo((r, rutina) => {
       for (const p of [...rutina.am, ...rutina.pm]) {
-        if (p.fallback !== "comodin") {
-          expect(p.producto.rango_precio).toBeLessThanOrEqual(r.presupuesto);
+        if (p.producto.rango_precio > r.presupuesto) {
+          expect(avisan).toContain(p.fallback);
         }
+      }
+    });
+  });
+
+  // La contracara: pasarse tiene que ser el último recurso, no la costumbre. Si
+  // hay algo del mismo nivel de match que entra en la banda, se elige ese.
+  it("no se pasa del presupuesto si había algo del mismo nivel que entraba", () => {
+    cadaCombo((r, rutina) => {
+      for (const p of [...rutina.am, ...rutina.pm]) {
+        if (p.fallback !== "fuera_de_presupuesto") continue;
+        const mismoNivel = productos.filter(
+          (x) =>
+            x.activo &&
+            x.en_rutina !== false &&
+            x.categoria === p.slot.categoria &&
+            (r.piel !== "sensible" || x.apto_sensible) &&
+            x.tipos_piel.includes(r.piel) &&
+            x.preocupaciones.includes(r.objetivo) &&
+            x.rango_precio <= r.presupuesto,
+        );
+        expect(mismoNivel).toEqual([]);
       }
     });
   });

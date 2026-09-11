@@ -217,6 +217,9 @@ export const productosOrganize: Producto[] = [
     como_usar: "A la mañana. Si vas a estar al sol, ponete un protector de 50 encima.",
     prioridad: 3,
     comodin: false,
+    // Fuera del motor: `alcohol_denat` y `fragancia`, las dos puro lastre: suman carga de irritación sin aportar resultado.
+    // Sigue vendible en /catalogo con su ficha y su link.
+    en_rutina: false,
     activo: true,
   },
   {
@@ -838,6 +841,9 @@ export const productosOrganize: Producto[] = [
     como_usar: "Mañana y noche, después de limpiar y antes de la crema.",
     prioridad: 3,
     comodin: false,
+    // Fuera del motor: `fragancia` sobre el activo más repetido del catálogo; el mismo beneficio está sin lastre en otros pasos.
+    // Sigue vendible en /catalogo con su ficha y su link.
+    en_rutina: false,
     activo: true,
   },
   {

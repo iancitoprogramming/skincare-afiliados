@@ -224,6 +224,8 @@ export const copy = {
     no_apto_sensible:
       "Todavía no tenemos una opción para piel sensible en este paso. Esta es la mejor que hay, pero revisala si tu piel reacciona fácil.",
     otro_origen: "No teníamos este paso en el origen que elegiste.",
+    fuera_de_presupuesto:
+      "Se va de la banda que elegiste. No hay ninguno más accesible que sirva para tu piel y tu objetivo, y preferimos decírtelo antes que darte uno que no te va a servir.",
   },
 
   // Aparece recién en la pantalla de resultados, nunca antes.

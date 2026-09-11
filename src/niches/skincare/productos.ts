@@ -304,6 +304,9 @@ const productosCurados: Producto[] = [
     relevado: "2026-09-05",
     prioridad: 5,
     comodin: false,
+    // Fuera del motor: trae `aceite_esencial_tea_tree` estando marcado apto para piel sensible, y encima `aha_mandelico`.
+    // Sigue vendible en /catalogo con su ficha y su link.
+    en_rutina: false,
     activo: true,
   },
   {
@@ -750,6 +753,9 @@ const productosCurados: Producto[] = [
     relevado: "2026-09-05",
     prioridad: 4,
     comodin: false,
+    // Fuera del motor: vit C con `bha_salicilico` y `fragancia` en un leave-on: exfoliante que le come el cupo al sérum, más el irritante que no aporta nada.
+    // Sigue vendible en /catalogo con su ficha y su link.
+    en_rutina: false,
     activo: true,
   },
   {
