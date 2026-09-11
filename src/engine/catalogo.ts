@@ -13,6 +13,28 @@ import type { Producto } from "./recomendacion";
 // fuera opcional el sitio andaría igual y sólo ordenaría peor cuando Supabase
 // responde. Un error que sólo aparece en producción y no rompe nada es el peor
 // tipo de error; con el parámetro obligatorio, olvidarse no compila.
+/**
+ * Campos que el nicho calcula al armar el catálogo y la tabla NO guarda.
+ *
+ * `npm run sync` los saca antes de subir y `getCatalogo` los vuelve a calcular al
+ * leer, con `preparar`. Si un campo nuevo es derivado, va en esta lista; si es
+ * dato, necesita su columna en una migración, y `esquema-supabase.test.ts` lo
+ * exige.
+ */
+export const CAMPOS_DERIVADOS = ["calidad_formula", "respaldo_orden"] as const;
+
+/**
+ * La fila tal cual se sube a `productos`: el producto sin sus campos derivados.
+ *
+ * La usan `sync` y el test de esquema, así el test prueba exactamente lo que se
+ * manda y no una reconstrucción que podría no coincidir.
+ */
+export function filaDeProducto(p: Producto): Record<string, unknown> {
+  const fila: Record<string, unknown> = { ...p };
+  for (const campo of CAMPOS_DERIVADOS) delete fila[campo];
+  return fila;
+}
+
 export async function getCatalogo(
   fallback: Producto[],
   preparar: (productos: Producto[]) => Producto[],
