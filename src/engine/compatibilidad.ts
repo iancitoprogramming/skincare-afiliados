@@ -580,7 +580,7 @@ function rutinaDePasos(pasos: PasoRutina[]): Rutina {
  *   2. prioridad del producto — qué tan bueno es para ese paso
  *   3. conflictos "cuidado"  — manejables; no valen sacrificar un mejor producto
  *   4. conflictos "nota"     — redundancia; sólo importa si todo lo demás empata
- *   5. el orden de `candidatos` — calidad de fórmula, respaldo, precio, id
+ *   5. el orden de `candidatos` — calidad de fórmula, precio, id
  *
  * Que "cuidado" vaya DEBAJO de prioridad es la decisión más discutible de todo
  * esto, y es deliberada: un aviso de "separalos por momento" se resuelve con una
@@ -645,7 +645,7 @@ export function armarRutinaEvitandoConflictos(
       }
 
       // `candidatos` ya viene ordenado por el criterio completo —prioridad,
-      // calidad de fórmula, respaldo, banda de precio, id— así que alcanza con
+      // calidad de fórmula, banda de precio, id— así que alcanza con
       // quedarse con el PRIMERO que gane: el orden de la lista hace de quinto
       // desempate sin tener que repetirlo acá.
       //

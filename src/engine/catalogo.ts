@@ -21,7 +21,7 @@ import type { Producto } from "./recomendacion";
  * dato, necesita su columna en una migración, y `esquema-supabase.test.ts` lo
  * exige.
  */
-export const CAMPOS_DERIVADOS = ["calidad_formula", "respaldo_orden"] as const;
+export const CAMPOS_DERIVADOS = ["calidad_formula"] as const;
 
 /**
  * La fila tal cual se sube a `productos`: el producto sin sus campos derivados.

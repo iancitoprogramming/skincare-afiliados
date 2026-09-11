@@ -364,13 +364,20 @@ describe("criterio de orden", () => {
     ).toBe("mejor-match");
   });
 
-  it("a igual calidad desempata el respaldo, y recién después el precio", () => {
+  // La popularidad salió del criterio. El caso está armado para que se note: el
+  // popular tiene 5.000 opiniones y el desconocido una sola, y encima el popular
+  // gana por el desempate siguiente, que con la preferencia "mejor" prefiere la
+  // banda más alta. Si el respaldo todavía pesara, ganaría el popular.
+  //
+  // Que gane el desconocido es el punto: un producto excelente y todavía sin
+  // ventas acá no puede perder por desconocido.
+  it("a igual calidad, la popularidad no entra en el desempate", () => {
     expect(
       elegido([
-        { ...base, id: "sin-opiniones", rango_precio: 3, calidad_formula: 5, respaldo_orden: 0 },
-        { ...base, id: "muy-probado", rango_precio: 1, calidad_formula: 5, respaldo_orden: 2 },
+        { ...base, id: "popular", rango_precio: 1, calidad_formula: 5, opiniones: 5000, rating: 4.9 },
+        { ...base, id: "desconocido", rango_precio: 3, calidad_formula: 5, opiniones: 1, rating: 5 },
       ]),
-    ).toBe("muy-probado");
+    ).toBe("desconocido");
   });
 
   // El bug de fondo: con todo empatado, `Array.sort` es estable y ganaba el que
