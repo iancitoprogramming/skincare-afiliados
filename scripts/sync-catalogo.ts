@@ -5,6 +5,7 @@
 import "dotenv/config";
 import { createClient } from "@supabase/supabase-js";
 import { productos } from "../src/niches/skincare/productos";
+import { filaDeProducto } from "../src/engine/catalogo";
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -19,7 +20,8 @@ const supabase = createClient(url, serviceKey, { auth: { persistSession: false }
 async function main() {
   const { error: errUpsert } = await supabase
     .from("productos")
-    .upsert(productos, { onConflict: "id" });
+    // Sin los campos derivados: la tabla no los guarda y el upsert fallaba entero.
+    .upsert(productos.map(filaDeProducto), { onConflict: "id" });
   if (errUpsert) {
     console.error("Error al hacer upsert:", errUpsert.message);
     process.exit(1);
