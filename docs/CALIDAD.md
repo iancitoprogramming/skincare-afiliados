@@ -1,4 +1,4 @@
-# El criterio de orden: calidad de fórmula + reputación
+# El criterio de orden: calidad de fórmula
 
 > Escrito el 2026-09-06, cuando se codificó la escala A–D. Complementa a
 > `INGREDIENTES.md`, que dice cuánta evidencia tiene cada molécula, y a
@@ -34,11 +34,20 @@ Perdían porque estaban abajo en `productos.ts`.
 ## 2 · El criterio nuevo
 
 ```
-prioridad  →  calidad de fórmula  →  respaldo  →  banda de precio  →  id
+prioridad  →  calidad de fórmula  →  banda de precio  →  id
 ```
 
-El precio baja al cuarto lugar y pasa a ser lo que siempre fue: un dato sobre el
-bolsillo, no sobre el producto. El `id` al final no es decoración: es lo que hace
+El precio baja al tercer lugar y pasa a ser lo que siempre fue: un dato sobre el
+bolsillo, no sobre el producto.
+
+**Acá había un criterio más, el respaldo, y se retiró.** Graduaba cuánta gente
+había comprado el producto en Mercado Libre, así que la popularidad decidía cada
+vez que dos fórmulas empataban. Que algo se venda mucho no prueba que sea bueno,
+y que se venda poco no prueba que sea malo: un producto excelente y todavía
+desconocido en Argentina perdía por desconocido, que es exactamente lo contrario
+de lo que este catálogo quiere hacer. El rating y las opiniones se siguen
+mostrando como dato atribuido a Mercado Libre —eso es información— pero no
+clasifican ni ordenan nada. El `id` al final no es decoración: es lo que hace
 que el orden no dependa nunca más de dónde alguien pegó un bloque.
 
 **Este mismo orden se usa en la grilla del catálogo** ("nuestro criterio", que es

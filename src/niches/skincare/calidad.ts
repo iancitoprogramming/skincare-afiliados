@@ -1,9 +1,7 @@
 import type { ConfigCalidad } from "@/engine/calidad";
 import { calidadFormula } from "../../engine/calidad";
 import type { Producto } from "@/engine/recomendacion";
-import { ORDEN_RESPALDO, respaldoDe } from "../../engine/respaldo";
 import { catalogoActivos } from "./activos";
-import { UMBRALES_RESPALDO } from "./config";
 
 // Los pesos con los que el motor de calidad lee este nicho. El algoritmo está en
 // `src/engine/calidad.ts`; acá van los números, que son criterio de skincare y
@@ -58,11 +56,12 @@ export const CONFIG_CALIDAD: ConfigCalidad = {
 };
 
 /**
- * Devuelve el catálogo con los dos criterios de orden ya calculados.
+ * Devuelve el catálogo con el criterio de orden ya calculado.
  *
- * Vive en el nicho porque los dos necesitan conocimiento de skincare: la
- * calidad necesita el mapa `ml_id → activos` y el respaldo necesita los umbrales
- * de opiniones. Se aplica en un solo lugar —donde se arma `productos`— para que
+ * Vive en el nicho porque necesita conocimiento de skincare: el mapa
+ * `ml_id → activos`. Antes calculaba también `respaldo_orden`, que graduaba
+ * popularidad en Mercado Libre; se retiró porque las ventas no miden la calidad
+ * de una fórmula. Se aplica en un solo lugar —donde se arma `productos`— para que
  * no haya forma de que un consumidor se olvide de llamarla y ordene peor sin
  * enterarse.
  *
@@ -76,7 +75,6 @@ export function conCriteriosDeOrden(productos: Producto[]): Producto[] {
   return productos.map((p) => ({
     ...p,
     calidad_formula: calidadDe(p).puntaje,
-    respaldo_orden: ORDEN_RESPALDO[respaldoDe(p, UMBRALES_RESPALDO)],
   }));
 }
 

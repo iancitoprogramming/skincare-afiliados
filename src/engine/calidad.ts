@@ -4,9 +4,10 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // POR QUÉ EXISTE
 //
-// `respaldo.ts` ya graduaba una cosa: cuánta gente ajena a nosotros probó el
-// producto. Eso es reputación, y es real, pero es popularidad. La calidad de la
-// fórmula no entraba en ningún ranking: la escala A–D estaba escrita en
+// Durante un tiempo el único criterio graduado fue la popularidad: cuánta gente
+// había comprado el producto en Mercado Libre. Eso es reputación, y es un dato
+// real, pero no dice con qué está hecho. La calidad de la fórmula no entraba en
+// ningún ranking: la escala A–D estaba escrita en
 // `docs/INGREDIENTES.md` y no codificada, así que la regla de la casa —"en la
 // landing sólo se afirma lo que está en A o B"— no podía aplicarse a nada.
 //

@@ -69,6 +69,7 @@ propuesta.
 | **El quiz es una puerta, no el default** | Pinterest es un canal de browse |
 | **`/combinaciones` va en el pie** | Nadie llega de una red social buscando combinaciones de activos |
 | **Rating sólo con 10+ opiniones** | Tres productos tienen 5,0 con una sola opinión |
+| **La popularidad no clasifica ni ordena** | Las ventas no miden la calidad de una fórmula. Se retiraron las etiquetas "muy probado / probado / poca prueba" y el desempate por respaldo. El rating y las ventas quedan como dato atribuido a ML |
 | **El logo se adopta tal cual** (arcos concéntricos) | Decisión de Ian sobre la propuesta de Alex |
 | **"Tu piel, sin vueltas" se descarta** | Cliché de skincare |
 

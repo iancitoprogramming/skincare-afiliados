@@ -1140,7 +1140,7 @@ const productosCurados: Producto[] = [
 //
 // Para activar uno: pegar link_afiliado y precio_ars en productos.organize.ts,
 // escribir por_que y como_usar, y poner activo:true.
-// `conCriteriosDeOrden` completa `calidad_formula` y `respaldo_orden`. Se hace
+// `conCriteriosDeOrden` completa `calidad_formula`. Se hace
 // acá y no en cada consumidor a propósito: son veinticuatro archivos los que
 // importan este catálogo, y uno que se olvidara de llamarla ordenaría peor sin
 // que nada fallara. Ver `docs/CALIDAD.md`.

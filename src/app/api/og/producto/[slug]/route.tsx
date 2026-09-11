@@ -116,7 +116,9 @@ export async function GET(_req: Request, ctx: { params: Promise<{ slug: string }
                 {copy.precio.rangos[p.rango_precio]}
               </div>
             ) : null}
-            {/* Mismo criterio que en el sitio: la calificación sólo con respaldo.
+            {/* Mismo criterio que en el sitio: la calificación sólo con 10 o más
+                opiniones detrás, porque tres productos tienen 5,0 con una sola.
+                Es un dato de Mercado Libre, no nuestra valoración del producto.
                 Sin ★: la fuente por defecto de Satori no tiene ese glifo y sale
                 como caja vacía. Escrito en palabras se entiende igual. */}
             {p.rating && (p.opiniones ?? 0) >= 10 ? (

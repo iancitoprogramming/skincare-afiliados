@@ -153,6 +153,26 @@ momento en que puede moverse la comisión.
 
 ## Cómo se carga un producto
 
+### Antes de cargarlo: por qué entra
+
+**Un producto entra al catálogo por su fórmula, no por cuánto se vende.** Las
+ventas y las opiniones de Mercado Libre son un dato complementario y nunca el
+fundamento: si la popularidad decidiera, el catálogo sería la lista de los más
+vendidos, y eso no es lo que este proyecto hace. Un producto excelente y todavía
+desconocido en Argentina puede y debe entrar; promoverlo es parte del punto.
+
+Antes de cargarlo hay que poder contestar, con fuentes:
+
+- **Qué trae**, leído del INCI de la página oficial de la marca y no de la ficha
+  de ML. Sin INCI verificado la lista de activos va vacía, y sin activos el
+  producto no afirma nada.
+- **Qué evidencia tiene cada activo**, con el grado A–D de `INGREDIENTES.md`. En
+  la landing sólo se afirma lo que está en A o B.
+- **Qué lastre trae**: fragancia, alcohol denat, aceites esenciales. Suman riesgo
+  sin aportar resultado, y por eso pesan en contra.
+- **Con qué choca**, según `COMPATIBILIDAD.md`, y qué hueco del catálogo tapa.
+- **Por qué es mejor que lo que ya tenemos en ese paso**, o qué cubre que falte.
+
 1. Generar el link de afiliado en el panel de ML → shortlink `meli.la`
 2. Abrir la publicación y anotar precio, rating, opiniones, ventas, reputación
 3. Sacar la imagen del CDN en las dos variantes:
