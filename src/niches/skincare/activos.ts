@@ -60,6 +60,15 @@ export const SIN_NIVEL_DE_EVIDENCIA: Record<string, string> = {
     "La manzanilla tiene fama de calmante y lo que hay medido de eso es sobre el bisabolol " +
     "aislado, que este diccionario grada aparte. El aceite entero arrastra además las lactonas " +
     "sesquiterpénicas, que son el alérgeno, así que no se le acredita beneficio.",
+  aceite_esencial_salvia: "Aceite esencial sin beneficio tópico documentado. Cuenta como lastre.",
+  aceite_esencial_artemisa:
+    "Aceite esencial de una Compositae, o sea de la misma familia que la manzanilla y con el mismo " +
+    "alérgeno detrás. No hay beneficio tópico que acreditarle.",
+  aceite_esencial_albahaca: "Aceite esencial sin beneficio tópico documentado. Cuenta como lastre.",
+  alcanfor:
+    "Es un contrairritante: lo que hace es estimular las terminaciones que perciben temperatura. " +
+    "La sensación no es el resultado, y no hay beneficio dermatológico que acreditarle en una " +
+    "rutina de cuidado diario.",
   menta: "La sensación de fresco no es un beneficio: es la señal de que algo está irritando.",
   hamamelis: "Astringente tradicional sin beneficio afirmable; se declara para explicar tolerancia.",
   cobre_gluconato:
@@ -714,6 +723,66 @@ export const ACTIVOS: Record<string, Activo> = {
       "positivo al extracto de flor de manzanilla alemana. Lo calmante que hay medido es del " +
       "bisabolol aislado, que es otro ingrediente.",
   },
+  // Altas del 12/9/2026 por el Beauty of Joseon Ginseng Cleansing Oil, que
+  // declara los cuatro y cuyo mapeo decía sólo ginseng y tocoferol. Van juntos
+  // porque salen del mismo INCI, pero son cuatro activos distintos y cada uno
+  // tiene su motivo.
+  aceite_esencial_salvia: {
+    id: "aceite_esencial_salvia",
+    nombre: "Aceite esencial de salvia",
+    familia: "aceite-esencial",
+    grupos: ["irritante-potencial"],
+    carga: 1,
+    evidencia:
+      "Aceite esencial. Aporta aroma y algo de antioxidante, y a cambio suma riesgo de dermatitis " +
+      "de contacto en piel reactiva. Mismo trato que el romero.",
+  },
+  // La artemisa es el caso con más respaldo de los cuatro, y encadena con la
+  // manzanilla: las dos son Compositae y el alérgeno es el mismo, las lactonas
+  // sesquiterpénicas. No es una analogía nuestra — la dermatitis por Artemisia
+  // se atribuye justamente a su contenido de lactonas sesquiterpénicas.
+  aceite_esencial_artemisa: {
+    id: "aceite_esencial_artemisa",
+    nombre: "Aceite esencial de artemisa",
+    familia: "aceite-esencial",
+    grupos: ["irritante-potencial"],
+    carga: 1,
+    evidencia:
+      "Aceite esencial de una Compositae: la dermatitis por artemisa se atribuye a sus lactonas " +
+      "sesquiterpénicas, el mismo alérgeno que la manzanilla, y la reactividad cruzada dentro de " +
+      "la familia es alta. La EFSA además señaló como potencialmente adversos varios componentes " +
+      "de su aceite esencial —alfa y beta tuyona, alcanfor y 1,8-cineol—.",
+  },
+  aceite_esencial_albahaca: {
+    id: "aceite_esencial_albahaca",
+    nombre: "Aceite esencial de albahaca",
+    familia: "aceite-esencial",
+    grupos: ["irritante-potencial"],
+    carga: 1,
+    evidencia:
+      "Aceite esencial. Aporta aroma, y a cambio suma riesgo de dermatitis de contacto en piel " +
+      "reactiva. Mismo trato que el romero y la salvia.",
+  },
+  // El alcanfor NO es un aceite esencial: es un compuesto único, así que tiene
+  // familia propia en vez de meterse a la fuerza en "aceite-esencial". Pero veta
+  // igual para piel sensible, y `apto-sensible.test.ts` incluye esta familia.
+  //
+  // Es el mismo mecanismo que el mentol. `menta` se queda en "aceite-esencial"
+  // porque ese id nombra también al aceite de la planta, no sólo al compuesto;
+  // si algún día hace falta separarlos, éste es el lugar donde se ve la costura.
+  alcanfor: {
+    id: "alcanfor",
+    nombre: "Alcanfor",
+    familia: "contrairritante",
+    grupos: ["irritante-potencial"],
+    carga: 1,
+    evidencia:
+      "Contrairritante: produce frío o calor estimulando las terminaciones que perciben " +
+      "temperatura, que es la misma lógica que el mentol. La sensación no es el resultado. " +
+      "El alcanfor puro puede dar sarpullido, ampollas y quemadura, hay dermatitis de contacto " +
+      "alérgica descrita, y se lo señala entre los monoterpenos responsables de la dermatitis " +
+      "por Compositae.",
+  },
   menta: {
     id: "menta",
     nombre: "Menta / mentol",
@@ -1338,19 +1407,35 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // dicho acá igual, porque `COMPRAR.md` §1 pide tensioactivos suaves y el SLES
   // no lo es.
   MLA27603374: ["fragancia"],
-  // Beauty of Joseon Ginseng Cleansing Oil [INCI] — verificado el 11/9/2026
+  // Beauty of Joseon Ginseng Cleansing Oil [INCI] — reverificado el 12/9/2026
   // contra la tienda oficial de la marca. Ginseng en cuatro formas y tocoferol,
   // como ya estaba.
   //
-  // LO QUE NO SE PUEDE DECLARAR, Y CONVIENE SABERLO. El INCI trae además aceites
-  // esenciales de salvia, artemisa y albahaca, y alcanfor. Este diccionario sólo
-  // modela tres: tea tree, romero y menta. No hay activo al que apuntar, así que
-  // el motor no los ve y este producto le parece limpio.
+  // ENTRAN LOS CUATRO QUE FALTABAN. Hasta hoy el comentario de esta entrada decía
+  // que el INCI trae aceites esenciales de salvia, artemisa y albahaca más
+  // alcanfor, y que "no hay activo al que apuntar, así que el motor no los ve y
+  // este producto le parece limpio". Los cuatro activos se dieron de alta, así que
+  // ahora los ve.
   //
-  // No se inventa un id acá: agregar un `aceite_esencial` genérico cambiaría
-  // varios productos de una vez y es una decisión de criterio, no de carga de
-  // datos. Queda anotado en el registro de auditoría como decisión pendiente.
-  MLA37240248: ["ginseng", "tocoferol"],
+  // La página de la marca los lista seguidos, después del tocoferol y del aceite
+  // de semilla de ginseng: salvia, artemisa, albahaca, alcanfor. O sea que no son
+  // trazas al final de la lista.
+  //
+  // OJO CON LA VERSIÓN. Una base independiente publica una "reformulación 2024"
+  // con los tres aceites pero SIN alcanfor, y el orden del resto es casi el mismo.
+  // No se pudo resolver cuál de las dos se vende en Argentina. Se declara el
+  // alcanfor porque la página oficial de la marca —que es la fuente primaria del
+  // método, y la regla es que un activo se quita sólo cuando la fuente oficial
+  // demuestra su ausencia— lo lista. Si alguien tiene el frasco en la mano, es un
+  // dato que vale confirmar; queda anotado en el registro de auditoría.
+  MLA37240248: [
+    "ginseng",
+    "tocoferol",
+    "aceite_esencial_salvia",
+    "aceite_esencial_artemisa",
+    "aceite_esencial_albahaca",
+    "alcanfor",
+  ],
 
   // ── Tónico ─────────────────────────────────────────────────────────────────
   // TIRTIR Milk Skin Toner [INCI] — niacinamida alta en la lista, y hamamelis.

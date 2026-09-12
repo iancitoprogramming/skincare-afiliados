@@ -63,7 +63,7 @@ datos en vez de volver a mirarlos de cero.
 | Mixsoon Centella Cleansing Foam | `MLAU3453545171` | **verificado** | Confirma el mapeo del vault: trae salicílico. Los tensioactivos son suaves; lo que lo saca de las rutinas de acné es el ácido, no la base. |
 | Skin1004 Centella Ampoule Foam | `MLA47129399` | **corregido** | Sale `aha_citrico`: el `Citric Acid` está en la posición 12, entre benzoato y cloruro de sodio, y la marca declara pH 5. Es ajustador, no exfoliante, y le sumaba carga que la fórmula no tiene. Tensioactivos suaves. |
 | Skin1004 Tea-trica B5 Crema | `MLA37722163` | **verificado** | Tea tree dos veces —agua de hoja 94.000 ppm y aceite 300 ppm— más ácido mandélico. Se suman `hialuronico`, `alantoina` y `tocoferol`. Confirma por qué salió del motor, y deja a la vista que sigue marcado `apto_sensible: true` con tea tree adentro. |
-| BoJ Ginseng Cleansing Oil | `MLA37240248` | **verificado** | Ginseng y tocoferol, como estaba. Pero el INCI trae aceites esenciales de salvia, artemisa y albahaca, y alcanfor, y **el diccionario no tiene identificador para ninguno**: el motor no los ve. Ver la decisión pendiente abajo. |
+| BoJ Ginseng Cleansing Oil | `MLA37240248` | **corregido** | Ginseng y tocoferol, como estaba, **más los cuatro que el diccionario no podía nombrar**: aceites esenciales de salvia, artemisa y albahaca, y alcanfor. Los cuatro activos se dieron de alta el 12/9 y el producto los declara. Salió de piel sensible. Ver *Los cuatro aceites del Beauty of Joseon*. |
 | Aveno Gel Crema Hidratante | `MLA22990183` | **corregido** | Sale `hialuronico`: **no está en el INCI** y estaba mapeado. Entran `manteca_karite` y `alantoina`. La `Hydroxyethyl Urea` no se mapea como `urea`: es un humectante derivado, no la urea que el diccionario gradúa con evidencia A. Sin fragancia. Está en 168 rutinas. |
 | Haruharu Black Rice Soft Cleansing Gel | `MLA37826532` | **verificado** | Confirma el mapeo del catálogo: fermento de Aspergillus y ginseng. Sin fragancia, sin aceites, sin sulfatos. Está en 140 rutinas. |
 | Kosmos Vitamina C Pura | `MLA45672941` | **verificado** | Once ingredientes, mapeo confirmado entero: ascórbico 15%, ferúlico 0,5%, tocoferol 1%, ceramida NP y D-pantenol. Confirma el ejemplo de `CALIDAD.md` §5. Está en 144 rutinas. |
@@ -103,18 +103,21 @@ justamente el producto cuyo INCI no se pudo verificar.
 
 ## Decisiones que la auditoría deja abiertas
 
-**El diccionario no puede nombrar todos los aceites esenciales.** Agregar un
-activo `aceite_esencial` genérico lo arreglaría de golpe, pero cambiaría varios
-productos de una sola vez y afecta al cálculo de lastre, así que está descartado.
-El camino elegido es **darle id a los que aparezcan de verdad, de a uno**, y el
-12/9 se empezó: entró `aceite_esencial_manzanilla` por el Round Lab Dokdo (ver
-*El primer aceite esencial que faltaba*).
+**~~El diccionario no puede nombrar todos los aceites esenciales.~~ Cerrado el
+12/9/2026.** Agregar un activo `aceite_esencial` genérico lo habría arreglado de
+golpe, pero cambiaba varios productos de una vez y afecta al cálculo de lastre,
+así que quedó descartado. El camino elegido fue **darle id a los que aparezcan de
+verdad, de a uno**, y los dos productos que estaban en esta lista se cerraron el
+mismo día: entró `aceite_esencial_manzanilla` por el Round Lab Dokdo, y después
+`aceite_esencial_salvia`, `aceite_esencial_artemisa`,
+`aceite_esencial_albahaca` y `alcanfor` por el Beauty of Joseon.
 
-Lo que queda de esa lista: el **Beauty of Joseon Ginseng Cleansing Oil** trae
-salvia, artemisa, albahaca y alcanfor, cuatro aceites sin id, y su mapeo declara
-sólo ginseng y tocoferol. Es `limpiador_oleoso`, una categoría opcional, así que
-no entra en ninguna rutina armada — pero su ficha lo muestra limpio. Son cuatro
-altas de activo, no una.
+**Esto no clausura el problema, le cambia la forma.** El diccionario sigue
+modelando sólo los aceites que aparecieron en un INCI del catálogo —ahora son
+siete— y el que entre mañana con un aceite nuevo va a volver a parecerle limpio
+al motor hasta que alguien lea su INCI. La diferencia es que ahora hay un
+procedimiento en vez de una decisión pendiente: se le da id, se declara, y
+`apto-sensible.test.ts` avisa solo a quién le cambia el veto.
 
 > Las otras dos decisiones que esta sección dejó abiertas el 12/9 —si la
 > fragancia veta para piel sensible, y si un extracto de hoja es el mismo activo
@@ -387,3 +390,97 @@ tensioactivos son suaves de verdad —cocoil isetionato de sodio, metil cocoil
 taurato, coco-betaína, cocoil glicinato de potasio—, y trae ceramida NP, pantenol,
 alantoína, hialurónico en dos formas y beta-glucano, a pH 5,0-6,0. No ser apto
 para una piel que reacciona es otra cosa que ser malo.
+
+---
+
+## Los cuatro aceites del Beauty of Joseon · 12/9/2026
+
+El segundo y último producto de la lista de aceites que el diccionario no podía
+nombrar. El **Ginseng Cleansing Oil** declaraba sólo ginseng y tocoferol, y su
+propio comentario en el mapa decía que el INCI trae cuatro cosas más y que "no hay
+activo al que apuntar, así que el motor no los ve y este producto le parece
+limpio". Ahora los ve.
+
+**Qué declara la página oficial de la marca**, en este orden y después del
+tocoferol y del aceite de semilla de ginseng:
+
+```
+… TOCOPHEROL, PANAX GINSENG SEED OIL, SALVIA OFFICINALIS (SAGE) OIL,
+ARTEMISIA VULGARIS OIL, OCIMUM BASILICUM (BASIL) OIL, CAMPHOR,
+CORYLUS AVELLANA (HAZELNUT) SEED OIL …
+```
+
+Los cuatro van seguidos y a media lista: no son trazas del final.
+
+### Una versión sin resolver, y por qué se declaró igual
+
+Una base independiente publica una **"reformulación 2024"** con los tres aceites
+pero **sin alcanfor**, y con el resto del orden casi idéntico. No se pudo
+determinar cuál de las dos versiones se vende en Argentina — es la trampa de
+siempre, la misma de Avène *Rich* contra *Légère*.
+
+Se declaró el alcanfor, por dos motivos que se sostienen juntos: la página oficial
+de la marca es la fuente primaria del método, y la regla de la casa es que **un
+activo se quita sólo cuando la fuente oficial demuestra su ausencia**. Y el costo
+de equivocarse es asimétrico: si la local es la reformulación, lo único que sobra
+es un irritante declarado en un producto que no entra en ninguna rutina; si es la
+otra y no lo declarábamos, le decíamos "apto para piel sensible" a alguien con un
+alcanfor en el frasco. Vale confirmarlo con el envase en la mano.
+
+### Los cuatro activos, y por qué el alcanfor no es un aceite esencial
+
+| Activo | Familia | Por qué |
+|---|---|---|
+| `aceite_esencial_salvia` | `aceite-esencial` | Aceite esencial sin beneficio tópico documentado. Mismo trato que el romero. |
+| `aceite_esencial_artemisa` | `aceite-esencial` | **El que más pesa.** Es una Compositae: su dermatitis se atribuye a las lactonas sesquiterpénicas, el mismo alérgeno que la manzanilla, y la reactividad cruzada dentro de la familia es alta. La EFSA además señaló como potencialmente adversos varios componentes de su aceite —alfa y beta tuyona, alcanfor y 1,8-cineol—. |
+| `aceite_esencial_albahaca` | `aceite-esencial` | Aceite esencial sin beneficio tópico documentado. |
+| `alcanfor` | **`contrairritante`** | No es un aceite esencial: es un compuesto único, así que tiene familia propia en vez de forzarlo. Es un contrairritante —produce frío o calor estimulando las terminaciones de temperatura, la misma lógica que el mentol—, el alcanfor puro puede dar sarpullido, ampollas y quemadura, hay dermatitis alérgica de contacto descrita, y se lo señala entre los monoterpenos responsables de la dermatitis por Compositae. |
+
+La familia `contrairritante` se agregó a `FAMILIAS_QUE_VETAN` en
+`apto-sensible.test.ts`: veta igual, pero la taxonomía no se fuerza para que el
+veto funcione. `menta` se quedó en `aceite-esencial` porque ese id nombra también
+al aceite de la planta y no sólo al compuesto; si algún día hace falta separarlos,
+ahí está la costura.
+
+### Un cero silencioso que este trabajo dejó a la vista
+
+`CONFIG_CALIDAD.lastre` en `calidad.ts` es una tabla **por id**, no por familia.
+Cuando se dio de alta `aceite_esencial_manzanilla` el día anterior, el activo no
+entró en esa tabla, así que el Round Lab Dokdo declaraba el aceite pero **no
+pagaba lastre**: el descuento fue cero y nada falló. Es el mismo tipo de error que
+el proyecto ya sabe evitar del otro lado —`activos.test.ts` no deja que un activo
+quede sin nivel de evidencia— pero faltaba la dirección de vuelta.
+
+Se agregaron las cinco entradas que faltaban y un test nuevo:
+*"todo irritante potencial pesa como lastre, sin ceros silenciosos"*.
+
+### El impacto medido
+
+```
+                        antes    después
+auditar, sin conflicto  344/360  344/360
+auditar, por piel       2/8/3/3/0  2/8/3/3/0
+cobertura, match        346      346
+cobertura, no-apto-sens 0        0
+huecos                  10       10
+npm test                133      134
+```
+
+Cero en las rutinas, y era lo esperado: `limpiador_oleoso` está en
+`CATEGORIAS_OPCIONALES` desde que la doble limpieza no se ganó su lugar, así que
+este producto no entra en ninguna rutina armada. Lo que se arregló es lo que dice
+su ficha.
+
+**Donde sí se movió el número es en la calidad de fórmula**, que es exactamente
+donde tenía que moverse:
+
+| Producto | Antes | Después | Por qué |
+|---|---|---|---|
+| BoJ Ginseng Cleansing Oil | 1,5 | **0** | Los cuatro irritantes pesan 1,5 cada uno, por 0,25 de exposición de un producto que se enjuaga: 1,5 de lastre, que cancela justo el ginseng (grado C). Es el único `limpiador_oleoso` del catálogo, así que no cambia ningún orden. |
+| Round Lab Dokdo Cleanser | 6,25 | **5,875** | La manzanilla ahora paga su lastre: 1,5 × 0,25. Es el cero silencioso de arriba, corregido. |
+
+Que el enjuague pese un cuarto no es una gentileza: `CONFIG_CALIDAD.exposicion`
+ya lo tenía resuelto para `limpiador` y `limpiador_oleoso` desde antes, con el
+mismo argumento que `INGREDIENTES.md` §4.1 usa para el salicílico. Ajusta el
+lastre, no el veto: un desmaquillante se masajea sobre la cara un rato largo antes
+de emulsionar, y para una piel que reacciona no es el producto.

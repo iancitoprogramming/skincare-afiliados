@@ -244,12 +244,17 @@ bash falla con un error de sintaxis que no dice nada. Un heredoc por comando.
    pide vitest 5, que es un salto mayor.
 6. **UX**: sistema visual, mockups para las redes, carrusel y prueba social.
 
-**Los aceites esenciales que el diccionario no podía nombrar se están cerrando de
-a uno**, que es el camino que queda una vez descartado el activo genérico (§6). El
-12/9 entró `aceite_esencial_manzanilla` por el Round Lab Dokdo, a costo cero en
-todo lo medido. Falta el Beauty of Joseon Ginseng Cleansing Oil: salvia, artemisa,
-albahaca y alcanfor, cuatro altas de activo. Es `limpiador_oleoso`, categoría
-opcional, así que no entra en rutinas armadas pero su ficha lo muestra limpio.
+**Los aceites esenciales que el diccionario no podía nombrar se cerraron el 12/9**,
+de a uno, que es el camino que quedaba una vez descartado el activo genérico (§6).
+Entró `aceite_esencial_manzanilla` por el Round Lab Dokdo, y después salvia,
+artemisa, albahaca y `alcanfor` por el Beauty of Joseon. Los dos a costo cero en
+las rutinas; lo que se movió fue la calidad de fórmula, que es donde tenía que
+moverse. **Pero el problema cambió de forma, no desapareció:** el diccionario
+modela los siete aceites que aparecieron en algún INCI del catálogo, así que el
+producto que entre mañana con un aceite nuevo va a parecerle limpio al motor hasta
+que alguien lea su INCI. Lo que hay ahora es un procedimiento —darle id, declararlo,
+y `apto-sensible.test.ts` avisa solo a quién le cambia el veto— en vez de una
+decisión pendiente.
 
 ---
 

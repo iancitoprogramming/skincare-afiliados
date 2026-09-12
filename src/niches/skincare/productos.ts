@@ -242,6 +242,26 @@ const productosCurados: Producto[] = [
   },
   {
     // #19 · MLA37240248 · Juleriaque
+    //
+    // NO ES APTO PARA PIEL SENSIBLE desde el 12/9/2026. El INCI de la tienda
+    // oficial declara, seguidos, aceite esencial de salvia, de artemisa y de
+    // albahaca, y alcanfor. Ninguno de los cuatro tenía id en el diccionario
+    // hasta hoy, así que el motor leía este producto como ginseng y tocoferol y
+    // nada más.
+    //
+    // La artemisa es la que más pesa: es una Compositae y su dermatitis se
+    // atribuye a las lactonas sesquiterpénicas, el mismo alérgeno de la
+    // manzanilla, con reactividad cruzada alta dentro de la familia.
+    //
+    // Se enjuaga, y el criterio de calidad ya lo tiene en cuenta solo: la
+    // `exposicion` de `limpiador_oleoso` es 0,25, así que los cuatro pesan un
+    // cuarto de lo que pesarían en un leave-on. Eso ajusta el lastre, no el veto:
+    // un desmaquillante se masajea sobre la cara un rato largo antes de
+    // emulsionar, y para una piel que reacciona no es el producto.
+    //
+    // NO ENTRA EN NINGUNA RUTINA de todos modos: `limpiador_oleoso` está en
+    // CATEGORIAS_OPCIONALES desde que la doble limpieza no se ganó su lugar. Lo
+    // que se arregla acá es lo que dice su ficha.
     id: "faafd241-6fe8-56a8-a766-ccdb6164db56",
     ml_id: "MLA37240248",
     cuenta: "maurobilat",
@@ -258,7 +278,7 @@ const productosCurados: Producto[] = [
     tipos_piel: ["grasa", "mixta", "normal", "seca", "sensible"],
     preocupaciones: ["acne", "textura", "deshidratacion"],
     origen: "coreano",
-    apto_sensible: true,
+    apto_sensible: false,
     rango_precio: 2,
     precio_ars: 54739,
     imagen_url: "https://http2.mlstatic.com/D_Q_NP_2X_965384-MLU78057625931_072024-V.webp",

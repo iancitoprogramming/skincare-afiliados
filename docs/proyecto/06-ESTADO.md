@@ -80,14 +80,14 @@ Acá va lo que no es una compra:
   Necesitan links nuevos generados desde la ficha `/p/`.
 - **El vault y el catálogo divergieron.** 5 `ml_id` activos no existen en los
   `.md` de Obsidian, así que `npm run importar-organize` aborta a propósito.
-- **Faltan cuatro aceites esenciales en el diccionario.** Agregar un
-  `aceite_esencial` genérico está descartado (ver *no reabrir*), así que la
-  salida es darle id a los que aparezcan de verdad, de a uno. El 12/9 entró
-  `aceite_esencial_manzanilla` por el Round Lab Dokdo. Queda el **Beauty of
-  Joseon Ginseng Cleansing Oil**, que trae salvia, artemisa, albahaca y alcanfor
-  y declara sólo ginseng y tocoferol. Es `limpiador_oleoso` —categoría
-  opcional—, así que no entra en ninguna rutina armada, pero su ficha lo muestra
-  limpio.
+- **Los aceites esenciales del diccionario son los que aparecieron, no todos los
+  que existen.** Son siete: tea tree, romero, menta, manzanilla, salvia,
+  artemisa y albahaca, más el alcanfor, que no es un aceite y tiene familia
+  propia. Agregar uno genérico está descartado (ver *no reabrir*), así que el
+  procedimiento es darle id al que aparezca en un INCI, de a uno. Los dos
+  productos que estaban pendientes por esto se cerraron el 12/9. Lo que queda es
+  la forma del problema, no una tarea: el producto que entre mañana con un
+  aceite nuevo va a parecerle limpio al motor hasta que alguien lea su INCI.
 
 ### Lo que estaba acá y ya no hace falta
 
@@ -185,6 +185,14 @@ estado tiene que decir sobre qué commit se midió.
 **Contar el catálogo grepeando un solo archivo.** El catálogo es `productos.ts`
 **más** `productos.organize.ts`, y el primero solo tiene 34 de los 81 ítems. De
 ahí salió un "73 links" que estuvo escrito en dos documentos.
+
+**Un activo nuevo sin entrada en la tabla de lastre.** `CONFIG_CALIDAD.lastre` en
+`calidad.ts` es una tabla **por id**, no por familia. Al dar de alta
+`aceite_esencial_manzanilla` el activo no entró ahí, así que el producto que lo
+trae declaraba el aceite y no pagaba el descuento: cero silencioso, sin que nada
+fallara. `activos.test.ts` ya evitaba ese error del otro lado —un activo sin
+nivel de evidencia— pero faltaba la dirección de vuelta. Hoy hay un test:
+*"todo irritante potencial pesa como lastre"*.
 
 **Disparar el escudo de Vercel con polling.** Ver bloqueante 3.
 
