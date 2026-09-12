@@ -29,18 +29,33 @@ niacinamida, que un retinoide no caiga la misma noche que un ácido.
 
 ## 2 · Estado verificado el 12/9/2026
 
+`main`, en `bcc9c7d`:
+
 ```
-main                bcc9c7d
 tsc --noEmit        exit 0
 npm test            116/116 en 14 archivos
 npm run build       exit 0 · 175 páginas
-npm run auditar     344/360 rutinas sin conflicto (95,6%)
+npm run auditar     346/360 rutinas sin conflicto (96,1%) · 0 con "separar"
 npm run cobertura   0 comodín · 0 no-apto-sensible · "catálogo redondo"
+activos             38 de 84 entradas con fuente verificada
+```
+
+`auditoria-tanda-2`, en `11b2fcd` —la rama del PR #14— mide distinto:
+
+```
+npm run auditar     344/360 rutinas sin conflicto (95,6%) · 0 con "separar"
 activos             73 de 79 entradas con fuente verificada
 ```
 
-**Hay un PR abierto: #14**, con la auditoría completa del catálogo. CI en verde y
-mergeable. Para seguir trabajando sobre él:
+**Las dos rutinas que bajan no son una regresión.** Aparecen porque la auditoría
+declaró activos que antes estaban sin declarar: el conflicto ya existía en el
+frasco, lo que faltaba era que el motor lo viera. Y las cinco entradas que bajan
+de 84 a 79 son huérfanas —`ml_id` que ya no están en `productos.ts`—, no activos
+que se hayan quitado.
+
+**Hay dos PR abiertos.** El **#14** es la auditoría completa del catálogo. El
+**#15** es este documento. Los dos tienen el CI en verde y son mergeables; el
+único check rojo es Vercel, por permisos (§5.2). Para seguir sobre la auditoría:
 
 ```bash
 git checkout auditoria-tanda-2
