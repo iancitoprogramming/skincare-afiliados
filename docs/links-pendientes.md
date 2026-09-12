@@ -7,7 +7,7 @@
 > figuran como REGENERAR ya monetizan, pero le pagan a la otra cuenta, que no
 > declaró este sitio como Medio. Ver `docs/proyecto/07-AFILIADOS.md`.
 
-73 ítems en el catálogo · **73 ya monetizan** · **0 pendientes**
+81 ítems en el catálogo · **81 ya monetizan** · **0 pendientes**
 
 ## Cómo se completa
 

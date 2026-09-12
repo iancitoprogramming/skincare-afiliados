@@ -31,7 +31,7 @@ Los links salen de dos cuentas de afiliado distintas:
 
 > **Ya migraron a una sola.** Soporte del Programa indicó que un mismo proyecto
 > debe operar con una única cuenta afiliada, porque cada afiliado cobra sólo por
-> los canales declarados en la suya. Desde el 9/9/2026 los 73 links salen de
+> los canales declarados en la suya. Desde el 9/9/2026 los 81 links salen de
 > `maurobilat`; `goldenvalhalla` quedó fuera del proyecto. La tabla de abajo es
 > historia: sirve para saber de quién es cada handle. Ver `07-AFILIADOS.md`.
 

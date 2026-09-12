@@ -80,8 +80,8 @@ Hay que declarar en la cuenta, antes de publicar:
 | YouTube | `@clubdepiel` |
 | Facebook | a crear |
 
-**El sitio va en la lista.** Es el Medio principal —es donde viven las 69 páginas
-y los 73 links— y es el que más fácil se olvida, porque uno piensa en "redes"
+**El sitio va en la lista.** Es el Medio principal —es donde viven las 175 páginas
+y los 81 links— y es el que más fácil se olvida, porque uno piensa en "redes"
 cuando lee la palabra Medios. Sin declararlo, la cláusula 3.2 dice que nada de lo
 que salga de ahí cuenta.
 
