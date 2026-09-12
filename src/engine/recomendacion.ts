@@ -233,36 +233,50 @@ function senal(producto: Producto, r: RespuestasRutina, nivel: NivelFallback): N
   return producto.rango_precio > r.presupuesto ? "fuera_de_presupuesto" : nivel;
 }
 
-function candidatosDe(
-  pool: Producto[],
-  r: RespuestasRutina,
-): { productos: Producto[]; fallback: NivelFallback } | null {
-  // Los tres niveles de calidad de match, del mejor al peor. El presupuesto NO
-  // los precede: se aplica adentro de cada uno.
+/** Un escalón de la cascada: candidatos empatados en calidad de match y en banda. */
+export type GrupoDeCandidatos = { productos: Producto[]; fallback: NivelFallback };
+
+/**
+ * TODOS los escalones, del mejor al peor, en vez de sólo el mejor.
+ *
+ * Los niveles se construyen DISJUNTOS —"piel y objetivo", "piel sin objetivo",
+ * "ni piel"— y no como conjuntos anidados. Para quien sólo mira el primer escalón
+ * da exactamente lo mismo, porque el primero no vacío es el mismo conjunto en las
+ * dos construcciones. La diferencia importa para quien baja: si los niveles se
+ * solaparan, el segundo escalón contendría a los del primero y "bajar de nivel"
+ * podría devolver un producto de nivel `match` con el cartel de
+ * `sin_preocupacion`. El cartel que ve la persona tiene que ser cierto.
+ *
+ * Adentro de cada nivel se parte por banda de precio, y el que entra en la banda
+ * va primero. Ese orden es el que sostiene las dos cosas a la vez y está medido:
+ * devolver el nivel entero mezclado y ordenar por banda hace que lo barato le
+ * gane a lo bueno (rutinas sin conflicto 291 -> 274); ordenar por preferencia y
+ * dejar la banda de desempate ignora el presupuesto casi siempre (54 -> 170 pasos
+ * fuera de banda).
+ */
+function gruposDe(pool: Producto[], r: RespuestasRutina): GrupoDeCandidatos[] {
+  const conPiel = pool.filter((p) => p.tipos_piel.includes(r.piel));
   const niveles: [Producto[], NivelFallback][] = [
-    [
-      pool.filter((p) => p.tipos_piel.includes(r.piel) && p.preocupaciones.includes(r.objetivo)),
-      "match",
-    ],
-    [pool.filter((p) => p.tipos_piel.includes(r.piel)), "sin_preocupacion"],
-    [pool, "sin_piel"],
+    [conPiel.filter((p) => p.preocupaciones.includes(r.objetivo)), "match"],
+    [conPiel.filter((p) => !p.preocupaciones.includes(r.objetivo)), "sin_preocupacion"],
+    [pool.filter((p) => !p.tipos_piel.includes(r.piel)), "sin_piel"],
   ];
 
+  const grupos: GrupoDeCandidatos[] = [];
   for (const [productos, nivel] of niveles) {
-    if (!productos.length) continue;
     const dentro = productos.filter((p) => p.rango_precio <= r.presupuesto);
-    // Mientras haya algo en la banda pedida, se respeta. Sólo cuando NINGUNO de
-    // los que sirven entra, se ofrece el que sirve y se avisa.
-    //
-    // Se probaron las dos alternativas y las dos miden peor. Devolver el nivel
-    // entero mezclado y ordenar por banda hace que lo barato le gane a lo bueno
-    // (rutinas sin conflicto 291 -> 274); ordenar por preferencia y dejar la
-    // banda de desempate ignora el presupuesto casi siempre (54 -> 170 pasos
-    // fuera de banda). Excluir por nivel es lo que sostiene las dos cosas.
-    if (dentro.length) return { productos: dentro, fallback: nivel };
-    return { productos, fallback: "fuera_de_presupuesto" };
+    const fuera = productos.filter((p) => p.rango_precio > r.presupuesto);
+    if (dentro.length) grupos.push({ productos: dentro, fallback: nivel });
+    // El de afuera de la banda queda DESPUÉS del de adentro pero ANTES del
+    // siguiente nivel de match, porque el presupuesto cede ante la piel y el
+    // objetivo. Ver la decisión en docs/HANDOFF.md §6.
+    if (fuera.length) grupos.push({ productos: fuera, fallback: "fuera_de_presupuesto" });
   }
-  return null;
+  return grupos;
+}
+
+function candidatosDe(pool: Producto[], r: RespuestasRutina): GrupoDeCandidatos | null {
+  return gruposDe(pool, r)[0] ?? null;
 }
 
 // Busca dentro de un conjunto ya filtrado, relajando preocupación y después tipo de piel.
@@ -277,54 +291,85 @@ function mejorDe(
 }
 
 /**
- * La misma cadena de relajación que `elegirPaso`, pero devolviendo el conjunto
- * completo de candidatos empatados en nivel, ya ordenados por el criterio de
- * siempre. El primero es exactamente lo que devolvería `elegirPaso`.
+ * La cascada completa de candidatos para un paso, del mejor escalón al peor.
+ *
+ * `candidatosPaso` devuelve sólo el primer escalón, que es lo que elige
+ * `elegirPaso`. Esta función devuelve todos, para que el armado que evita
+ * conflictos pueda BAJAR un escalón cuando en el suyo no hay forma de esquivar un
+ * choque que ninguna instrucción arregla. Ver `armarRutinaEvitandoConflictos`.
+ *
+ * La cadena de relajación de afuera —origen pedido, cualquier origen, no apto
+ * para sensible, comodín— NO se cascadea: se elige un tramo y se devuelven sus
+ * escalones. Bajar de tramo es otra cosa que bajar de escalón. El origen fue una
+ * elección explícita de la persona, y `no_apto_sensible` es una degradación de
+ * seguridad: ninguna de las dos se puede pagar para esquivar un conflicto.
  */
-export function candidatosPaso(
+export function cascadaPaso(
   productos: Producto[],
   slot: RutinaSlot,
   r: RespuestasRutina,
-): { productos: Producto[]; fallback: NivelFallback } {
+): GrupoDeCandidatos[] {
   const enCategoria = elegibles(productos, slot);
   const sensible = r.piel === "sensible";
   const aptos = sensible ? enCategoria.filter((p) => p.apto_sensible) : enCategoria;
   const ordenar = ordenador(r.preferencia);
 
+  // Los grupos vienen partidos por banda, así que la señal de presupuesto es la
+  // misma para todos los productos del grupo y alcanza con calcularla sobre uno.
+  // Eso es lo que permite que el armado elija cualquiera del grupo sin que el
+  // cartel deje de ser cierto.
+  const conSenal = (g: GrupoDeCandidatos, forzado?: NivelFallback): GrupoDeCandidatos => {
+    const ps = [...g.productos].sort(ordenar);
+    return { productos: ps, fallback: forzado ?? senal(ps[0], r, g.fallback) };
+  };
+
   if (r.origenes?.length) {
-    const delOrigen = candidatosDe(
+    const delOrigen = gruposDe(
       aptos.filter((p) => r.origenes!.includes(p.origen)),
       r,
     );
-    if (delOrigen) {
-      const ps = [...delOrigen.productos].sort(ordenar);
-      return { productos: ps, fallback: senal(ps[0], r, delOrigen.fallback) };
-    }
+    if (delOrigen.length) return delOrigen.map((g) => conSenal(g));
   }
 
-  const cualquierOrigen = candidatosDe(aptos, r);
-  if (cualquierOrigen) {
-    const ps = [...cualquierOrigen.productos].sort(ordenar);
-    return {
-      productos: ps,
-      fallback: r.origenes?.length ? "otro_origen" : senal(ps[0], r, cualquierOrigen.fallback),
-    };
+  const cualquierOrigen = gruposDe(aptos, r);
+  if (cualquierOrigen.length) {
+    // Si había preferencia de origen y terminamos fuera de ella, hay que decirlo
+    // en la card, y ese aviso tapa al del presupuesto: es el que explica por qué
+    // el producto no es el que se pidió.
+    const forzado = r.origenes?.length ? ("otro_origen" as const) : undefined;
+    return cualquierOrigen.map((g) => conSenal(g, forzado));
   }
 
+  // Piel sensible sin ningún producto apto en esta categoría. Es un hueco real
+  // del catálogo (típico: falta un protector solar mineral). Damos el mejor que
+  // hay pero marcado, para que la UI lo aclare en vez de venderlo como apto.
   if (sensible) {
-    const igual = candidatosDe(enCategoria, r);
-    if (igual) {
-      return { productos: [...igual.productos].sort(ordenar), fallback: "no_apto_sensible" };
-    }
+    const igual = gruposDe(enCategoria, r);
+    if (igual.length) return igual.map((g) => conSenal(g, "no_apto_sensible"));
   }
 
+  // Último recurso: comodín de la categoría, ignorando presupuesto y origen para
+  // no dejar el paso vacío.
   const comodines = enCategoria.filter((p) => p.comodin);
-  if (comodines.length) return { productos: [...comodines].sort(ordenar), fallback: "comodin" };
+  if (comodines.length) return [conSenal({ productos: comodines, fallback: "comodin" }, "comodin")];
 
   throw new Error(
     `Sin comodín para la categoría "${slot.categoria}" (momento ${slot.momento}). ` +
       `Cargá un producto con comodin=true en esa categoría.`,
   );
+}
+
+/**
+ * El mejor escalón de la cascada, ya ordenado por el criterio de siempre. El
+ * primer producto es exactamente lo que devolvería `elegirPaso`.
+ */
+export function candidatosPaso(
+  productos: Producto[],
+  slot: RutinaSlot,
+  r: RespuestasRutina,
+): GrupoDeCandidatos {
+  // `cascadaPaso` nunca devuelve vacío: o hay escalones o levanta la excepción.
+  return cascadaPaso(productos, slot, r)[0];
 }
 
 export function elegirPaso(

@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { analizarRutina, armarRutinaEvitandoConflictos, type CatalogoActivos } from "./compatibilidad";
+import {
+  analizarRutina,
+  armarRutinaEvitandoConflictos,
+  seArreglaConInstruccion,
+  type CatalogoActivos,
+} from "./compatibilidad";
 import type { PasoRutina, Producto, Rutina } from "./recomendacion";
 import { armarRutina } from "./recomendacion";
 import { productos } from "../niches/skincare/productos";
@@ -227,6 +232,53 @@ describe("sinergias y mitos", () => {
   });
 });
 
+// ── Qué arregla una instrucción y qué no ────────────────────────────────────
+
+describe("seArreglaConInstruccion", () => {
+  // Esta función es la que decide si vale la pena bajar de nivel de match, así
+  // que conviene que los tres casos estén clavados y no deducidos de la forma de
+  // la regla en el momento de leer el código.
+
+  it("un par que sólo choca en el mismo momento se arregla separándolos", () => {
+    const catalogo = catalogoDe({ SERUM: ["retinol"], ACIDO: ["aha_glicolico"] });
+    const rutina = rutinaDe([
+      { producto: prod("SERUM", "serum_activo", "pm"), momento: "pm" },
+      { producto: prod("ACIDO", "exfoliante", "pm"), momento: "pm" },
+    ]);
+    const c = analizarRutina(rutina, catalogo, clave).conflictos.find(
+      (x) => x.reglaId === "retinoide-x-acidos",
+    )!;
+    expect(c.severidad).toBe("separar");
+    expect(seArreglaConInstruccion(c, catalogo)).toBe(true);
+  });
+
+  it("dos retinoides NO se arreglan con ninguna instrucción", () => {
+    const catalogo = catalogoDe({ UNO: ["retinol"], DOS: ["retinal"] });
+    const rutina = rutinaDe([
+      { producto: prod("UNO", "serum_activo", "pm"), momento: "pm" },
+      { producto: prod("DOS", "serum_secundario", "pm"), momento: "pm" },
+    ]);
+    const c = analizarRutina(rutina, catalogo, clave).conflictos.find(
+      (x) => x.reglaId === "pila-retinoide",
+    )!;
+    expect(c.severidad).toBe("separar");
+    // Su "qué hacer" es "quedate con uno": el arreglo es otro producto.
+    expect(seArreglaConInstruccion(c, catalogo)).toBe(false);
+  });
+
+  it("un activo que la luz degrada puesto a la mañana se arregla moviéndolo", () => {
+    const catalogo = catalogoDe({ MANANA: ["retinol"] });
+    const rutina = rutinaDe([
+      { producto: prod("MANANA", "serum_activo", "am"), momento: "am" },
+    ]);
+    const c = analizarRutina(rutina, catalogo, clave).conflictos.find((x) =>
+      x.reglaId.startsWith("momento:"),
+    )!;
+    expect(c.severidad).toBe("separar");
+    expect(seArreglaConInstruccion(c, catalogo)).toBe(true);
+  });
+});
+
 // ── Armado que evita conflictos ─────────────────────────────────────────────
 
 describe("armarRutinaEvitandoConflictos", () => {
@@ -364,6 +416,122 @@ describe("armarRutinaEvitandoConflictos", () => {
       clave,
     );
     expect(rutina.pm.map((p) => p.slot.categoria)).toEqual(["limpiador", "serum_activo"]);
+  });
+
+  // ── Bajar de nivel de match ───────────────────────────────────────────────
+  //
+  // La regla general es la del test de arriba: esquivar un choque no puede costar
+  // calidad de match. Estos cuatro cubren la única excepción —el choque que
+  // ninguna instrucción arregla— y sus tres bordes.
+
+  it("baja de nivel cuando el choque no lo arregla ninguna instrucción", () => {
+    // Dos retinoides en la misma rutina es `pila-retinoide`: severidad "separar"
+    // y "qué hacer" = "quedate con uno". No hay nada que decirle a la persona que
+    // lo arregle mientras los dos frascos sigan puestos, así que acá SÍ conviene
+    // el producto que matchea peor. Antes de la cascada, el armado no tenía
+    // salida: el nivel `match` venía en exclusiva.
+    const dosSlots = [
+      { categoria: "serum_activo", momento: "pm" as const },
+      { categoria: "serum_secundario", momento: "pm" as const },
+    ];
+    const serum = prod("SERUM", "serum_activo", "pm");
+    const otroRetinoide = prod("OTRO_RETINOIDE", "serum_secundario", "pm", {
+      preocupaciones: ["textura"], // matchea
+    });
+    const limpioQueNoMatchea = prod("LIMPIO", "serum_secundario", "pm", {
+      preocupaciones: ["acne"], // no matchea
+    });
+
+    const catalogo = catalogoDe({
+      SERUM: ["retinol"],
+      OTRO_RETINOIDE: ["retinal"],
+      LIMPIO: ["hialuronico"],
+    });
+
+    const rutina = armarRutinaEvitandoConflictos(
+      [serum, otroRetinoide, limpioQueNoMatchea],
+      dosSlots,
+      r,
+      catalogo,
+      clave,
+    );
+    const secundario = rutina.pm.find((x) => x.slot.categoria === "serum_secundario")!;
+    expect(secundario.producto.id).toBe("LIMPIO");
+    // El cartel tiene que decir la verdad sobre lo que se entregó.
+    expect(secundario.fallback).toBe("sin_preocupacion");
+    expect(analizarRutina(rutina, catalogo, clave).conflictos.length).toBe(0);
+  });
+
+  it("no baja de nivel si abajo el choque es el mismo", () => {
+    // Bajar sólo se justifica si abajo hay algo que no choca. Si el de abajo
+    // también trae un retinoide, bajar regalaría calidad de match a cambio de
+    // nada y la persona se quedaría sin el producto que pidió.
+    const dosSlots = [
+      { categoria: "serum_activo", momento: "pm" as const },
+      { categoria: "serum_secundario", momento: "pm" as const },
+    ];
+    const catalogo = catalogoDe({
+      SERUM: ["retinol"],
+      MATCHEA: ["retinal"],
+      NO_MATCHEA: ["retinal"],
+    });
+
+    const rutina = armarRutinaEvitandoConflictos(
+      [
+        prod("SERUM", "serum_activo", "pm"),
+        prod("MATCHEA", "serum_secundario", "pm", { preocupaciones: ["textura"] }),
+        prod("NO_MATCHEA", "serum_secundario", "pm", { preocupaciones: ["acne"] }),
+      ],
+      dosSlots,
+      r,
+      catalogo,
+      clave,
+    );
+    const secundario = rutina.pm.find((x) => x.slot.categoria === "serum_secundario")!;
+    expect(secundario.producto.id).toBe("MATCHEA");
+    expect(secundario.fallback).toBe("match");
+  });
+
+  it("un choque inevitable de un paso anterior no arrastra a los siguientes", () => {
+    // Este es el borde que hace falta cuidar. Los conflictos se cuentan sobre la
+    // rutina entera, así que si un paso anterior dejó un "separar" duro que no se
+    // podía esquivar, TODOS los candidatos del paso siguiente lo van a arrastrar.
+    // Si la condición para bajar fuera "el número no es cero", el paso siguiente
+    // recorrería la cascada hasta el fondo por un choque que no es suyo. Se baja
+    // mientras se pueda mejorar sobre el piso, no mientras haya conflicto.
+    const tresSlots = [
+      { categoria: "serum_activo", momento: "pm" as const },
+      { categoria: "retinoide", momento: "pm" as const },
+      { categoria: "serum_secundario", momento: "pm" as const },
+    ];
+    const catalogo = catalogoDe({
+      SERUM: ["retinol"],
+      RETI: ["retinal"], // choque inevitable: es el único de su categoría
+      SEC_MATCHEA: ["hialuronico"],
+      SEC_NO_MATCHEA: ["panthenol"],
+    });
+
+    const rutina = armarRutinaEvitandoConflictos(
+      [
+        prod("SERUM", "serum_activo", "pm"),
+        prod("RETI", "retinoide", "pm"),
+        prod("SEC_MATCHEA", "serum_secundario", "pm", { preocupaciones: ["textura"] }),
+        prod("SEC_NO_MATCHEA", "serum_secundario", "pm", { preocupaciones: ["acne"] }),
+      ],
+      tresSlots,
+      r,
+      catalogo,
+      clave,
+    );
+
+    // El choque de los dos retinoides sigue ahí porque no había alternativa.
+    const conflictos = analizarRutina(rutina, catalogo, clave).conflictos;
+    expect(conflictos.map((c) => c.reglaId)).toContain("pila-retinoide");
+
+    // Y el paso siguiente NO se degradó por culpa de ese choque.
+    const secundario = rutina.pm.find((x) => x.slot.categoria === "serum_secundario")!;
+    expect(secundario.producto.id).toBe("SEC_MATCHEA");
+    expect(secundario.fallback).toBe("match");
   });
 
   it("es determinístico: la misma entrada da la misma rutina", () => {
