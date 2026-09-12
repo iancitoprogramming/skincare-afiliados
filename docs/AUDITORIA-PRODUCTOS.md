@@ -73,6 +73,7 @@ datos en vez de volver a mirarlos de cero.
 | CeraVe Limpiador Hidratante | `MLA37598876` | **verificado** | Mapeo confirmado entero: ceramidas NP, AP y EOP, hialuronato, colesterol, fitoesfingosina y tocoferol. Sin fragancia ni ácidos. Está en 72 rutinas. |
 | Avène Tolerance Control | `MLA23143346` | **verificado** | Catorce ingredientes: agua termal y escualano, confirmados. Sin fragancia y sin conservantes, por envase estéril. Está en 56 rutinas. |
 | Haruharu Black Rice Pure Mineral SPF50 | `MLA2068351806` | **verificado** | Mapeo confirmado: óxido de zinc, niacinamida, hialuronato, ceramida y tocoferol. Confirma que el `Butyloctyl Salicylate` es emoliente y no salicílico. Es el único mineral del catálogo y está en 110 rutinas. |
+| Dermaglós Crema de Día Ultra Volumen FPS30 | `MLA24692733` | **corregido** | Estaba mapeada como `filtro_quimico` a secas. El INCI —Andrómaco, confirmado en un retailer independiente— trae además **fragancia** y **palmitato de retinilo**: un retinoide escondido en lo que usamos como paso de protector solar. Entran también avobenzona, niacinamida, pantenol, alantoína, hialuronato y tocoferol. Está en 36 rutinas. Aparte del mapeo, la ficha de ML la vende como crema antiedad para 40+ y piel normal a seca, no como protector. |
 
 ---
 

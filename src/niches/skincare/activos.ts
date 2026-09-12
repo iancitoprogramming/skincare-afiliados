@@ -1212,10 +1212,15 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // emoliente, no salicilico, asi que no suma carga exfoliante.
   // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
   MLAU3860746273: ["filtro_quimico", "niacinamida", "adenosina", "ceramidas", "tocoferol"],
-  // Vanicream Vitamin C: tetrahexyldecyl ascorbate es derivado, no acido ascorbico.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // Vanicream Vitamin C [INCI] — verificado el 12/9/2026 contra la ficha de la
+  // marca. Tetrahexildecil ascorbato: derivado liposoluble, no ácido ascórbico.
+  // Cinco ceramidas (NP, EOP, AP, NG, AS), carnosina y fitoesteroles. El cítrico
+  // va al final entre ajustadores. Sin fragancia ni alcohol denat.
   MLAU4347154318: ["vit_c_derivado", "ceramidas", "carnosina"],
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // Vanicream Daily Facial Moisturizer [INCI] — verificado el 12/9/2026 contra la
+  // ficha de la marca. Mapeo exacto y completo: escualano, hialurónico, cinco
+  // ceramidas (EOP, NG, NP, AS, AP) y carnosina. Sin fragancia ni conservantes
+  // clásicos; lista de 19 ingredientes.
   MLAU4938195565: ["escualano", "hialuronico", "ceramidas", "carnosina"],
   // Vanicream Gentle Cleanser: vacio a proposito, son tensioactivos suaves.
   // [INCI] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
@@ -1244,8 +1249,11 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // un limpiador que se enjuaga no es el lugar para poner activos.
   // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
   MLA21801426: [],
-  // CeraVe Gel Limpiador Espumoso [INCI]
-  MLA25800983: ["ceramidas", "niacinamida", "hialuronico"],
+  // CeraVe Gel Limpiador Espumoso [INCI] — reverificado el 12/9/2026. El INCI
+  // trae además COLESTEROL y FITOESFINGOSINA, que faltaban en este mapeo y sí
+  // estaban en el del otro listado del mismo producto (MLAU141343879). Los dos
+  // quedan iguales: es la misma fórmula en dos publicaciones distintas.
+  MLA25800983: ["ceramidas", "niacinamida", "hialuronico", "colesterol", "fitoesfingosina"],
   // COSRX Low pH Good Morning [INCI] — el BHA suave + tea tree que lo saca de
   // las rutinas de piel sensible.
   MLA11139349: ["bha_betaina_salicilato", "aceite_esencial_tea_tree"],
@@ -1367,9 +1375,28 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // de las rutinas sin conflicto. Si el mapeo hubiera estado mal, se equivocaba
   // más rutinas que cualquier otro.
   MLA45253335: ["mucina_caracol", "panthenol", "alantoina", "adenosina", "hialuronico"],
-  // Dermaglós Crema Hidratante de Día FPS 30 · lleva filtro, no verificamos cuál.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
-  MLA24692733: ["filtro_quimico"],
+  // Dermaglós Crema de Día Ultra Volumen FPS30 [INCI] — verificado el 12/9/2026
+  // contra Andrómaco y confirmado en un retailer independiente. Estaba mapeada
+  // como `filtro_quimico` a secas y trae ocho activos más.
+  //
+  // DOS DE ELLOS IMPORTAN. Tiene FRAGANCIA, y tiene PALMITATO DE RETINILO: un
+  // retinoide escondido en lo que el catálogo usa como paso de protector solar.
+  // Es el tercer caso del proyecto, después del Mela B3 y el Pure Vitamin C12.
+  //
+  // Ojo con el encuadre además del mapeo: la ficha de ML la vende como crema
+  // antiedad para 40+, piel normal a seca, y nosotros la usamos de protector.
+  // Ver docs/AUDITORIA-PRODUCTOS.md.
+  MLA24692733: [
+    "filtro_quimico",
+    "filtro_avobenzona",
+    "niacinamida",
+    "panthenol",
+    "alantoina",
+    "hialuronico",
+    "tocoferol",
+    "fragancia",
+    "retinil_ester",
+  ],
 
   // Beauty of Joseon Relief Sun: Rice + Probiotics [INCI] — verificado el
   // 11/9/2026 con la lista completa. La primera búsqueda la devolvió cortada en
@@ -1384,12 +1411,14 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   MLA26916726: ["filtro_quimico"],
   // COSRX Ultra-Light Invisible [INCI]
   MLA2097460920: ["filtro_quimico", "niacinamida", "tocoferol", "hialuronico", "adenosina", "hamamelis"],
-  // Eucerin Sun Oil Control Dry Touch [INCI] — trae alcohol denat, que es de
-  // dónde sale la textura seca. Es también lo que lo saca de piel sensible.
-  // Único producto que aparece en los dos vaults; el INCI del vault nuevo
-  // confirma avobenzona y glicirretínico.
-  // (Glycyrrhiza inflata root extract es la fuente de la licochalcona A, y va
-  // junto al ácido glicirretínico: los dos están en la lista.)
+  // Eucerin Sun Gel-crema Oil Control Toque Seco FPS50+ [INCI] — verificado el
+  // 12/9/2026. Mapeo exacto: homosalato, avobenzona, salicilato de etilhexilo y
+  // octocrileno como filtros, más licochalcona, glicirretínico y alcohol denat.
+  // Sin fragancia y SIN óxidos de hierro, que es lo que lo separa del Tono Medio.
+  //
+  // Trae mentoxipropanodiol, derivado sintético de mentol. No se mapea a `menta`:
+  // el diccionario define ese activo como aceite esencial, y éste no lo es. Queda
+  // dicho acá porque para piel reactiva la sensación de fresco igual cuenta.
   MLA16048275: ["filtro_quimico", "filtro_avobenzona", "licochalcona", "glicirretinico", "alcohol_denat"],
   // Skin1004 Hyalu-Cica Water-Fit Sun Serum [INCI] — verificado el 11/9/2026.
   // Confirma lo que traía del vault y suma tocoferol y adenosina. Sin fragancia.
@@ -1419,12 +1448,13 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // marcadas [externo], verificadas contra la ficha del fabricante.
   // ═══════════════════════════════════════════════════════════════════════════
 
-  // ── Vitamina C ─────────────────────────────────────────────────────────────
-  // SkinCeuticals C E Ferulic — es, literalmente, la fórmula del paper de Duke:
-  // 15% de ascórbico + 1% de tocoferol + 0,5% de ferúlico. Lista de 12
-  // ingredientes, sin fragancia. El resto del rubro la viene copiando.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
-  MLA24840827: ["vit_c_laa", "tocoferol", "ferulico", "panthenol", "hialuronico"],
+  // SkinCeuticals C E Ferulic [INCI] — verificado el 12/9/2026 contra la ficha de
+  // la marca. Es la fórmula del paper: ascórbico 15%, tocoferol 1% y ferúlico
+  // 0,5%, más carnosina, pantenol e hialuronato. Sin fragancia ni alcohol denat.
+  //
+  // Es el único producto del catálogo con una afirmación de nivel A sostenida por
+  // la concentración declarada. Ver docs/CALIDAD.md §5.
+  MLA24840827: ["vit_c_laa", "tocoferol", "ferulico", "carnosina", "panthenol", "hialuronico"],
   // Kosmos Vitamina C Pura [INCI] — verificado el 11/9/2026 contra la página de
   // la marca. Once ingredientes y el mapeo entero confirmado: ácido ascórbico al
   // 15%, ferúlico 0,5%, tocoferol 1%, ceramida NP y D-pantenol.
@@ -1479,10 +1509,6 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // regla de cobre contra vitamina C pura.
   // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
   MLA45991792: ["panthenol", "niacinamida", "cobre_gluconato", "zinc_gluconato", "hialuronico", "fragancia"],
-  // La Roche-Posay Hyalu B5 — hialurónico + pantenol + madecasósido. Con alcohol
-  // denat y fragancia, que es lo que lo saca de una rutina de piel reactiva.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
-  MLA12754368: ["hialuronico", "panthenol", "madecassosido", "adenosina", "tocoferol", "alcohol_denat", "fragancia"],
   // LRP Hyalu B5 Suractivated [INCI] — reemplazó al anterior. Verificado: misma
   // lista, incluidos alcohol denat y fragancia.
   MLA59802317: ["hialuronico", "panthenol", "madecassosido", "adenosina", "tocoferol", "alcohol_denat", "fragancia"],
@@ -1522,9 +1548,6 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // Garnier Crema Gel Anti-imperfecciones — niacinamida + salicílico + alcohol.
   // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
   MLA35115621: ["niacinamida", "bha_salicilico", "vit_c_derivado", "alcohol_denat", "fragancia"],
-  // Neutrogena Hydro Boost water gel — hialurónico y siliconas. Sin activos.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
-  MLA19899495: ["hialuronico", "fragancia"],
   // La recarga del mismo gel: misma fórmula, otro envase. Se mapea igual porque
   // el motor razona sobre lo que trae adentro, no sobre el packaging.
   // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
@@ -1581,8 +1604,10 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // Beauty of Joseon Ciruela Verde — tensioactivos suaves y extractos. Sin BHA.
   // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
   MLA35427636: ["arroz_fermentado"],
-  // CeraVe Gel Limpiador Espumoso — ceramidas + niacinamida, sin fragancia.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // CeraVe Gel Limpiador Espumoso [INCI] — verificado el 12/9/2026. Mismo
+  // producto que MLA25800983 en otra publicación, misma fórmula: niacinamida,
+  // hialuronato, ceramidas NP/AP/EOP, fitoesfingosina y colesterol. Sin
+  // fragancia; el cítrico es ajustador de pH.
   MLAU141343879: ["ceramidas", "niacinamida", "hialuronico", "colesterol", "fitoesfingosina"],
   // CeraVe Limpiador Hidratante [INCI] — verificado el 11/9/2026 contra la
   // página de la marca. Mapeo confirmado entero: ceramidas NP, AP y EOP,
@@ -1591,12 +1616,11 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // Sin fragancia y sin ácidos. Es el trío de ceramidas más colesterol, que es
   // la composición que INGREDIENTES.md respalda para barrera.
   MLA37598876: ["ceramidas", "hialuronico", "colesterol", "fitoesfingosina", "tocoferol"],
-  // Neutrogena Hydro Boost gel limpiador — hialurónico, sin activos.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // Neutrogena Hydro Boost gel limpiador [INCI] — verificado el 12/9/2026 contra
+  // la ficha de la marca. Mapeo correcto y completo: hialurónico hidrolizado.
+  // Tensioactivos suaves (cocoil isetionato, metil cocoil taurato) y sin
+  // fragancia, declarado por la marca. El cítrico es ajustador de pH.
   MLA53897352: ["hialuronico"],
-  // La Roche-Posay Lipikar Syndet AP+ — niacinamida + karité, sin fragancia.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
-  MLA16135276: ["niacinamida", "manteca_karite"],
   // Misma crema, otra publicación de ML. Reemplazó a la anterior en el catálogo.
   // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
   MLA20663979: ["niacinamida", "manteca_karite"],
@@ -1615,12 +1639,18 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // largo Y óxidos de hierro. Para manchas es el mejor del catálogo.
   // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
   MLA58897902: ["filtro_quimico", "filtro_avobenzona", "filtro_uva_400", "oxidos_de_hierro", "tocoferol", "alcohol_denat"],
-  // LRP Anthelios Oil Control — también trae Mexoryl 400 y color.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // LRP Anthelios Oil Control [pendiente] — 12/9/2026. NO se pudo resolver qué
+  // variante es, y hay motivo para dudar del mapeo actual.
+  //
+  // El INCI del UVMune 400 Oil Control SIN color trae `Parfum` y `Zinc PCA`, que
+  // acá no están, y NO trae óxidos de hierro, que acá sí están. Los óxidos son de
+  // la versión con color. El nombre del catálogo no dice "color"; el comentario
+  // viejo decía que sí. Uno de los dos está mal.
+  //
+  // No se puede preguntar a la API: el ml_id es MLAU, de alcance del vendedor, y
+  // responde 403. Se resuelve mirando el envase o migrando la entrada a una ficha
+  // de catálogo /p/. Ver docs/AUDITORIA-PRODUCTOS.md.
   MLAU3133622625: ["filtro_quimico", "filtro_avobenzona", "filtro_uva_400", "oxidos_de_hierro", "tocoferol", "alcohol_denat"],
-  // LRP Anthelios Color Efecto Mate — sin el filtro de 400 nm, con zinc PCA.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
-  MLA16048424: ["filtro_quimico", "filtro_avobenzona", "filtro_uva_400", "zinc_pca", "tocoferol", "alcohol_denat"],
   // LRP Anthelios Ultra Fluido con Color [INCI] — reemplazó al anterior en el
   // catálogo. ATENCIÓN, es el único caso del catálogo:
   //
@@ -1643,13 +1673,14 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
     "agua_termal",
     "alcohol_denat",
   ],
-  // Eucerin Sun Oil Control Tono medio — con color, y con alcohol denat.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // Eucerin Sun Face Oil Control FPS50+ Tono Medio [INCI] — verificado el
+  // 12/9/2026. Mapeo exacto y completo: avobenzona, filtros orgánicos, óxidos de
+  // hierro (CI 77491 y 77499), licochalcona, glicirretínico y alcohol denat.
+  // Sin fragancia.
+  //
+  // Confirma la nota de arriba: el CI 77891 (dióxido de titanio) está junto a los
+  // óxidos de hierro, como PIGMENTO del tono y no como filtro.
   MLA19504960: ["filtro_quimico", "filtro_avobenzona", "oxidos_de_hierro", "licochalcona", "glicirretinico", "alcohol_denat"],
-  // Garnier Super UV Anti-Imperfecciones — protector con niacinamida y
-  // salicílico. Poco común y bastante buena idea para piel grasa.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
-  MLA63460365: ["filtro_quimico", "filtro_avobenzona", "niacinamida", "bha_salicilico", "vit_c_derivado", "zinc_pca", "aloe", "tocoferol", "alcohol_denat", "fragancia"],
   // Garnier Super UV Fluido Invisible [INCI] — reemplazó al anterior. Verificado
   // contra la ficha: mismo complejo declarado (niacinamida + salicílico + zinc
   // PCA) y mismos filtros. Misma lista de activos que su antecesor.

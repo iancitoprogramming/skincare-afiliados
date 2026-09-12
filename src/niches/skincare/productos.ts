@@ -480,6 +480,11 @@ const productosCurados: Producto[] = [
     relevado: "2026-09-05",
     prioridad: 2,
     comodin: false,
+    // Fuera del motor: el INCI trae fragancia y palmitato de retinilo, y el
+    // catálogo la usaba como paso de protector solar. Medido: con ella adentro
+    // las rutinas sin conflicto caen a 329 de 360; sin ella vuelven a 344, sin
+    // abrir ningún hueco. Sigue vendible en /catalogo.
+    en_rutina: false,
     activo: true,
   },
   {
