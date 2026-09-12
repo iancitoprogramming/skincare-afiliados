@@ -29,37 +29,29 @@ niacinamida, que un retinoide no caiga la misma noche que un ácido.
 
 ## 2 · Estado verificado el 12/9/2026
 
-`main`, en `bcc9c7d`:
+`main`, ya con la auditoría del PR #14 mergeada:
 
 ```
 tsc --noEmit        exit 0
 npm test            116/116 en 14 archivos
 npm run build       exit 0 · 175 páginas
-npm run auditar     346/360 rutinas sin conflicto (96,1%) · 0 con "separar"
-npm run cobertura   0 comodín · 0 no-apto-sensible · "catálogo redondo"
-activos             38 de 84 entradas con fuente verificada
-```
-
-`auditoria-tanda-2`, en `11b2fcd` —la rama del PR #14— mide distinto:
-
-```
 npm run auditar     344/360 rutinas sin conflicto (95,6%) · 0 con "separar"
+npm run cobertura   346 match · 2 sin preocupación · 72 fuera de banda
+                    0 comodín · 0 no-apto-sensible · "catálogo redondo"
+npm run cuentas     81 ítems · los 81 declaran maurobilat · exit 0
 activos             73 de 79 entradas con fuente verificada
 ```
 
-**Las dos rutinas que bajan no son una regresión.** Aparecen porque la auditoría
-declaró activos que antes estaban sin declarar: el conflicto ya existía en el
-frasco, lo que faltaba era que el motor lo viera. Y las cinco entradas que bajan
-de 84 a 79 son huérfanas —`ml_id` que ya no están en `productos.ts`—, no activos
-que se hayan quitado.
+**Antes del #14, `main` medía 346/360 y 38 de 84 activos verificados.** Las dos
+rutinas que bajan no son una regresión: aparecen porque la auditoría declaró
+activos que antes estaban sin declarar —el conflicto ya estaba en el frasco, lo
+que faltaba era que el motor lo viera—. Y el total de entradas baja de 84 a 79
+porque cinco eran huérfanas, `ml_id` que ya no están en `productos.ts`; no se
+quitó ningún activo.
 
-**Hay dos PR abiertos.** El **#14** es la auditoría completa del catálogo. El
-**#15** es este documento. Los dos tienen el CI en verde y son mergeables; el
-único check rojo es Vercel, por permisos (§5.2). Para seguir sobre la auditoría:
-
-```bash
-git checkout auditoria-tanda-2
-```
+**Ojo al medir:** cada número de acá se mide sobre el catálogo completo, que es
+`productos.ts` **más** `productos.organize.ts`. `productos.ts` solo tiene 34 de
+los 81 ítems, así que contar grepeando ese archivo da la mitad de la respuesta.
 
 ---
 
@@ -165,7 +157,7 @@ Lo gestiona Ian.
 la URL al crawler.
 
 **Los Medios ya están declarados** en `maurobilat`: sitio, Instagram, TikTok,
-YouTube, Pinterest y X. Facebook se descartó por decisión. Los 73 links salen de la
+YouTube, Pinterest y X. Facebook se descartó por decisión. Los 81 links salen de la
 cuenta única y `npm run cuentas` sale 0.
 
 ---
@@ -220,22 +212,21 @@ bash falla con un error de sintaxis que no dice nada. Un heredoc por comando.
 
 ## 8 · Lo próximo, priorizado
 
-1. **Mergear el PR #14** si está conforme.
-2. **Prender el tracking** (§5). Es lo único que frena lanzar con medición.
-3. **Leer el envase de los 6 productos** de §4, empezando por el ISDIN.
-4. **La causa de fondo en el motor**: `candidatosDe` devuelve el nivel `match` en
+1. **Prender el tracking** (§5). Es lo único que frena lanzar con medición.
+2. **Leer el envase de los 6 productos** de §4, empezando por el ISDIN.
+3. **La causa de fondo en el motor**: `candidatosDe` devuelve el nivel `match` en
    exclusiva aunque todo lo que contenga choque. Hoy lo compensan los datos, pero
    va a volver en otra categoría. Es un cambio en `recomendacion.ts` con su propio
    PR.
-5. **Dato mal cargado**: el Skin1004 Tea-trica sigue marcado `apto_sensible: true`
+4. **Dato mal cargado**: el Skin1004 Tea-trica sigue marcado `apto_sensible: true`
    con tea tree en la fórmula. Salió del motor, pero la ficha lo muestra apto.
-6. **Actualizar `06-ESTADO.md` y `COMPRAR.md`**, que siguen con números viejos y
+5. **Actualizar `06-ESTADO.md` y `COMPRAR.md`**, que siguen con números viejos y
    mandan a comprar cosas que ya no hacen falta.
-7. **9 productos atados a un solo vendedor** (`docs/listados-atados.md`). Necesitan
+6. **9 productos atados a un solo vendedor** (`docs/listados-atados.md`). Necesitan
    links nuevos generados desde la ficha `/p/`.
-8. **2 vulnerabilidades moderadas** de `vitest`, sólo de desarrollo. El arreglo
+7. **2 vulnerabilidades moderadas** de `vitest`, sólo de desarrollo. El arreglo
    pide vitest 5, que es un salto mayor.
-9. **UX**: sistema visual, mockups para las redes, carrusel y prueba social.
+8. **UX**: sistema visual, mockups para las redes, carrusel y prueba social.
 
 ---
 
