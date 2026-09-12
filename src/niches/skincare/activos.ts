@@ -1469,14 +1469,20 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // Confirma lo que CALIDAD.md §5 usa de ejemplo: replica el trío del paper y
   // suma ceramida. Sin fragancia y sin otros ácidos.
   MLA45672941: ["vit_c_laa", "tocoferol", "ferulico", "ceramidas", "panthenol"],
-  // La Roche-Posay Pure Vitamin C12 — 12% de ascórbico, pero ojo: trae ácido
-  // salicílico, alcohol denat y fragancia. No es una fórmula minimalista.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // LRP Pure Vitamin C12 [INCI] — verificado el 12/9/2026. Confirma la trampa №2
+  // de INGREDIENTES.md §10.3: ácido ascórbico puro con ÁCIDO SALICÍLICO adentro,
+  // que nadie espera en un sérum de vitamina C.
+  //
+  // Trae además alcohol denat (quinto) y `Parfum`. La Neurosensine (acetil
+  // dipéptido-1 cetil éster) no tiene id en el diccionario.
   MLA47223033: ["vit_c_laa", "bha_salicilico", "hialuronico", "adenosina", "tocoferol", "peptidos", "alcohol_denat", "fragancia"],
-  // Vichy Liftactiv Supreme Vitamina C 16% [externo] — el .md no publica INCI;
-  // se declara sólo lo que la propia marca afirma: C pura, E y hialurónico.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
-  MLA19710676: ["vit_c_laa", "tocoferol", "hialuronico"],
+  // Vichy Liftactiv Supreme Vitamina C [INCI] — verificado el 12/9/2026. Once
+  // ingredientes: ascórbico puro al 15% segundo, alcohol denat tercero, tocoferol
+  // e hialurónico hidrolizado, más polifenoles de pino marítimo.
+  //
+  // SIN fragancia, declarado por la marca. Es de las listas más cortas del
+  // catálogo, y esa brevedad es parte de la propuesta.
+  MLA19710676: ["vit_c_laa", "tocoferol", "hialuronico", "alcohol_denat"],
 
   // ── Retinoides ─────────────────────────────────────────────────────────────
   // Neutrogena Retinol Boost — retinol puro. El ascórbico está abajo en la
@@ -1486,10 +1492,9 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // Eximia Hyalu-R — retinol + retinil palmitato + ferúlico + niacinamida.
   // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
   MLA20021768: ["retinol", "retinil_ester", "niacinamida", "panthenol", "ferulico", "hialuronico", "tocoferol", "fragancia"],
-  // La Roche-Posay Retinol B3 — retinol + retinil palmitato + niacinamida. Se
-  // vende "incluso para piel sensible" y lleva alcohol denat y fragancia: la
-  // etiqueta y la lista de ingredientes no dicen lo mismo.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // LRP Retinol B3 [INCI] — verificado el 12/9/2026. Trae DOS retinoides: retinol
+  // puro y palmitato de retinilo, más niacinamida al 2%, hialuronato y adenosina.
+  // Alcohol denat va cuarto y también declara `Parfum`.
   MLAU244146565: ["retinol", "retinil_ester", "niacinamida", "hialuronico", "adenosina", "tocoferol", "alcohol_denat", "fragancia"],
 
   // LRP Mela B3 [INCI] — verificado el 12/9/2026. Confirma la trampa №1 de
@@ -1540,8 +1545,12 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // El 89% de agua volcánica que promete el nombre NO se mapea como `agua_termal`:
   // el INCI declara `Aqua` a secas, y mapearlo sería inferir desde el marketing.
   MLA18964459: ["hialuronico"],
-  // Skin1004 Tea-Trica Relief Ampoule — centella + árbol de té (agua Y aceite).
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // Skin1004 Tea-trica Relief Ampoule [INCI] — verificado el 12/9/2026. Agua de
+  // hoja de tea tree como SEGUNDO ingrediente y además aceite de tea tree cerca
+  // del final, más centella. Sin fragancia y sin ácidos.
+  //
+  // El tea tree es causa conocida de dermatitis de contacto, así que pesa aunque
+  // el producto se venda como calmante.
   MLA38719413: ["centella", "aceite_esencial_tea_tree", "panthenol", "hialuronico"],
   // Skin1004 Poremizing Fresh Ampoule [INCI] — verificado el 12/9/2026. Centella
   // como primer ingrediente, aloe, péptidos —incluido cobre tripéptido-1—,
@@ -1567,23 +1576,37 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
   MLA22843182: ["niacinamida", "bha_salicilico", "aha_lactico", "acido_fitico", "vit_c_derivado", "alcohol_denat", "fragancia"],
 
-  // ── Hidratantes ────────────────────────────────────────────────────────────
-  // Isdin Ureadin Fusion Melting — urea + láctico + ceramida + ascórbico, con
-  // una fragancia cargada (limoneno, citral, cumarina, linalol).
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // ISDIN Ureadin Fusion Melting Cream [pendiente] — 12/9/2026. No se consiguió
+  // el INCI completo: la lista publicada aparece truncada y las dos bases de
+  // ingredientes que la tienen (CosDNA, vadedermo) responden 403 y 404.
+  //
+  // LA DUDA ES CONCRETA: en la parte visible del INCI figura la urea, pero NO el
+  // ácido láctico ni la vitamina C que este mapeo declara. Si no estuvieran, acá
+  // sobra un exfoliante y una vitamina C pura, que no es poca cosa. Hay que leer
+  // el envase antes de confiar en esta entrada.
   MLA21174873: ["urea", "aha_lactico", "ceramidas", "vit_c_laa", "hialuronico", "tocoferol", "creatina", "manteca_karite", "fragancia"],
-  // Garnier Crema Gel Anti-imperfecciones — niacinamida + salicílico + alcohol.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // Garnier Crema Hidratante en Gel Anti Imperfecciones [INCI] — verificado el
+  // 12/9/2026. Niacinamida tercera, alcohol denat cuarto, ascorbil glucósido,
+  // salicílico y `Parfum` con linalol, geraniol y limoneno declarados.
   MLA35115621: ["niacinamida", "bha_salicilico", "vit_c_derivado", "alcohol_denat", "fragancia"],
-  // La recarga del mismo gel: misma fórmula, otro envase. Se mapea igual porque
-  // el motor razona sobre lo que trae adentro, no sobre el packaging.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // Neutrogena Hydro Boost recarga [INCI] — verificado el 12/9/2026 sobre la
+  // fórmula LATAM, que es la que se vende acá: hialuronato de sodio, siliconas y
+  // `Parfum`, más CI 42090 como colorante.
+  //
+  // OJO AL ELEGIR LA FUENTE: la versión española del mismo producto es otra
+  // fórmula —sin perfume, con urea, ceramida NP y aminoácidos—. Tomar esa lista
+  // habría dado un producto limpio que acá no se vende.
   MLA28531465: ["hialuronico", "fragancia"],
-  // La Roche-Posay Effaclar Mat — LHA + salicílico + alcohol denat.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // LRP Effaclar Mat [INCI] — verificado el 12/9/2026. Mapeo exacto y completo:
+  // alcohol denat (quinto), capriloil salicílico (LHA), ácido salicílico y
+  // fragancia. Los cuatro estaban bien.
   MLA9196384: ["bha_lha", "bha_salicilico", "alcohol_denat", "fragancia"],
-  // Eucerin Hyaluron-Filler Día FPS 15 — filtro insuficiente como protector.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // Eucerin Hyaluron-Filler Día FPS15 [INCI] — verificado el 12/9/2026. Mapeo
+  // exacto y completo: salicilato de etilhexilo, octocrileno, Tinosorb S y
+  // avobenzona como filtros, alcohol denat, hialuronato y `Parfum`.
+  //
+  // La saponina de germen de soja que promete la marca no tiene id en el
+  // diccionario, así que queda dicha acá y no en la lista.
   MLA9855881: ["filtro_quimico", "filtro_avobenzona", "hialuronico", "alcohol_denat", "fragancia"],
   // Eucerin Aquaporin Active piel normal a mixta [INCI] — verificado el
   // 12/9/2026. Mapeo correcto: gliceril glucósido (el activo de la línea) y
@@ -1611,10 +1634,15 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // [INCI] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
   MLA67629151: [],
 
-  // ── Limpiadores ────────────────────────────────────────────────────────────
-  // Garnier Agua Micelar Anti-imperfecciones — salicílico + LHA + zinc.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
-  MLA24300545: ["bha_salicilico", "bha_lha", "zinc_pca", "vit_c_derivado", "fragancia"],
+  // Garnier Agua Micelar Anti-imperfecciones [INCI] — verificado el 12/9/2026
+  // contra la página de Garnier ARGENTINA, que es la que corresponde: la fórmula
+  // local son once ingredientes.
+  //
+  // SE QUITAN TRES que la fórmula no trae: `bha_lha`, `zinc_pca` y `fragancia`.
+  // La página declara "sin perfume". Se agrega `alcohol_denat`, que va cuarto en
+  // la lista y faltaba. Es la primera vez en esta auditoría que se quitan activos:
+  // se hace porque la fuente oficial demuestra la ausencia, no por no encontrarlos.
+  MLA24300545: ["bha_salicilico", "vit_c_derivado", "alcohol_denat"],
   // Garnier Agua Micelar Todo en 1 · SIN VERIFICAR: el .md no trae INCI.
   // Garnier Agua Micelar Todo en 1 [INCI] — verificado el 11/9/2026. Lista muy
   // corta: agua, hexilenglicol, glicerina, cocoanfodiacetato disódico, EDTA,
@@ -1623,11 +1651,23 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // Vacío VERIFICADO: no hay nada que declarar, y eso es distinto de no haber
   // mirado.
   MLA20546060: [],
-  // Garnier Gel Limpiador Anti-imperfecciones — niacinamida + salicílico.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // Garnier Limpiador Crema Hidratante Anti Imperfecciones [INCI] — verificado el
+  // 12/9/2026. Mapeo exacto: niacinamida, hialuronato y salicílico, sobre
+  // tensioactivos suaves (metil cocoil taurato, coco-betaína, cocoil isetionato).
+  // SIN fragancia.
+  //
+  // Ojo al elegir la fuente: Garnier tiene tres anti-imperfecciones con nombres
+  // parecidos. El `Gel de Limpieza` sí trae SLES, zinc PCA y fragancia; éste no.
   MLA47671534: ["niacinamida", "bha_salicilico", "hialuronico"],
-  // Eucerin Dermopure Oil Control — salicílico en un gel que se enjuaga.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // Eucerin DermoPure Oil Control gel limpiador [pendiente] — 12/9/2026. Hay dos
+  // versiones y el mapeo actual sirve para las dos, porque el salicílico está en
+  // ambas. Lo que cambia es lo que faltaría:
+  //
+  //   básica (8 ingredientes)  — sólo salicílico, sin perfume. El mapeo está bien.
+  //   concentrada triple efecto — suma glicólico, PHA, alcohol denat y fragancia.
+  //
+  // El nombre del catálogo no dice "concentrado" ni "triple efecto", lo que apunta
+  // a la básica, pero no alcanza para cerrarlo. Se resuelve leyendo el envase.
   MLA37349507: ["bha_salicilico"],
   // BoJ Green Plum Refreshing Cleanser [INCI] — verificado el 12/9/2026. Sale
   // `arroz_fermentado`: el INCI dice `Oryza Sativa Extract`, extracto de arroz y
@@ -1654,8 +1694,11 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // Tensioactivos suaves (cocoil isetionato, metil cocoil taurato) y sin
   // fragancia, declarado por la marca. El cítrico es ajustador de pH.
   MLA53897352: ["hialuronico"],
-  // Misma crema, otra publicación de ML. Reemplazó a la anterior en el catálogo.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // LRP Lipikar Syndet AP+ [INCI] — verificado el 12/9/2026. Mapeo exacto:
+  // niacinamida y manteca de karité. Sin fragancia, declarado por la marca.
+  //
+  // El Aqua Posae Filiformis que promete la marca es `Vitreoscilla Ferment` en el
+  // INCI y no tiene id en el diccionario. Queda dicho acá.
   MLA20663979: ["niacinamida", "manteca_karite"],
   // Cetaphil Pro AD Restoraderm [INCI] — verificado el 11/9/2026. Confirma el
   // mapeo: karité, alantoína, niacinamida y tocoferol (como acetato).
