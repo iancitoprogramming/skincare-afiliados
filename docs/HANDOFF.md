@@ -33,7 +33,7 @@ niacinamida, que un retinoide no caiga la misma noche que un ácido.
 
 ```
 tsc --noEmit        exit 0
-npm test            116/116 en 14 archivos
+npm test            132/132 en 15 archivos
 npm run build       exit 0 · 175 páginas
 npm run auditar     344/360 rutinas sin conflicto (95,6%) · 0 con "separar"
 npm run cobertura   346 match · 2 sin preocupación · 72 fuera de banda
@@ -89,6 +89,22 @@ exclusiva, y los tres limpiadores coreanos etiquetados para acné traían ácido
 Etiquetar dos limpiadores limpios que ya estaban cerró el hueco sin comprar nada.
 
 **Se auditó el catálogo (#13, #14).** Ver §4.
+
+**Dos productos con tea tree decían ser aptos para piel sensible (#16).** Este
+handoff anotaba uno —el Skin1004 Tea-trica, que ya estaba fuera del motor— y
+eran tres. El grave era el **COSRX Low pH Good Morning**: estaba
+`apto_sensible: true` sin `en_rutina: false`, así que el motor **sí** se lo
+servía a quien declaraba piel sensible. El comentario de su propio mapeo de
+activos ya decía que el tea tree "lo saca de las rutinas de piel sensible": la
+prosa y el dato decían cosas opuestas y ganaba el dato. El candado es
+`apto-sensible.test.ts`. El tercero, el TIRTIR Milk Skin Toner, quedó como
+excepción escrita: declara `menta` por un extracto de hoja, no por un aceite
+esencial, y si son el mismo activo es una decisión de criterio.
+
+**El motor puede bajar de nivel de match, pero sólo a veces (#17).** Era "la
+causa de fondo" que este handoff pedía, y el arreglo directo no se podía hacer:
+bajar de nivel ante cualquier "separar" contradice el test *"NO degrada la
+calidad del match para esquivar un conflicto"*. Ver §6.
 
 ---
 
@@ -174,6 +190,8 @@ Las anteriores están en `docs/proyecto/06-ESTADO.md`. Las de esta línea de tra
 | **No se agrega un `aceite_esencial` genérico** | Decisión del usuario. Los que tienen id propio —tea tree, romero, menta— sí se declaran |
 | **Un producto entra por su fórmula, no por sus ventas** | Ver `04-CATALOGO.md` § *Antes de cargarlo* |
 | **Sumar sin quitar** | Un activo se quita sólo cuando la fuente oficial demuestra su ausencia |
+| **`tipos_piel` orienta, `apto_sensible` veta** | El primero dice para qué piel está pensado el producto; el segundo es el único que filtra en el motor, y sólo veta por fórmula. Pueden discrepar, y discrepan a propósito en tres productos |
+| **Un conflicto que se arregla con una instrucción no baja la calidad de match** | Decisión del usuario, 12/9. "Retinoide y ácido la misma noche" se resuelve con "noches alternas", y el sitio ya genera el calendario noche por noche. Bajar de nivel le costaría a la persona el producto que vino a buscar — y al medirlo, el calendario le aparece igual, porque el retinoide solo tampoco es de uso diario. Sólo se baja ante un choque sin instrucción posible: hoy es uno, `pila-retinoide`, cuyo "qué hacer" es "quedate con uno" |
 
 ---
 
@@ -214,19 +232,20 @@ bash falla con un error de sintaxis que no dice nada. Un heredoc por comando.
 
 1. **Prender el tracking** (§5). Es lo único que frena lanzar con medición.
 2. **Leer el envase de los 6 productos** de §4, empezando por el ISDIN.
-3. **La causa de fondo en el motor**: `candidatosDe` devuelve el nivel `match` en
-   exclusiva aunque todo lo que contenga choque. Hoy lo compensan los datos, pero
-   va a volver en otra categoría. Es un cambio en `recomendacion.ts` con su propio
-   PR.
-4. **Dato mal cargado**: el Skin1004 Tea-trica sigue marcado `apto_sensible: true`
-   con tea tree en la fórmula. Salió del motor, pero la ficha lo muestra apto.
-5. **Actualizar `06-ESTADO.md` y `COMPRAR.md`**, que siguen con números viejos y
-   mandan a comprar cosas que ya no hacen falta.
-6. **9 productos atados a un solo vendedor** (`docs/listados-atados.md`). Necesitan
+3. **Las dos compras de `docs/COMPRAR.md`**, especificadas activo por activo: un
+   hidratante con azelaico —o tranexámico o alfa-arbutina— que destraba 6 de los
+   10 conflictos que quedan, y un sérum activo apto para sensible en banda
+   accesible, donde hoy hay **uno** y está en banda 3.
+4. **9 productos atados a un solo vendedor** (`docs/listados-atados.md`). Necesitan
    links nuevos generados desde la ficha `/p/`.
-7. **2 vulnerabilidades moderadas** de `vitest`, sólo de desarrollo. El arreglo
+5. **2 vulnerabilidades moderadas** de `vitest`, sólo de desarrollo. El arreglo
    pide vitest 5, que es un salto mayor.
-8. **UX**: sistema visual, mockups para las redes, carrusel y prueba social.
+6. **UX**: sistema visual, mockups para las redes, carrusel y prueba social.
+
+**Dos preguntas de criterio quedaron abiertas**, las dos anotadas en
+`docs/AUDITORIA-PRODUCTOS.md`: si la fragancia veta un producto para piel
+sensible (afecta a dos productos activos), y si el extracto de hoja de menta y su
+aceite esencial son el mismo activo (afecta al TIRTIR).
 
 ---
 
