@@ -51,8 +51,17 @@ import { describe, expect, it } from "vitest";
 import { productos } from "./productos";
 import { ACTIVOS, ACTIVOS_POR_PRODUCTO } from "./activos";
 
-/** Familias de activo que vetan `apto_sensible`. Ver la nota de arriba. */
-const FAMILIAS_QUE_VETAN = ["aceite-esencial", "fragancia"];
+/**
+ * Familias de activo que vetan `apto_sensible`. Ver la nota de arriba.
+ *
+ * `contrairritante` entró el 12/9/2026 con el alcanfor del Beauty of Joseon
+ * Ginseng Cleansing Oil. Está como familia aparte y no metido en
+ * "aceite-esencial" porque el alcanfor no es un aceite esencial: es un compuesto
+ * único. Veta por el mismo motivo que los otros —produce sensación estimulando
+ * las terminaciones de temperatura, y la sensación no es el resultado— pero la
+ * taxonomía no se fuerza para que el veto funcione.
+ */
+const FAMILIAS_QUE_VETAN = ["aceite-esencial", "fragancia", "contrairritante"];
 
 /**
  * Productos que declaran una familia que veta y SIGUEN marcados aptos para piel
@@ -76,7 +85,7 @@ const vetantesDe = (mlId: string) =>
   (ACTIVOS_POR_PRODUCTO[mlId] ?? []).filter((a) => FAMILIAS_QUE_VETAN.includes(familiaDe(a) ?? ""));
 
 describe("apto_sensible contra el mapa de activos", () => {
-  it("ningún producto apto para sensible declara fragancia ni aceite esencial sin excepción escrita", () => {
+  it("ningún producto apto para sensible declara un irritante de esas familias sin excepción escrita", () => {
     const malos = activos
       .filter((p) => p.apto_sensible && vetantesDe(p.ml_id!).length)
       .filter((p) => !VETADO_PERO_APTO[p.ml_id!])
@@ -109,14 +118,20 @@ describe("apto_sensible contra el mapa de activos", () => {
     expect(sobrantes).toEqual([]);
   });
 
-  // Los cuatro que se corrigieron el 12/9/2026, clavados por ml_id. Si alguno
+  // Los seis que se corrigieron el 12/9/2026, clavados por ml_id. Si alguno
   // vuelve a apto, el primer test ya falla; éste dice cuáles eran y por qué.
-  it("los cuatro que se corrigieron siguen corregidos", () => {
+  //
+  // Los dos últimos los encontró este test por su cuenta, al darle id a aceites
+  // esenciales que el diccionario antes no podía nombrar. Ninguno de los dos
+  // estaba en la lista de sospechosos que había armado la auditoría.
+  it("los seis que se corrigieron siguen corregidos", () => {
     const corregidos: Record<string, string> = {
       MLA11139349: "COSRX Low pH Good Morning · aceite de tea tree + BHA",
       MLA37722163: "Skin1004 Tea-trica B5 · aceite de tea tree + mandélico",
       MLA27603374: "Cleanex Free Gel · fragancia en la posición 10, y es su único activo",
       MLA19474747: "Lidherma Hyaluronic 4D · fragancia + 5 alérgenos de declaración obligatoria",
+      MLA28943962: "Round Lab 1025 Dokdo Cleanser · aceite de flor de manzanilla alemana",
+      MLA37240248: "BoJ Ginseng Cleansing Oil · salvia, artemisa, albahaca y alcanfor",
     };
     for (const [mlId, quien] of Object.entries(corregidos)) {
       const p = activos.find((x) => x.ml_id === mlId);

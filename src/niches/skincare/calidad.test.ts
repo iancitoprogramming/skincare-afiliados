@@ -68,6 +68,21 @@ describe("configuración del nicho", () => {
     expect(incoherentes).toEqual([]);
   });
 
+  // Y la dirección de vuelta, que faltaba y ya dejó pasar un caso. El test de
+  // arriba mira que nada de la tabla de lastre esté mal clasificado, pero no que
+  // la tabla esté COMPLETA. Cuando se dio de alta `aceite_esencial_manzanilla`
+  // —12/9/2026— el activo quedó fuera de la tabla y el producto que lo trae no
+  // pagó lastre: nada falló, simplemente el descuento fue cero en silencio. Es el
+  // mismo tipo de cero silencioso que el test de niveles de evidencia evita del
+  // otro lado.
+  it("todo irritante potencial pesa como lastre, sin ceros silenciosos", () => {
+    const sinLastre = Object.values(ACTIVOS)
+      .filter((a) => (a.grupos ?? []).includes("irritante-potencial"))
+      .filter((a) => !(a.id in CONFIG_CALIDAD.lastre))
+      .map((a) => a.id);
+    expect(sinLastre).toEqual([]);
+  });
+
   it("el alcohol cuesta menos en un protector solar que en un sérum", () => {
     expect(CONFIG_CALIDAD.exposicion("alcohol_denat", "protector_solar")).toBeLessThan(
       CONFIG_CALIDAD.exposicion("alcohol_denat", "serum_activo"),
