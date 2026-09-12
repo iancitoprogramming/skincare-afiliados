@@ -80,9 +80,14 @@ Acá va lo que no es una compra:
   Necesitan links nuevos generados desde la ficha `/p/`.
 - **El vault y el catálogo divergieron.** 5 `ml_id` activos no existen en los
   `.md` de Obsidian, así que `npm run importar-organize` aborta a propósito.
-- **¿La fragancia veta para piel sensible?** Quedan dos productos activos que la
-  declaran y siguen marcados aptos. Es criterio de producto y está sin decidir;
-  el planteo está en `docs/AUDITORIA-PRODUCTOS.md`.
+- **El diccionario no puede nombrar la mayoría de los aceites esenciales.** Modela
+  tres —tea tree, romero y menta— y los demás no tienen id al que apuntar, así
+  que el motor no los ve: el Round Lab Dokdo trae aceite de flor de manzanilla y
+  el aceite limpiador de Beauty of Joseon trae salvia, artemisa, albahaca y
+  alcanfor, y las dos fórmulas le parecen limpias. Agregar un `aceite_esencial`
+  genérico está descartado (ver *no reabrir*), así que la salida es darle id a
+  los que aparezcan de verdad. Es la única decisión de criterio que la auditoría
+  dejó abierta.
 
 ### Lo que estaba acá y ya no hace falta
 
@@ -124,6 +129,8 @@ propuesta.
 | **El presupuesto cede ante la piel y el objetivo** | Hay pasos que no existen en banda accesible; dar algo que no sirve para ahorrar es peor. Antes era al revés y se relajaba `apto_sensible` |
 | **`tipos_piel` orienta, `apto_sensible` veta** | El primero dice para qué piel está pensado el producto; el segundo es el único que filtra en el motor y el único que puede vetar, y sólo por fórmula. Pueden discrepar, y discrepan a propósito en tres productos |
 | **No se agrega un `aceite_esencial` genérico** | Cambiaría varios productos de una vez y afecta al cálculo de lastre. Los que tienen id propio —tea tree, romero, menta— sí se declaran |
+| **La fragancia veta `apto_sensible`** | El diccionario ya la define como "primera causa de dermatitis de contacto alérgica en cosmética", y de los 8 productos del motor que la declaran, 6 ya estaban cargados como no aptos: los 2 que faltaban eran la excepción, no otra política. NACDG 2019-2020: mezcla de fragancias I en 12,8% de parches positivos, hidroperóxidos de linalol en 11,1%. Vale para enjuague también: el catálogo tiene 13 limpiadores aptos sin fragancia, así que evitarla no cuesta nada |
+| **Un extracto de hoja no es su aceite esencial** | Un id de aceite esencial es para un ACEITE que el INCI nombre. Es la regla que el mapa ya seguía en sus otras tres entradas, y el diccionario ya distingue por forma y no por planta: `hamamelis` tiene carga 0 porque "como agua o extracto sin alcohol es inofensivo". El CIR da HRIPT negativo para 2,5% de extracto de menta, y los casos publicados son del aceite |
 | **Sumar sin quitar** | Un activo se quita sólo cuando la fuente oficial demuestra su ausencia |
 | **Un conflicto que se arregla con una instrucción no baja la calidad de match** | "Retinoide y ácido la misma noche" se resuelve con "noches alternas", y el sitio ya genera el calendario noche por noche. Bajar de nivel le costaría a la persona el producto que vino a buscar, y el calendario le aparece igual. Sólo se baja ante un choque sin instrucción posible, como "dos retinoides: quedate con uno" |
 | **El logo se adopta tal cual** (arcos concéntricos) | Decisión de Ian sobre la propuesta de Alex |
