@@ -1208,10 +1208,15 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // Vacío VERIFICADO, que no es lo mismo que vacío por no haber mirado: la
   // fórmula es deliberadamente mínima y no tiene activos que declarar.
   MLAU3880810580: [],
-  // Haruharu Airyfit: filtros quimicos. El Butyloctyl Salicylate del INCI es
-  // emoliente, no salicilico, asi que no suma carga exfoliante.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
-  MLAU3860746273: ["filtro_quimico", "niacinamida", "adenosina", "ceramidas", "tocoferol"],
+  // Haruharu Black Rice Airyfit [INCI] — verificado el 12/9/2026 sobre la lista
+  // completa (51 ingredientes). Filtros orgánicos: Mexoryl SX, Tinosorb S,
+  // triazona y Uvinul A Plus. Sin fragancia, sin aceites esenciales, sin alcohol
+  // denat.
+  //
+  // Se suma FITOESFINGOSINA, que estaba en el INCI y faltaba en el mapeo.
+  // Confirma además la nota vieja: el Butyloctyl Salicylate es emoliente y no
+  // salicílico, así que no suma carga exfoliante.
+  MLAU3860746273: ["filtro_quimico", "niacinamida", "adenosina", "ceramidas", "fitoesfingosina", "tocoferol"],
   // Vanicream Vitamin C [INCI] — verificado el 12/9/2026 contra la ficha de la
   // marca. Tetrahexildecil ascorbato: derivado liposoluble, no ácido ascórbico.
   // Cinco ceramidas (NP, EOP, AP, NG, AS), carnosina y fitoesteroles. El cítrico
@@ -1363,9 +1368,11 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // Entran `escualano` y `adenosina`, que estaban en el INCI y faltaban. Sin
   // fragancia, sin ácidos, sin alcohol denat. La ceramida es Ceramide NP.
   MLA21179266: ["niacinamida", "ceramidas", "ginseng", "hialuronico", "escualano", "adenosina"],
-  // Lidherma Hyaluronic 4D · humectante puro.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
-  MLA19474747: ["hialuronico"],
+  // Lidherma Hyaluronic 4D [INCI] — verificado el 12/9/2026. El comentario viejo
+  // decía "humectante puro" y era falso: además de las cuatro formas de
+  // hialurónico, el INCI declara FRAGANCIA y cinco alérgenos de declaración
+  // obligatoria — bencil salicilato, citronelol, limoneno, linalol e ionona.
+  MLA19474747: ["hialuronico", "fragancia"],
   // COSRX Advanced Snail 92 [INCI] — verificado el 11/9/2026 contra la página
   // oficial de COSRX. El mapeo que venía del vault estaba bien y no se cambia:
   // filtrado de baba, pantenol, alantoína, adenosina e hialurónico de sodio.
@@ -1485,13 +1492,19 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
   MLAU244146565: ["retinol", "retinil_ester", "niacinamida", "hialuronico", "adenosina", "tocoferol", "alcohol_denat", "fragancia"],
 
-  // ── Niacinamida ────────────────────────────────────────────────────────────
-  // La Roche-Posay Mela B3 (dos publicaciones del mismo producto).
-  // ATENCIÓN: se vende como sérum de niacinamida y trae RETINIL PALMITATO.
-  // Es un retinoide escondido en un producto que nadie clasifica como retinoide.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // LRP Mela B3 [INCI] — verificado el 12/9/2026. Confirma la trampa №1 de
+  // INGREDIENTES.md §10.3: es un sérum de niacinamida al 10% que además trae
+  // PALMITATO DE RETINILO, o sea un retinoide que nadie espera ahí, y ácido
+  // capriloil salicílico (LHA). Melasyl es 2-mercaptonicotinoil glicina.
+  //
+  // Se suma FRAGANCIA, que el INCI declara y faltaba en el mapeo.
   MLA34459961: ["niacinamida", "melasyl", "retinil_ester", "bha_lha", "tiosulfato_sodio", "carnosina", "glicirricinato", "hialuronico", "tocoferol", "fragancia"],
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // LRP Mela B3 [INCI] — verificado el 12/9/2026. Confirma la trampa №1 de
+  // INGREDIENTES.md §10.3: es un sérum de niacinamida al 10% que además trae
+  // PALMITATO DE RETINILO, o sea un retinoide que nadie espera ahí, y ácido
+  // capriloil salicílico (LHA). Melasyl es 2-mercaptonicotinoil glicina.
+  //
+  // Se suma FRAGANCIA, que el INCI declara y faltaba en el mapeo.
   MLA26197969: ["niacinamida", "melasyl", "retinil_ester", "bha_lha", "tiosulfato_sodio", "carnosina", "glicirricinato", "hialuronico", "tocoferol", "fragancia"],
   // Eximia Hyalu-N — un "sérum de niacinamida" que además trae tranexámico y un
   // complejo de AHA (glicólico, málico, tartárico, láctico) más alcohol.
@@ -1500,8 +1513,10 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // Dermaglós Serum Niacinamida 10% — fórmula corta y directa.
   // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
   MLAU209241342: ["niacinamida", "zinc_gluconato", "fragancia"],
-  // Detenage N 10% [externo] — niacinamida 10% + hialurónico de dos pesos.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // Detenage N [pendiente] — 12/9/2026. Panalab no publica el INCI: su web
+  // responde 403 a la lectura automática y las fichas de farmacia sólo listan
+  // activos con porcentaje (niacinamida 10%, hialurónico 1% + 0,5%). Mismo caso
+  // que Idraet: hay que leer la etiqueta física.
   MLAU1655818860: ["niacinamida", "hialuronico"],
 
   // ── Ácido hialurónico y ampollas ───────────────────────────────────────────
@@ -1518,19 +1533,31 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // L'Oréal Revitalift Ácido Hialurónico — suma ascorbil glucósido y péptido.
   // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
   MLA18956615: ["hialuronico", "vit_c_derivado", "peptidos"],
-  // Vichy Minéral 89 [externo] — agua termal + hialurónico. Lista corta.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
-  MLA18964459: ["hialuronico", "agua_termal"],
+  // Vichy Minéral 89 [INCI] — verificado el 12/9/2026. Lista de trece
+  // ingredientes: hialuronato de sodio y biosacárido, sobre agua y humectantes.
+  // Sin perfume y sin alcohol, declarado por la marca.
+  //
+  // El 89% de agua volcánica que promete el nombre NO se mapea como `agua_termal`:
+  // el INCI declara `Aqua` a secas, y mapearlo sería inferir desde el marketing.
+  MLA18964459: ["hialuronico"],
   // Skin1004 Tea-Trica Relief Ampoule — centella + árbol de té (agua Y aceite).
   // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
   MLA38719413: ["centella", "aceite_esencial_tea_tree", "panthenol", "hialuronico"],
-  // Skin1004 Poremizing Fresh Ampoule — trae COBRE TRIPÉPTIDO-1 y varios
-  // péptidos de señal, además de centella y aloe.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
-  MLA43183566: ["centella", "aloe", "peptidos", "peptidos_cobre", "panthenol", "hialuronico", "glicirricinato"],
-  // Celimax The Real Noni Energy Ampoule [externo] — 71,8% de noni, ceramida,
-  // escualano, colesterol y fitoesfingosina. Trae aceite esencial de romero.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // Skin1004 Poremizing Fresh Ampoule [INCI] — verificado el 12/9/2026. Centella
+  // como primer ingrediente, aloe, péptidos —incluido cobre tripéptido-1—,
+  // pantenol, hialurónico en tres formas y glicirrizinato. Se suma ascórbico
+  // etílico, que es derivado de vitamina C y faltaba.
+  //
+  // Ojo: el cobre y el ascorbato conviven en esta fórmula, que es la pelea que el
+  // diccionario modela. Acá los dos están declarados.
+  MLA43183566: ["centella", "panthenol", "hialuronico", "vit_c_derivado", "aloe", "peptidos", "peptidos_cobre", "glicirricinato"],
+  // Celimax The Real Noni Energy Ampoule [INCI] — verificado el 12/9/2026.
+  // Extracto de noni al 71,77% como base, más ceramida NP, escualano, karité y
+  // aceites de oliva y de semilla de noni.
+  //
+  // Se declara ACEITE ESENCIAL DE ROMERO, que el INCI lista y el diccionario sí
+  // sabe nombrar. La decisión de no declarar aceites era sobre no inventar un
+  // activo genérico para los que no tienen id; éste lo tiene.
   MLA45338822: ["noni", "ceramidas", "escualano", "colesterol", "fitoesfingosina", "manteca_karite", "alantoina", "adenosina", "hialuronico", "aceite_esencial_romero"],
 
   // ── Séricos con activo dirigido ────────────────────────────────────────────
@@ -1558,9 +1585,10 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // Eucerin Hyaluron-Filler Día FPS 15 — filtro insuficiente como protector.
   // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
   MLA9855881: ["filtro_quimico", "filtro_avobenzona", "hialuronico", "alcohol_denat", "fragancia"],
-  // Eucerin Aquaporin Active — gliceril glucósido, el activo con mecanismo
-  // propio de esta crema. Trae alcohol denat.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // Eucerin Aquaporin Active piel normal a mixta [INCI] — verificado el
+  // 12/9/2026. Mapeo correcto: gliceril glucósido (el activo de la línea) y
+  // ALCOHOL DENAT, que va tercero en la lista. La variante para piel seca no lo
+  // lleva; ésta sí.
   MLA9210936: ["glicerilo_glucosido", "alcohol_denat"],
   // Avène Tolerance Control [INCI] — verificado el 11/9/2026 contra la página
   // oficial. Catorce ingredientes y mapeo confirmado: agua termal y escualano.
@@ -1601,9 +1629,14 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // Eucerin Dermopure Oil Control — salicílico en un gel que se enjuaga.
   // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
   MLA37349507: ["bha_salicilico"],
-  // Beauty of Joseon Ciruela Verde — tensioactivos suaves y extractos. Sin BHA.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
-  MLA35427636: ["arroz_fermentado"],
+  // BoJ Green Plum Refreshing Cleanser [INCI] — verificado el 12/9/2026. Sale
+  // `arroz_fermentado`: el INCI dice `Oryza Sativa Extract`, extracto de arroz y
+  // NO un fermento. Es el mismo error que tenía el Dynasty Cream.
+  //
+  // Queda VACÍO VERIFICADO: lo demás que trae —agua de ciruela mume, poroto mung,
+  // té verde, loto, houttuynia— no tiene activo al que apuntar en el diccionario.
+  // Tensioactivos suaves y sin fragancia; el cítrico es ajustador de pH.
+  MLA35427636: [],
   // CeraVe Gel Limpiador Espumoso [INCI] — verificado el 12/9/2026. Mismo
   // producto que MLA25800983 en otra publicación, misma fórmula: niacinamida,
   // hialuronato, ceramidas NP/AP/EOP, fitoesfingosina y colesterol. Sin
@@ -1632,13 +1665,22 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // tiene activo al que apuntar en este diccionario.
   MLA20030752: ["niacinamida", "alantoina", "manteca_karite", "tocoferol"],
 
-  // ── Protectores solares ────────────────────────────────────────────────────
-  // Ninguno es mineral. Los que traen dióxido de titanio lo traen como PIGMENTO,
-  // junto a óxidos de hierro, no como filtro. Ver docs/INGREDIENTES.md.
-  // LRP Anthelios UVMUNE 400 con color — el único con el filtro de UVA ultra
-  // largo Y óxidos de hierro. Para manchas es el mejor del catálogo.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
-  MLA58897902: ["filtro_quimico", "filtro_avobenzona", "filtro_uva_400", "oxidos_de_hierro", "tocoferol", "alcohol_denat"],
+  // LRP Anthelios UVMUNE 400 con color [INCI] — verificado el 12/9/2026. Trae el
+  // Mexoryl 400 (Methoxypropylamino Cyclohexenylidene Ethoxyethylcyanoacetate),
+  // avobenzona, Mexoryl XL y SX, tocoferol, alcohol denat y los tres óxidos de
+  // hierro del tono (CI 77491, 77492, 77499) junto al dióxido de titanio.
+  //
+  // FALTABA LA FRAGANCIA: el INCI declara `Parfum` y el mapeo no lo tenía.
+  // Refuerza la duda sobre el otro Anthelios del catálogo, que sigue pendiente.
+  MLA58897902: [
+    "filtro_quimico",
+    "filtro_avobenzona",
+    "filtro_uva_400",
+    "oxidos_de_hierro",
+    "tocoferol",
+    "alcohol_denat",
+    "fragancia",
+  ],
   // LRP Anthelios Oil Control [pendiente] — 12/9/2026. NO se pudo resolver qué
   // variante es, y hay motivo para dudar del mapeo actual.
   //
