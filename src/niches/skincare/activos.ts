@@ -1484,13 +1484,19 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // catálogo, y esa brevedad es parte de la propuesta.
   MLA19710676: ["vit_c_laa", "tocoferol", "hialuronico", "alcohol_denat"],
 
-  // ── Retinoides ─────────────────────────────────────────────────────────────
-  // Neutrogena Retinol Boost — retinol puro. El ascórbico está abajo en la
-  // lista, como antioxidante de la fórmula, no como activo.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
-  MLA58622882: ["retinol", "hialuronico", "bisabolol", "tocoferol", "fragancia"],
-  // Eximia Hyalu-R — retinol + retinil palmitato + ferúlico + niacinamida.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // Neutrogena Retinol Boost [pendiente] — 12/9/2026. Se suma ÁCIDO ASCÓRBICO,
+  // que el INCI declara y faltaba: es vitamina C pura conviviendo con retinol.
+  // Confirmados retinol, bisabolol, hialuronato y `Parfum`.
+  //
+  // QUEDA UNA DUDA CONCRETA: la lista que se consiguió es la europea de 50 ml y
+  // no incluye tocoferol —su antioxidante es BHT—, pero el mapeo sí lo declara.
+  // No se quita porque no se pudo leer la fórmula argentina: neutrogena.com.ar
+  // responde 403. Se resuelve leyendo el envase de 30 ml.
+  MLA58622882: ["retinol", "hialuronico", "bisabolol", "tocoferol", "fragancia", "vit_c_laa"],
+  // Eximia Hyalu-R Concentré [INCI] — verificado el 12/9/2026 contra la ficha del
+  // laboratorio. Trae DOS retinoides a la vez, retinol y palmitato de retinilo,
+  // más niacinamida, pantenol, ferúlico, hialurónico hidrolizado, alfa-tocoferol
+  // y `Parfum`. Sin alcohol.
   MLA20021768: ["retinol", "retinil_ester", "niacinamida", "panthenol", "ferulico", "hialuronico", "tocoferol", "fragancia"],
   // LRP Retinol B3 [INCI] — verificado el 12/9/2026. Trae DOS retinoides: retinol
   // puro y palmitato de retinilo, más niacinamida al 2%, hialuronato y adenosina.
@@ -1511,12 +1517,18 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   //
   // Se suma FRAGANCIA, que el INCI declara y faltaba en el mapeo.
   MLA26197969: ["niacinamida", "melasyl", "retinil_ester", "bha_lha", "tiosulfato_sodio", "carnosina", "glicirricinato", "hialuronico", "tocoferol", "fragancia"],
-  // Eximia Hyalu-N — un "sérum de niacinamida" que además trae tranexámico y un
-  // complejo de AHA (glicólico, málico, tartárico, láctico) más alcohol.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // Eximia Hyalu-N Concentré [INCI] — verificado el 12/9/2026 contra la ficha del
+  // laboratorio. Confirma la trampa №4 de INGREDIENTES.md §10.3: se vende como
+  // niacinamida y el "Cobio AHA" es un complejo entero —glicólico, láctico,
+  // málico y tartárico— más urea, tranexámico y `Parfum`.
+  //
+  // El INCI dice `alcohol` a secas, que es etanol. Se mapea a `alcohol_denat`
+  // porque el diccionario modela ese riesgo y es el mismo; queda dicho acá que la
+  // lista no usa la forma desnaturalizada.
   MLA29882074: ["niacinamida", "tranexamico", "aha_glicolico", "aha_lactico", "aha_malico", "aha_tartarico", "urea", "hialuronico", "alcohol_denat", "fragancia"],
-  // Dermaglós Serum Niacinamida 10% — fórmula corta y directa.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // Dermaglós Sérum Niacinamida [INCI] — verificado el 12/9/2026 contra Andrómaco.
+  // Mapeo exacto y completo: niacinamida al 10%, gluconato de zinc y `Fragrance`.
+  // Trece ingredientes en total.
   MLAU209241342: ["niacinamida", "zinc_gluconato", "fragancia"],
   // Detenage N [pendiente] — 12/9/2026. Panalab no publica el INCI: su web
   // responde 403 a la lectura automática y las fichas de farmacia sólo listan
@@ -1524,19 +1536,26 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // que Idraet: hay que leer la etiqueta física.
   MLAU1655818860: ["niacinamida", "hialuronico"],
 
-  // ── Ácido hialurónico y ampollas ───────────────────────────────────────────
-  // Eximia Hyalu-B — OJO: trae GLUCONATO DE COBRE. Es el producto que activa la
-  // regla de cobre contra vitamina C pura.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // Eximia Hyalu-B Concentré [INCI] — verificado el 12/9/2026 contra la ficha del
+  // laboratorio. Confirma la trampa №3 de INGREDIENTES.md §10.3: lleva GLUCONATO
+  // DE COBRE, que es el metal que oxida al ascorbato.
+  //
+  // Trae además niacinamida, pantenol, gluconato de zinc, hialurónico y `Parfum`.
+  // No lleva vitamina C propia: el conflicto aparece al combinarlo con otra.
   MLA45991792: ["panthenol", "niacinamida", "cobre_gluconato", "zinc_gluconato", "hialuronico", "fragancia"],
   // LRP Hyalu B5 Suractivated [INCI] — reemplazó al anterior. Verificado: misma
   // lista, incluidos alcohol denat y fragancia.
   MLA59802317: ["hialuronico", "panthenol", "madecassosido", "adenosina", "tocoferol", "alcohol_denat", "fragancia"],
-  // Neutrogena Hydro Boost sérum — hialurónico y pantenol, nada más.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // Neutrogena Hydro Boost sérum concentrado [INCI] — verificado el 12/9/2026.
+  // Lista corta: hialuronato de sodio y pantenol sobre glicerina y gelificantes
+  // (carragenano, agar, xantana). Sin fragancia, sin alcohol y sin ácidos.
   MLA22655637: ["hialuronico", "panthenol", "fragancia"],
-  // L'Oréal Revitalift Ácido Hialurónico — suma ascorbil glucósido y péptido.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // L'Oréal Revitalift Hialurónico 1,5% [INCI] — verificado el 12/9/2026. Catorce
+  // ingredientes: hialuronato de sodio, ascorbil glucósido (derivado de vitamina
+  // C) y un dipéptido. Sin fragancia y sin alcohol denat.
+  //
+  // El pantotenato de calcio NO se mapea como `panthenol`: es la sal del ácido
+  // pantoténico, no el alcohol que el diccionario nombra.
   MLA18956615: ["hialuronico", "vit_c_derivado", "peptidos"],
   // Vichy Minéral 89 [INCI] — verificado el 12/9/2026. Lista de trece
   // ingredientes: hialuronato de sodio y biosacárido, sobre agua y humectantes.
@@ -1569,11 +1588,12 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // activo genérico para los que no tienen id; éste lo tiene.
   MLA45338822: ["noni", "ceramidas", "escualano", "colesterol", "fitoesfingosina", "manteca_karite", "alantoina", "adenosina", "hialuronico", "aceite_esencial_romero"],
 
-  // ── Séricos con activo dirigido ────────────────────────────────────────────
-  // Garnier Sérum Anti-imperfecciones [externo] — apila BHA + AHA + fítico +
-  // ascorbil glucósido + niacinamida, con alcohol denat y fragancia. Es el
-  // producto con más activos por mililitro de todo el catálogo.
-  // [pendiente] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
+  // Garnier Sérum Anti-imperfecciones [INCI] — verificado el 12/9/2026. Confirma
+  // la trampa №5 de INGREDIENTES.md §10.3: apila salicílico, láctico, fítico,
+  // ascorbil glucósido y niacinamida en la misma fórmula.
+  //
+  // Se suma ALCOHOL DENAT, que va SEGUNDO en la lista y faltaba en el mapeo. Con
+  // eso el producto acumula tres exfoliantes, un irritante y fragancia.
   MLA22843182: ["niacinamida", "bha_salicilico", "aha_lactico", "acido_fitico", "vit_c_derivado", "alcohol_denat", "fragancia"],
 
   // ISDIN Ureadin Fusion Melting Cream [pendiente] — 12/9/2026. No se consiguió

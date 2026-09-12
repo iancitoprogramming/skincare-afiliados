@@ -114,3 +114,44 @@ lastre: es una decisión de criterio, no de carga de datos.
 **El Skin1004 Tea-trica sigue marcado `apto_sensible: true` con tea tree.** Salió
 del motor, así que hoy no se le ofrece a nadie, pero el dato sigue mal y la ficha
 del producto lo muestra como apto.
+
+
+---
+
+## Tanda del 12/9/2026 — se auditó lo que queda
+
+Quedan **6 entradas sin verificar de 79**, y ninguna se puede cerrar desde acá:
+todas necesitan leer el envase o migrar la entrada a una ficha de catálogo `/p/`.
+
+| Producto | Por qué no se pudo cerrar |
+|---|---|
+| LRP Anthelios Oil Control | El `ml_id` es `MLAU`, de alcance del vendedor, y la API responde 403. El INCI de la versión sin color trae `Parfum` y `Zinc PCA` que no están mapeados, y no trae los óxidos de hierro que sí lo están. |
+| Idraet Espuma Extra Suave | La marca no publica INCI en ninguna de sus páginas. |
+| Avène Hydrance SPF30 | La ficha oficial menciona hialurónico, que el INCI de la variante *Rich* no tiene: no es esa variante, y la que se vende acá no publica lista. |
+| Detenage N | Panalab responde 403 a la lectura automática; las fichas de farmacia sólo dan activos con porcentaje. |
+| Eucerin DermoPure | Dos versiones. El mapeo sirve para ambas porque el salicílico está en las dos; la concentrada suma glicólico, PHA, alcohol denat y fragancia. El nombre no alcanza para decidir. |
+| ISDIN Ureadin Fusion | El INCI publicado está truncado y las bases que lo tienen responden 403 y 404. En la parte visible está la urea pero **no** el láctico ni la vitamina C que el mapeo declara. |
+
+> El Neutrogena Retinol Boost quedó también marcado pendiente por una duda menor:
+> la lista que se consiguió es la europea y no incluye tocoferol, que el mapeo sí
+> declara. No se quitó porque la página argentina responde 403.
+
+### Lo que enseñó esta tanda
+
+**Las fórmulas cambian por región, y tomar la lista equivocada da el resultado
+opuesto.** El Neutrogena Hydro Boost recarga no lleva perfume en España —y sí urea
+y ceramida— pero la fórmula latinoamericana, que es la que se vende acá, sí lleva
+`Parfum`. Lo mismo con el Garnier Agua Micelar: la página argentina declara "sin
+perfume" y la lista local no tiene ni LHA ni zinc PCA, que el mapeo sí tenía.
+
+**Las variantes de una misma línea son la trampa más frecuente.** Pasó con Avène
+(*Rich* contra *Légère*), con Dermaglós (cuatro cremas FPS30 distintas, y la
+nuestra resultó ser *Ultra Volumen*), con Eucerin (Tono Medio contra Toque Seco) y
+con Anthelios (con color y sin color). En todos los casos la salida fue preguntarle
+a la API oficial qué producto es, y cuando no se pudo, dejarlo pendiente.
+
+**Sumar sin quitar.** Al verificar el Poremizing se reemplazó su mapeo asumiendo
+que cuatro activos no existían en el diccionario; sí existían y el INCI los
+confirmaba. Desde entonces la regla es sumar lo que falta y quitar sólo cuando la
+fuente oficial demuestra la ausencia —como en el Garnier Agua Micelar, donde la
+página del fabricante dice "sin perfume".
