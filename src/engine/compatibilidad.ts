@@ -33,7 +33,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Momento, PasoRutina, Producto, RespuestasRutina, Rutina, RutinaSlot } from "./recomendacion";
-import { candidatosPaso } from "./recomendacion";
+import { cascadaPaso } from "./recomendacion";
 
 export type ClaseConflicto =
   | "degradacion"
@@ -572,6 +572,31 @@ function rutinaDePasos(pasos: PasoRutina[]): Rutina {
 }
 
 /**
+ * ¿Este conflicto se arregla diciéndole algo a la persona, o hace falta otro
+ * producto?
+ *
+ * Es la distinción que decide si vale la pena bajar de nivel de match, y sale de
+ * la forma de la regla, no de un criterio nuevo:
+ *
+ * - `momento:*` —un activo que la luz degrada puesto a la mañana— se arregla
+ *   moviéndolo a la noche.
+ * - Las reglas de PAR tienen `soloMismoMomento`, o sea que sólo se disparan
+ *   cuando los dos activos caen en el mismo momento. Por construcción, separarlos
+ *   en el tiempo las apaga: "uno a la mañana y el otro a la noche", "noches
+ *   alternas". Hoy las siete reglas de par del nicho son de este tipo.
+ * - Las reglas de ACUMULACIÓN no. `pila-retinoide` dice "quedate con uno", y no
+ *   hay instrucción que sirva mientras los dos frascos sigan en la rutina.
+ *
+ * El default es el conservador: lo que no se reconoce se trata como que necesita
+ * otro producto. Una instrucción que no arregla nada es peor que un frasco menos.
+ */
+export function seArreglaConInstruccion(c: Conflicto, catalogo: CatalogoActivos): boolean {
+  if (c.reglaId.startsWith("momento:")) return true;
+  const regla = catalogo.reglas.find((x) => x.id === c.reglaId);
+  return regla ? regla.soloMismoMomento : false;
+}
+
+/**
  * Arma la rutina eligiendo, dentro de cada nivel de match, el producto que menos
  * choca con lo ya elegido.
  *
@@ -605,8 +630,39 @@ function rutinaDePasos(pasos: PasoRutina[]): Rutina {
  * la trae, sumar un sérum dedicado al 10% agrega exposición sin agregar
  * resultado. Es el mismo criterio con el que el tónico salió de los tiers.
  *
- * Sólo cambia el ORDEN de los mismos cuatro números: "separar" sigue primero y
- * la calidad de fórmula sigue decidiendo al final.
+ * Sólo cambia el ORDEN de los mismos números: "separar" sigue primero y la
+ * calidad de fórmula sigue decidiendo al final.
+ *
+ * BAJAR DE NIVEL DE MATCH: CUÁNDO SÍ.
+ *
+ * `cascadaPaso` devuelve todos los escalones y no sólo el mejor, y este armado
+ * baja uno **sólo** cuando en el escalón de arriba no hay forma de esquivar un
+ * "separar" que ninguna instrucción arregla.
+ *
+ * La regla general sigue siendo la de antes y está testeada: esquivar un choque
+ * no puede costar calidad de match. Si alguien pidió algo para las manchas, se le
+ * da algo para las manchas, y si eso obliga a un "retinoide y ácido la misma
+ * noche", la salida es la instrucción —noches alternas— y no un producto peor.
+ *
+ * La excepción es el choque que ninguna instrucción arregla. Hoy es uno solo:
+ * `pila-retinoide`, dos retinoides en la misma rutina, cuyo "qué hacer" es
+ * "quedate con uno". Ahí la rutina está mal y no hay nada que decirle a la
+ * persona que la arregle; el único arreglo es otro producto. Antes de esto el
+ * armado no tenía salida: `candidatosPaso` devolvía el nivel `match` en
+ * exclusiva, así que si todos sus candidatos traían un retinoide se servía la
+ * rutina con el choque puesto.
+ *
+ * El piso es lo que ya está elegido. Agregar un producto nunca saca un conflicto,
+ * así que los "separar" duros que traen los pasos anteriores son inevitables en
+ * este paso: se baja mientras se pueda mejorar sobre ese piso, no mientras el
+ * número sea distinto de cero. Sin eso, un choque inevitable en el primer paso
+ * arrastraría todos los siguientes hasta el fondo de la cascada.
+ *
+ * El índice del escalón entra en el puntaje justo DEBAJO del "separar" duro y
+ * arriba de todo lo demás. O sea: la calidad de match le gana a la prioridad del
+ * producto, a los "cuidado" y a los "nota" —igual que cuando no había cascada,
+ * donde el escalón de arriba era lo único que existía—, y sólo cede ante un
+ * choque que no se puede explicar.
  */
 export function armarRutinaEvitandoConflictos(
   productos: Producto[],
@@ -622,55 +678,76 @@ export function armarRutinaEvitandoConflictos(
   const elegidos: { paso: PasoRutina; i: number }[] = [];
 
   for (const { slot, i } of orden) {
-    const { productos: candidatos, fallback } = candidatosPaso(productos, slot, r);
+    const escalones = cascadaPaso(productos, slot, r);
+    const yaElegidos = elegidos.map((e) => e.paso);
+
+    // El piso: los "separar" que no arregla ninguna instrucción y que ya vienen
+    // puestos por los pasos anteriores. Ver la nota de arriba.
+    const durosBase = durosDe(
+      analizarRutina(rutinaDePasos(yaElegidos), catalogo, claveProducto).conflictos,
+      catalogo,
+    );
 
     let mejor: PasoRutina | null = null;
-    let mejorPuntaje: [number, number, number, number] | null = null;
+    let mejorPuntaje: number[] | null = null;
 
-    for (const producto of candidatos) {
-      const paso: PasoRutina = { slot, producto, fallback };
-      const analisis = analizarRutina(
-        rutinaDePasos([...elegidos.map((e) => e.paso), paso]),
-        catalogo,
-        claveProducto,
-      );
+    for (const [escalon, { productos: candidatos, fallback }] of escalones.entries()) {
+      for (const producto of candidatos) {
+        const paso: PasoRutina = { slot, producto, fallback };
+        const analisis = analizarRutina(
+          rutinaDePasos([...yaElegidos, paso]),
+          catalogo,
+          claveProducto,
+        );
 
-      let separar = 0;
-      let cuidado = 0;
-      let nota = 0;
-      for (const c of analisis.conflictos) {
-        if (c.severidad === "separar") separar++;
-        else if (c.severidad === "cuidado") cuidado++;
-        else nota++;
+        let separar = 0;
+        let cuidado = 0;
+        let nota = 0;
+        for (const c of analisis.conflictos) {
+          if (c.severidad === "separar") separar++;
+          else if (c.severidad === "cuidado") cuidado++;
+          else nota++;
+        }
+        const duros = durosDe(analisis.conflictos, catalogo);
+
+        // `candidatos` ya viene ordenado por el criterio completo —prioridad,
+        // calidad de fórmula, banda de precio, id— así que alcanza con
+        // quedarse con el PRIMERO que gane: el orden de la lista hace de último
+        // desempate sin tener que repetirlo acá.
+        //
+        // Ojo con lo que este armado no puede ver: elige paso por paso, en el
+        // orden de ORDEN_DE_ELECCION, contra lo ya elegido. El hidratante se
+        // decide DESPUÉS del protector solar, así que una redundancia que aparece
+        // recién cuando entra el hidratante no se podía esquivar al elegir el
+        // protector. Es el precio de ser voraz, y se paga en avisos de "nota".
+        const puntaje =
+          r.piel === "sensible"
+            ? [duros, escalon, separar, nota, -producto.prioridad, cuidado]
+            : [duros, escalon, separar, -producto.prioridad, cuidado, nota];
+
+        if (!mejorPuntaje || menor(puntaje, mejorPuntaje)) {
+          mejor = paso;
+          mejorPuntaje = puntaje;
+        }
       }
 
-      // `candidatos` ya viene ordenado por el criterio completo —prioridad,
-      // calidad de fórmula, banda de precio, id— así que alcanza con
-      // quedarse con el PRIMERO que gane: el orden de la lista hace de quinto
-      // desempate sin tener que repetirlo acá.
-      //
-      // Ojo con lo que este armado no puede ver: elige paso por paso, en el
-      // orden de ORDEN_DE_ELECCION, contra lo ya elegido. El hidratante se
-      // decide DESPUÉS del protector solar, así que una redundancia que aparece
-      // recién cuando entra el hidratante no se podía esquivar al elegir el
-      // protector. Es el precio de ser voraz, y se paga en avisos de "nota".
-      const puntaje: [number, number, number, number] =
-        r.piel === "sensible"
-          ? [separar, nota, -producto.prioridad, cuidado]
-          : [separar, -producto.prioridad, cuidado, nota];
-
-      if (!mejorPuntaje || menor(puntaje, mejorPuntaje)) {
-        mejor = paso;
-        mejorPuntaje = puntaje;
-      }
+      // Ya no queda ningún "separar" duro por encima del piso: bajar más sólo
+      // costaría calidad de match sin ganar nada.
+      if (mejorPuntaje && mejorPuntaje[0] <= durosBase) break;
     }
 
-    // `candidatosPaso` nunca devuelve vacío: o hay candidatos o levanta excepción.
+    // `cascadaPaso` nunca devuelve vacío: o hay escalones o levanta excepción.
     elegidos.push({ paso: mejor!, i });
   }
 
   // Se devuelve en el orden original de los slots, no en el de elección.
   return rutinaDePasos(elegidos.sort((a, b) => a.i - b.i).map((e) => e.paso));
+}
+
+/** Cuántos de estos conflictos son "separar" que ninguna instrucción arregla. */
+function durosDe(conflictos: Conflicto[], catalogo: CatalogoActivos): number {
+  return conflictos.filter((c) => c.severidad === "separar" && !seArreglaConInstruccion(c, catalogo))
+    .length;
 }
 
 /** Comparación lexicográfica de puntajes. Estrictamente menor = mejor. */

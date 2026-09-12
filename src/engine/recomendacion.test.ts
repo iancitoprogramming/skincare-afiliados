@@ -1,5 +1,12 @@
 import { describe, it, expect } from "vitest";
-import { armarRutina, elegirPaso, type Producto, type Rutina } from "./recomendacion";
+import {
+  armarRutina,
+  candidatosPaso,
+  cascadaPaso,
+  elegirPaso,
+  type Producto,
+  type Rutina,
+} from "./recomendacion";
 import { productos } from "../niches/skincare/productos";
 import { TIERS, tierEfectivo, skincareQuiz, CATEGORIAS_OPCIONALES } from "../niches/skincare/config";
 
@@ -429,4 +436,109 @@ describe("en_rutina", () => {
     expect([...ids].filter((id) => recomendados.has(id))).toEqual([]);
   });
 });
+});
+
+// ── La cascada de candidatos ────────────────────────────────────────────────
+//
+// `cascadaPaso` devuelve TODOS los escalones y no sólo el mejor, para que el
+// armado que evita conflictos pueda bajar uno cuando en el suyo no hay forma de
+// esquivar un choque que ninguna instrucción arregla. Estos tests son sobre la
+// forma de la cascada; el de cuándo se baja está en `compatibilidad.test.ts`.
+
+describe("cascadaPaso", () => {
+  const slot = { categoria: "serum_activo", momento: "pm" as const };
+  const r = { piel: "normal", objetivo: "textura", presupuesto: 2 };
+
+  function serum(id: string, extra: Partial<Producto> = {}): Producto {
+    return {
+      id,
+      ml_id: id,
+      nombre: id,
+      categoria: "serum_activo",
+      paso: 1,
+      momento: "pm",
+      tipos_piel: ["normal"],
+      preocupaciones: ["textura"],
+      origen: "europeo",
+      apto_sensible: true,
+      rango_precio: 1,
+      link_afiliado: "https://example.test",
+      prioridad: 1,
+      comodin: true,
+      relevado: "2026-09-05",
+      activo: true,
+      ...extra,
+    };
+  }
+
+  it("el primer escalón es exactamente lo que devuelve candidatosPaso", () => {
+    // Si esto se rompe, `candidatosPaso` y `cascadaPaso` empezaron a contar
+    // historias distintas, y `elegirPaso` —que sirve la rutina sin evitar
+    // conflictos— quedaría desalineado del armado que sí los evita.
+    const pool = [
+      serum("MATCH"),
+      serum("SIN_OBJETIVO", { preocupaciones: ["acne"] }),
+      serum("OTRA_PIEL", { tipos_piel: ["seca"] }),
+      serum("CARO", { rango_precio: 3 }),
+    ];
+    expect(candidatosPaso(pool, slot, r)).toEqual(cascadaPaso(pool, slot, r)[0]);
+  });
+
+  it("los escalones son disjuntos: ningún producto aparece dos veces", () => {
+    // Es la razón por la que los niveles se construyen disjuntos y no anidados.
+    // Si el segundo escalón contuviera al primero, "bajar de nivel" podría
+    // devolver un producto de nivel `match` con el cartel de `sin_preocupacion`,
+    // y el cartel que ve la persona dejaría de ser cierto.
+    const pool = [
+      serum("MATCH"),
+      serum("SIN_OBJETIVO", { preocupaciones: ["acne"] }),
+      serum("OTRA_PIEL", { tipos_piel: ["seca"] }),
+      serum("CARO", { rango_precio: 3 }),
+      serum("CARO_SIN_OBJETIVO", { rango_precio: 3, preocupaciones: ["acne"] }),
+    ];
+    const todos = cascadaPaso(pool, slot, r).flatMap((g) => g.productos.map((x) => x.id));
+    expect([...new Set(todos)].length).toBe(todos.length);
+    // Y no se pierde ninguno por el camino.
+    expect(new Set(todos)).toEqual(new Set(pool.map((x) => x.id)));
+  });
+
+  it("ordena los escalones por calidad de match, y dentro de cada nivel la banda primero", () => {
+    const pool = [
+      serum("MATCH"),
+      serum("MATCH_CARO", { rango_precio: 3 }),
+      serum("SIN_OBJETIVO", { preocupaciones: ["acne"] }),
+      serum("OTRA_PIEL", { tipos_piel: ["seca"] }),
+    ];
+    const cascada = cascadaPaso(pool, slot, r);
+    expect(cascada.map((g) => [g.productos.map((x) => x.id), g.fallback])).toEqual([
+      [["MATCH"], "match"],
+      // El que se va de banda queda DESPUÉS del que entra, pero ANTES del
+      // siguiente nivel de match: el presupuesto cede ante la piel y el objetivo.
+      [["MATCH_CARO"], "fuera_de_presupuesto"],
+      [["SIN_OBJETIVO"], "sin_preocupacion"],
+      [["OTRA_PIEL"], "sin_piel"],
+    ]);
+  });
+
+  it("con un solo candidato devuelve un solo escalón", () => {
+    const cascada = cascadaPaso([serum("UNICO")], slot, r);
+    expect(cascada.length).toBe(1);
+    expect(cascada[0].fallback).toBe("match");
+  });
+
+  it("en piel sensible la cascada no incluye a los no aptos", () => {
+    // Bajar de escalón es bajar calidad de match. NUNCA es bajar seguridad: el
+    // filtro de `apto_sensible` está afuera de la cascada, no adentro.
+    const pool = [
+      serum("APTO", { tipos_piel: ["sensible"], preocupaciones: ["acne"] }),
+      serum("NO_APTO", { tipos_piel: ["sensible"], apto_sensible: false }),
+    ];
+    const cascada = cascadaPaso(pool, slot, {
+      piel: "sensible",
+      objetivo: "textura",
+      presupuesto: 2,
+    });
+    const todos = cascada.flatMap((g) => g.productos.map((x) => x.id));
+    expect(todos).toEqual(["APTO"]);
+  });
 });
