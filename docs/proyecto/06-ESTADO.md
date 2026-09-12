@@ -80,14 +80,14 @@ Acá va lo que no es una compra:
   Necesitan links nuevos generados desde la ficha `/p/`.
 - **El vault y el catálogo divergieron.** 5 `ml_id` activos no existen en los
   `.md` de Obsidian, así que `npm run importar-organize` aborta a propósito.
-- **El diccionario no puede nombrar la mayoría de los aceites esenciales.** Modela
-  tres —tea tree, romero y menta— y los demás no tienen id al que apuntar, así
-  que el motor no los ve: el Round Lab Dokdo trae aceite de flor de manzanilla y
-  el aceite limpiador de Beauty of Joseon trae salvia, artemisa, albahaca y
-  alcanfor, y las dos fórmulas le parecen limpias. Agregar un `aceite_esencial`
-  genérico está descartado (ver *no reabrir*), así que la salida es darle id a
-  los que aparezcan de verdad. Es la única decisión de criterio que la auditoría
-  dejó abierta.
+- **Faltan cuatro aceites esenciales en el diccionario.** Agregar un
+  `aceite_esencial` genérico está descartado (ver *no reabrir*), así que la
+  salida es darle id a los que aparezcan de verdad, de a uno. El 12/9 entró
+  `aceite_esencial_manzanilla` por el Round Lab Dokdo. Queda el **Beauty of
+  Joseon Ginseng Cleansing Oil**, que trae salvia, artemisa, albahaca y alcanfor
+  y declara sólo ginseng y tocoferol. Es `limpiador_oleoso` —categoría
+  opcional—, así que no entra en ninguna rutina armada, pero su ficha lo muestra
+  limpio.
 
 ### Lo que estaba acá y ya no hace falta
 

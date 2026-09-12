@@ -56,6 +56,10 @@ export const SIN_NIVEL_DE_EVIDENCIA: Record<string, string> = {
     "Tiene evidencia razonable para acné (INGREDIENTES.md §9.3), pero el documento lo trata en el " +
     "capítulo de lo que no aporta y sí suma riesgo, y acá manda el documento. Cuenta como lastre.",
   aceite_esencial_romero: "Aceite esencial sin beneficio tópico documentado.",
+  aceite_esencial_manzanilla:
+    "La manzanilla tiene fama de calmante y lo que hay medido de eso es sobre el bisabolol " +
+    "aislado, que este diccionario grada aparte. El aceite entero arrastra además las lactonas " +
+    "sesquiterpénicas, que son el alérgeno, así que no se le acredita beneficio.",
   menta: "La sensación de fresco no es un beneficio: es la señal de que algo está irritando.",
   hamamelis: "Astringente tradicional sin beneficio afirmable; se declara para explicar tolerancia.",
   cobre_gluconato:
@@ -684,6 +688,32 @@ export const ACTIVOS: Record<string, Activo> = {
       "Aceite esencial. Aporta aroma y algo de antioxidante, y a cambio suma riesgo de dermatitis " +
       "de contacto en piel reactiva.",
   },
+  // Alta del 12/9/2026, y la primera de la lista de aceites esenciales que el
+  // diccionario todavía no podía nombrar. Se le da id porque apareció en un INCI
+  // concreto —el Round Lab 1025 Dokdo Cleanser— y no para tener la categoría
+  // cubierta: la decisión de no inventar un `aceite_esencial` genérico sigue en
+  // pie, así que el camino es darle id a los que aparezcan, de a uno.
+  //
+  // La manzanilla es el caso menos intuitivo de los cuatro, porque su fama es de
+  // calmante. Por eso conviene tener claro qué es cada cosa: el bisabolol —grado C
+  // en INGREDIENTES.md— es un componente aislado de la manzanilla y es lo que
+  // tiene algo medido. El ACEITE de la flor arrastra además la fracción de
+  // oleorresina, y ahí están las lactonas sesquiterpénicas, que son el alérgeno de
+  // la familia Compositae. No son el mismo ingrediente y no se tratan igual.
+  aceite_esencial_manzanilla: {
+    id: "aceite_esencial_manzanilla",
+    nombre: "Aceite esencial de manzanilla",
+    familia: "aceite-esencial",
+    grupos: ["irritante-potencial"],
+    carga: 1,
+    evidencia:
+      "Tiene fama de calmante y el aceite entero no se la ganó: las lactonas sesquiterpénicas de " +
+      "la oleorresina son el alérgeno de la familia Compositae, y la manzanilla alemana " +
+      "(Chamomilla recutita) es uno de los cinco extractos de la mezcla Compositae que va en " +
+      "varias series base de parche. De 129 pacientes sensibles a esa mezcla, 83 —el 64%— dieron " +
+      "positivo al extracto de flor de manzanilla alemana. Lo calmante que hay medido es del " +
+      "bisabolol aislado, que es otro ingrediente.",
+  },
   menta: {
     id: "menta",
     nombre: "Menta / mentol",
@@ -1197,8 +1227,23 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // declara aha_citrico. O se mapea en todos los INCI donde aparece —y entonces
   // sube el conflicto en todo el catálogo— o en ninguno salvo que sea exfoliante
   // de verdad. Hoy la convención de hecho es la segunda, y esto la sigue.
+  // ENTRA `aceite_esencial_manzanilla` el 12/9/2026. El INCI declara
+  // `Chamomilla Recutita Flower Oil` —manzanilla ALEMANA, no la romana— más o
+  // menos a dos tercios de una lista de 38 ingredientes. La auditoría lo había
+  // anotado en julio como "el diccionario no puede nombrarlo" y desde hoy sí
+  // puede: el activo existe, así que el producto lo declara.
+  //
+  // Es un aceite y no un extracto, así que cae del lado que el mapa ya venía
+  // aplicando. Verificado contra una base de INCI independiente, no contra el
+  // listado que se cargó a mano.
+  //
+  // Lo demás del INCI acompaña y conviene tenerlo escrito, porque el producto
+  // sigue siendo bueno: los tensioactivos son suaves de verdad —cocoil
+  // isetionato de sodio, metil cocoil taurato, coco-betaína, cocoil glicinato de
+  // potasio—, y trae ceramida NP, pantenol, alantoína, hialurónico en dos formas
+  // y beta-glucano. Que no sea para piel sensible no lo vuelve un mal limpiador.
   // [INCI] fuente sin registrar — ver docs/AUDITORIA-PRODUCTOS.md
-  MLA28943962: ["hialuronico", "panthenol", "alantoina", "ceramidas"],
+  MLA28943962: ["hialuronico", "panthenol", "alantoina", "ceramidas", "aceite_esencial_manzanilla"],
   // Vanicream Moisturizing Lotion: vacio a proposito. Once ingredientes y
   // ninguno es un activo que el motor conozca — hidrata por oclusion, con
   // petrolatum. No tener activos no es un dato faltante, es la formula.
