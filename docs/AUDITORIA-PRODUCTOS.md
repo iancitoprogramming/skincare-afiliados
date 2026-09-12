@@ -69,7 +69,7 @@ datos en vez de volver a mirarlos de cero.
 | Kosmos Vitamina C Pura | `MLA45672941` | **verificado** | Once ingredientes, mapeo confirmado entero: ascórbico 15%, ferúlico 0,5%, tocoferol 1%, ceramida NP y D-pantenol. Confirma el ejemplo de `CALIDAD.md` §5. Está en 144 rutinas. |
 | The Ordinary Niacinamida 10% + Zinc | — | **verificado** | Once ingredientes: niacinamida, zinc PCA y vehículos. Sin fragancia ni ácidos. Está en 102 rutinas. |
 | Cetaphil Pro AD Restoraderm | — | **verificado** | Mapeo confirmado: karité, alantoína, niacinamida y tocoferol. Sin fragancia. El tensioactivo es trideceth sulfato, más duro que un cocoil isetionato, pero no hay activo al que apuntar. |
-| Round Lab 1025 Dokdo Cleanser | — | **verificado** | Confirma hialurónico en tres formas, pantenol, alantoína y ceramida NP. **Trae además aceite de flor de manzanilla**, que el diccionario no puede nombrar. Está en 210 rutinas. |
+| Round Lab 1025 Dokdo Cleanser | `MLA28943962` | **corregido** | Confirma hialurónico, pantenol, alantoína y ceramida NP. Traía además **aceite de flor de manzanilla** sin que el diccionario pudiera nombrarlo; el 12/9 se dio de alta `aceite_esencial_manzanilla` y el producto lo declara. Salió de piel sensible y sigue en el motor para las otras cuatro. Ver *El primer aceite esencial que faltaba*. |
 | CeraVe Limpiador Hidratante | `MLA37598876` | **verificado** | Mapeo confirmado entero: ceramidas NP, AP y EOP, hialuronato, colesterol, fitoesfingosina y tocoferol. Sin fragancia ni ácidos. Está en 72 rutinas. |
 | Avène Tolerance Control | `MLA23143346` | **verificado** | Catorce ingredientes: agua termal y escualano, confirmados. Sin fragancia y sin conservantes, por envase estéril. Está en 56 rutinas. |
 | Haruharu Black Rice Pure Mineral SPF50 | `MLA2068351806` | **verificado** | Mapeo confirmado: óxido de zinc, niacinamida, hialuronato, ceramida y tocoferol. Confirma que el `Butyloctyl Salicylate` es emoliente y no salicílico. Es el único mineral del catálogo y está en 110 rutinas. |
@@ -103,13 +103,18 @@ justamente el producto cuyo INCI no se pudo verificar.
 
 ## Decisiones que la auditoría deja abiertas
 
-**El diccionario no puede nombrar la mayoría de los aceites esenciales.** Modela
-tres —tea tree, romero y menta— y nada más. Ya van dos productos afectados: el
-aceite limpiador de Beauty of Joseon trae salvia, artemisa, albahaca y alcanfor, y
-el Round Lab Dokdo —que está en 210 rutinas— trae aceite de flor de manzanilla. El
-motor no los ve, así que las dos fórmulas le parecen limpias. Agregar un activo `aceite_esencial` genérico lo
-arreglaría, pero cambiaría varios productos de una sola vez y afecta al cálculo de
-lastre: es una decisión de criterio, no de carga de datos.
+**El diccionario no puede nombrar todos los aceites esenciales.** Agregar un
+activo `aceite_esencial` genérico lo arreglaría de golpe, pero cambiaría varios
+productos de una sola vez y afecta al cálculo de lastre, así que está descartado.
+El camino elegido es **darle id a los que aparezcan de verdad, de a uno**, y el
+12/9 se empezó: entró `aceite_esencial_manzanilla` por el Round Lab Dokdo (ver
+*El primer aceite esencial que faltaba*).
+
+Lo que queda de esa lista: el **Beauty of Joseon Ginseng Cleansing Oil** trae
+salvia, artemisa, albahaca y alcanfor, cuatro aceites sin id, y su mapeo declara
+sólo ginseng y tocoferol. Es `limpiador_oleoso`, una categoría opcional, así que
+no entra en ninguna rutina armada — pero su ficha lo muestra limpio. Son cuatro
+altas de activo, no una.
 
 > Las otras dos decisiones que esta sección dejó abiertas el 12/9 —si la
 > fragancia veta para piel sensible, y si un extracto de hoja es el mismo activo
@@ -305,3 +310,80 @@ un producto activo marcado apto para piel sensible declara un aceite esencial, c
 una lista de excepciones que exige motivo escrito —la misma forma que
 `SIN_NIVEL_DE_EVIDENCIA`—. Se verificó que el test falla de verdad volviendo a
 poner el dato viejo.
+
+---
+
+## El primer aceite esencial que faltaba · 12/9/2026
+
+La auditoría había anotado que el diccionario no puede nombrar la mayoría de los
+aceites esenciales, y que por eso el **Round Lab 1025 Dokdo Cleanser** —el
+producto que más aparecía en el catálogo— le parecía limpio al motor. Se empezó
+a cerrar por ahí.
+
+**Qué declara el envase.** El INCI trae `Chamomilla Recutita Flower Oil`, a dos
+tercios de una lista de 38 ingredientes. Es manzanilla **alemana**, no la romana
+(*Anthemis nobilis*), y es un **aceite**, no un extracto: cae del lado que el mapa
+ya venía aplicando. Verificado contra una base de INCI independiente y no contra
+el listado que se había cargado a mano.
+
+**Por qué la manzanilla cuenta, si su fama es de calmante.** Porque no es un solo
+ingrediente. El **bisabolol** —grado C en `INGREDIENTES.md`— es un componente
+aislado de la manzanilla y es lo que tiene algo medido. El **aceite** de la flor
+arrastra además la fracción de oleorresina, y ahí están las lactonas
+sesquiterpénicas, que son el alérgeno de la familia Compositae. La manzanilla
+alemana es uno de los cinco extractos de la **mezcla Compositae** que va en varias
+series base de parche, justamente por eso. De 129 pacientes sensibles a esa
+mezcla, **83 —el 64%— dieron positivo al extracto de flor de manzanilla alemana**.
+Y la reactividad cruzada entre lactonas sesquiterpénicas es alta, así que no
+alcanza con evitar una planta de la familia.
+
+Así que el activo entra como los otros tres: `familia: "aceite-esencial"`,
+`grupos: ["irritante-potencial"]`, `carga: 1`, y en `SIN_NIVEL_DE_EVIDENCIA`,
+porque no se le acredita beneficio: lo calmante que hay medido es del bisabolol,
+que es otro ingrediente.
+
+**El candado lo agarró solo.** No hubo que ir a buscar el producto: al declarar el
+activo, `apto-sensible.test.ts` falló señalando
+`MLA28943962 Dokdo Cleanser → aceite_esencial_manzanilla`. Es la primera vez que
+ese test encuentra un caso que nadie había anotado antes, que es para lo que se
+escribió.
+
+### El impacto medido: cero, y la verificación de que es cero de verdad
+
+```
+                        antes    después
+auditar, sin conflicto  344/360  344/360
+auditar, por piel       2/8/3/3/0  2/8/3/3/0   (grasa, mixta, normal, seca, sensible)
+auditar, con "separar"  0        0
+cobertura, match        346      346
+cobertura, no-apto-sens 0        0
+cobertura, comodín      0        0
+cobertura, fuera banda  72       72
+huecos                  10       10
+npm test                133      133
+```
+
+Que un producto que aparecía en 210 rutinas salga de piel sensible sin mover un
+número parece raro, así que se verificó paso por paso. **Quedan 12 limpiadores
+aptos para piel sensible**, en las tres bandas, y las 12 combinaciones de objetivo
+y presupuesto siguen recibiendo uno de nivel `match`:
+
+```
+acne            $1·$2·$3  →  Haruharu Wonder Black Rice Gel        [match]
+manchas         $1        →  Cetaphil Pro Ad Restoraderm           [fuera_de_presupuesto]
+manchas         $2        →  CeraVe Gel Limpiador Espumoso         [match]
+manchas         $3        →  Cetaphil Pro Ad Restoraderm           [match]
+textura         $1·$2·$3  →  Haruharu Wonder Black Rice Gel        [match]
+deshidratacion  $1        →  Haruharu Wonder Black Rice Gel        [match]
+deshidratacion  $2·$3     →  CeraVe Limpiador Hidratante           [match]
+```
+
+El único `fuera_de_presupuesto` de esa tabla ya estaba antes: el total de pasos
+fuera de banda no se movió de 72. Los 210 del Dokdo eran apariciones sumadas
+sobre las cinco pieles, y el producto **sigue en el motor para las otras cuatro**.
+
+**Sigue siendo un buen limpiador y eso no es un consuelo, es un dato:** los
+tensioactivos son suaves de verdad —cocoil isetionato de sodio, metil cocoil
+taurato, coco-betaína, cocoil glicinato de potasio—, y trae ceramida NP, pantenol,
+alantoína, hialurónico en dos formas y beta-glucano, a pH 5,0-6,0. No ser apto
+para una piel que reacciona es otra cosa que ser malo.

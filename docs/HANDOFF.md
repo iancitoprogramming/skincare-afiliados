@@ -244,10 +244,12 @@ bash falla con un error de sintaxis que no dice nada. Un heredoc por comando.
    pide vitest 5, que es un salto mayor.
 6. **UX**: sistema visual, mockups para las redes, carrusel y prueba social.
 
-**Queda una sola pregunta de criterio abierta**, anotada en
-`docs/AUDITORIA-PRODUCTOS.md`: el diccionario no puede nombrar la mayoría de los
-aceites esenciales, y los que no tienen id el motor no los ve. Agregar uno
-genérico está descartado (§6), así que la salida es darle id a los que aparezcan.
+**Los aceites esenciales que el diccionario no podía nombrar se están cerrando de
+a uno**, que es el camino que queda una vez descartado el activo genérico (§6). El
+12/9 entró `aceite_esencial_manzanilla` por el Round Lab Dokdo, a costo cero en
+todo lo medido. Falta el Beauty of Joseon Ginseng Cleansing Oil: salvia, artemisa,
+albahaca y alcanfor, cuatro altas de activo. Es `limpiador_oleoso`, categoría
+opcional, así que no entra en rutinas armadas pero su ficha lo muestra limpio.
 
 ---
 

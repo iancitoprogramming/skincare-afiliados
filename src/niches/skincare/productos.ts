@@ -1091,6 +1091,20 @@ const productosCurados: Producto[] = [
   },
   {
     // Alta manual · 9/9/2026 · INCI aportado por Ian
+    //
+    // NO ES APTO PARA PIEL SENSIBLE desde el 12/9/2026, y el motivo es nuevo: el
+    // INCI declara `Chamomilla Recutita Flower Oil` y hasta hoy el diccionario no
+    // tenía id para ese aceite, así que el motor lo leía como un limpiador limpio.
+    // El activo se dio de alta y el producto lo declara.
+    //
+    // Es el producto que más aparecía en el catálogo, así que esto se pagó: ver
+    // el impacto medido en docs/AUDITORIA-PRODUCTOS.md. Se paga igual, porque el
+    // aceite ya estaba en el frasco; lo único que cambió es que ahora se ve.
+    //
+    // SIGUE SIENDO UN BUEN LIMPIADOR y sigue en el motor para las otras cuatro
+    // pieles: tensioactivos suaves de verdad, ceramida NP, pantenol, alantoína,
+    // hialurónico y pH 5,0-6,0. No es apto para piel que reacciona, que es otra
+    // cosa.
     id: "90c1aea1-3bfb-5a4e-a211-78985e1f3c48",
     ml_id: "MLA28943962",
     cuenta: "maurobilat",
@@ -1104,7 +1118,7 @@ const productosCurados: Producto[] = [
     tipos_piel: ["grasa", "mixta", "normal", "seca", "sensible"],
     preocupaciones: ["deshidratacion", "acne", "textura"],
     origen: "coreano",
-    apto_sensible: true,
+    apto_sensible: false,
     rango_precio: 2,
     imagen_url: "https://http2.mlstatic.com/D_Q_NP_2X_839222-MLU73333939622_122023-V.webp",
     imagen_hd: "https://http2.mlstatic.com/D_NQ_NP_2X_839222-MLU73333939622_122023-F.webp",
