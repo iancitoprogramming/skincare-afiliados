@@ -111,9 +111,23 @@ motor no los ve, así que las dos fórmulas le parecen limpias. Agregar un activ
 arreglaría, pero cambiaría varios productos de una sola vez y afecta al cálculo de
 lastre: es una decisión de criterio, no de carga de datos.
 
-**El Skin1004 Tea-trica sigue marcado `apto_sensible: true` con tea tree.** Salió
-del motor, así que hoy no se le ofrece a nadie, pero el dato sigue mal y la ficha
-del producto lo muestra como apto.
+**¿La fragancia veta a un producto para piel sensible?** Quedan dos productos
+activos que declaran `fragancia` y siguen marcados `apto_sensible: true`: el
+Cleanex Free Gel —el caso que abrió esta auditoría— y la Lidherma Hyaluronic 4D.
+El diccionario ya clasifica a la fragancia como `irritante-potencial` con carga
+propia, y es el alérgeno de contacto más frecuente en cosmética. Pero vetar por
+fragancia mueve más productos que vetar por aceite esencial y puede abrir huecos,
+así que es una decisión de criterio y está sin tomar. El test
+`apto-sensible.test.ts` no la enforcea a propósito.
+
+**¿Un extracto de hoja es el mismo activo que su aceite esencial?** El TIRTIR Milk
+Skin Toner declara `Mentha Piperita (Peppermint) Leaf Extract` en la cola de una
+lista de 35 ingredientes, y el mapeo lo apunta a `menta`, cuyo id es
+"Menta / mentol". No es lo mismo un extracto de hoja que el aceite esencial o el
+mentol aislado, y la diferencia decide si el producto es apto para piel sensible o
+no. Hoy figura como excepción escrita en `apto-sensible.test.ts` en vez de
+resolverse por omisión. El Round Lab Dokdo tiene el mismo problema al revés: trae
+aceite de flor de manzanilla y el motor no lo ve.
 
 
 ---
@@ -155,3 +169,56 @@ que cuatro activos no existían en el diccionario; sí existían y el INCI los
 confirmaba. Desde entonces la regla es sumar lo que falta y quitar sólo cuando la
 fuente oficial demuestra la ausencia —como en el Garnier Agua Micelar, donde la
 página del fabricante dice "sin perfume".
+
+
+---
+
+## Corrección del 12/9/2026 — `apto_sensible` contra el mapa de activos
+
+La auditoría había dejado anotado que el Skin1004 Tea-trica estaba marcado
+`apto_sensible: true` teniendo tea tree. Al ir a corregirlo aparecieron **tres**
+productos activos en esa situación, no uno, y el peor no era el que estaba
+anotado.
+
+| Producto | `ml_id` | Estado | Qué pasó |
+|---|---|---|---|
+| COSRX Low pH Good Morning Gel Cleanser | `MLA11139349` | **corregido** | `apto_sensible: true` → `false`. Es el grave: `en_rutina` no estaba en `false`, así que el motor **sí** se lo servía a quien declaraba piel sensible. El INCI trae `Melaleuca Alternifolia (Tea Tree) Leaf Oil` y `Betaine Salicylate`, confirmado en dos fuentes. El comentario de su propio mapeo ya decía que el tea tree "lo saca de las rutinas de piel sensible" —la prosa y el dato decían cosas opuestas y ganaba el dato. |
+| Skin1004 Tea-trica B5 Crema | `MLA37722163` | **corregido** | `apto_sensible: true` → `false`. Ya estaba fuera del motor, así que no afectaba rutinas, pero la ficha le decía "apto" a quien declara piel sensible. |
+| TIRTIR Milk Skin Toner | `MLAU3481553718` | **pendiente, por criterio** | Declara `menta` por `Mentha Piperita Leaf Extract`. No se tocó: ver la decisión abierta sobre extracto contra aceite esencial. |
+
+**El veto no es una regla nueva.** El diccionario ya clasifica los tres aceites
+esenciales que modela con `grupos: ["irritante-potencial"]` y carga propia, y su
+campo `evidencia` dice que son causa conocida de dermatitis de contacto. El
+respaldo externo es de Groot & Schmidt, *Contact Dermatitis* 2016: el tea tree es
+el aceite esencial con más reacciones alérgicas publicadas, con 0,1% a 3,5% de
+parches positivos en testeo de rutina, y los sensibilizantes son los productos de
+oxidación de sus monoterpenos. Lo que faltaba era que el dato dijera lo mismo que
+la prosa.
+
+**`tipos_piel` no se tocó, y es deliberado.** Ese campo es la orientación del
+producto; `apto_sensible` es el veto por fórmula. Pueden discrepar y de hecho ya
+discrepan en The Ordinary Niacinamida 10% y en el Detenage N. El que decide qué se
+sirve es `apto_sensible`, que es el que filtra `elegirPaso`.
+
+**Impacto medido, antes y después:**
+
+```
+                        antes    después
+auditar, sin conflicto  344/360  344/360
+auditar, con "separar"  0        0
+cobertura, match        346      346
+cobertura, no-apto-sens 0        0
+cobertura, comodín      0        0
+huecos                  3        3
+```
+
+Sacar el limpiador de las rutinas de piel sensible **no abrió ningún hueco**: el
+catálogo ya tenía limpiadores aptos, que es justo lo que había resuelto el PR #8.
+El costo de la corrección fue cero y el beneficio es que dejamos de afirmar algo
+que el INCI contradice.
+
+**Lo que queda como candado.** `src/niches/skincare/apto-sensible.test.ts` falla si
+un producto activo marcado apto para piel sensible declara un aceite esencial, con
+una lista de excepciones que exige motivo escrito —la misma forma que
+`SIN_NIVEL_DE_EVIDENCIA`—. Se verificó que el test falla de verdad volviendo a
+poner el dato viejo.

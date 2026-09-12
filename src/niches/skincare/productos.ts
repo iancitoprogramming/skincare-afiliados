@@ -85,6 +85,24 @@ const productosCurados: Producto[] = [
   },
   {
     // #4 · MLA11139349 · sin vendedor destacado
+    //
+    // NO ES APTO PARA PIEL SENSIBLE, y estuvo marcado como apto hasta el 12/9/2026.
+    // El INCI trae `Melaleuca Alternifolia (Tea Tree) Leaf Oil` y `Betaine
+    // Salicylate`. El aceite de tea tree es el aceite esencial con más reacciones
+    // alérgicas publicadas: de Groot & Schmidt, *Contact Dermatitis* 2016, mide
+    // entre 0,1% y 3,5% de parches positivos en testeo de rutina, y los
+    // sensibilizantes son los productos de oxidación de sus monoterpenos. Que se
+    // enjuague baja la exposición pero no la vuelve nula, y acá viene acompañado
+    // de un BHA.
+    //
+    // El mapeo de activos ya decía esto —"el BHA suave + tea tree que lo saca de
+    // las rutinas de piel sensible"— pero el dato del catálogo nunca se cambió, así
+    // que el motor lo seguía sirviendo a piel sensible y la ficha lo mostraba apto.
+    // La prosa y el dato decían cosas opuestas y ganaba el dato.
+    //
+    // `tipos_piel` SIGUE incluyendo "sensible" y está bien: ese campo es la
+    // orientación del producto, no un permiso. `apto_sensible` es el que veta por
+    // fórmula. The Ordinary Niacinamida 10% y el Detenage N ya usan ese mismo par.
     id: "df632bf0-55e0-5fa8-8515-a863341156e3",
     ml_id: "MLA11139349",
     cuenta: "maurobilat",
@@ -100,7 +118,7 @@ const productosCurados: Producto[] = [
     tipos_piel: ["grasa", "mixta", "normal", "seca", "sensible"],
     preocupaciones: ["acne", "textura", "deshidratacion"],
     origen: "coreano",
-    apto_sensible: true,
+    apto_sensible: false,
     rango_precio: 2,
     precio_ars: 37504,
     imagen_url: "https://http2.mlstatic.com/D_Q_NP_2X_865672-MLU75328154403_032024-V.webp",
@@ -292,7 +310,7 @@ const productosCurados: Producto[] = [
     tipos_piel: ["grasa", "mixta"],
     preocupaciones: ["acne", "textura"],
     origen: "coreano",
-    apto_sensible: true,
+    apto_sensible: false,
     rango_precio: 2,
     precio_ars: 45475,
     imagen_url: "https://http2.mlstatic.com/D_Q_NP_2X_994827-MLU76998762803_062024-V.webp",
@@ -304,7 +322,11 @@ const productosCurados: Producto[] = [
     relevado: "2026-09-05",
     prioridad: 5,
     comodin: false,
-    // Fuera del motor: trae `aceite_esencial_tea_tree` estando marcado apto para piel sensible, y encima `aha_mandelico`.
+    // Fuera del motor: trae `aceite_esencial_tea_tree` y encima `aha_mandelico`.
+    // El `apto_sensible: true` que lo acompañaba era un dato mal cargado y se
+    // corrigió el 12/9/2026: salir del motor lo saca de las rutinas, pero la ficha
+    // le seguía diciendo "apto" a quien declara piel sensible. Mismo motivo que el
+    // COSRX Low pH de más arriba.
     // Sigue vendible en /catalogo con su ficha y su link.
     en_rutina: false,
     activo: true,
