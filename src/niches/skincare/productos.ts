@@ -198,6 +198,17 @@ const productosCurados: Producto[] = [
   },
   {
     // #23 · MLA27603374 · Mi Farma
+    //
+    // NO ES APTO PARA PIEL SENSIBLE desde el 12/9/2026, y su `por_que` decía lo
+    // contrario. El INCI trae `Fragrance (Parfum)` en la posición 10 —verificado
+    // contra el prospecto de Panalab y una base independiente— y el único activo
+    // que declara es justamente ése. El tensioactivo es Sodium Laureth Sulfate.
+    //
+    // Se enjuaga, y eso importa: el reglamento europeo pide declarar los 26
+    // alérgenos de fragancia desde 0,01% en enjuague y desde 0,001% en producto
+    // que queda puesto, o sea que reconoce diez veces menos exposición. Pero diez
+    // veces menos no es cero, y el catálogo tiene 13 limpiadores aptos sin
+    // fragancia —4 de ellos en banda 1—, así que evitarla no cuesta nada.
     id: "5287ad8a-fb88-5094-a48f-51c710cd96ce",
     ml_id: "MLA27603374",
     cuenta: "maurobilat",
@@ -214,14 +225,15 @@ const productosCurados: Producto[] = [
     tipos_piel: ["grasa", "mixta", "sensible"],
     preocupaciones: ["acne", "textura"],
     origen: "nacional",
-    apto_sensible: true,
+    apto_sensible: false,
     rango_precio: 2,
     precio_ars: 40162,
     imagen_url: "https://http2.mlstatic.com/D_Q_NP_2X_716982-MLU72122769372_102023-V.webp",
     imagen_hd: "https://http2.mlstatic.com/D_NQ_NP_2X_716982-MLU72122769372_102023-F.webp",
     link_afiliado: "https://meli.la/1PTw6U7",
     url_referencia: "https://www.mercadolibre.com.ar/p/MLA27603374",
-    por_que: "Gel de limpieza sin jabón, formulado para piel sensible que además hace grasitud.",
+    por_que:
+      "Gel de limpieza sin jabón para piel grasa y mixta. Trae fragancia, así que no es el limpiador para una piel que reacciona.",
     como_usar: "Mañana y noche. Enjuagá bien.",
     relevado: "2026-09-05",
     prioridad: 4,
@@ -397,6 +409,17 @@ const productosCurados: Producto[] = [
   },
   {
     // #20 · MLA19474747 · L'ALTRA BELLEZZA
+    //
+    // NO ES APTO PARA PIEL SENSIBLE desde el 12/9/2026. Es el caso más claro de
+    // los dos: además de `Fragancia`, el INCI declara individualmente CINCO de
+    // los 26 alérgenos de fragancia del reglamento europeo —bencil salicilato,
+    // citronelol, limoneno, linalol e ionona—. Están en esa lista justamente
+    // porque hay que poder evitarlos por nombre.
+    //
+    // Y dos de ellos son de los que más pesan hoy: en el panel del North
+    // American Contact Dermatitis Group 2019-2020, los hidroperóxidos de linalol
+    // dieron 11,1% de parches positivos y los de limoneno 3,5%, con la mezcla de
+    // fragancias I en 12,8%. Es una crema que QUEDA PUESTA, no un enjuague.
     id: "cae68c7d-d0d5-569c-97c1-dc7685e0fc83",
     ml_id: "MLA19474747",
     cuenta: "maurobilat",
@@ -413,7 +436,7 @@ const productosCurados: Producto[] = [
     tipos_piel: ["mixta", "normal", "seca"],
     preocupaciones: ["deshidratacion"],
     origen: "nacional",
-    apto_sensible: true,
+    apto_sensible: false,
     rango_precio: 1,
     precio_ars: 31573,
     imagen_url: "https://http2.mlstatic.com/D_Q_NP_2X_751116-MLA51443088672_092022-V.webp",

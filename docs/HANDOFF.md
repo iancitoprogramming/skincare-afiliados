@@ -191,6 +191,8 @@ Las anteriores están en `docs/proyecto/06-ESTADO.md`. Las de esta línea de tra
 | **Un producto entra por su fórmula, no por sus ventas** | Ver `04-CATALOGO.md` § *Antes de cargarlo* |
 | **Sumar sin quitar** | Un activo se quita sólo cuando la fuente oficial demuestra su ausencia |
 | **`tipos_piel` orienta, `apto_sensible` veta** | El primero dice para qué piel está pensado el producto; el segundo es el único que filtra en el motor, y sólo veta por fórmula. Pueden discrepar, y discrepan a propósito en tres productos |
+| **La fragancia veta `apto_sensible`**, enjuague incluido | Decisión del usuario delegada, 12/9. De los 8 productos del motor que declaran fragancia, 6 ya estaban cargados como no aptos: los 2 que faltaban eran la excepción, no otra política. Ver `AUDITORIA-PRODUCTOS.md` |
+| **Un extracto de hoja no es su aceite esencial** | Misma fecha. Un id de aceite esencial es para un ACEITE que el INCI nombre, que es lo que el mapa ya hacía en sus otras tres entradas. El diccionario ya distingue por forma: `hamamelis` tiene carga 0 por ser extracto |
 | **Un conflicto que se arregla con una instrucción no baja la calidad de match** | Decisión del usuario, 12/9. "Retinoide y ácido la misma noche" se resuelve con "noches alternas", y el sitio ya genera el calendario noche por noche. Bajar de nivel le costaría a la persona el producto que vino a buscar — y al medirlo, el calendario le aparece igual, porque el retinoide solo tampoco es de uso diario. Sólo se baja ante un choque sin instrucción posible: hoy es uno, `pila-retinoide`, cuyo "qué hacer" es "quedate con uno" |
 
 ---
@@ -242,10 +244,10 @@ bash falla con un error de sintaxis que no dice nada. Un heredoc por comando.
    pide vitest 5, que es un salto mayor.
 6. **UX**: sistema visual, mockups para las redes, carrusel y prueba social.
 
-**Dos preguntas de criterio quedaron abiertas**, las dos anotadas en
-`docs/AUDITORIA-PRODUCTOS.md`: si la fragancia veta un producto para piel
-sensible (afecta a dos productos activos), y si el extracto de hoja de menta y su
-aceite esencial son el mismo activo (afecta al TIRTIR).
+**Queda una sola pregunta de criterio abierta**, anotada en
+`docs/AUDITORIA-PRODUCTOS.md`: el diccionario no puede nombrar la mayoría de los
+aceites esenciales, y los que no tienen id el motor no los ve. Agregar uno
+genérico está descartado (§6), así que la salida es darle id a los que aparezcan.
 
 ---
 

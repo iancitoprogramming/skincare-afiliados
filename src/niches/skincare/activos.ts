@@ -1308,9 +1308,27 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   MLA37240248: ["ginseng", "tocoferol"],
 
   // ── Tónico ─────────────────────────────────────────────────────────────────
-  // TIRTIR Milk Skin Toner [INCI] — niacinamida alta en la lista; también trae
-  // hamamelis y hoja de menta, que para piel reactiva cuentan.
-  MLAU3481553718: ["niacinamida", "panthenol", "centella", "alantoina", "hialuronico", "hamamelis", "menta"],
+  // TIRTIR Milk Skin Toner [INCI] — niacinamida alta en la lista, y hamamelis.
+  //
+  // SALE `menta`, el 12/9/2026. El INCI declara `Mentha Piperita (Peppermint)
+  // Leaf Extract` —extracto de hoja, en la cola de una lista de 35
+  // ingredientes— y el id `menta` de este diccionario es "Menta / mentol", de
+  // familia aceite-esencial. El extracto no es el aceite esencial ni el mentol
+  // aislado, y apuntarlo ahí era afirmar más de lo que dice el envase.
+  //
+  // Es la regla que el resto del mapa ya seguía sin estar escrita: los otros
+  // tres productos con aceite esencial apuntan a un ACEITE que el INCI nombra
+  // —`Rosmarinus Officinalis Leaf Oil` en el Celimax, `Melaleuca Alternifolia
+  // Leaf Oil` en los dos Skin1004 y el COSRX—. Éste era el único que apuntaba a
+  // un extracto. Y el propio diccionario ya distingue por forma: `hamamelis`
+  // tiene carga 0 porque "como agua o extracto sin alcohol es inofensivo".
+  //
+  // El respaldo externo es el CIR: en HRIPT, 2,5% de extracto de menta dio
+  // negativo para irritación y sensibilización, y los casos publicados son del
+  // ACEITE y de sus constituyentes. La reserva del panel es sobre la pulegona
+  // (≤1%) y sobre el mentol como promotor de penetración — ninguno de los dos
+  // es lo que declara este INCI.
+  MLAU3481553718: ["niacinamida", "panthenol", "centella", "alantoina", "hialuronico", "hamamelis"],
 
   // ── Séricos ────────────────────────────────────────────────────────────────
   // Garnier Sérum Anti Manchas Vitamina C [INCI] — no es vitamina C pura:

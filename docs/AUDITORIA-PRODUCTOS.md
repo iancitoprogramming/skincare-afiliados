@@ -111,24 +111,107 @@ motor no los ve, así que las dos fórmulas le parecen limpias. Agregar un activ
 arreglaría, pero cambiaría varios productos de una sola vez y afecta al cálculo de
 lastre: es una decisión de criterio, no de carga de datos.
 
-**¿La fragancia veta a un producto para piel sensible?** Quedan dos productos
-activos que declaran `fragancia` y siguen marcados `apto_sensible: true`: el
-Cleanex Free Gel —el caso que abrió esta auditoría— y la Lidherma Hyaluronic 4D.
-El diccionario ya clasifica a la fragancia como `irritante-potencial` con carga
-propia, y es el alérgeno de contacto más frecuente en cosmética. Pero vetar por
-fragancia mueve más productos que vetar por aceite esencial y puede abrir huecos,
-así que es una decisión de criterio y está sin tomar. El test
-`apto-sensible.test.ts` no la enforcea a propósito.
+> Las otras dos decisiones que esta sección dejó abiertas el 12/9 —si la
+> fragancia veta para piel sensible, y si un extracto de hoja es el mismo activo
+> que su aceite esencial— **se tomaron el mismo día**. Están abajo, en
+> *Las dos decisiones de criterio del 12/9*.
 
-**¿Un extracto de hoja es el mismo activo que su aceite esencial?** El TIRTIR Milk
-Skin Toner declara `Mentha Piperita (Peppermint) Leaf Extract` en la cola de una
-lista de 35 ingredientes, y el mapeo lo apunta a `menta`, cuyo id es
-"Menta / mentol". No es lo mismo un extracto de hoja que el aceite esencial o el
-mentol aislado, y la diferencia decide si el producto es apto para piel sensible o
-no. Hoy figura como excepción escrita en `apto-sensible.test.ts` en vez de
-resolverse por omisión. El Round Lab Dokdo tiene el mismo problema al revés: trae
-aceite de flor de manzanilla y el motor no lo ve.
+---
 
+## Las dos decisiones de criterio del 12/9
+
+Las dos se resolvieron igual, y el argumento que decidió no fue de la
+literatura: fue que **el catálogo ya tenía las dos decisiones tomadas de hecho, y
+los tres productos en discusión eran las excepciones**. La evidencia externa
+confirma la dirección, pero lo que la fijó fue la consistencia interna.
+
+### 1 · La fragancia veta `apto_sensible`. Sí.
+
+Lo que decidió: de los **8 productos del motor que declaran `fragancia`, 6 ya
+estaban cargados `apto_sensible: false`**. Los 2 que no lo estaban eran el Cleanex
+Free Gel y la Lidherma Hyaluronic 4D. O sea que no había dos políticas en
+disputa: había una política y dos productos mal cargados, igual que el COSRX.
+
+Y el diccionario ya lo decía por escrito en el campo `evidencia` de `fragancia`:
+*"primera causa de dermatitis de contacto alérgica en cosmética. Para piel que
+reacciona, es lo primero que conviene sacar"*.
+
+| Producto | `ml_id` | Qué trae |
+|---|---|---|
+| Cleanex Free Gel Limpiador | `MLA27603374` | `Fragrance (Parfum)` en la posición 10, y es el **único** activo que declara. Tensioactivo: Sodium Laureth Sulfate. Su `por_que` decía "formulado para piel sensible"; se reescribió. |
+| Lidherma Hyaluronic 4D Face Cream | `MLA19474747` | `Fragancia` **más cinco alérgenos de declaración obligatoria**: bencil salicilato, citronelol, limoneno, linalol e ionona. Es una crema que queda puesta. |
+
+**El respaldo externo.** En el panel del North American Contact Dermatitis Group
+2019-2020, la mezcla de fragancias I dio 12,8% de parches positivos y los
+hidroperóxidos de linalol 11,1% —el cuarto alérgeno más frecuente de toda la
+serie—, con los de limoneno en 3,5%. La Lidherma declara linalol y limoneno en la
+etiqueta. La prevalencia en población general está entre 0,7% y 2,6%, y en
+población testeada entre 5% y 11%.
+
+**Lo que se consideró y no alcanzó para cambiar la decisión.** El Cleanex se
+enjuaga, y eso cuenta: el reglamento europeo exige declarar los 26 alérgenos de
+fragancia desde 0,01% en producto de enjuague y desde 0,001% en producto que
+queda puesto, o sea que reconoce diez veces menos exposición. Pero diez veces
+menos no es cero, y el catálogo tiene **13 limpiadores aptos sin fragancia, 4 de
+ellos en banda 1**. Cuando la alternativa limpia es gratis, no hay nada que
+compensar.
+
+### 2 · Un extracto de hoja NO es su aceite esencial.
+
+Lo que decidió: los otros tres productos del mapa que declaran un aceite esencial
+apuntan a un **aceite que el INCI nombra**.
+
+| Producto | Lo que dice el INCI | Mapeo |
+|---|---|---|
+| Celimax The Real Noni Energy Ampoule | `Rosmarinus Officinalis Leaf **Oil**` | `aceite_esencial_romero` |
+| COSRX Low pH Good Morning | `Melaleuca Alternifolia Leaf **Oil**` | `aceite_esencial_tea_tree` |
+| Skin1004 Tea-trica (los dos) | agua de hoja + **aceite** de hoja de tea tree | `aceite_esencial_tea_tree` |
+| **TIRTIR Milk Skin Toner** | `Mentha Piperita Leaf **Extract**`, en la cola de 35 ingredientes | ~~`menta`~~ **sale** |
+
+El TIRTIR era el único que apuntaba a un extracto. Y el diccionario **ya
+distingue por forma y no por planta**: `hamamelis` tiene `carga: 0` con el
+razonamiento escrito de que *"como agua o extracto sin alcohol es inofensivo; la
+mala fama viene de las destilaciones con alcohol de los tónicos astringentes de
+los 90"*. Aplicar el mismo criterio a la menta no es inventar una regla, es dejar
+de aplicar dos.
+
+**El respaldo externo.** En la evaluación del Cosmetic Ingredient Review sobre los
+ingredientes derivados de *Mentha piperita*, un HRIPT con 2,5% de extracto de
+menta dio negativo para irritación y sensibilización, y los casos clínicos
+publicados son del **aceite** y de sus constituyentes. Las dos reservas del panel
+son la pulegona —limitada a ≤1%— y el mentol como promotor de penetración de
+otros activos. Ninguna de las dos es lo que declara este INCI.
+
+**Ojo con lo que esta decisión NO dice.** No dice que el TIRTIR esté verificado
+más allá de su INCI, ni toca el problema de al lado: **el diccionario sigue sin
+poder nombrar la mayoría de los aceites esenciales**, y ésos son aceites de
+verdad. El Round Lab Dokdo trae aceite de flor de manzanilla y el aceite limpiador
+de Beauty of Joseon trae salvia, artemisa, albahaca y alcanfor; el motor no los
+ve. Esa decisión sigue abierta y es la de arriba.
+
+### El impacto de las dos, medido
+
+```
+                        antes    después
+auditar, sin conflicto  344/360  344/360
+auditar, con "separar"  0        0
+cobertura, match        346      346
+cobertura, no-apto-sens 0        0
+huecos                  10       10
+npm test                132      133
+```
+
+Cero, en todo lo que se mide. Los dos productos que salieron de la piel sensible
+no dejaron ningún paso descubierto, y el TIRTIR es un tónico —categoría
+opcional—, así que no entra en ninguna rutina. El único número que se movió es una
+sinergia: `niacinamida-x-vitamina-c` pasó de 135 a 134 rutinas, porque en una
+rutina de piel sensible cambió qué hidratante toca.
+
+**El candado.** `apto-sensible.test.ts` ahora veta las dos familias y su lista de
+excepciones quedó **vacía**. El TIRTIR quedó clavado del otro lado: hay un test de
+que su mapeo no vuelve a declarar `menta`, para que cambiar el criterio tenga que
+ser deliberado. Se verificó que los tres candados fallan de verdad volviendo a
+poner los datos viejos.
 
 ---
 
