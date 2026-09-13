@@ -15,19 +15,38 @@ existe para sacar.
 `/combinaciones` vive en el pie, no en el home: nadie llega de una red social
 buscando "combinaciones de activos". Es contenido para el que ya está adentro.
 
+### Lo que va debajo de las puertas no es una puerta
+
+Debajo de las tres tarjetas hay dos secciones: **cómo funciona**, en tres
+pasos, y **preguntas antes de empezar**. No son un cuarto camino. La regla de
+"tres caminos y nada más" es sobre lo que compite por la decisión arriba del
+fold, y eso no cambió: el que llega de una red social sigue decidiendo sin
+scrollear.
+
+Las secciones son para el que no decidió y bajó a mirar. Por eso cierran con un
+link más a `/rutina` —una puerta que ya existe, no una nueva—: al que llegó
+hasta ahí leyendo ya no le quedan las tarjetas de arriba a la vista.
+
+Las respuestas describen cosas que el sitio hace hoy, y cada una está atada a
+una decisión o a un test (el detalle está en `copy.ts`, al lado del texto). Las
+preguntas en sí son hipótesis hasta tener las respuestas de clientas a "¿qué
+casi te frena?".
+
 ## Rutas
 
 ```
 /                       fork de tres puertas
 /catalogo               grilla con filtros (piel, paso, origen) + orden
-/producto/[slug]        ficha × 25 — la unidad pineable
+/producto/[slug]        ficha × 78 — la unidad pineable (una por producto activo)
 /kits                   compra única primero, después los armados
 /kits/[slug]            × 7 (2 de compra única + 5 armados)
 /rutina                 el quiz
 /combinaciones          criterios de compatibilidad entre activos
 ```
 
-Todo prerenderizado. **44 páginas estáticas.**
+Todo prerenderizado. **175 páginas estáticas** al 12/9/2026 — el número sale
+de `npm run build`, no de sumar a mano: cambia cada vez que entra o sale un
+producto activo.
 
 ### Los slugs son contrato
 

@@ -4,6 +4,8 @@ import { Logo } from "@/components/Logo";
 import { FondoMonte } from "@/components/FondoMonte";
 import { FOTO } from "@/niches/skincare/foto";
 import { GuardarEmailHome } from "@/components/GuardarEmailHome";
+import { ComoFunciona } from "@/components/ComoFunciona";
+import { PreguntasFrecuentes } from "@/components/PreguntasFrecuentes";
 import { getCatalogo } from "@/engine/catalogo";
 import { conCriteriosDeOrden } from "@/niches/skincare/calidad";
 import { armarKits } from "@/engine/kits";
@@ -169,6 +171,19 @@ export default async function Home() {
               </div>
             </Link>
           ) : null}
+        </section>
+
+        {/* Para el que no decidió en las tarjetas y bajó a mirar (vienen de
+            main, #28). Bloques de lectura sobre la foto, con el mismo fade. */}
+        <section className={`${s.seccion} ${s.suelta}`}>
+          <div className={`${s.copy} ${s.lectura}`}>
+            <ComoFunciona preguntas={preguntas} />
+          </div>
+        </section>
+        <section className={`${s.seccion} ${s.suelta}`}>
+          <div className={`${s.copy} ${s.lectura}`}>
+            <PreguntasFrecuentes />
+          </div>
         </section>
 
         <section className={`${s.seccion} ${s.cierre}`}>

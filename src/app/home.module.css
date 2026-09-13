@@ -40,6 +40,12 @@
   justify-content: flex-end;
   padding-bottom: 5.5rem;
 }
+/* Cómo funciona y preguntas: bloques de lectura, no pantallas. Miden lo que
+   mide su contenido; entre uno y otro se ve el monte. */
+.suelta {
+  min-height: 0;
+  padding: 3rem 1.25rem;
+}
 
 /* Las tres tarjetas viven en la misma pantalla: una fila por banda. */
 .presentacion {
@@ -86,6 +92,10 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+/* Bloques de lectura (cómo funciona, preguntas). */
+.lectura {
+  width: 100%;
 }
 .copy::before {
   content: "";

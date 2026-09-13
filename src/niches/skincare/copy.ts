@@ -47,8 +47,98 @@ export const copy = {
       bajada: (n: number) => `${n} preguntas · menos de un minuto.`,
       cta: "Empezar",
     },
-    // Tercera puerta, y a propósito mucho más chica que las otras dos: es para
-    // el que llega desconfiando. La home sigue siendo de dos caminos.
+
+    // Debajo de las tres puertas, para el que no decidió y bajó a mirar. No son
+    // puertas: ver 03-PRODUCTO.md § Tres puertas.
+    //
+    // Todo lo que dicen está en el código y se puede verificar. El paso del medio
+    // no promete que "un retinoide y un ácido no te van a tocar la misma noche":
+    // ese choque se resuelve con una instrucción y no cambiando de producto —es
+    // una decisión tomada—, así que lo cierto es que el sitio te dice qué noche va
+    // cada uno.
+    metodo: {
+      etiqueta: "cómo funciona",
+      titulo: "Tres pasos, y el que importa es el del medio",
+      pasos: [
+        {
+          titulo: "Respondés",
+          // Piel y objetivo son siempre las dos primeras. El total no se escribe
+          // a mano: sale de configServible(), como en el resto de la home.
+          texto: (n: number) => `${n} preguntas, empezando por tu tipo de piel y lo que querés cambiar.`,
+        },
+        {
+          titulo: "Cruzamos los activos",
+          texto:
+            "Chequeamos cada producto contra los demás antes de mostrártelo: que no se anulen entre sí, " +
+            "que no se repitan y que no sumen irritación. Y si dos van mejor en noches distintas, te " +
+            "decimos qué noche va cada uno.",
+        },
+        {
+          titulo: "Te damos la rutina con el porqué",
+          texto:
+            "Paso por paso: para qué sirve cada uno y por qué ese producto. Si algo no es para tu piel, " +
+            "también te lo decimos.",
+        },
+      ],
+    },
+
+    // Preguntas antes de empezar. Son hipótesis hasta tener respuestas reales de
+    // clientas a "¿qué casi te frena?"; cuando las haya, se reescriben con esas.
+    //
+    // Cada respuesta describe algo que el sitio hace hoy. Si deja de hacerlo, la
+    // respuesta cambia con él:
+    //   · ventas            → la popularidad no clasifica ni ordena (06-ESTADO)
+    //   · piel sensible     → apto-sensible.test.ts: fragancia, aceites
+    //                         esenciales y contrairritantes vetan
+    //   · comprar todo      → "Ya tengo uno", en el resultado
+    //   · más caro          → el presupuesto cede ante la piel y el objetivo
+    //   · dermatólogo       → el mismo aviso que va en las pantallas con links
+    //
+    // No está "¿cómo ganan plata?" a propósito: el brand kit dice que la
+    // transparencia de afiliados va donde hay links de compra, no en la home.
+    preguntas: {
+      etiqueta: "preguntas",
+      titulo: "Antes de empezar",
+      items: [
+        {
+          pregunta: "¿Me van a recomendar lo que más se vende?",
+          respuesta:
+            "No. Las ventas y las estrellas de Mercado Libre no ordenan nada: el orden sale de qué tan " +
+            "bien encaja cada producto en su paso y de la calidad de su fórmula. Un producto bueno y " +
+            "poco conocido le puede ganar a uno famoso.",
+        },
+        {
+          pregunta: "¿Y si tengo la piel sensible?",
+          respuesta:
+            "Si la fórmula declara fragancia o aceites esenciales, el producto no se le ofrece a piel " +
+            "sensible, aunque la caja diga lo contrario. Y si en algún paso no tenemos una opción apta, " +
+            "te lo avisamos en ese paso.",
+        },
+        {
+          pregunta: "¿Tengo que comprar todo?",
+          respuesta:
+            "No. Si ya tenés algo para un paso, marcá “Ya tengo uno” en tu rutina y ese paso deja de " +
+            "ofrecerte comprar.",
+        },
+        {
+          pregunta: "¿Por qué a veces aparece algo más caro de lo que elegí?",
+          respuesta:
+            "Porque el presupuesto cede ante tu piel y tu objetivo. Si no hay nada más accesible que te " +
+            "sirva, preferimos decírtelo antes que darte algo que no va a funcionar.",
+        },
+        {
+          pregunta: "¿Esto reemplaza al dermatólogo?",
+          respuesta:
+            "No. Te ayudamos a elegir productos de venta libre y a combinarlos. Ante un problema de piel, " +
+            "consultá a un dermatólogo.",
+        },
+      ],
+      cta: "Armá tu rutina",
+    },
+    // El link a los criterios en el pie de TODAS las pantallas (ver Shell), no
+    // una puerta de la home. Vive abajo porque es para el que ya está adentro y
+    // quiere entender por qué recomendamos lo que recomendamos. En la home el
+    // mismo destino aparece como `respaldo`, cerrando el fold.
     criterios: "cómo decidimos qué combina con qué",
   },
 
@@ -86,7 +176,10 @@ export const copy = {
       "Todo lo que tenemos, con sus activos a la vista. Separado en lo que forma parte de una " +
       "rutina y lo que es opcional — porque no es lo mismo, y mezclarlos es como termina la gente " +
       "con nueve frascos y la piel peor.",
-    cta: "Armar mi rutina",
+    // Es el CTA de la puerta del catálogo en la home, así que dice adónde lleva.
+    // Decía "Armar mi rutina": prometía lo mismo que la puerta del quiz y
+    // mandaba a otro lado.
+    cta: "Ver el catálogo",
     notaOpcionalGenerica:
       "Opcional: suma cuando la base ya está firme y sostenida. No lo pongas al mismo tiempo que " +
       "empezás con todo lo demás.",
@@ -215,6 +308,93 @@ export const copy = {
     fuera_de_presupuesto:
       "Se va de la banda que elegiste. No hay ninguno más accesible que sirva para tu piel y tu objetivo, y preferimos decírtelo antes que darte uno que no te va a servir.",
   },
+
+  // Otras opciones para un paso, plegadas debajo de la recomendada. Ver
+  // `src/engine/alternativas.ts`.
+  //
+  // El criterio dice sólo lo que es cierto SIEMPRE, por construcción: salen del
+  // mismo escalón del motor, van en su mismo orden y ninguna suma un choque. No
+  // dice "sirven para tu objetivo": cuando la recomendada se fue de banda, la
+  // etiqueta del paso no dice de qué nivel de match vino, y la frase podría ser
+  // falsa justo en ese caso.
+  alternativas: {
+    ver: (n: number) => `Ver ${n} ${n === 1 ? "opción más" : "opciones más"}`,
+    criterio:
+      "Salen del mismo grupo que la recomendada para lo que respondiste, en el mismo orden con el " +
+      "que la elegimos, y ninguna suma un choque con el resto de tu rutina.",
+  },
+
+  // "Ya tengo uno": la persona marca que ya tiene algo para un paso. Dice "uno" y
+  // no "lo" porque puede tener otro producto, no necesariamente el nuestro.
+  //
+  // La nota es la parte honesta: las combinaciones de la pantalla se chequearon
+  // con el producto que recomendamos, no con el suyo, que no conocemos. No se
+  // recalcula el análisis sin ese paso: sacarlo daría un "no hay nada para
+  // separar" más tranquilo de lo que se puede afirmar.
+  yaLoTengo: {
+    control: "Ya tengo uno",
+    cubierto: "Usá el tuyo en este paso.",
+    nota: (producto: string) =>
+      `Las combinaciones de abajo están chequeadas con ${producto}: si el tuyo trae otros activos, puede cambiar.`,
+    noche: "Ya tenés uno: usá el tuyo también a la noche.",
+    resumen: (tengo: number, faltan: number) =>
+      `ya tenés ${tengo} · te ${faltan === 1 ? "falta" : "faltan"} ${faltan}`,
+  },
+
+  // Un paso de la noche que repite el mismo producto de la mañana va resumido,
+  // con un link a la tarjeta de arriba. Ver PasoRepetido.
+  repetido: {
+    mismo: "El mismo de la mañana:",
+  },
+
+  // Para qué sirve cada paso, antes de mostrar qué producto lo cumple. Va sin
+  // marca a propósito: es el criterio, y el producto llega como la respuesta.
+  //
+  // Es texto nuestro y lo lee todo el que termina el quiz, así que cada
+  // afirmación tiene respaldo y pasa por el mismo filtro de claims que el copy
+  // de producto (`copy-pasos.test.ts`):
+  //   · limpiador — American Academy of Dermatology: dos veces por día, con uno
+  //     suave y sin frotar, porque frotar irrita. INGREDIENTES.md §4.1: en algo
+  //     que se enjuaga, el contacto con la piel es de segundos.
+  //   · hidratante — Lodén, Clinics in Dermatology 2012: la composición decide
+  //     si un hidratante mejora la función de barrera o la deteriora. Por eso el
+  //     texto no promete nada del paso en general y dice que importa cuál.
+  //   · protector — Hughes et al., Annals of Internal Medicine 2013, ensayo
+  //     aleatorizado de 4,5 años: 24% menos fotoenvejecimiento con uso diario
+  //     que con uso ocasional. Detalle en INGREDIENTES.md §8.
+  //
+  // `am` y `pm` son opcionales: si el paso cambia según el momento, se dice; si
+  // no, va `explicacion` en los dos, y siempre en los kits.
+  pasos: {
+    limpiador: {
+      funcion: "Limpiar sin llevarte de más",
+      explicacion:
+        "Un limpiador suave, a la mañana y a la noche, sin frotar. Está en la piel unos segundos " +
+        "antes de enjuagarse, así que su trabajo no es aportar: es sacar lo que sobra sin llevarse " +
+        "lo que la piel necesita.",
+      am: "A la mañana alcanza con poco: la piel viene de la noche, no de la calle. Agua tibia y sin frotar.",
+      pm: "A la noche es el lavado con más trabajo: saca lo que la piel juntó durante el día. Sin frotar, que frotar irrita.",
+    },
+    serum_activo: {
+      funcion: "Ir a lo que querés cambiar",
+      explicacion:
+        "Es el único paso que apunta directo a tu objetivo; los otros sostienen la base. Va después " +
+        "de limpiar y antes de hidratar, que es el orden en que se aplica.",
+    },
+    hidratante: {
+      funcion: "Que la piel no pierda agua",
+      explicacion:
+        "Es su trabajo principal, y no todos lo hacen igual: según la fórmula, un hidratante puede " +
+        "mejorar la barrera de la piel o dejarla peor. Por eso importa cuál.",
+    },
+    protector_solar: {
+      funcion: "Protegerte del sol, todos los días",
+      explicacion:
+        "Es el paso que más cambia la piel a largo plazo, y el mejor medido: en un ensayo de cuatro " +
+        "años y medio, quienes lo usaron todos los días tuvieron 24% menos envejecimiento por sol que " +
+        "quienes lo usaban de vez en cuando. A la mañana va último.",
+    },
+  } as Record<string, { funcion: string; explicacion: string; am?: string; pm?: string }>,
 
   // Aparece recién en la pantalla de resultados, nunca antes.
   afiliacion: "Si comprás por estos links, cobramos una comisión sin costo extra para vos.",
