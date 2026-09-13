@@ -221,6 +221,23 @@ export const copy = {
       "Se va de la banda que elegiste. No hay ninguno más accesible que sirva para tu piel y tu objetivo, y preferimos decírtelo antes que darte uno que no te va a servir.",
   },
 
+  // "Ya tengo uno": la persona marca que ya tiene algo para un paso. Dice "uno" y
+  // no "lo" porque puede tener otro producto, no necesariamente el nuestro.
+  //
+  // La nota es la parte honesta: las combinaciones de la pantalla se chequearon
+  // con el producto que recomendamos, no con el suyo, que no conocemos. No se
+  // recalcula el análisis sin ese paso: sacarlo daría un "no hay nada para
+  // separar" más tranquilo de lo que se puede afirmar.
+  yaLoTengo: {
+    control: "Ya tengo uno",
+    cubierto: "Usá el tuyo en este paso.",
+    nota: (producto: string) =>
+      `Las combinaciones de abajo están chequeadas con ${producto}: si el tuyo trae otros activos, puede cambiar.`,
+    noche: "Ya tenés uno: usá el tuyo también a la noche.",
+    resumen: (tengo: number, faltan: number) =>
+      `ya tenés ${tengo} · te ${faltan === 1 ? "falta" : "faltan"} ${faltan}`,
+  },
+
   // Un paso de la noche que repite el mismo producto de la mañana va resumido,
   // con un link a la tarjeta de arriba. Ver PasoRepetido.
   repetido: {
