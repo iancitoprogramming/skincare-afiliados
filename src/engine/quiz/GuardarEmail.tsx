@@ -12,9 +12,11 @@ export function GuardarEmail({
   onGuardar,
 }: {
   label: string;
-  onGuardar?: (email: string) => Promise<void> | void;
+  /** `website` es el honeypot: una persona lo manda vacío. */
+  onGuardar?: (email: string, website: string) => Promise<void> | void;
 }) {
   const [email, setEmail] = useState("");
+  const [website, setWebsite] = useState("");
   const [error, setError] = useState("");
   const [estado, setEstado] = useState<"idle" | "ok" | "error">("idle");
 
@@ -27,7 +29,7 @@ export function GuardarEmail({
     }
     setError("");
     try {
-      await onGuardar?.(val);
+      await onGuardar?.(val, website);
       setEstado("ok");
     } catch {
       setEstado("error");
@@ -43,6 +45,18 @@ export function GuardarEmail({
       <label htmlFor="email-rutina" className="font-etiqueta text-xs text-piedra">
         {label}
       </label>
+      {/* Honeypot: fuera de la vista y del tab, sin autocompletar. Un bot que
+          llena todo lo llena; una persona no lo ve. La API descarta el envío. */}
+      <input
+        type="text"
+        name="website"
+        value={website}
+        onChange={(e) => setWebsite(e.target.value)}
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="absolute -left-[9999px] h-0 w-0 opacity-0"
+      />
       <div className="flex gap-2">
         <input
           id="email-rutina"

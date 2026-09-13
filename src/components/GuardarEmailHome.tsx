@@ -7,5 +7,7 @@ import { guardarLead } from "@/engine/tracking";
 // Este envoltorio la pone del lado del cliente. Sin sesión (todavía no hubo
 // quiz): el lead se guarda con sesion_id null, que la API acepta.
 export function GuardarEmailHome({ label }: { label: string }) {
-  return <GuardarEmail label={label} onGuardar={(email) => guardarLead(null, email)} />;
+  return (
+    <GuardarEmail label={label} onGuardar={(email, website) => guardarLead(null, email, { website })} />
+  );
 }
