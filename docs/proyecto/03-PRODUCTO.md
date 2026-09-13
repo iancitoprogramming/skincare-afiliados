@@ -20,14 +20,16 @@ buscando "combinaciones de activos". Es contenido para el que ya está adentro.
 ```
 /                       fork de tres puertas
 /catalogo               grilla con filtros (piel, paso, origen) + orden
-/producto/[slug]        ficha × 25 — la unidad pineable
+/producto/[slug]        ficha × 78 — la unidad pineable (una por producto activo)
 /kits                   compra única primero, después los armados
 /kits/[slug]            × 7 (2 de compra única + 5 armados)
 /rutina                 el quiz
 /combinaciones          criterios de compatibilidad entre activos
 ```
 
-Todo prerenderizado. **44 páginas estáticas.**
+Todo prerenderizado. **175 páginas estáticas** al 12/9/2026 — el número sale
+de `npm run build`, no de sumar a mano: cambia cada vez que entra o sale un
+producto activo.
 
 ### Los slugs son contrato
 

@@ -19,8 +19,8 @@ export const metadata = {
   openGraph: { url: "/" },
 };
 
-// Puerta de entrada: dos caminos y nada mas. El que llega de una red social
-// decide en un toque, sin buscar ni scrollear un catalogo.
+// Puerta de entrada: tres caminos y nada más —quiz, catálogo y kits—. El que
+// llega de una red social decide en un toque, sin buscar ni scrollear un catálogo.
 export default async function Home() {
   const productos = await getCatalogo(fallback, conCriteriosDeOrden);
   const kits = armarKits(productos, KITS, TIERS);
