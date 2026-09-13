@@ -163,10 +163,13 @@ Para prenderlo, en este orden:
 **Consecuencia a tener presente:** una vez que Supabase sirva el catálogo, cada
 cambio de catálogo necesita `npm run sync` o producción queda atrasada.
 
-**2 · El check de Vercel falla en todos los PR**, desde antes de esta línea de
-trabajo. El motivo apareció en el log: *"Git author WomenAre0bjects must have
-access to the project on Vercel to create deployments"*. Es permisos, no código.
-Lo gestiona Ian.
+**2 · ~~El check de Vercel falla en todos los PR~~ → resuelto el 12/9.** El motivo
+era el autor de git: *"Git author WomenAre0bjects must have access to the project
+on Vercel to create deployments"*. Desde el PR #22 los commits salen con la
+identidad del dueño del proyecto (`iancitoprogramming`) y un trailer
+`Co-authored-by: therexone1 <therexone1@gmail.com>` con el autor real. **Si un
+commit o un merge sale con otra identidad, producción deja de publicarse sin
+avisar**: pasó con los PR #14 a #21. Detalle en `06-ESTADO.md`.
 
 **3 · Pinterest**: falta el perfil business y reclamar el dominio
 (`NEXT_PUBLIC_PINTEREST_VERIFY`), y revisar el firewall de Vercel antes de mandarle

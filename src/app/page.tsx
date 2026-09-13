@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Shell } from "@/components/Shell";
+import { ComoFunciona } from "@/components/ComoFunciona";
+import { PreguntasFrecuentes } from "@/components/PreguntasFrecuentes";
 import { getCatalogo } from "@/engine/catalogo";
 import { conCriteriosDeOrden } from "@/niches/skincare/calidad";
 import { armarKits } from "@/engine/kits";
@@ -108,6 +110,11 @@ export default async function Home() {
           ) : null}
 
         </div>
+
+        {/* Debajo de las puertas y fuera del fold: no son puertas, son para el que
+            bajó sin decidir. Ver 03-PRODUCTO.md § Tres puertas. */}
+        <ComoFunciona preguntas={preguntas} />
+        <PreguntasFrecuentes />
       </div>
     </Shell>
   );
