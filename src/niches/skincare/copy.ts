@@ -47,8 +47,10 @@ export const copy = {
       bajada: (n: number) => `${n} preguntas · menos de un minuto.`,
       cta: "Empezar",
     },
-    // Tercera puerta, y a propósito mucho más chica que las otras dos: es para
-    // el que llega desconfiando. La home sigue siendo de dos caminos.
+    // El link a los criterios en el pie de TODAS las pantallas (ver Shell), no
+    // una puerta de la home. Vive abajo porque es para el que ya está adentro y
+    // quiere entender por qué recomendamos lo que recomendamos. En la home el
+    // mismo destino aparece como `respaldo`, cerrando el fold.
     criterios: "cómo decidimos qué combina con qué",
   },
 
@@ -86,7 +88,10 @@ export const copy = {
       "Todo lo que tenemos, con sus activos a la vista. Separado en lo que forma parte de una " +
       "rutina y lo que es opcional — porque no es lo mismo, y mezclarlos es como termina la gente " +
       "con nueve frascos y la piel peor.",
-    cta: "Armar mi rutina",
+    // Es el CTA de la puerta del catálogo en la home, así que dice adónde lleva.
+    // Decía "Armar mi rutina": prometía lo mismo que la puerta del quiz y
+    // mandaba a otro lado.
+    cta: "Ver el catálogo",
     notaOpcionalGenerica:
       "Opcional: suma cuando la base ya está firme y sostenida. No lo pongas al mismo tiempo que " +
       "empezás con todo lo demás.",
