@@ -74,7 +74,7 @@ const REDES = [
 // como texto no llegan a AA sobre el fade. El CTA lleva su propio fondo
 // terracota con porcelana encima, que sí pasa. Ver docs/proyecto/02-MARCA.md.
 const CTA =
-  "mt-2 inline-flex min-h-[52px] items-center gap-2 self-start rounded-[14px] bg-terracota px-5 font-body text-base font-medium text-porcelana";
+  "mt-2 inline-flex min-h-[52px] items-center gap-2 self-center rounded-[14px] bg-terracota px-5 font-body text-base font-medium text-porcelana";
 
 // Puerta de entrada: el monte detrás de todo y tres tarjetas, una por banda.
 // El que llega de una red social decide en un toque, sin buscar ni scrollear
@@ -116,8 +116,8 @@ export default async function Home() {
 
             <ul className="flex flex-col gap-2">
               {copy.home.bullets.map((b) => (
-                <li key={b} className="flex gap-2.5 font-body text-sm text-tinta">
-                  <span aria-hidden className="mt-2 h-1 w-3 flex-none rounded-full bg-salvia" />
+                <li key={b} className="font-body text-sm text-tinta">
+                  <span aria-hidden className="mr-2 inline-block h-1 w-3 rounded-full bg-salvia align-middle" />
                   {b}
                 </li>
               ))}
@@ -127,7 +127,7 @@ export default async function Home() {
                 Este link es el respaldo de la promesa de arriba. */}
             <Link
               href="/combinaciones"
-              className="self-start font-etiqueta text-xs text-tinta underline decoration-piedra underline-offset-4"
+              className="self-center font-etiqueta text-xs text-tinta underline decoration-piedra underline-offset-4"
             >
               {copy.home.respaldo} →
             </Link>
@@ -174,7 +174,8 @@ export default async function Home() {
         </section>
 
         {/* Para el que no decidió en las tarjetas y bajó a mirar (vienen de
-            main, #28). Bloques de lectura sobre la foto, con el mismo fade. */}
+            main, #28). Bloques de lectura: la columna va centrada pero el
+            texto queda a la izquierda, que es como se lee una lista. */}
         <section className={`${s.seccion} ${s.suelta}`}>
           <div className={`${s.copy} ${s.lectura}`}>
             <ComoFunciona preguntas={preguntas} />
@@ -195,7 +196,7 @@ export default async function Home() {
             <footer className="flex flex-col gap-2 pt-4">
               <Link
                 href="/combinaciones"
-                className="self-start font-etiqueta text-xs text-tinta underline decoration-piedra underline-offset-4"
+                className="self-center font-etiqueta text-xs text-tinta underline decoration-piedra underline-offset-4"
               >
                 {copy.home.criterios} →
               </Link>

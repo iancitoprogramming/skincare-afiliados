@@ -15,6 +15,7 @@ import { PasoRepetido } from "./PasoRepetido";
 import { anclaDePaso, pasosPorMomento, type PasoMostrado } from "./repetidos";
 import { GuardarEmail } from "./GuardarEmail";
 import { useYaLoTengo } from "./yaLoTengo";
+import { Desplegable } from "@/components/Desplegable";
 
 export function Resultados({
   config,
@@ -156,16 +157,17 @@ export function Resultados({
       {seccion({ titulo: config.resultados.manana, pasos: mostrados.am, momento: "am" })}
       {seccion({ titulo: config.resultados.noche, pasos: mostrados.pm, momento: "pm" })}
 
-      <Compatibilidad analisis={analisis} plan={plan} />
-
-      {nota ? (
-        <section className="rounded-2xl border border-niebla bg-porcelana p-5">
-          <p className="font-body text-sm leading-relaxed text-tinta/85">{nota}</p>
-          <p className="mt-3 font-body text-sm leading-relaxed text-tinta/70">
-            {copy.opcionales}
-          </p>
-        </section>
-      ) : null}
+      {/* Lectura para el que quiere, no parte de la rutina: todo plegado, en
+          un solo grupo, y la captura de mail queda justo debajo. */}
+      <div className="flex flex-col gap-3">
+        <Compatibilidad analisis={analisis} plan={plan} />
+        {nota ? (
+          <Desplegable etiqueta={copy.criterio.etiqueta} titulo={copy.criterio.titulo}>
+            <p className="font-body text-sm leading-relaxed text-tinta/85">{nota}</p>
+            <p className="font-body text-sm leading-relaxed text-tinta/70">{copy.opcionales}</p>
+          </Desplegable>
+        ) : null}
+      </div>
 
       <div className="rounded-2xl border border-niebla bg-gel/25 p-5">
         <GuardarEmail label="guardá tu rutina" onGuardar={(email) => guardarLead(sesionId, email)} />

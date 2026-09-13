@@ -34,6 +34,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   padding: 5.5rem 1.25rem 4rem;
 }
 .cierre {
@@ -84,18 +85,28 @@
    meseta de la máscara en 45 % para que el borde del bloque de texto no
    pierda cobertura al bajar la opacidad. La tarjeta en foco lo sube, como
    respuesta. */
+/* Centrado: la foto está centrada en el viewport y un bloque pegado a la
+   izquierda se leía como corrido. El texto también va centrado; los bloques
+   de lectura (listas) lo vuelven a la izquierda con `.lectura`. */
 .copy {
   position: relative;
   isolation: isolate;
+  width: 100%;
   max-width: 34rem;
+  margin: 0 auto;
   padding: 1.75rem 0.5rem;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 1rem;
+  text-align: center;
 }
-/* Bloques de lectura (cómo funciona, preguntas). */
+.copy form {
+  align-items: center;
+}
 .lectura {
-  width: 100%;
+  align-items: stretch;
+  text-align: left;
 }
 .copy::before {
   content: "";

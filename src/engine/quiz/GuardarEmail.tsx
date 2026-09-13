@@ -55,7 +55,7 @@ export function GuardarEmail({
             if (error) setError("");
           }}
           placeholder="tu@email.com"
-          className="min-h-[52px] flex-1 rounded-xl border border-niebla bg-porcelana px-4 font-body text-tinta outline-none focus:border-piedra"
+          className="min-h-[52px] min-w-0 flex-1 rounded-xl border border-niebla bg-porcelana px-4 font-body text-tinta outline-none focus:border-piedra"
         />
         <button
           type="submit"
