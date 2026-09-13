@@ -71,7 +71,15 @@ export function Resultados({
 
   const catLabel = (categoria: string) => config.categorias[categoria] ?? categoria;
 
-  const Seccion = ({ titulo, pasos }: { titulo: string; pasos: Paso[] }) => (
+  const Seccion = ({
+    titulo,
+    pasos,
+    momento,
+  }: {
+    titulo: string;
+    pasos: Paso[];
+    momento: "am" | "pm";
+  }) => (
     <section className="flex flex-col gap-3">
       <h2 className="font-mono text-sm text-piedra">{titulo}</h2>
       {pasos.map((paso, i) => (
@@ -80,6 +88,7 @@ export function Resultados({
           paso={paso}
           numero={i + 1}
           categoriaLabel={catLabel(paso.slot.categoria)}
+          momento={momento}
           sesionId={sesionId}
           conAvisoDeCombinacion={categoriasConAviso.has(paso.slot.categoria)}
         />
@@ -94,8 +103,8 @@ export function Resultados({
         <h1 className="font-display text-3xl font-medium text-tinta">{config.resultados.titulo}</h1>
       </header>
 
-      <Seccion titulo={config.resultados.manana} pasos={rutina.am} />
-      <Seccion titulo={config.resultados.noche} pasos={rutina.pm} />
+      <Seccion titulo={config.resultados.manana} pasos={rutina.am} momento="am" />
+      <Seccion titulo={config.resultados.noche} pasos={rutina.pm} momento="pm" />
 
       <Compatibilidad analisis={analisis} plan={plan} />
 

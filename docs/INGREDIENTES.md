@@ -421,6 +421,12 @@ fuentes de cobre: Skin1004 Poremizing (GHK-Cu) y **Eximia Hyalu-B (gluconato de 
 
 **El paso que más cambia resultados a largo plazo, y el único no negociable.**
 
+El respaldo es un ensayo aleatorizado, que es lo más fuerte que hay para esto: Hughes et al.,
+*Annals of Internal Medicine* 2013. 903 adultos menores de 55 años en Nambour, Australia, seguidos
+4,5 años. El grupo asignado a protector **todos los días** no mostró un aumento detectable de
+envejecimiento de la piel, y tuvo 24% menos fotoenvejecimiento que el de uso discrecional (odds
+relativo 0,76; IC 95% 0,59–0,98). Agregado el 13/9/2026: esta línea venía sin fuente.
+
 ### 8.1 · Los filtros del catálogo
 
 | Filtro | Cubre | Nota |
