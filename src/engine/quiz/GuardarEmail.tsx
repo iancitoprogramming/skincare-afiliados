@@ -44,6 +44,10 @@ export function GuardarEmail({
         {label}
       </label>
       <div className="flex gap-2">
+        {/* min-w-0: un input no se achica por debajo de su ancho propio aunque sea
+            flex-1, y a 375 px empujaba el botón hasta 409. text-base explícito: el
+            tamaño heredado depende de dónde se monte, y con menos de 16 px Safari en
+            iPhone agranda la página al enfocar el campo. */}
         <input
           id="email-rutina"
           type="email"
@@ -55,7 +59,7 @@ export function GuardarEmail({
             if (error) setError("");
           }}
           placeholder="tu@email.com"
-          className="min-h-[52px] flex-1 rounded-xl border border-niebla bg-porcelana px-4 font-body text-tinta outline-none focus:border-piedra"
+          className="min-h-[52px] min-w-0 flex-1 rounded-xl border border-niebla bg-porcelana px-4 font-body text-base text-tinta outline-none focus:border-piedra"
         />
         <button
           type="submit"

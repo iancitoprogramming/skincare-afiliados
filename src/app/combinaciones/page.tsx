@@ -79,7 +79,7 @@ export default function Combinaciones() {
         <section className="flex flex-col gap-3">
           <h2 className="font-mono text-sm text-piedra">la tabla</h2>
           <div className="-mx-5 overflow-x-auto px-5">
-            <table className="w-max border-collapse font-mono text-[11px]">
+            <table className="w-max border-collapse font-mono text-xs">
               <thead>
                 <tr>
                   <th className="sticky left-0 z-10 bg-porcelana p-1.5 text-left font-normal text-piedra">

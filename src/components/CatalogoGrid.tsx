@@ -112,10 +112,11 @@ export function CatalogoGrid({
 
         <label className="flex items-center gap-2 font-mono text-xs text-piedra">
           orden
+          {/* 16 px: con menos, Safari en iPhone agranda la página al tocar el selector. */}
           <select
             value={orden}
             onChange={(e) => setOrden(e.target.value as Orden)}
-            className="rounded-lg border border-niebla bg-porcelana px-2 py-1 font-mono text-xs text-tinta"
+            className="rounded-lg border border-niebla bg-porcelana px-2 py-1 font-body text-base text-tinta"
           >
             <option value="criterio">nuestro criterio</option>
             <option value="vendidos">más vendidos en Mercado Libre</option>
@@ -159,7 +160,7 @@ export function CatalogoGrid({
                 )}
 
                 {p.marca ? (
-                  <span className="font-mono text-[11px] leading-none text-piedra">{p.marca}</span>
+                  <span className="font-mono text-xs leading-none text-piedra">{p.marca}</span>
                 ) : null}
                 <span className="font-display text-sm font-medium leading-tight text-tinta">
                   {p.nombre}
