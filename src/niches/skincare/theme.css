@@ -22,5 +22,7 @@
 
   --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-mono-ui), ui-monospace, monospace; /* DM Mono; ver layout.tsx */
+  /* Etiquetas chicas en minúscula: "paso 01 · limpiador", "78 productos".
+     Es la misma Bricolage de los títulos, chica. No hay mono en el sitio. */
+  --font-etiqueta: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
 }

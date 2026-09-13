@@ -43,10 +43,10 @@ function Tarjeta({ conflicto }: { conflicto: Conflicto }) {
   return (
     <li className={`rounded-2xl border ${estilo.borde} bg-gel/15 p-4`}>
       <div className="flex flex-wrap items-center gap-2">
-        <span className={`rounded-full px-2 py-0.5 font-mono text-[11px] ${estilo.chip}`}>
+        <span className={`rounded-full px-2 py-0.5 font-etiqueta text-[11px] ${estilo.chip}`}>
           {copy.compatibilidad.severidad[conflicto.severidad]}
         </span>
-        <span className="font-mono text-[11px] text-piedra">
+        <span className="font-etiqueta text-[11px] text-piedra">
           {copy.compatibilidad.clase[conflicto.clase]}
           {cuando ? ` · ${cuando}` : ""}
         </span>
@@ -63,7 +63,7 @@ function Tarjeta({ conflicto }: { conflicto: Conflicto }) {
       </p>
 
       {conflicto.productos.length ? (
-        <p className="mt-2 font-mono text-[11px] leading-relaxed text-piedra">
+        <p className="mt-2 font-etiqueta text-[11px] leading-relaxed text-piedra">
           {conflicto.productos.join(" · ")}
         </p>
       ) : null}
@@ -84,7 +84,7 @@ export function Compatibilidad({
   return (
     <section className="flex flex-col gap-4">
       <div>
-        <h2 className="font-mono text-sm text-piedra">{copy.compatibilidad.titulo}</h2>
+        <h2 className="font-etiqueta text-sm text-piedra">{copy.compatibilidad.titulo}</h2>
         <p className="mt-1 font-body text-sm leading-relaxed text-tinta/75">
           {copy.compatibilidad.bajada}
         </p>
@@ -109,7 +109,7 @@ export function Compatibilidad({
           <ol className="mt-3 flex flex-col gap-2">
             {plan.noches.map((n) => (
               <li key={n.noche} className="flex gap-3">
-                <span className="mt-0.5 font-mono text-xs text-piedra">
+                <span className="mt-0.5 font-etiqueta text-xs text-piedra">
                   {String(n.noche).padStart(2, "0")}
                 </span>
                 <span className="font-body text-sm leading-relaxed text-tinta">
@@ -124,7 +124,7 @@ export function Compatibilidad({
 
       {sinergias.length ? (
         <div className="rounded-2xl border border-gel bg-gel/25 p-5">
-          <h3 className="font-mono text-xs text-piedra">{copy.compatibilidad.sinergias}</h3>
+          <h3 className="font-etiqueta text-xs text-piedra">{copy.compatibilidad.sinergias}</h3>
           <ul className="mt-2 flex flex-col gap-3">
             {sinergias.map((s) => (
               <li key={s.sinergiaId}>
@@ -142,7 +142,7 @@ export function Compatibilidad({
 
       {mitos.length ? (
         <div className="rounded-2xl border border-niebla p-5">
-          <h3 className="font-mono text-xs text-piedra">{copy.compatibilidad.mitos}</h3>
+          <h3 className="font-etiqueta text-xs text-piedra">{copy.compatibilidad.mitos}</h3>
           <ul className="mt-2 flex flex-col gap-4">
             {mitos.map((m) => (
               <li key={m.mitoId}>

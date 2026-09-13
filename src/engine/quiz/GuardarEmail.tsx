@@ -40,7 +40,7 @@ export function GuardarEmail({
 
   return (
     <form onSubmit={submit} className="flex flex-col gap-2">
-      <label htmlFor="email-rutina" className="font-mono text-xs text-piedra">
+      <label htmlFor="email-rutina" className="font-etiqueta text-xs text-piedra">
         {label}
       </label>
       <div className="flex gap-2">

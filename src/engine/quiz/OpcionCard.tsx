@@ -31,7 +31,7 @@ export function OpcionCard({
       />
       <span className="flex flex-col">
         <span className="font-body text-lg leading-snug text-tinta">{option.label}</span>
-        {option.hint ? <span className="font-mono text-xs text-piedra">{option.hint}</span> : null}
+        {option.hint ? <span className="font-etiqueta text-xs text-piedra">{option.hint}</span> : null}
       </span>
     </button>
   );

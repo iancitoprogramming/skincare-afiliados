@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Bricolage_Grotesque, DM_Mono, Instrument_Sans } from "next/font/google";
+import { Bricolage_Grotesque, Instrument_Sans } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { copy } from "@/niches/skincare/copy";
 import { informarMetadata, urlDelSitio } from "@/lib/sitio";
 import "./globals.css";
 
+// Bricolage hace dos trabajos: títulos y etiquetas chicas (`font-etiqueta`).
+// Hasta el fondo de monte de la home las etiquetas iban en Space Mono, que
+// sobre la foto se leía como máquina de escribir. Con dos familias en vez de
+// tres se baja una descarga y la etiqueta habla con la misma voz que el título.
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
   variable: "--font-bricolage",
@@ -14,16 +18,6 @@ const bricolage = Bricolage_Grotesque({
 const instrument = Instrument_Sans({
   subsets: ["latin"],
   variable: "--font-instrument",
-  display: "swap",
-});
-// La cara de etiqueta. Era Space Mono, y sus serifas de máquina de escribir
-// se leían como retro sobre la foto de la home. DM Mono conserva lo que la
-// mono aporta —etiquetas cortas y números alineados— sin ese aire. Nunca se
-// usó en negrita, así que con 400 y 500 alcanza.
-const dmMono = DM_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-mono-ui",
   display: "swap",
 });
 
@@ -56,7 +50,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="es-AR"
-      className={`${bricolage.variable} ${instrument.variable} ${dmMono.variable}`}
+      className={`${bricolage.variable} ${instrument.variable}`}
     >
       <body className="min-h-[100dvh] bg-porcelana font-body text-tinta antialiased">
         {children}

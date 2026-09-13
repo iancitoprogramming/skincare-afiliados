@@ -73,7 +73,7 @@ export function Resultados({
 
   const Seccion = ({ titulo, pasos }: { titulo: string; pasos: Paso[] }) => (
     <section className="flex flex-col gap-3">
-      <h2 className="font-mono text-sm text-piedra">{titulo}</h2>
+      <h2 className="font-etiqueta text-sm text-piedra">{titulo}</h2>
       {pasos.map((paso, i) => (
         <PasoRutina
           key={`${titulo}-${paso.producto.id}`}
@@ -90,7 +90,7 @@ export function Resultados({
   return (
     <div className="flex flex-col gap-8">
       <header>
-        <p className="font-mono text-xs text-piedra">{resumen}</p>
+        <p className="font-etiqueta text-xs text-piedra">{resumen}</p>
         <h1 className="font-display text-3xl font-medium text-tinta">{config.resultados.titulo}</h1>
       </header>
 
@@ -116,7 +116,7 @@ export function Resultados({
       <button
         type="button"
         onClick={onReset}
-        className="self-start font-mono text-sm text-piedra transition-colors hover:text-tinta"
+        className="self-start font-etiqueta text-sm text-piedra transition-colors hover:text-tinta"
       >
         {config.resultados.rehacer}
       </button>

@@ -125,7 +125,7 @@ export default async function Home() {
                 Este link es el respaldo de la promesa de arriba. */}
             <Link
               href="/combinaciones"
-              className="self-start font-mono text-xs text-tinta underline decoration-piedra underline-offset-4"
+              className="self-start font-etiqueta text-xs text-tinta underline decoration-piedra underline-offset-4"
             >
               {copy.home.respaldo} →
             </Link>
@@ -137,7 +137,7 @@ export default async function Home() {
         <section className={s.presentacion} data-presentacion>
           <Link href="/rutina" data-banda="0" className={s.tarjeta}>
             <div className={s.copy}>
-              <span className="font-mono text-xs text-tinta">a tu medida</span>
+              <span className="font-etiqueta text-xs text-tinta">a tu medida</span>
               <span className="font-display text-2xl font-medium text-tinta">
                 {copy.home.quiz.titulo}
               </span>
@@ -147,7 +147,7 @@ export default async function Home() {
           </Link>
           <Link href="/catalogo" data-banda="1" className={s.tarjeta}>
             <div className={s.copy}>
-              <span className="font-mono text-xs text-tinta">{activos} productos · con filtros</span>
+              <span className="font-etiqueta text-xs text-tinta">{activos} productos · con filtros</span>
               <span className="font-display text-2xl font-medium text-tinta">
                 {copy.catalogo.titulo}
               </span>
@@ -158,7 +158,7 @@ export default async function Home() {
           {total > 0 ? (
             <Link href="/kits" data-banda="2" className={s.tarjeta}>
               <div className={s.copy}>
-                <span className="font-mono text-xs text-tinta">
+                <span className="font-etiqueta text-xs text-tinta">
                   {total} kits{KITS_UNICOS.length > 0 ? " · hay de una sola compra" : ""}
                 </span>
                 <span className="font-display text-2xl font-medium text-tinta">
@@ -180,11 +180,11 @@ export default async function Home() {
             <footer className="flex flex-col gap-2 pt-4">
               <Link
                 href="/combinaciones"
-                className="self-start font-mono text-xs text-tinta underline decoration-piedra underline-offset-4"
+                className="self-start font-etiqueta text-xs text-tinta underline decoration-piedra underline-offset-4"
               >
                 {copy.home.criterios} →
               </Link>
-              <p className="font-mono text-[0.66rem] text-tinta">
+              <p className="font-etiqueta text-[0.66rem] text-tinta">
                 foto ·{" "}
                 <a href={FOTO.url} target="_blank" rel="noopener" className="underline underline-offset-2">
                   {FOTO.autor} · {FOTO.licencia}

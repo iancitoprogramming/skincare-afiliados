@@ -43,7 +43,7 @@ export default async function Kits() {
                 href={`/kits/${k.slug}`}
                 className="flex flex-col gap-1 rounded-2xl border border-terracota/40 bg-gel/40 p-5 transition-transform active:scale-[0.99]"
               >
-                <span className="flex flex-wrap items-center gap-2 font-mono text-xs text-piedra">
+                <span className="flex flex-wrap items-center gap-2 font-etiqueta text-xs text-piedra">
                   <span className="rounded-full bg-terracota px-2 py-0.5 text-porcelana">
                     {copy.kits.unicos.badge}
                   </span>
@@ -84,7 +84,7 @@ export default async function Kits() {
               href={`/kits/${kit.def.slug}`}
               className="flex flex-col gap-1 rounded-2xl border border-niebla bg-gel/25 p-5 transition-transform active:scale-[0.99]"
             >
-              <span className="font-mono text-xs text-piedra">
+              <span className="font-etiqueta text-xs text-piedra">
                 {copy.kits.pasos(kit.pasos.length)} ·{" "}
                 {copy.precio.rangoKit(copy.precio.rangos[kit.rango])}
               </span>
@@ -101,7 +101,7 @@ export default async function Kits() {
 
         <Link
           href="/rutina"
-          className="font-mono text-sm text-piedra transition-colors hover:text-tinta"
+          className="font-etiqueta text-sm text-piedra transition-colors hover:text-tinta"
         >
           ¿ninguno te cierra? armá la tuya →
         </Link>

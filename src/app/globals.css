@@ -1,6 +1,15 @@
 @import "tailwindcss";
 @import "../niches/skincare/theme.css";
 
+/* Bricolage a 12px en minúscula pide un poco de aire entre letras; la utilidad
+   de familia sola no lo da. Va en la capa de utilidades para que un
+   `tracking-*` explícito la pise si hace falta. */
+@layer utilities {
+  .font-etiqueta {
+    letter-spacing: 0.03em;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

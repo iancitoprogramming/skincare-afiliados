@@ -41,7 +41,7 @@ export function PasoRutina({
 
   return (
     <div className="rounded-2xl border border-niebla bg-gel/25 p-5">
-      <p className="font-mono text-xs text-piedra">
+      <p className="font-etiqueta text-xs font-medium text-piedra">
         paso {String(numero).padStart(2, "0")} · {categoriaLabel}
         {conAvisoDeCombinacion ? (
           <span className="ml-2 text-tinta/50">↓ {copy.compatibilidad.enPaso}</span>
@@ -62,7 +62,7 @@ export function PasoRutina({
         <h3 className="font-display text-xl font-medium leading-tight text-tinta">{p.nombre}</h3>
         <RangoPrecio rango={p.rango_precio} className="shrink-0" />
       </div>
-      {p.marca ? <p className="font-mono text-xs text-piedra">{p.marca}</p> : null}
+      {p.marca ? <p className="font-etiqueta text-xs text-piedra">{p.marca}</p> : null}
       <PruebaSocial d={p} className="mt-2" />
 
       {p.por_que ? (

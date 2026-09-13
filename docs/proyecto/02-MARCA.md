@@ -49,13 +49,13 @@ de entrar.
 |---|---|
 | **Bricolage Grotesque** | `font-display` — títulos |
 | **Instrument Sans** | `font-body` — texto corrido |
-| **DM Mono** | `font-mono` — etiquetas, datos, precios |
+| **Bricolage Grotesque** | `font-etiqueta` — etiquetas chicas, datos, precios |
 
-La monoespaciada es la que da personalidad: se usa para etiquetas cortas en
-minúscula ("paso 01 · limpiador", "25 productos", "tipo de piel"). Fue Space
-Mono hasta el fondo de monte de la home: sobre la foto sus serifas se leían
-como máquina de escribir, y se cambió por DM Mono, que alinea igual sin el
-aire retro.
+Las etiquetas cortas en minúscula ("paso 01 · limpiador", "25 productos",
+"tipo de piel") son las que dan personalidad. Van en la misma Bricolage de los
+títulos, a 12px con un poco de tracking; el marcador de paso va en peso 500.
+Hasta el fondo de monte de la home iban en Space Mono: sobre la foto sus
+serifas se leían como máquina de escribir. Ya no hay monoespaciada en el sitio.
 
 ## Logo
 
