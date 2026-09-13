@@ -64,7 +64,7 @@ export default async function Home() {
         <div className="flex flex-col gap-4">
           <Link
             href="/rutina"
-            className="flex flex-col gap-1 rounded-2xl border border-terracota/40 bg-gel/40 p-5 transition-transform active:scale-[0.99]"
+            className="flex flex-col gap-1 rounded-2xl border border-terracota/40 bg-gel/25 p-5 transition-transform active:scale-[0.99]"
           >
             <span className="font-mono text-xs text-piedra">a tu medida</span>
             <span className="font-display text-2xl font-medium text-tinta">
@@ -94,7 +94,7 @@ export default async function Home() {
           {total > 0 ? (
             <Link
               href="/kits"
-              className="flex flex-col gap-1 rounded-2xl border border-niebla bg-gel/40 p-5 transition-transform active:scale-[0.99]"
+              className="flex flex-col gap-1 rounded-2xl border border-niebla bg-gel/25 p-5 transition-transform active:scale-[0.99]"
             >
               <span className="font-mono text-xs text-piedra">
                 {total} kits{KITS_UNICOS.length > 0 ? " · hay de una sola compra" : ""}
