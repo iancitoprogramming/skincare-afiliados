@@ -13,6 +13,7 @@ export function PasoRepetido({
   numero,
   categoriaLabel,
   ancla,
+  tengo = false,
   conAvisoDeCombinacion = false,
 }: {
   paso: Paso;
@@ -20,6 +21,11 @@ export function PasoRepetido({
   categoriaLabel: string;
   /** Id de la tarjeta entera de la mañana, a la que este paso manda. */
   ancla: string;
+  /**
+   * La persona marcó a la mañana que ya tiene algo para este paso. Entonces no
+   * hay "el mismo de la mañana" que señalar: es el suyo.
+   */
+  tengo?: boolean;
   conAvisoDeCombinacion?: boolean;
 }) {
   const explicado = copy.pasos[paso.slot.categoria];
@@ -39,23 +45,28 @@ export function PasoRepetido({
 
       {/* Sólo si a la noche el paso dice algo distinto. La explicación general ya
           se leyó en la tarjeta de la mañana, y repetirla es el mismo problema que
-          repetir la tarjeta. */}
+          repetir la tarjeta. Vale también con "ya tengo uno": cómo limpiar a la
+          noche no depende de qué limpiador sea. */}
       {explicado?.pm ? (
         <p className="mt-1 font-body text-sm leading-relaxed text-tinta/80">{explicado.pm}</p>
       ) : null}
 
-      <p className="mt-2 font-body text-sm text-tinta/80">
-        {copy.repetido.mismo}{" "}
-        <a
-          href={`#${ancla}`}
-          className="font-medium text-tinta underline decoration-niebla underline-offset-4 transition-colors hover:decoration-tinta"
-        >
-          {paso.producto.nombre}
-        </a>{" "}
-        <span aria-hidden className="text-piedra">
-          ↑
-        </span>
-      </p>
+      {tengo ? (
+        <p className="mt-2 font-body text-sm text-tinta/80">{copy.yaLoTengo.noche}</p>
+      ) : (
+        <p className="mt-2 font-body text-sm text-tinta/80">
+          {copy.repetido.mismo}{" "}
+          <a
+            href={`#${ancla}`}
+            className="font-medium text-tinta underline decoration-niebla underline-offset-4 transition-colors hover:decoration-tinta"
+          >
+            {paso.producto.nombre}
+          </a>{" "}
+          <span aria-hidden className="text-piedra">
+            ↑
+          </span>
+        </p>
+      )}
     </div>
   );
 }

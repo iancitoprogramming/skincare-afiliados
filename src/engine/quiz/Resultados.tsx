@@ -13,6 +13,7 @@ import { PasoRutina } from "./PasoRutina";
 import { PasoRepetido } from "./PasoRepetido";
 import { anclaDePaso, pasosPorMomento, type PasoMostrado } from "./repetidos";
 import { GuardarEmail } from "./GuardarEmail";
+import { useYaLoTengo } from "./yaLoTengo";
 
 export function Resultados({
   config,
@@ -73,12 +74,22 @@ export function Resultados({
 
   const catLabel = (categoria: string) => config.categorias[categoria] ?? categoria;
 
+  // "Ya tengo uno", por categoría y guardado en el navegador. Ver `yaLoTengo.ts`.
+  // Lo guardado puede traer categorías que esta rutina no tiene —es un dato de
+  // la persona, no de la rutina—, así que el conteo mira sólo las de acá.
+  const [tengo, alternarTengo] = useYaLoTengo(`${config.slug}:ya-lo-tengo`);
+  const tengoAca = categorias.filter((c) => tengo.has(c)).length;
+
   // La rutina trae los pasos de "mañana y noche" en las dos listas —el análisis
   // de compatibilidad los necesita así—, pero no se muestran dos veces enteros:
   // a la noche, el que repite producto va resumido. Ver `repetidos.ts`.
   const mostrados = pasosPorMomento(rutina);
 
-  const Seccion = ({
+  // Se llama como función y no como componente. Definida adentro de este
+  // componente, sería un tipo nuevo en cada render: React desmontaría todas las
+  // tarjetas cada vez que alguien marca "ya tengo uno", y el foco del teclado
+  // se perdería con el checkbox recién usado.
+  const seccion = ({
     titulo,
     pasos,
     momento,
@@ -97,6 +108,7 @@ export function Resultados({
             numero={numero}
             categoriaLabel={catLabel(paso.slot.categoria)}
             ancla={anclaDePaso(paso)}
+            tengo={tengo.has(paso.slot.categoria)}
             conAvisoDeCombinacion={categoriasConAviso.has(paso.slot.categoria)}
           />
         ) : (
@@ -107,6 +119,8 @@ export function Resultados({
             categoriaLabel={catLabel(paso.slot.categoria)}
             momento={momento}
             ancla={momento === "am" ? anclaDePaso(paso) : undefined}
+            tengo={tengo.has(paso.slot.categoria)}
+            onAlternarTengo={() => alternarTengo(paso.slot.categoria)}
             sesionId={sesionId}
             conAvisoDeCombinacion={categoriasConAviso.has(paso.slot.categoria)}
           />
@@ -120,10 +134,15 @@ export function Resultados({
       <header>
         <p className="font-mono text-xs text-piedra">{resumen}</p>
         <h1 className="font-display text-3xl font-medium text-tinta">{config.resultados.titulo}</h1>
+        {tengoAca > 0 ? (
+          <p className="mt-1 font-mono text-xs text-salvia">
+            {copy.yaLoTengo.resumen(tengoAca, categorias.length - tengoAca)}
+          </p>
+        ) : null}
       </header>
 
-      <Seccion titulo={config.resultados.manana} pasos={mostrados.am} momento="am" />
-      <Seccion titulo={config.resultados.noche} pasos={mostrados.pm} momento="pm" />
+      {seccion({ titulo: config.resultados.manana, pasos: mostrados.am, momento: "am" })}
+      {seccion({ titulo: config.resultados.noche, pasos: mostrados.pm, momento: "pm" })}
 
       <Compatibilidad analisis={analisis} plan={plan} />
 
