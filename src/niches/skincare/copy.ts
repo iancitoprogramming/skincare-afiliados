@@ -47,6 +47,94 @@ export const copy = {
       bajada: (n: number) => `${n} preguntas · menos de un minuto.`,
       cta: "Empezar",
     },
+
+    // Debajo de las tres puertas, para el que no decidió y bajó a mirar. No son
+    // puertas: ver 03-PRODUCTO.md § Tres puertas.
+    //
+    // Todo lo que dicen está en el código y se puede verificar. El paso del medio
+    // no promete que "un retinoide y un ácido no te van a tocar la misma noche":
+    // ese choque se resuelve con una instrucción y no cambiando de producto —es
+    // una decisión tomada—, así que lo cierto es que el sitio te dice qué noche va
+    // cada uno.
+    metodo: {
+      etiqueta: "cómo funciona",
+      titulo: "Tres pasos, y el que importa es el del medio",
+      pasos: [
+        {
+          titulo: "Respondés",
+          // Piel y objetivo son siempre las dos primeras. El total no se escribe
+          // a mano: sale de configServible(), como en el resto de la home.
+          texto: (n: number) => `${n} preguntas, empezando por tu tipo de piel y lo que querés cambiar.`,
+        },
+        {
+          titulo: "Cruzamos los activos",
+          texto:
+            "Chequeamos cada producto contra los demás antes de mostrártelo: que no se anulen entre sí, " +
+            "que no se repitan y que no sumen irritación. Y si dos van mejor en noches distintas, te " +
+            "decimos qué noche va cada uno.",
+        },
+        {
+          titulo: "Te damos la rutina con el porqué",
+          texto:
+            "Paso por paso: para qué sirve cada uno y por qué ese producto. Si algo no es para tu piel, " +
+            "también te lo decimos.",
+        },
+      ],
+    },
+
+    // Preguntas antes de empezar. Son hipótesis hasta tener respuestas reales de
+    // clientas a "¿qué casi te frena?"; cuando las haya, se reescriben con esas.
+    //
+    // Cada respuesta describe algo que el sitio hace hoy. Si deja de hacerlo, la
+    // respuesta cambia con él:
+    //   · ventas            → la popularidad no clasifica ni ordena (06-ESTADO)
+    //   · piel sensible     → apto-sensible.test.ts: fragancia, aceites
+    //                         esenciales y contrairritantes vetan
+    //   · comprar todo      → "Ya tengo uno", en el resultado
+    //   · más caro          → el presupuesto cede ante la piel y el objetivo
+    //   · dermatólogo       → el mismo aviso que va en las pantallas con links
+    //
+    // No está "¿cómo ganan plata?" a propósito: el brand kit dice que la
+    // transparencia de afiliados va donde hay links de compra, no en la home.
+    preguntas: {
+      etiqueta: "preguntas",
+      titulo: "Antes de empezar",
+      items: [
+        {
+          pregunta: "¿Me van a recomendar lo que más se vende?",
+          respuesta:
+            "No. Las ventas y las estrellas de Mercado Libre no ordenan nada: el orden sale de qué tan " +
+            "bien encaja cada producto en su paso y de la calidad de su fórmula. Un producto bueno y " +
+            "poco conocido le puede ganar a uno famoso.",
+        },
+        {
+          pregunta: "¿Y si tengo la piel sensible?",
+          respuesta:
+            "Si la fórmula declara fragancia o aceites esenciales, el producto no se le ofrece a piel " +
+            "sensible, aunque la caja diga lo contrario. Y si en algún paso no tenemos una opción apta, " +
+            "te lo avisamos en ese paso.",
+        },
+        {
+          pregunta: "¿Tengo que comprar todo?",
+          respuesta:
+            "No. Si ya tenés algo para un paso, marcá “Ya tengo uno” en tu rutina y ese paso deja de " +
+            "ofrecerte comprar.",
+        },
+        {
+          pregunta: "¿Por qué a veces aparece algo más caro de lo que elegí?",
+          respuesta:
+            "Porque el presupuesto cede ante tu piel y tu objetivo. Si no hay nada más accesible que te " +
+            "sirva, preferimos decírtelo antes que darte algo que no va a funcionar.",
+        },
+        {
+          pregunta: "¿Esto reemplaza al dermatólogo?",
+          respuesta:
+            "No. Te ayudamos a elegir productos de venta libre y a combinarlos. Ante un problema de piel, " +
+            "consultá a un dermatólogo.",
+        },
+      ],
+      cta: "Armá tu rutina",
+    },
     // El link a los criterios en el pie de TODAS las pantallas (ver Shell), no
     // una puerta de la home. Vive abajo porque es para el que ya está adentro y
     // quiere entender por qué recomendamos lo que recomendamos. En la home el

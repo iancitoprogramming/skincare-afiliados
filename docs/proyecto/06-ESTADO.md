@@ -16,7 +16,7 @@ números: decía 69 páginas, 56 tests y 46 links pendientes._
 | Productos en catálogo | 79 · 78 activos, más 2 kits de compra única |
 | De esos, en el motor | 57 · los otros 21 están con `en_rutina: false` |
 | Links que monetizan | 81 de 81 · 0 pendientes · todos declaran `maurobilat` |
-| Tests | 132 en verde, en 15 archivos |
+| Tests | 161 en verde, en 20 archivos · medido el 13/9 |
 | Rutinas sin ningún conflicto | 344 de 360 (95,6 %) · 0 con severidad "separar" |
 | Activos con fuente verificada | 73 de 79 entradas |
 | Tiers servibles | 1 y 2 (son los dos que existen) |
@@ -32,11 +32,20 @@ el orden que hay que respetar. Es el primero de la lista.
 > Consecuencia a tener presente: una vez que Supabase sirva el catálogo, cada
 > cambio de catálogo necesita `npm run sync` o producción queda atrasada.
 
-**2 · El check de Vercel falla en todos los PR.** No es código: el log dice *"Git
-author WomenAre0bjects must have access to the project on Vercel to create
-deployments"*. Es permisos y lo gestiona Ian. Viene fallando desde antes de esta
-línea de trabajo, así que no sirve como señal de nada — la señal es el workflow
-`verificar`, que corre tipos, tests, build, links y auditoría de cuentas.
+**2 · ~~El check de Vercel falla en todos los PR~~ → resuelto el 12/9.** El log
+decía *"Git author WomenAre0bjects must have access to the project on Vercel to
+create deployments"*: el repo es privado, y Vercel sólo deploya commits cuyo
+autor tiene acceso al proyecto. Desde el PR #22 los commits salen con la
+identidad del dueño del proyecto (`iancitoprogramming`) y llevan un trailer
+`Co-authored-by: therexone1 <therexone1@gmail.com>` con el autor real, así que
+el historial sigue diciendo quién escribió cada cambio.
+
+Desde ahí el check de Vercel está en verde en todos los PR y producción se
+publica al mergear. **Ojo con lo que pasa si se rompe:** si un commit —o el merge
+de un PR— sale con otra identidad, el check vuelve a fallar y **producción deja
+de publicarse sin avisar**. Pasó con los PR #14 a #21: quedaron mergeados y sin
+salir hasta el #22. El número se deja tachado y no se borra para no correr la
+numeración de los que siguen.
 
 **3 · Escudo anti-bots de Vercel.** Se disparó haciendo polling con curl. Los
 navegadores lo pasan transparente, pero el crawler de Pinterest es un bot y
@@ -51,6 +60,19 @@ meta `p:domain_verify` ya está cableado: se pega el código en
 > TikTok, YouTube, Pinterest y X. Facebook se descartó por decisión.
 
 ## Pendiente de UX
+
+**Hecho el 13/9, en la pantalla de resultado y en la home** (PR #23 en adelante):
+
+- **Resultado:** cada paso dice primero para qué sirve y después qué producto;
+  los pasos de "mañana y noche" no se repiten enteros a la noche; "Ya tengo uno"
+  por paso; hasta dos alternativas por paso, chequeadas contra el resto de la
+  rutina.
+- **Home:** la puerta del catálogo decía "Armar mi rutina"; debajo de las tres
+  puertas, "cómo funciona" en tres pasos y cinco preguntas antes de empezar.
+  Las preguntas son hipótesis hasta tener respuestas reales de clientas.
+
+**Imagen de la home.** Falta producción: en `assets/` sólo hay fotos de producto
+sobre blanco, y la home no tiene ninguna imagen.
 
 **Sistema visual.** La paleta y el logo ya están; falta la pasada de jerarquía,
 espaciado y densidad para competir en un feed de Pinterest.
@@ -135,6 +157,7 @@ propuesta.
 | **Un conflicto que se arregla con una instrucción no baja la calidad de match** | "Retinoide y ácido la misma noche" se resuelve con "noches alternas", y el sitio ya genera el calendario noche por noche. Bajar de nivel le costaría a la persona el producto que vino a buscar, y el calendario le aparece igual. Sólo se baja ante un choque sin instrucción posible, como "dos retinoides: quedate con uno" |
 | **El logo se adopta tal cual** (arcos concéntricos) | Decisión de Ian sobre la propuesta de Alex |
 | **"Tu piel, sin vueltas" se descarta** | Cliché de skincare |
+| **La fuente de verdad de UX es el brand kit botánico con las tres puertas** | Decidido el 13/9. En el vault hay un plan anterior, `landing/fase-2.html`, con otra paleta, otra tipografía y una landing de una sola página. Partía de supuestos que ya no son ciertos —10 productos, 4 preguntas, sin precios, piel sensible sin servir— y adoptarlo reabriría decisiones cerradas. De ahí se rescatan ideas sueltas, no el sistema |
 
 ## Errores que ya se cometieron
 
