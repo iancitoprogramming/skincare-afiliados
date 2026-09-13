@@ -15,6 +15,7 @@ import { KITS, KITS_UNICOS } from "@/niches/skincare/kits";
 import { configServible } from "@/engine/quiz/servible";
 import { skincareQuiz } from "@/niches/skincare/config";
 import { productos as fallback } from "@/niches/skincare/productos";
+import { answersToQuery } from "@/engine/quiz/url";
 import s from "./home.module.css";
 
 export const revalidate = 3600;
@@ -87,7 +88,13 @@ export default async function Home() {
   // La cantidad de preguntas cambia sola: si el catálogo sólo puede servir un
   // tier, esa pregunta desaparece. Hardcodear "4 preguntas" ya nos quedó viejo
   // una vez cuando entró la rama coreana.
-  const preguntas = configServible(skincareQuiz, productos).questions.length;
+  const quiz = configServible(skincareQuiz, productos);
+  const preguntas = quiz.questions.length;
+  // Entrar por lo que te preocupa, no por tipo de producto: es la tesis del
+  // sitio, y la home la hace tocable. Cada chip es la pregunta del objetivo ya
+  // respondida; el quiz arranca en la siguiente. La pregunta y sus opciones
+  // son las del quiz, no una copia.
+  const objetivo = quiz.questions.find((q) => q.urlKey === quiz.recomendacion.objetivoKey);
 
   // La foto es el elemento más grande de la pantalla: es el LCP. Sin preload
   // el navegador la descubre recién al parsear el <img>, tarde.
@@ -122,6 +129,24 @@ export default async function Home() {
                 </li>
               ))}
             </ul>
+
+            {objetivo ? (
+              <nav aria-label={objetivo.title} className="flex flex-col items-center gap-2 pt-1">
+                <p className="font-etiqueta text-xs text-tinta">{objetivo.title}</p>
+                <ul className="flex flex-wrap justify-center gap-2">
+                  {objetivo.options.map((o) => (
+                    <li key={o.value}>
+                      <Link
+                        href={`/rutina${answersToQuery({ [objetivo.urlKey]: o.value })}`}
+                        className="inline-flex min-h-11 items-center rounded-full border border-tinta/25 bg-porcelana/80 px-4 font-body text-sm font-medium text-tinta"
+                      >
+                        {o.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            ) : null}
 
             {/* La credibilidad del mecanismo la da contenido real, no un número.
                 Este link es el respaldo de la promesa de arriba. */}

@@ -142,6 +142,13 @@ export const copy = {
     criterios: "cómo decidimos qué combina con qué",
   },
 
+  // Debajo del botón de compra de cada ficha: el camino de compra devuelve al
+  // camino de entender. Vos tenés los dos caminos y hasta acá no se tocaban.
+  ficha: {
+    cruce: "¿Va con tu piel?",
+    cruceCta: "Armá tu rutina y lo chequeamos con el resto",
+  },
+
   // ───────────────────────────────────────────────────────────────────────────
   // PRECIO
   //

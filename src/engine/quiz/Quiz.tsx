@@ -42,8 +42,13 @@ export function Quiz({ config, productos }: { config: QuizConfig; productos: Pro
     const next = { ...answers, [question.urlKey]: value };
     setAnswers(next);
     syncUrl(next);
-    if (step < questions.length - 1) {
-      setStep(step + 1);
+    // Avanza a la siguiente SIN responder, no a la siguiente a secas. Una
+    // respuesta puede venir en la URL antes de empezar (la home entra por
+    // objetivo con `/rutina?o=manchas`) y no tiene sentido volver a hacerla.
+    // Con "volver" se puede llegar igual a cualquiera y cambiarla.
+    const siguiente = questions.findIndex((q, i) => i > step && !next[q.urlKey]);
+    if (siguiente !== -1) {
+      setStep(siguiente);
     } else {
       // Quiz completo: registramos la sesión (una sola vez, acá, no al abrir).
       const id = nuevaSesionId();

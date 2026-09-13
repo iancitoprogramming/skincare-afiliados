@@ -91,6 +91,12 @@ export default async function ProductoDetalle({ params }: { params: Promise<{ sl
           productoId={p.id}
           label="Ver en Mercado Libre"
         />
+        <p className="font-body text-sm text-tinta">
+          <span className="text-piedra">{copy.ficha.cruce}</span>{" "}
+          <Link href="/rutina" className="font-medium text-tinta underline decoration-piedra underline-offset-4">
+            {copy.ficha.cruceCta} →
+          </Link>
+        </p>
 
         {p.por_que ? (
           <section className="flex flex-col gap-2">
