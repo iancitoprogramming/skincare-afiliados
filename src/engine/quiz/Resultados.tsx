@@ -1,7 +1,7 @@
 "use client";
 
 import type { Answers, QuizConfig } from "./types";
-import type { PasoRutina as Paso, Producto } from "@/engine/recomendacion";
+import type { Producto } from "@/engine/recomendacion";
 import { analizarRutina } from "@/engine/compatibilidad";
 import { catalogoActivos } from "@/niches/skincare/activos";
 import { planSemanal } from "@/niches/skincare/calendario";
@@ -10,6 +10,8 @@ import { guardarLead } from "@/engine/tracking";
 import { resolverRutina } from "./armar";
 import { Compatibilidad } from "./Compatibilidad";
 import { PasoRutina } from "./PasoRutina";
+import { PasoRepetido } from "./PasoRepetido";
+import { anclaDePaso, pasosPorMomento, type PasoMostrado } from "./repetidos";
 import { GuardarEmail } from "./GuardarEmail";
 
 export function Resultados({
@@ -71,28 +73,45 @@ export function Resultados({
 
   const catLabel = (categoria: string) => config.categorias[categoria] ?? categoria;
 
+  // La rutina trae los pasos de "mañana y noche" en las dos listas —el análisis
+  // de compatibilidad los necesita así—, pero no se muestran dos veces enteros:
+  // a la noche, el que repite producto va resumido. Ver `repetidos.ts`.
+  const mostrados = pasosPorMomento(rutina);
+
   const Seccion = ({
     titulo,
     pasos,
     momento,
   }: {
     titulo: string;
-    pasos: Paso[];
+    pasos: PasoMostrado[];
     momento: "am" | "pm";
   }) => (
     <section className="flex flex-col gap-3">
       <h2 className="font-mono text-sm text-piedra">{titulo}</h2>
-      {pasos.map((paso, i) => (
-        <PasoRutina
-          key={`${titulo}-${paso.producto.id}`}
-          paso={paso}
-          numero={i + 1}
-          categoriaLabel={catLabel(paso.slot.categoria)}
-          momento={momento}
-          sesionId={sesionId}
-          conAvisoDeCombinacion={categoriasConAviso.has(paso.slot.categoria)}
-        />
-      ))}
+      {pasos.map(({ paso, numero, repetido }) =>
+        repetido ? (
+          <PasoRepetido
+            key={`${titulo}-${paso.producto.id}`}
+            paso={paso}
+            numero={numero}
+            categoriaLabel={catLabel(paso.slot.categoria)}
+            ancla={anclaDePaso(paso)}
+            conAvisoDeCombinacion={categoriasConAviso.has(paso.slot.categoria)}
+          />
+        ) : (
+          <PasoRutina
+            key={`${titulo}-${paso.producto.id}`}
+            paso={paso}
+            numero={numero}
+            categoriaLabel={catLabel(paso.slot.categoria)}
+            momento={momento}
+            ancla={momento === "am" ? anclaDePaso(paso) : undefined}
+            sesionId={sesionId}
+            conAvisoDeCombinacion={categoriasConAviso.has(paso.slot.categoria)}
+          />
+        ),
+      )}
     </section>
   );
 
@@ -103,8 +122,8 @@ export function Resultados({
         <h1 className="font-display text-3xl font-medium text-tinta">{config.resultados.titulo}</h1>
       </header>
 
-      <Seccion titulo={config.resultados.manana} pasos={rutina.am} momento="am" />
-      <Seccion titulo={config.resultados.noche} pasos={rutina.pm} momento="pm" />
+      <Seccion titulo={config.resultados.manana} pasos={mostrados.am} momento="am" />
+      <Seccion titulo={config.resultados.noche} pasos={mostrados.pm} momento="pm" />
 
       <Compatibilidad analisis={analisis} plan={plan} />
 
