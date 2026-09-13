@@ -26,11 +26,17 @@ import { describe, expect, it } from "vitest";
 import { PALETA, type NombreColor } from "./paleta";
 
 const MINIMO = 4.5;
+/** WCAG 1.4.6 (AAA): el margen para lo que se lee de corrido. */
+const REFORZADO = 7;
 
-/** Opacidad mínima del texto en tinta sobre una superficie clara. */
-const TINTA_EN_CLARA = 65;
-/** Opacidad mínima del texto en tinta sobre una superficie teñida. */
-const TINTA_EN_TENIDA = 70;
+// Tinta va en tres niveles y nada más: entero, APOYO y NOTA. Había cinco
+// escalones de a 5 puntos (/65 a /85) y no eran cinco jerarquías: el mismo rol
+// iba en /80 en una tarjeta y en /85 en la de al lado.
+/** Apoyo: explicaciones, bajadas, descripciones, avisos. AAA sobre superficie clara. */
+const APOYO = 80;
+/** Nota: leyendas, notas al pie, pistas, marcas, celdas vacías. AA en cualquier superficie. */
+const NOTA = 70;
+const ESCALA_TINTA = [APOYO, NOTA];
 /** Tope de opacidad del gel para que siga siendo una superficie clara. */
 const GEL_TOPE = 35;
 
@@ -82,22 +88,26 @@ const TENIDAS: Record<string, RGB> = {
   "chip de reputación · gel sólido": rgb(PALETA.gel),
 };
 
-function fallas(fondos: Record<string, RGB>, textos: Record<string, (fondo: RGB) => RGB>): string[] {
+function fallas(
+  fondos: Record<string, RGB>,
+  textos: Record<string, (fondo: RGB) => RGB>,
+  minimo = MINIMO,
+): string[] {
   const out: string[] = [];
   for (const [nombreFondo, fondo] of Object.entries(fondos)) {
     for (const [nombreTexto, texto] of Object.entries(textos)) {
       const v = contraste(texto(fondo), fondo);
-      if (v < MINIMO) out.push(`${nombreTexto} sobre ${nombreFondo}: ${v.toFixed(2)}:1`);
+      if (v < minimo) out.push(`${nombreTexto} sobre ${nombreFondo}: ${v.toFixed(2)}:1`);
     }
   }
   return out;
 }
 
 describe("contraste: la matriz del sistema", () => {
-  it(`sobre las superficies claras pasan tinta desde /${TINTA_EN_CLARA}, piedra, salvia y terracota`, () => {
+  it(`sobre las superficies claras pasan tinta/${NOTA}, piedra, salvia y terracota`, () => {
     expect(
       fallas(CLARAS, {
-        [`tinta/${TINTA_EN_CLARA}`]: (f) => sobre("tinta", TINTA_EN_CLARA, f),
+        [`tinta/${NOTA}`]: (f) => sobre("tinta", NOTA, f),
         piedra: () => rgb(PALETA.piedra),
         salvia: () => rgb(PALETA.salvia),
         terracota: () => rgb(PALETA.terracota),
@@ -105,10 +115,16 @@ describe("contraste: la matriz del sistema", () => {
     ).toEqual([]);
   });
 
-  it(`sobre las superficies teñidas pasa tinta desde /${TINTA_EN_TENIDA}`, () => {
-    expect(
-      fallas(TENIDAS, { [`tinta/${TINTA_EN_TENIDA}`]: (f) => sobre("tinta", TINTA_EN_TENIDA, f) }),
-    ).toEqual([]);
+  it(`sobre las superficies teñidas pasa tinta/${NOTA}`, () => {
+    expect(fallas(TENIDAS, { [`tinta/${NOTA}`]: (f) => sobre("tinta", NOTA, f) })).toEqual([]);
+  });
+
+  // El apoyo es lo que se lee de corrido: la explicación de cada paso, lo que hay
+  // que saber de un choque. Ahí se pide AAA, que según W3C compensa la pérdida de
+  // sensibilidad al contraste de quien tiene baja visión sin tecnología de asistencia.
+  it(`tinta/${APOYO} llega a ${REFORZADO}:1 sobre las superficies claras y sobre el aviso de un paso`, () => {
+    const dondeVive = { ...CLARAS, aviso: TENIDAS["aviso del paso · terracota/5 en tarjeta gel/25"] };
+    expect(fallas(dondeVive, { [`tinta/${APOYO}`]: (f) => sobre("tinta", APOYO, f) }, REFORZADO)).toEqual([]);
   });
 
   it("porcelana entera pasa sobre terracota sólido, que es el CTA", () => {
@@ -142,7 +158,6 @@ const TEXTO_CON_OPACIDAD = /(^|[^\w/:-])((?:[\w-]+:)*)text-(tinta|porcelana|pied
 const GEL_CON_OPACIDAD = /(^|[^\w/:-])((?:[\w-]+:)*)bg-gel\/(\d+)/g;
 const SUPERFICIE_TENIDA = /(^|[^\w/:-])bg-(?:(?:piedra|terracota|niebla|salvia)\/\d+|gel(?![\w/-]))/;
 const TEXTO_DE_COLOR = /(^|[^\w/:-])text-(piedra|terracota|salvia)(?![\w/-])/;
-const TINTA_CON_OPACIDAD = /(^|[^\w/:-])text-tinta\/(\d+)/g;
 
 function revisar(ruta: string, fuente: string): string[] {
   const s = sinComentarios(fuente);
@@ -154,10 +169,10 @@ function revisar(ruta: string, fuente: string): string[] {
   for (const m of s.matchAll(TEXTO_CON_OPACIDAD)) {
     const [, , variantes, color, alfa] = m;
     if (deshabilitado(variantes)) continue;
-    if (color === "tinta" && Number(alfa) >= TINTA_EN_CLARA) continue;
+    if (color === "tinta" && ESCALA_TINTA.includes(Number(alfa))) continue;
     const motivo =
       color === "tinta"
-        ? `tinta por debajo de /${TINTA_EN_CLARA} no llega a ${MINIMO}:1 ni sobre porcelana`
+        ? `tinta/${alfa} no está en la escala: va /${APOYO} (apoyo) o /${NOTA} (nota)`
         : `${color} con opacidad no llega a ${MINIMO}:1; va entero`;
     out.push(`${ruta}:${lineaDe(m)} ${variantes}text-${color}/${alfa}: ${motivo}`);
   }
@@ -180,12 +195,7 @@ function revisar(ruta: string, fuente: string): string[] {
   for (const { texto, i } of literales) {
     if (!SUPERFICIE_TENIDA.test(texto)) continue;
     const deColor = texto.match(TEXTO_DE_COLOR);
-    const tintaBaja = [...texto.matchAll(TINTA_CON_OPACIDAD)].find(([, , a]) => Number(a) < TINTA_EN_TENIDA);
-    if (deColor) {
-      out.push(`${ruta}:${linea(i)} text-${deColor[2]} sobre superficie teñida: va en tinta`);
-    } else if (tintaBaja) {
-      out.push(`${ruta}:${linea(i)} text-tinta/${tintaBaja[2]} sobre superficie teñida: va desde /${TINTA_EN_TENIDA}`);
-    }
+    if (deColor) out.push(`${ruta}:${linea(i)} text-${deColor[2]} sobre superficie teñida: va en tinta`);
   }
 
   return out;
@@ -201,8 +211,11 @@ describe("contraste: las clases de src/", () => {
       [`chip: "bg-terracota/15 text-terracota",`, 1],
       [`chip: "bg-niebla/40 text-tinta/65",`, 1],
       [`<p className={\`p-5 \${x ? "bg-piedra/15 text-piedra" : ""}\`}>`, 1],
+      [`<span className="text-tinta/65">`, 1],
+      [`<p className="text-tinta/85">`, 1],
       // Lo permitido no suena.
-      [`<span className="text-tinta/65">`, 0],
+      [`<p className="text-tinta/80">`, 0],
+      [`<p className="text-tinta/70">`, 0],
       [`<button className="text-tinta disabled:text-tinta/35">`, 0],
       [`<span className="text-piedra group-disabled:text-tinta/35">`, 0],
       [`<button className="hover:bg-gel/40 active:bg-gel/60">`, 0],

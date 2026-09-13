@@ -64,7 +64,7 @@ function Tarjeta({ conflicto }: { conflicto: Conflicto }) {
       <h3 className="mt-2 font-display text-base font-medium leading-snug text-tinta">
         {conflicto.titulo}
       </h3>
-      <p className="mt-1 font-body text-sm leading-relaxed text-tinta/85">
+      <p className="mt-1 font-body text-sm leading-relaxed text-tinta/80">
         {conflicto.explicacion}
       </p>
       <p className="mt-2 font-body text-sm leading-relaxed text-tinta">
@@ -101,7 +101,7 @@ export function Compatibilidad({
   return (
     <>
       <Desplegable etiqueta={copy.compatibilidad.titulo} titulo={tituloConflictos}>
-        <p className="font-body text-sm leading-relaxed text-tinta/75">{copy.compatibilidad.bajada}</p>
+        <p className="font-body text-sm leading-relaxed text-tinta/80">{copy.compatibilidad.bajada}</p>
 
         {conflictos.length ? (
           <ul className="flex flex-col gap-3">
@@ -110,7 +110,7 @@ export function Compatibilidad({
             ))}
           </ul>
         ) : (
-          <p className="font-body text-sm leading-relaxed text-tinta/85">
+          <p className="font-body text-sm leading-relaxed text-tinta/80">
             {copy.compatibilidad.sinConflictos}
           </p>
         )}
@@ -118,7 +118,7 @@ export function Compatibilidad({
         {plan ? (
           <div className="border-t border-niebla pt-4">
             <h3 className="font-display text-base font-medium text-tinta">{plan.titulo}</h3>
-            <p className="mt-1 font-body text-sm leading-relaxed text-tinta/85">{plan.intro}</p>
+            <p className="mt-1 font-body text-sm leading-relaxed text-tinta/80">{plan.intro}</p>
             <ol className="mt-3 flex flex-col gap-2">
               {plan.noches.map((n) => (
                 <li key={n.noche} className="flex gap-3">
@@ -131,8 +131,8 @@ export function Compatibilidad({
                 </li>
               ))}
             </ol>
-            {/* 14 px aunque sea secundario: es lo que hay que hacer si la piel reacciona. */}
-            <p className="mt-3 font-body text-sm leading-relaxed text-tinta/70">{plan.siArde}</p>
+            {/* 14 px y nivel de apoyo aunque sea secundario: es lo que hay que hacer si la piel reacciona. */}
+            <p className="mt-3 font-body text-sm leading-relaxed text-tinta/80">{plan.siArde}</p>
           </div>
         ) : null}
       </Desplegable>
@@ -148,7 +148,7 @@ export function Compatibilidad({
                 <p className="font-display text-base font-medium leading-snug text-tinta">
                   {s.titulo}
                 </p>
-                <p className="mt-1 font-body text-sm leading-relaxed text-tinta/85">
+                <p className="mt-1 font-body text-sm leading-relaxed text-tinta/80">
                   {s.explicacion}
                 </p>
               </li>
@@ -171,7 +171,7 @@ export function Compatibilidad({
                 <p className="mt-1 font-body text-sm leading-relaxed text-tinta/70">
                   <span className="text-piedra">lo que se dice:</span> {m.loQueSeDice}
                 </p>
-                <p className="mt-1 font-body text-sm leading-relaxed text-tinta/85">
+                <p className="mt-1 font-body text-sm leading-relaxed text-tinta/80">
                   <span className="text-piedra">lo que se sabe:</span> {m.loQueSabemos}
                 </p>
               </li>

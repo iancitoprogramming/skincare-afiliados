@@ -47,7 +47,7 @@ export default async function Catalogo() {
           <h1 className="font-display text-3xl font-medium tracking-tight text-tinta">
             {copy.catalogo.titulo}
           </h1>
-          <p className="font-body text-sm text-tinta/75">{copy.catalogo.bajada}</p>
+          <p className="font-body text-sm text-tinta/80">{copy.catalogo.bajada}</p>
         </header>
 
         <CatalogoGrid

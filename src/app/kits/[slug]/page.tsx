@@ -51,7 +51,7 @@ export default async function KitDetalle({ params }: { params: Promise<{ slug: s
             <h1 className="font-display text-3xl font-medium leading-tight tracking-tight text-tinta">
               {unico.nombre}
             </h1>
-            <p className="font-body text-sm text-tinta/75">{unico.descripcion}</p>
+            <p className="font-body text-sm text-tinta/80">{unico.descripcion}</p>
             <PruebaSocial d={unico} className="mt-1" />
           </header>
 
@@ -86,7 +86,7 @@ export default async function KitDetalle({ params }: { params: Promise<{ slug: s
             label={copy.kits.unicos.ver}
           />
 
-          <p className="font-body text-sm text-tinta/75">
+          <p className="font-body text-sm text-tinta/80">
             {copy.kits.unicos.bajada}
             {unico.vendedor ? ` Vendido por ${unico.vendedor}.` : ""}
           </p>
@@ -114,7 +114,7 @@ export default async function KitDetalle({ params }: { params: Promise<{ slug: s
           <h1 className="font-display text-3xl font-medium leading-tight tracking-tight text-tinta">
             {def.nombre}
           </h1>
-          <p className="font-body text-sm text-tinta/75">{def.descripcion}</p>
+          <p className="font-body text-sm text-tinta/80">{def.descripcion}</p>
         </header>
 
         <div className="flex flex-col gap-3">

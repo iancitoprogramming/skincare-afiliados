@@ -56,7 +56,7 @@ export default function Combinaciones() {
           <h1 className="font-display text-3xl font-medium leading-tight tracking-tight text-tinta">
             Qué se puede mezclar y qué no
           </h1>
-          <p className="font-body leading-relaxed text-tinta/85">
+          <p className="font-body leading-relaxed text-tinta/80">
             «No mezclar X con Y» no quiere decir una sola cosa. Quiere decir cuatro, y cada una se
             arregla distinto. Casi toda la confusión que circula sale de meterlas en la misma bolsa.
           </p>
@@ -69,7 +69,7 @@ export default function Combinaciones() {
             ].map(([k, v]) => (
               <div key={k} className="flex flex-col">
                 <dt className="font-etiqueta text-xs text-piedra">{k}</dt>
-                <dd className="font-body text-sm leading-relaxed text-tinta/85">{v}</dd>
+                <dd className="font-body text-sm leading-relaxed text-tinta/80">{v}</dd>
               </div>
             ))}
           </dl>
@@ -117,7 +117,7 @@ export default function Combinaciones() {
                                 ? "text-piedra"
                                 : c.marca === "potencia"
                                   ? "text-tinta"
-                                  : "text-tinta/65"
+                                  : "text-tinta/70"
                           }`}
                         >
                           {SIMBOLO[c.marca]}
@@ -131,7 +131,7 @@ export default function Combinaciones() {
           </div>
           <ul className="flex flex-col gap-1">
             {LEYENDA.map((l) => (
-              <li key={l.marca} className="font-body text-xs text-tinta/75">
+              <li key={l.marca} className="font-body text-xs text-tinta/70">
                 <span className="mr-2 font-etiqueta text-sm text-tinta">{SIMBOLO[l.marca]}</span>
                 {l.texto}
               </li>
@@ -152,7 +152,7 @@ export default function Combinaciones() {
             <section key={clase} className="flex flex-col gap-3">
               <div>
                 <h2 className="font-display text-xl font-medium leading-snug text-tinta">{titulo}</h2>
-                <p className="mt-1 font-body text-sm leading-relaxed text-tinta/75">{bajada}</p>
+                <p className="mt-1 font-body text-sm leading-relaxed text-tinta/80">{bajada}</p>
               </div>
               <ul className="flex flex-col gap-3">
                 {reglas.map((r) => (
@@ -165,7 +165,7 @@ export default function Combinaciones() {
                     <h3 className="font-display text-base font-medium leading-snug text-tinta">
                       {r.titulo}
                     </h3>
-                    <p className="mt-1 font-body text-sm leading-relaxed text-tinta/85">
+                    <p className="mt-1 font-body text-sm leading-relaxed text-tinta/80">
                       {r.explicacion}
                     </p>
                     <p className="mt-2 font-body text-sm leading-relaxed text-tinta">
@@ -189,7 +189,7 @@ export default function Combinaciones() {
             <h2 className="font-display text-xl font-medium leading-snug text-tinta">
               Lo que sí conviene juntar
             </h2>
-            <p className="mt-1 font-body text-sm leading-relaxed text-tinta/75">
+            <p className="mt-1 font-body text-sm leading-relaxed text-tinta/80">
               Se habla mucho de lo que no se puede mezclar y poco de lo que suma. Estas
               combinaciones rinden más juntas que por separado.
             </p>
@@ -200,7 +200,7 @@ export default function Combinaciones() {
                 <h3 className="font-display text-base font-medium leading-snug text-tinta">
                   {s.titulo}
                 </h3>
-                <p className="mt-1 font-body text-sm leading-relaxed text-tinta/85">
+                <p className="mt-1 font-body text-sm leading-relaxed text-tinta/80">
                   {s.explicacion}
                 </p>
                 {s.evidencia ? (
@@ -219,7 +219,7 @@ export default function Combinaciones() {
             <h2 className="font-display text-xl font-medium leading-snug text-tinta">
               Tres cosas que te van a decir y no son ciertas
             </h2>
-            <p className="mt-1 font-body text-sm leading-relaxed text-tinta/75">
+            <p className="mt-1 font-body text-sm leading-relaxed text-tinta/80">
               Las tres circularon durante años. Las tres se cayeron. Si armaste una rutina alrededor
               de alguna, vale la pena leer esto.
             </p>
@@ -233,7 +233,7 @@ export default function Combinaciones() {
                 <p className="mt-2 font-body text-sm leading-relaxed text-tinta/70">
                   <span className="text-piedra">lo que se dice:</span> {m.loQueSeDice}
                 </p>
-                <p className="mt-1 font-body text-sm leading-relaxed text-tinta/85">
+                <p className="mt-1 font-body text-sm leading-relaxed text-tinta/80">
                   <span className="text-piedra">lo que se sabe:</span> {m.loQueSabemos}
                 </p>
                 {m.evidencia ? (
@@ -250,7 +250,7 @@ export default function Combinaciones() {
           <h2 className="font-display text-xl font-medium leading-snug text-tinta">
             Esto ya está aplicado en tu rutina
           </h2>
-          <p className="mt-1 font-body text-sm leading-relaxed text-tinta/85">
+          <p className="mt-1 font-body text-sm leading-relaxed text-tinta/80">
             No hace falta que lo memorices. Cuando armás tu rutina, el sitio chequea estas reglas
             contra los productos que te tocaron y te avisa si hay algo para separar.
           </p>
