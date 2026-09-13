@@ -49,10 +49,13 @@ de entrar.
 |---|---|
 | **Bricolage Grotesque** | `font-display` — títulos |
 | **Instrument Sans** | `font-body` — texto corrido |
-| **Space Mono** | `font-mono` — etiquetas, datos, precios |
+| **DM Mono** | `font-mono` — etiquetas, datos, precios |
 
 La monoespaciada es la que da personalidad: se usa para etiquetas cortas en
-minúscula ("paso 01 · limpiador", "25 productos", "tipo de piel").
+minúscula ("paso 01 · limpiador", "25 productos", "tipo de piel"). Fue Space
+Mono hasta el fondo de monte de la home: sobre la foto sus serifas se leían
+como máquina de escribir, y se cambió por DM Mono, que alinea igual sin el
+aire retro.
 
 ## Logo
 

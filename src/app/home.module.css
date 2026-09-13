@@ -73,8 +73,11 @@
 /* La única ayuda de lectura: un degradado de porcelana sin bordes, en un
    pseudo con máscara radial. Es una capa estática, se pinta una vez.
    Medido sobre la foto: el tercio más oscuro pide un mínimo de 0,53 de
-   porcelana para que `tinta` pase AA; acá el núcleo queda en ~0,81.
-   La tarjeta en foco lo sube un poco, como respuesta. */
+   porcelana para que `tinta` pase AA. El núcleo queda en 0,74 × 0,92 ≈ 0,68
+   (arrancó en 0,81 y Lucas lo bajó "un poco" al verlo en el celular), con la
+   meseta de la máscara en 45 % para que el borde del bloque de texto no
+   pierda cobertura al bajar la opacidad. La tarjeta en foco lo sube, como
+   respuesta. */
 .copy {
   position: relative;
   isolation: isolate;
@@ -89,15 +92,21 @@
   position: absolute;
   inset: -3.5rem;
   z-index: -1;
-  background: rgb(244 246 243 / 0.88);
-  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 38%, transparent 100%);
-  mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 38%, transparent 100%);
+  background: rgb(244 246 243 / 0.74);
+  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 45%, transparent 100%);
+  mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 45%, transparent 100%);
   pointer-events: none;
   opacity: 0.92;
   transition: opacity 0.35s ease;
 }
 .tarjeta[data-foco="1"] .copy::before {
   opacity: 1;
+}
+/* GuardarEmail pinta su etiqueta en piedra, que sobre porcelana pasa AA pero
+   sobre la foto no. Es un componente compartido con el quiz; acá se corrige
+   de afuera en vez de tocarlo. */
+.copy label {
+  color: var(--color-tinta);
 }
 @media (prefers-reduced-motion: reduce) {
   .copy::before {
