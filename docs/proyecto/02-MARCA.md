@@ -49,6 +49,7 @@ clases de `src/`:
 | **Clara:** de `porcelana` a `gel/35` | fondo, tarjetas, puertas | tinta desde `/65` · piedra, salvia y terracota enteros |
 | **Teñida:** `piedra/NN`, `terracota/NN`, `niebla/NN`, `gel` sólido | chips de severidad, opción seleccionada del quiz | tinta desde `/70` — el color va en el fondo, no en la letra |
 | `terracota` sólido | CTA, filtro activo | `porcelana` entero |
+| **Foto** (la home): el monte con el fade de porcelana a ≈0,68 | hero, tarjetas, cómo funciona, preguntas, mail | **sólo `tinta` entero**. Medido por tercio de la foto: en el más oscuro, piedra queda en ~3:1 y salvia en ~4:1. El CTA va como `terracota` sólido |
 
 - **Un color con opacidad nunca pasa** (`text-piedra/80`, `text-porcelana/70`): va
   entero.
@@ -72,10 +73,13 @@ de entrar.
 |---|---|
 | **Bricolage Grotesque** | `font-display` — títulos |
 | **Instrument Sans** | `font-body` — texto corrido |
-| **Space Mono** | `font-mono` — etiquetas, datos, precios |
+| **Bricolage Grotesque** | `font-etiqueta` — etiquetas chicas, datos, precios |
 
-La monoespaciada es la que da personalidad: se usa para etiquetas cortas en
-minúscula ("paso 01 · limpiador", "25 productos", "tipo de piel").
+Las etiquetas cortas en minúscula ("paso 01 · limpiador", "25 productos",
+"tipo de piel") son las que dan personalidad. Van en la misma Bricolage de los
+títulos, a 12px con un poco de tracking; el marcador de paso va en peso 500.
+Hasta el fondo de monte de la home iban en Space Mono: sobre la foto sus
+serifas se leían como máquina de escribir. Ya no hay monoespaciada en el sitio.
 
 ### Tamaños
 
@@ -89,8 +93,9 @@ El tamaño lo decide el rol del texto, no cuánto espacio queda:
 | Campo de formulario (`input`, `select`, `textarea`) | `text-base` · 16 px, declarado en el campo |
 
 - **12 px es el piso.** Lighthouse marca como difícil de leer en móvil todo lo
-  que baja de ahí. Hasta el 13/9 había cinco textos a 11 px, todos con un
-  `text-[11px]` suelto.
+  que baja de ahí. Hasta el 13/9 había seis `text-[11px]` sueltos —la banda de
+  precio, la marca del catálogo, los chips y la tabla de combinaciones— y el
+  crédito de la foto de la home a 10,56 px.
 - **Una instrucción no es una nota al pie.** El aviso de un paso que no es un
   match limpio, o qué hacer si la piel arde, se lee antes de comprar o en el
   momento en que algo sale mal. Por eso van a 14 px, aunque estén en un segundo

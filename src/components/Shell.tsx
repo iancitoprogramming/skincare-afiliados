@@ -42,7 +42,7 @@ export function Shell({
         {volver ? (
           <Link
             href={volver.href}
-            className="font-mono text-xs text-piedra transition-colors hover:text-tinta"
+            className="font-etiqueta text-xs text-piedra transition-colors hover:text-tinta"
           >
             ← {volver.label}
           </Link>
@@ -61,7 +61,7 @@ export function Shell({
       <footer className="flex flex-col gap-2 border-t border-niebla pt-4">
         <Link
           href="/combinaciones"
-          className="font-mono text-xs text-piedra underline decoration-niebla underline-offset-4 transition-colors hover:text-tinta"
+          className="font-etiqueta text-xs text-piedra underline decoration-niebla underline-offset-4 transition-colors hover:text-tinta"
         >
           {copy.home.criterios} →
         </Link>

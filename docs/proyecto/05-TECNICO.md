@@ -21,6 +21,7 @@
 src/
 ├── app/                        rutas
 ├── components/                 Shell · Logo · CatalogoGrid · BotonComprar · PruebaSocial
+│   └── FondoMonte              el monte en bandas de la home (cliente; su CSS module al lado)
 ├── lib/                        utilidades sueltas
 │   └── sitio.ts                URL absoluta del sitio + log del build
 ├── engine/                     lógica agnóstica del nicho
@@ -36,6 +37,7 @@ src/
     ├── kits.ts                 definiciones de kits
     ├── config.ts               tiers · categorías · quiz · rama
     ├── copy.ts                 todos los textos
+    ├── foto.ts                 la foto del fondo y su atribución (CC BY-SA: va visible)
     ├── activos.ts              activos e interacciones (de Alex)
     └── theme.css               paleta y tipografías
 ```
@@ -69,10 +71,23 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=        # sólo scripts locales
 NEXT_PUBLIC_SITE_URL=             # dominio propio, cuando lo haya
 NEXT_PUBLIC_PINTEREST_VERIFY=     # código de reclamo de dominio
+RESEND_API_KEY=                   # mail al dejar el correo · Sensitive en Vercel
+RESEND_FROM=                      # "Club de Piel <hola@clubdepiel.store>"
+RESEND_SEGMENT_ID=                # segmento del contacto (referencia, no secreto)
+RESEND_TOPIC_ID=                  # topic del contacto; habilita el link de baja
+NOTIFY_EMAIL=                     # opcional: aviso interno por cada correo nuevo
 ```
 
 **Sin las dos primeras el tracking es un no-op silencioso.** Todo clic, sesión y
 email se descarta. Es el bloqueante para lanzar con medición.
+
+**Sin `RESEND_API_KEY` no sale ningún mail**, pero el lead se guarda igual. Con
+la key, al dejar el correo el contacto entra al segmento con el topic en
+opt-in y recibe la bienvenida; si vino del resultado del quiz, el mail trae el
+link a su rutina (`src/lib/resend.ts`, plantilla en `src/lib/emails/`). Todo
+best-effort y después de responder (`after()`): un error de Resend se registra
+y no le cambia nada a la persona. La key es de "Sending access", restringida al
+dominio, y nunca lleva `NEXT_PUBLIC_`.
 
 `metadataBase` resuelve dominio propio → dominio estable de Vercel → URL del
 deploy → localhost (`src/lib/sitio.ts`). Los del medio los setea Vercel solo.

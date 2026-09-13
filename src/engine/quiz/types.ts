@@ -14,6 +14,12 @@ export interface QuizQuestion {
   urlKey: string; // clave corta en la URL: "p" | "o" | "b" | "n"
   title: string; // la pregunta grande
   options: QuizOption[];
+  /**
+   * Una línea debajo de las opciones: qué hace el motor con esta respuesta.
+   * Es lo que separa un diagnóstico de un embudo: la persona sabe para qué
+   * contesta. Describe lo que el motor HACE, no lo que promete.
+   */
+  porQue?: string;
 }
 
 // Cómo se traducen las respuestas a la recomendación. Los *Key son urlKeys de preguntas.

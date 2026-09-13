@@ -69,7 +69,7 @@ export default async function ProductoDetalle({ params }: { params: Promise<{ sl
         ) : null}
 
         <header className="flex flex-col gap-2">
-          {p.marca ? <p className="font-mono text-xs text-piedra">{p.marca}</p> : null}
+          {p.marca ? <p className="font-etiqueta text-xs text-piedra">{p.marca}</p> : null}
           <h1 className="font-display text-3xl font-medium leading-tight tracking-tight text-tinta">
             {p.nombre}
           </h1>
@@ -83,7 +83,7 @@ export default async function ProductoDetalle({ params }: { params: Promise<{ sl
             número se busca donde siempre estuvo bien, en la publicación. */}
         <div className="flex flex-col gap-1">
           <RangoPrecio rango={p.rango_precio} className="self-start" />
-          <p className="font-mono text-xs text-piedra">{copy.precio.dondeVerlo}</p>
+          <p className="font-etiqueta text-xs text-piedra">{copy.precio.dondeVerlo}</p>
         </div>
 
         <BotonComprar
@@ -91,17 +91,23 @@ export default async function ProductoDetalle({ params }: { params: Promise<{ sl
           productoId={p.id}
           label="Ver en Mercado Libre"
         />
+        <p className="font-body text-sm text-tinta">
+          <span className="text-piedra">{copy.ficha.cruce}</span>{" "}
+          <Link href="/rutina" className="font-medium text-tinta underline decoration-piedra underline-offset-4">
+            {copy.ficha.cruceCta} →
+          </Link>
+        </p>
 
         {p.por_que ? (
           <section className="flex flex-col gap-2">
-            <h2 className="font-mono text-xs text-piedra">por qué lo elegimos</h2>
+            <h2 className="font-etiqueta text-xs text-piedra">por qué lo elegimos</h2>
             <p className="font-body leading-relaxed text-tinta">{p.por_que}</p>
           </section>
         ) : null}
 
         {p.como_usar ? (
           <section className="flex flex-col gap-2">
-            <h2 className="font-mono text-xs text-piedra">cómo se usa</h2>
+            <h2 className="font-etiqueta text-xs text-piedra">cómo se usa</h2>
             <p className="font-body leading-relaxed text-tinta">{p.como_usar}</p>
           </section>
         ) : null}
@@ -118,7 +124,7 @@ export default async function ProductoDetalle({ params }: { params: Promise<{ sl
 
         {enKits.length > 0 ? (
           <section className="flex flex-col gap-3">
-            <h2 className="font-mono text-xs text-piedra">aparece en</h2>
+            <h2 className="font-etiqueta text-xs text-piedra">aparece en</h2>
             {enKits.map((k) => (
               <Link
                 key={k.def.slug}
@@ -126,7 +132,7 @@ export default async function ProductoDetalle({ params }: { params: Promise<{ sl
                 className="flex flex-col gap-1 rounded-2xl border border-niebla bg-porcelana p-4 transition-transform active:scale-[0.99]"
               >
                 <span className="font-display text-lg font-medium text-tinta">{k.def.nombre}</span>
-                <span className="font-mono text-xs text-piedra">
+                <span className="font-etiqueta text-xs text-piedra">
                   {copy.kits.pasos(k.pasos.length)} · {copy.precio.rangoKit(copy.precio.rangos[k.rango])}
                 </span>
               </Link>
@@ -141,7 +147,7 @@ export default async function ProductoDetalle({ params }: { params: Promise<{ sl
 function Dato({ k, v }: { k: string; v: string }) {
   return (
     <p className="flex items-baseline justify-between gap-4">
-      <span className="font-mono text-xs text-piedra">{k}</span>
+      <span className="font-etiqueta text-xs text-piedra">{k}</span>
       <span className="text-right font-body text-sm text-tinta">{v}</span>
     </p>
   );

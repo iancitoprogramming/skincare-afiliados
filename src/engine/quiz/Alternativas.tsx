@@ -30,7 +30,7 @@ export function Alternativas({
     <details className="group mt-3 rounded-xl border border-niebla/70 bg-porcelana/60">
       <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-2 px-4 font-body text-sm font-medium text-tinta [&::-webkit-details-marker]:hidden">
         {copy.alternativas.ver(productos.length)}
-        <span aria-hidden className="font-mono text-xs text-piedra transition-transform group-open:rotate-180">
+        <span aria-hidden className="font-etiqueta text-xs text-piedra transition-transform group-open:rotate-180">
           ↓
         </span>
       </summary>
@@ -52,7 +52,7 @@ export function Alternativas({
             <div className="flex min-w-0 flex-1 flex-col gap-1">
               <p className="font-display text-base font-medium leading-tight text-tinta">{p.nombre}</p>
               <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                {p.marca ? <span className="font-mono text-xs text-piedra">{p.marca}</span> : null}
+                {p.marca ? <span className="font-etiqueta text-xs text-piedra">{p.marca}</span> : null}
                 <RangoPrecio rango={p.rango_precio} className="shrink-0" />
               </div>
               {p.por_que ? (

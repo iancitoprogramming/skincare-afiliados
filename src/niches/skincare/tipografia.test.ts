@@ -1,8 +1,9 @@
 // Tamaños de letra. Tres reglas, cada una con su fuente:
 //
 //   1. Sólo tamaños con nombre: la escala de Tailwind, más `text-titular`, que se
-//      define en theme.css. Un `text-[11px]` suelto es la forma en que llegaron a
-//      haber cinco textos debajo del piso sin que nadie lo decidiera.
+//      define en theme.css. Con clases sueltas —seis `text-[11px]` y un
+//      `text-[0.66rem]`— se llegó a tener texto debajo del piso sin que nadie lo
+//      decidiera.
 //   2. Nada por debajo de 12 px. Es el umbral de Lighthouse: "Font sizes smaller
 //      than 12 px are often difficult to read on mobile devices". Apple fija 11 pt
 //      de mínimo, pero para apps nativas; en la web mide Google. Con la regla 1
@@ -45,6 +46,11 @@ function sinComentarios(s: string): string {
 const TAMANO_ARBITRARIO = /(^|[^\w-])((?:[\w-]+:)*)text-\[((?:\d|\.\d|calc|clamp|min\(|max\(|length:)[^\]]*)\]/g;
 const CAMPO = /<(select|textarea|input)\b/g;
 const SIN_LETRA = /\btype=["'](checkbox|radio|hidden|range|color|file)["']/;
+// Un campo que nadie puede enfocar no dispara el zoom. Es el caso del honeypot del
+// email: fuera del tab (`tabIndex={-1}`) y oculto para lectores (`aria-hidden`).
+// Tienen que estar las dos, para que un campo visible no se escape con una sola.
+const FUERA_DE_ALCANCE = (etiqueta: string) =>
+  /tabIndex=\{-1\}/.test(etiqueta) && /aria-hidden=["']true["']/.test(etiqueta);
 const LETRA_SUFICIENTE = /(^|[^\w:-])text-(base|lg|xl|[2-9]xl|titular)(?![\w-])/;
 
 /** La etiqueta de apertura entera, con sus props, aunque haya `=>` adentro de una llave. */
@@ -72,6 +78,7 @@ function revisar(ruta: string, fuente: string): string[] {
   for (const m of s.matchAll(CAMPO)) {
     const etiqueta = etiquetaDesde(s, m.index ?? 0);
     if (m[1] === "input" && SIN_LETRA.test(etiqueta)) continue;
+    if (FUERA_DE_ALCANCE(etiqueta)) continue;
     if (LETRA_SUFICIENTE.test(etiqueta)) continue;
     out.push(`${ruta}:${linea(m.index ?? 0)} <${m[1]}> sin text-base o más: Safari en iPhone agranda la página al enfocarlo`);
   }
@@ -82,9 +89,10 @@ function revisar(ruta: string, fuente: string): string[] {
 describe("tipografía", () => {
   it("el escaneo ataja lo que tiene que atajar", () => {
     const casos: [string, number][] = [
-      [`<span className="font-mono text-[11px]">`, 1],
+      [`<span className="font-etiqueta text-[11px]">`, 1],
       [`<h1 className="text-[2.1rem] sm:text-[3rem]">`, 2],
-      [`<select className="font-mono text-xs">`, 1],
+      [`<select className="font-etiqueta text-xs">`, 1],
+      [`<input type="text" aria-hidden="true" className="h-0 w-0" />`, 1],
       [`<input type="email" className="px-4 font-body" />`, 1],
       [`<textarea className="text-sm" />`, 1],
       [`<select value={x} onChange={(e) => set(e.target.value)} className="text-xs">`, 1],
@@ -92,6 +100,7 @@ describe("tipografía", () => {
       [`<span className="text-xs text-[#1b2430]">`, 0],
       [`<select value={x} onChange={(e) => set(e.target.value)} className="font-body text-base">`, 0],
       [`<input type="checkbox" className="h-4 w-4" />`, 0],
+      [`<input type="text" name="website" onChange={(e) => set(e)} tabIndex={-1} aria-hidden="true" className="absolute h-0 w-0" />`, 0],
       [`<input className="min-w-0 flex-1 text-base" />`, 0],
       [`<h1 className="text-titular sm:text-5xl">`, 0],
       [`// un comentario que nombra text-[11px] y <select> no es código`, 0],

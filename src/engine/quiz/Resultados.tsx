@@ -15,6 +15,7 @@ import { PasoRepetido } from "./PasoRepetido";
 import { anclaDePaso, pasosPorMomento, type PasoMostrado } from "./repetidos";
 import { GuardarEmail } from "./GuardarEmail";
 import { useYaLoTengo } from "./yaLoTengo";
+import { Desplegable } from "@/components/Desplegable";
 
 export function Resultados({
   config,
@@ -104,7 +105,7 @@ export function Resultados({
     momento: "am" | "pm";
   }) => (
     <section className="flex flex-col gap-3">
-      <h2 className="font-mono text-sm text-piedra">{titulo}</h2>
+      <h2 className="font-etiqueta text-sm text-piedra">{titulo}</h2>
       {pasos.map(({ paso, numero, repetido }) =>
         repetido ? (
           <PasoRepetido
@@ -144,10 +145,10 @@ export function Resultados({
   return (
     <div className="flex flex-col gap-8">
       <header>
-        <p className="font-mono text-xs text-piedra">{resumen}</p>
+        <p className="font-etiqueta text-xs text-piedra">{resumen}</p>
         <h1 className="font-display text-3xl font-medium text-tinta">{config.resultados.titulo}</h1>
         {tengoAca > 0 ? (
-          <p className="mt-1 font-mono text-xs text-salvia">
+          <p className="mt-1 font-etiqueta text-xs text-salvia">
             {copy.yaLoTengo.resumen(tengoAca, categorias.length - tengoAca)}
           </p>
         ) : null}
@@ -156,26 +157,34 @@ export function Resultados({
       {seccion({ titulo: config.resultados.manana, pasos: mostrados.am, momento: "am" })}
       {seccion({ titulo: config.resultados.noche, pasos: mostrados.pm, momento: "pm" })}
 
-      <Compatibilidad analisis={analisis} plan={plan} />
-
-      {nota ? (
-        <section className="rounded-2xl border border-niebla bg-porcelana p-5">
-          <p className="font-body text-sm leading-relaxed text-tinta/85">{nota}</p>
-          <p className="mt-3 font-body text-sm leading-relaxed text-tinta/70">
-            {copy.opcionales}
-          </p>
-        </section>
-      ) : null}
+      {/* Lectura para el que quiere, no parte de la rutina: todo plegado, en
+          un solo grupo, y la captura de mail queda justo debajo. */}
+      <div className="flex flex-col gap-3">
+        <Compatibilidad analisis={analisis} plan={plan} />
+        {nota ? (
+          <Desplegable etiqueta={copy.criterio.etiqueta} titulo={copy.criterio.titulo}>
+            <p className="font-body text-sm leading-relaxed text-tinta/85">{nota}</p>
+            <p className="font-body text-sm leading-relaxed text-tinta/70">{copy.opcionales}</p>
+          </Desplegable>
+        ) : null}
+      </div>
 
       <div className="rounded-2xl border border-niebla bg-gel/25 p-5">
-        <GuardarEmail label="guardá tu rutina" onGuardar={(email) => guardarLead(sesionId, email)} />
+        {/* La URL lleva las respuestas en la query (ver Quiz.syncUrl): es la
+            rutina, y es lo que va en el mail. */}
+        <GuardarEmail
+          label="guardá tu rutina"
+          onGuardar={(email, website) =>
+            guardarLead(sesionId, email, { rutina_url: window.location.href, website })
+          }
+        />
         <p className="mt-3 font-body text-sm text-tinta">{config.resultados.ventana}</p>
       </div>
 
       <button
         type="button"
         onClick={onReset}
-        className="self-start font-mono text-sm text-piedra transition-colors hover:text-tinta"
+        className="self-start font-etiqueta text-sm text-piedra transition-colors hover:text-tinta"
       >
         {config.resultados.rehacer}
       </button>

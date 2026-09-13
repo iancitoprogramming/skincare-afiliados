@@ -17,7 +17,7 @@ export function Progreso({
           type="button"
           onClick={onBack}
           aria-label="Volver a la pregunta anterior"
-          className="font-mono text-sm text-piedra transition-colors hover:text-tinta"
+          className="font-etiqueta text-sm text-piedra transition-colors hover:text-tinta"
         >
           ←
         </button>
@@ -36,7 +36,7 @@ export function Progreso({
         />
       </div>
 
-      <span className="font-mono text-xs tabular-nums text-piedra">
+      <span className="font-etiqueta text-xs tabular-nums text-piedra">
         {current + 1} / {total}
       </span>
     </div>

@@ -23,7 +23,7 @@ export function Armando({ label, onDone }: { label: string; onDone: () => void }
         <span className="h-2.5 w-2.5 animate-bounce rounded-full bg-piedra [animation-delay:-0.1s]" />
         <span className="h-2.5 w-2.5 animate-bounce rounded-full bg-piedra" />
       </div>
-      <p className="font-mono text-sm text-tinta">{label}…</p>
+      <p className="font-etiqueta text-sm text-tinta">{label}…</p>
     </div>
   );
 }
