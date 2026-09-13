@@ -221,6 +221,12 @@ export const copy = {
       "Se va de la banda que elegiste. No hay ninguno más accesible que sirva para tu piel y tu objetivo, y preferimos decírtelo antes que darte uno que no te va a servir.",
   },
 
+  // Un paso de la noche que repite el mismo producto de la mañana va resumido,
+  // con un link a la tarjeta de arriba. Ver PasoRepetido.
+  repetido: {
+    mismo: "El mismo de la mañana:",
+  },
+
   // Para qué sirve cada paso, antes de mostrar qué producto lo cumple. Va sin
   // marca a propósito: es el criterio, y el producto llega como la respuesta.
   //

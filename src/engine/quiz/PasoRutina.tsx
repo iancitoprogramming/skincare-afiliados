@@ -22,6 +22,7 @@ export function PasoRutina({
   numero,
   categoriaLabel,
   momento,
+  ancla,
   sesionId,
   conAvisoDeCombinacion = false,
 }: {
@@ -35,6 +36,8 @@ export function PasoRutina({
    * kit, que no separa mañana de noche— va la explicación general.
    */
   momento?: "am" | "pm";
+  /** Id de la tarjeta, para que el paso repetido de la noche pueda señalarla. */
+  ancla?: string;
   sesionId: string | null;
   /**
    * Este paso aparece en algún aviso del bloque "cómo combinarlos". Se marca acá
@@ -64,7 +67,7 @@ export function PasoRutina({
           : null;
 
   return (
-    <div className="rounded-2xl border border-niebla bg-gel/25 p-5">
+    <div id={ancla} className="scroll-mt-6 rounded-2xl border border-niebla bg-gel/25 p-5">
       <p className="font-mono text-xs text-piedra">
         paso {String(numero).padStart(2, "0")} · {categoriaLabel}
         {conAvisoDeCombinacion ? (
