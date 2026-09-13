@@ -3,6 +3,7 @@
 import type { Answers, QuizConfig } from "./types";
 import type { Producto } from "@/engine/recomendacion";
 import { analizarRutina } from "@/engine/compatibilidad";
+import { alternativasDePaso } from "@/engine/alternativas";
 import { catalogoActivos } from "@/niches/skincare/activos";
 import { planSemanal } from "@/niches/skincare/calendario";
 import { copy } from "@/niches/skincare/copy";
@@ -31,7 +32,11 @@ export function Resultados({
   const rec = config.recomendacion;
   // El armado vive en `armar.ts` para que la auditoría de combinaciones recorra
   // exactamente este camino y no una copia parecida.
-  const { rutina, piel, objetivo, nota } = resolverRutina(config, productos, answers);
+  const { rutina, piel, objetivo, presupuesto, origenes, nota } = resolverRutina(config, productos, answers);
+  // Las mismas respuestas con las que se armó la rutina: las alternativas tienen
+  // que salir del mismo camino, o dejarían de ser alternativas de ESTA rutina.
+  const respuestas = { piel, objetivo, presupuesto, origenes };
+  const claveDeActivos = (p: { producto: Producto }) => p.producto.ml_id ?? p.producto.id;
   const rama = rec.rama;
   const respuestaRama = rama ? answers[rama.key] : undefined;
 
@@ -121,6 +126,13 @@ export function Resultados({
             ancla={momento === "am" ? anclaDePaso(paso) : undefined}
             tengo={tengo.has(paso.slot.categoria)}
             onAlternarTengo={() => alternarTengo(paso.slot.categoria)}
+            alternativas={
+              // Si la persona ya tiene uno, la tarjeta está cerrada y no se muestran:
+              // no tiene sentido chequearlas contra la rutina entera para nada.
+              tengo.has(paso.slot.categoria)
+                ? undefined
+                : alternativasDePaso(productos, rutina, paso, respuestas, catalogoActivos, claveDeActivos)
+            }
             sesionId={sesionId}
             conAvisoDeCombinacion={categoriasConAviso.has(paso.slot.categoria)}
           />

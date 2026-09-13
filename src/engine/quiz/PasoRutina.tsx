@@ -1,10 +1,11 @@
 "use client";
 
-import type { PasoRutina as Paso } from "@/engine/recomendacion";
+import type { PasoRutina as Paso, Producto } from "@/engine/recomendacion";
 import { copy } from "@/niches/skincare/copy";
 import { PruebaSocial } from "@/components/PruebaSocial";
 import { RangoPrecio } from "@/components/RangoPrecio";
 import { trackClick } from "@/engine/tracking";
+import { Alternativas } from "./Alternativas";
 
 // Un paso de la rutina: primero para qué sirve el paso, después el producto.
 //
@@ -29,6 +30,7 @@ export function PasoRutina({
   ancla,
   tengo = false,
   onAlternarTengo,
+  alternativas,
   sesionId,
   conAvisoDeCombinacion = false,
 }: {
@@ -51,6 +53,12 @@ export function PasoRutina({
    * compra, y el que entra a un kit ya decidió comprarlo entero.
    */
   onAlternarTengo?: () => void;
+  /**
+   * Otras opciones para este paso, ya chequeadas contra el resto de la rutina.
+   * Sólo las calcula quien tiene la rutina entera: en un kit no van. Ver
+   * `src/engine/alternativas.ts`.
+   */
+  alternativas?: Producto[];
   sesionId: string | null;
   /**
    * Este paso aparece en algún aviso del bloque "cómo combinarlos". Se marca acá
@@ -159,6 +167,10 @@ export function PasoRutina({
           >
             Ver en Mercado Libre
           </a>
+
+          {alternativas?.length ? (
+            <Alternativas productos={alternativas} posicion={numero} sesionId={sesionId} />
+          ) : null}
         </>
       )}
 

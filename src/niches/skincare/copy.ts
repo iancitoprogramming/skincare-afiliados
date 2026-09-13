@@ -221,6 +221,21 @@ export const copy = {
       "Se va de la banda que elegiste. No hay ninguno más accesible que sirva para tu piel y tu objetivo, y preferimos decírtelo antes que darte uno que no te va a servir.",
   },
 
+  // Otras opciones para un paso, plegadas debajo de la recomendada. Ver
+  // `src/engine/alternativas.ts`.
+  //
+  // El criterio dice sólo lo que es cierto SIEMPRE, por construcción: salen del
+  // mismo escalón del motor, van en su mismo orden y ninguna suma un choque. No
+  // dice "sirven para tu objetivo": cuando la recomendada se fue de banda, la
+  // etiqueta del paso no dice de qué nivel de match vino, y la frase podría ser
+  // falsa justo en ese caso.
+  alternativas: {
+    ver: (n: number) => `Ver ${n} ${n === 1 ? "opción más" : "opciones más"}`,
+    criterio:
+      "Salen del mismo grupo que la recomendada para lo que respondiste, en el mismo orden con el " +
+      "que la elegimos, y ninguna suma un choque con el resto de tu rutina.",
+  },
+
   // "Ya tengo uno": la persona marca que ya tiene algo para un paso. Dice "uno" y
   // no "lo" porque puede tener otro producto, no necesariamente el nuestro.
   //
