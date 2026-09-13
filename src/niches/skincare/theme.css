@@ -10,6 +10,19 @@
 
    Todos los colores que llevan texto pasan WCAG AA (4.5:1) sobre `porcelana`.
    Antes no: `agua` estaba en 2,12:1 y el botón de compra en 3,13:1.
+
+   Pasar sobre porcelana no alcanza: casi todo el texto vive sobre otra capa.
+   Las reglas, que `contraste.test.ts` calcula y hace cumplir:
+     · Superficie clara: de porcelana a `gel/35`. Sobre ella va tinta desde /65,
+       y piedra, salvia y terracota enteros. Con `gel/40` el terracota del CTA
+       ya baja a 4,48.
+     · Superficie teñida: `piedra/NN`, `terracota/NN`, `niebla/NN`, `gel` sólido.
+       Sobre ella el texto va en tinta desde /70; el color queda en el fondo.
+     · Texto de color con opacidad (`text-piedra/80`, `text-porcelana/70`), nunca.
+     · Por debajo del mínimo, sólo en un control deshabilitado (`disabled:`).
+     · Sobre la foto de la home (el monte con su fade de porcelana a ≈0,68):
+       sólo tinta entero. Medido por tercio de la foto, piedra y salvia no
+       llegan en el tercio más oscuro. El CTA va como terracota sólido.
 */
 @theme {
   --color-porcelana: #f4f6f3;  /* fondo                                        */

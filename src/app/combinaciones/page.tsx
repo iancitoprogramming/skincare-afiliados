@@ -117,7 +117,7 @@ export default function Combinaciones() {
                                 ? "text-piedra"
                                 : c.marca === "potencia"
                                   ? "text-tinta"
-                                  : "text-tinta/35"
+                                  : "text-tinta/65"
                           }`}
                         >
                           {SIMBOLO[c.marca]}
@@ -137,7 +137,7 @@ export default function Combinaciones() {
               </li>
             ))}
           </ul>
-          <p className="font-body text-xs leading-relaxed text-tinta/60">
+          <p className="font-body text-xs leading-relaxed text-tinta/70">
             Ceramidas, ácido hialurónico, pantenol, centella y alantoína no están en la tabla porque
             no chocan con nada. Van con todo, siempre. Es la parte aburrida y la que más sostiene
             una rutina.
@@ -172,7 +172,7 @@ export default function Combinaciones() {
                       <span className="text-piedra">qué hacer:</span> {r.queHacer}
                     </p>
                     {r.evidencia ? (
-                      <p className="mt-2 border-t border-niebla pt-2 font-body text-xs leading-relaxed text-tinta/60">
+                      <p className="mt-2 border-t border-niebla pt-2 font-body text-xs leading-relaxed text-tinta/70">
                         {r.evidencia}
                       </p>
                     ) : null}
@@ -204,7 +204,7 @@ export default function Combinaciones() {
                   {s.explicacion}
                 </p>
                 {s.evidencia ? (
-                  <p className="mt-2 font-body text-xs leading-relaxed text-tinta/60">
+                  <p className="mt-2 font-body text-xs leading-relaxed text-tinta/70">
                     {s.evidencia}
                   </p>
                 ) : null}
@@ -237,7 +237,7 @@ export default function Combinaciones() {
                   <span className="text-piedra">lo que se sabe:</span> {m.loQueSabemos}
                 </p>
                 {m.evidencia ? (
-                  <p className="mt-2 font-body text-xs leading-relaxed text-tinta/60">
+                  <p className="mt-2 font-body text-xs leading-relaxed text-tinta/70">
                     {m.evidencia}
                   </p>
                 ) : null}

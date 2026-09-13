@@ -97,7 +97,7 @@ export function PasoRutina({
       <p className="font-etiqueta text-xs font-medium text-piedra">
         paso {String(numero).padStart(2, "0")} · {categoriaLabel}
         {conAvisoDeCombinacion ? (
-          <span className="ml-2 text-tinta/50">↓ {copy.compatibilidad.enPaso}</span>
+          <span className="ml-2 text-tinta/70">↓ {copy.compatibilidad.enPaso}</span>
         ) : null}
       </p>
 

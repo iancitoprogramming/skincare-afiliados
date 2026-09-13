@@ -21,17 +21,21 @@ import { Desplegable } from "@/components/Desplegable";
 // medían tres pantallas y empujaban la captura de mail fuera de la vista; el
 // botón cuenta lo que hay adentro y la persona abre lo que le importa.
 
+// El texto de los chips va en tinta, no en el color de la severidad. Sobre su
+// propio tinte el terracota queda en 3,77:1 y el piedra en 4,03:1, y a 11 px
+// hacen falta 4,5 (WCAG 1.4.3). El color sigue estando en el fondo del chip y en
+// el borde de la tarjeta; lo que se lee es la palabra.
 const ESTILO: Record<Severidad, { chip: string; borde: string }> = {
   separar: {
-    chip: "bg-terracota/15 text-terracota",
+    chip: "bg-terracota/15 text-tinta",
     borde: "border-terracota/40",
   },
   cuidado: {
-    chip: "bg-piedra/15 text-piedra",
+    chip: "bg-piedra/15 text-tinta",
     borde: "border-piedra/40",
   },
   nota: {
-    chip: "bg-niebla/40 text-tinta/60",
+    chip: "bg-niebla/40 text-tinta/70",
     borde: "border-niebla",
   },
 };
