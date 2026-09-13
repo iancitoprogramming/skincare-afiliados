@@ -42,7 +42,7 @@ export function GuardarEmail({
 
   return (
     <form onSubmit={submit} className="flex flex-col gap-2">
-      <label htmlFor="email-rutina" className="font-mono text-xs text-piedra">
+      <label htmlFor="email-rutina" className="font-etiqueta text-xs text-piedra">
         {label}
       </label>
       {/* Honeypot: fuera de la vista y del tab, sin autocompletar. Un bot que
@@ -69,7 +69,7 @@ export function GuardarEmail({
             if (error) setError("");
           }}
           placeholder="tu@email.com"
-          className="min-h-[52px] flex-1 rounded-xl border border-niebla bg-porcelana px-4 font-body text-tinta outline-none focus:border-piedra"
+          className="min-h-[52px] min-w-0 flex-1 rounded-xl border border-niebla bg-porcelana px-4 font-body text-tinta outline-none focus:border-piedra"
         />
         <button
           type="submit"

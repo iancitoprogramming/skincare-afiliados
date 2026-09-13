@@ -68,7 +68,7 @@ export default function Combinaciones() {
               ["pagás dos veces", "no pasa nada malo. Estás comprando lo mismo dos veces."],
             ].map(([k, v]) => (
               <div key={k} className="flex flex-col">
-                <dt className="font-mono text-xs text-piedra">{k}</dt>
+                <dt className="font-etiqueta text-xs text-piedra">{k}</dt>
                 <dd className="font-body text-sm leading-relaxed text-tinta/85">{v}</dd>
               </div>
             ))}
@@ -77,9 +77,9 @@ export default function Combinaciones() {
 
         {/* ── La matriz ───────────────────────────────────────────────────── */}
         <section className="flex flex-col gap-3">
-          <h2 className="font-mono text-sm text-piedra">la tabla</h2>
+          <h2 className="font-etiqueta text-sm text-piedra">la tabla</h2>
           <div className="-mx-5 overflow-x-auto px-5">
-            <table className="w-max border-collapse font-mono text-[11px]">
+            <table className="w-max border-collapse font-etiqueta text-[11px]">
               <thead>
                 <tr>
                   <th className="sticky left-0 z-10 bg-porcelana p-1.5 text-left font-normal text-piedra">
@@ -117,7 +117,7 @@ export default function Combinaciones() {
                                 ? "text-piedra"
                                 : c.marca === "potencia"
                                   ? "text-tinta"
-                                  : "text-tinta/35"
+                                  : "text-tinta/65"
                           }`}
                         >
                           {SIMBOLO[c.marca]}
@@ -132,12 +132,12 @@ export default function Combinaciones() {
           <ul className="flex flex-col gap-1">
             {LEYENDA.map((l) => (
               <li key={l.marca} className="font-body text-xs text-tinta/75">
-                <span className="mr-2 font-mono text-sm text-tinta">{SIMBOLO[l.marca]}</span>
+                <span className="mr-2 font-etiqueta text-sm text-tinta">{SIMBOLO[l.marca]}</span>
                 {l.texto}
               </li>
             ))}
           </ul>
-          <p className="font-body text-xs leading-relaxed text-tinta/60">
+          <p className="font-body text-xs leading-relaxed text-tinta/70">
             Ceramidas, ácido hialurónico, pantenol, centella y alantoína no están en la tabla porque
             no chocan con nada. Van con todo, siempre. Es la parte aburrida y la que más sostiene
             una rutina.
@@ -172,7 +172,7 @@ export default function Combinaciones() {
                       <span className="text-piedra">qué hacer:</span> {r.queHacer}
                     </p>
                     {r.evidencia ? (
-                      <p className="mt-2 border-t border-niebla pt-2 font-body text-xs leading-relaxed text-tinta/60">
+                      <p className="mt-2 border-t border-niebla pt-2 font-body text-xs leading-relaxed text-tinta/70">
                         {r.evidencia}
                       </p>
                     ) : null}
@@ -204,7 +204,7 @@ export default function Combinaciones() {
                   {s.explicacion}
                 </p>
                 {s.evidencia ? (
-                  <p className="mt-2 font-body text-xs leading-relaxed text-tinta/60">
+                  <p className="mt-2 font-body text-xs leading-relaxed text-tinta/70">
                     {s.evidencia}
                   </p>
                 ) : null}
@@ -237,7 +237,7 @@ export default function Combinaciones() {
                   <span className="text-piedra">lo que se sabe:</span> {m.loQueSabemos}
                 </p>
                 {m.evidencia ? (
-                  <p className="mt-2 font-body text-xs leading-relaxed text-tinta/60">
+                  <p className="mt-2 font-body text-xs leading-relaxed text-tinta/70">
                     {m.evidencia}
                   </p>
                 ) : null}

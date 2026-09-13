@@ -31,7 +31,10 @@ export function OpcionCard({
       />
       <span className="flex flex-col">
         <span className="font-body text-lg leading-snug text-tinta">{option.label}</span>
-        {option.hint ? <span className="font-mono text-xs text-piedra">{option.hint}</span> : null}
+        {/* La pista va en tinta/70 y no en piedra: la opción vive sobre la tarjeta
+            gel/25 del quiz, y ahí el piedra baja a 4,47:1 mientras se aprieta y a
+            3,98:1 seleccionada. En tinta/70 queda entre 5,0 y 5,5 en los cuatro estados. */}
+        {option.hint ? <span className="font-etiqueta text-xs text-tinta/70">{option.hint}</span> : null}
       </span>
     </button>
   );

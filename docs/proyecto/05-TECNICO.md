@@ -21,6 +21,7 @@
 src/
 ├── app/                        rutas
 ├── components/                 Shell · Logo · CatalogoGrid · BotonComprar · PruebaSocial
+│   └── FondoMonte              el monte en bandas de la home (cliente; su CSS module al lado)
 ├── lib/                        utilidades sueltas
 │   └── sitio.ts                URL absoluta del sitio + log del build
 ├── engine/                     lógica agnóstica del nicho
@@ -36,6 +37,7 @@ src/
     ├── kits.ts                 definiciones de kits
     ├── config.ts               tiers · categorías · quiz · rama
     ├── copy.ts                 todos los textos
+    ├── foto.ts                 la foto del fondo y su atribución (CC BY-SA: va visible)
     ├── activos.ts              activos e interacciones (de Alex)
     └── theme.css               paleta y tipografías
 ```

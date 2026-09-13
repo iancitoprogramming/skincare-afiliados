@@ -32,10 +32,10 @@ export function PasoRepetido({
 
   return (
     <div className="rounded-2xl border border-dashed border-niebla px-5 py-4">
-      <p className="font-mono text-xs text-piedra">
+      <p className="font-etiqueta text-xs text-piedra">
         paso {String(numero).padStart(2, "0")} · {categoriaLabel}
         {conAvisoDeCombinacion ? (
-          <span className="ml-2 text-tinta/50">↓ {copy.compatibilidad.enPaso}</span>
+          <span className="ml-2 text-tinta/70">↓ {copy.compatibilidad.enPaso}</span>
         ) : null}
       </p>
 

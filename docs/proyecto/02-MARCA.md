@@ -36,6 +36,30 @@ color del texto secundario. Eso resuelve tener un logo azul grisáceo en una mar
 verde — el logo deja de ser un acento suelto y pasa a ser el ancla fría de todo
 el sistema.
 
+### Sobre qué capa va cada texto
+
+Pasar sobre `porcelana` no alcanza. Casi todo el texto vive sobre una tarjeta o un
+chip, y cada capa le baja el contraste: con las puertas de la home en `gel/40`,
+el CTA terracota quedaba en **4,48:1**. Estas reglas las calcula
+`contraste.test.ts` desde la paleta, y el mismo test las hace cumplir sobre las
+clases de `src/`:
+
+| Superficie | Dónde | Texto encima |
+|---|---|---|
+| **Clara:** de `porcelana` a `gel/35` | fondo, tarjetas, puertas | tinta desde `/65` · piedra, salvia y terracota enteros |
+| **Teñida:** `piedra/NN`, `terracota/NN`, `niebla/NN`, `gel` sólido | chips de severidad, opción seleccionada del quiz | tinta desde `/70` — el color va en el fondo, no en la letra |
+| `terracota` sólido | CTA, filtro activo | `porcelana` entero |
+| **Foto** (la home): el monte con el fade de porcelana a ≈0,68 | hero, tarjetas, cómo funciona, preguntas, mail | **sólo `tinta` entero**. Medido por tercio de la foto: en el más oscuro, piedra queda en ~3:1 y salvia en ~4:1. El CTA va como `terracota` sólido |
+
+- **Un color con opacidad nunca pasa** (`text-piedra/80`, `text-porcelana/70`): va
+  entero.
+- **Por debajo del mínimo sólo va un control deshabilitado**, con la variante
+  `disabled:`. WCAG 1.4.3 exime ese texto, y la variante ata el contraste bajo a
+  que el control esté deshabilitado de verdad.
+- **El escaneo no ve un fondo puesto en el padre y un texto en el hijo.** Por eso
+  se mide también la página renderizada: así apareció la pista del quiz, que en
+  `piedra` quedaba en 3,98:1 con la opción seleccionada.
+
 ### Historia, para no repetir el error
 
 La paleta anterior tenía `agua #6fb2c0` en **2,12:1** —y era el color de *todas*
@@ -49,10 +73,13 @@ de entrar.
 |---|---|
 | **Bricolage Grotesque** | `font-display` — títulos |
 | **Instrument Sans** | `font-body` — texto corrido |
-| **Space Mono** | `font-mono` — etiquetas, datos, precios |
+| **Bricolage Grotesque** | `font-etiqueta` — etiquetas chicas, datos, precios |
 
-La monoespaciada es la que da personalidad: se usa para etiquetas cortas en
-minúscula ("paso 01 · limpiador", "25 productos", "tipo de piel").
+Las etiquetas cortas en minúscula ("paso 01 · limpiador", "25 productos",
+"tipo de piel") son las que dan personalidad. Van en la misma Bricolage de los
+títulos, a 12px con un poco de tracking; el marcador de paso va en peso 500.
+Hasta el fondo de monte de la home iban en Space Mono: sobre la foto sus
+serifas se leían como máquina de escribir. Ya no hay monoespaciada en el sitio.
 
 ## Logo
 
