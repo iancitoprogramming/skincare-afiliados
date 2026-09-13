@@ -41,7 +41,7 @@ export default async function Kits() {
               <Link
                 key={k.slug}
                 href={`/kits/${k.slug}`}
-                className="flex flex-col gap-1 rounded-2xl border border-terracota/40 bg-gel/40 p-5 transition-transform active:scale-[0.99]"
+                className="flex flex-col gap-1 rounded-2xl border border-terracota/40 bg-gel/25 p-5 transition-transform active:scale-[0.99]"
               >
                 <span className="flex flex-wrap items-center gap-2 font-mono text-xs text-piedra">
                   <span className="rounded-full bg-terracota px-2 py-0.5 text-porcelana">

@@ -205,18 +205,23 @@ function Fila({
               aria-pressed={activo}
               // Un filtro que devuelve cero se muestra igual, apagado: esconderlo
               // haría que la lista de opciones cambie sola bajo el dedo.
+              //
+              // Apagado queda en 2,1:1, y está bien: WCAG 1.4.3 exime el texto de
+              // un control inactivo. Por eso va con la variante `disabled:` y no
+              // con una condición aparte: el contraste bajo sólo existe mientras
+              // el botón está deshabilitado de verdad. `contraste.test.ts` no deja
+              // pasar un texto por debajo del mínimo si no lleva esa variante.
               disabled={n === 0 && !activo}
               onClick={() => onChange(activo ? null : o.valor)}
-              className={`rounded-full border px-3 py-1.5 font-body text-sm transition-colors ${
+              className={`group rounded-full border px-3 py-1.5 font-body text-sm transition-colors ${
                 activo
                   ? "border-terracota bg-terracota text-porcelana"
-                  : n === 0
-                    ? "border-niebla bg-porcelana text-tinta/35"
-                    : "border-niebla bg-porcelana text-tinta"
+                  : "border-niebla bg-porcelana text-tinta disabled:text-tinta/35"
               }`}
             >
               {o.label}
-              <span className={activo ? "text-porcelana/70" : "text-piedra"}> {n}</span>
+              {/* Porcelana entera: con /70 el número quedaba en 3,07:1 sobre el terracota. */}
+              <span className={activo ? "text-porcelana" : "text-piedra group-disabled:text-tinta/35"}> {n}</span>
             </button>
           );
         })}
