@@ -53,11 +53,18 @@ export function trackClick(data: {
   }
 }
 
-export async function guardarLead(sesion_id: string | null, email: string): Promise<void> {
+// `rutina_url` es la URL de la rutina armada (con las respuestas en la query),
+// para que el mail la traiga. `website` es el honeypot del formulario: viene
+// vacío de una persona. La API valida los dos.
+export async function guardarLead(
+  sesion_id: string | null,
+  email: string,
+  extra: { rutina_url?: string; website?: string } = {},
+): Promise<void> {
   const res = await fetch("/api/leads", {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ sesion_id, email }),
+    body: JSON.stringify({ sesion_id, email, ...extra }),
   });
   if (!res.ok) throw new Error("No se pudo guardar el lead");
 }

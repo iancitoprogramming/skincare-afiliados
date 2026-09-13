@@ -168,7 +168,14 @@ export function Resultados({
       ) : null}
 
       <div className="rounded-2xl border border-niebla bg-gel/25 p-5">
-        <GuardarEmail label="guardá tu rutina" onGuardar={(email) => guardarLead(sesionId, email)} />
+        {/* La URL lleva las respuestas en la query (ver Quiz.syncUrl): es la
+            rutina, y es lo que va en el mail. */}
+        <GuardarEmail
+          label="guardá tu rutina"
+          onGuardar={(email, website) =>
+            guardarLead(sesionId, email, { rutina_url: window.location.href, website })
+          }
+        />
         <p className="mt-3 font-body text-sm text-tinta">{config.resultados.ventana}</p>
       </div>
 
