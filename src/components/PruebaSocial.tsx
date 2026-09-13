@@ -20,7 +20,7 @@ export function PruebaSocial({ d, className = "" }: { d: DatosSociales; classNam
   if (!muestraRating && !d.vendidos && !d.reputacion) return null;
 
   return (
-    <p className={`flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-xs ${className}`}>
+    <p className={`flex flex-wrap items-center gap-x-2 gap-y-1 font-etiqueta text-xs ${className}`}>
       {muestraRating ? (
         <span className="text-tinta">
           ★ {d.rating!.toLocaleString("es-AR", { minimumFractionDigits: 1 })}

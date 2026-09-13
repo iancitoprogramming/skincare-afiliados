@@ -3,6 +3,7 @@
 import type { AnalisisCompatibilidad, Conflicto, Severidad } from "@/engine/compatibilidad";
 import type { PlanSemanal } from "@/niches/skincare/calendario";
 import { copy } from "@/niches/skincare/copy";
+import { Desplegable } from "@/components/Desplegable";
 
 // Bloque "cómo combinarlos", debajo de la rutina. Tres cosas, en este orden:
 //
@@ -15,6 +16,10 @@ import { copy } from "@/niches/skincare/copy";
 // sinergia sin el aviso previo se lee como venta. Y desmentir un mito que la
 // persona todavía no escuchó es ruido — por eso los mitos van último y sólo
 // cuando la combinación que los dispara está de verdad en SU rutina.
+//
+// Los tres van plegados, cada uno bajo su botón. Abiertos uno debajo del otro
+// medían tres pantallas y empujaban la captura de mail fuera de la vista; el
+// botón cuenta lo que hay adentro y la persona abre lo que le importa.
 
 // El texto de los chips va en tinta, no en el color de la severidad. Sobre su
 // propio tinte el terracota queda en 3,77:1 y el piedra en 4,03:1, y a 11 px
@@ -47,10 +52,10 @@ function Tarjeta({ conflicto }: { conflicto: Conflicto }) {
   return (
     <li className={`rounded-2xl border ${estilo.borde} bg-gel/15 p-4`}>
       <div className="flex flex-wrap items-center gap-2">
-        <span className={`rounded-full px-2 py-0.5 font-mono text-[11px] ${estilo.chip}`}>
+        <span className={`rounded-full px-2 py-0.5 font-etiqueta text-[11px] ${estilo.chip}`}>
           {copy.compatibilidad.severidad[conflicto.severidad]}
         </span>
-        <span className="font-mono text-[11px] text-piedra">
+        <span className="font-etiqueta text-[11px] text-piedra">
           {copy.compatibilidad.clase[conflicto.clase]}
           {cuando ? ` · ${cuando}` : ""}
         </span>
@@ -67,7 +72,7 @@ function Tarjeta({ conflicto }: { conflicto: Conflicto }) {
       </p>
 
       {conflicto.productos.length ? (
-        <p className="mt-2 font-mono text-[11px] leading-relaxed text-piedra">
+        <p className="mt-2 font-etiqueta text-[11px] leading-relaxed text-piedra">
           {conflicto.productos.join(" · ")}
         </p>
       ) : null}
@@ -85,51 +90,58 @@ export function Compatibilidad({
   const { conflictos, sinergias, mitos } = analisis;
   if (!conflictos.length && !sinergias.length && !mitos.length && !plan) return null;
 
+  // La severidad más alta presente, para el título del botón.
+  const orden: Severidad[] = ["separar", "cuidado", "nota"];
+  const peor = orden.find((sev) => conflictos.some((c) => c.severidad === sev));
+  const tituloConflictos = copy.compatibilidad.plegado.conflictos(
+    conflictos.length,
+    peor ? copy.compatibilidad.severidad[peor] : "",
+  );
+
   return (
-    <section className="flex flex-col gap-4">
-      <div>
-        <h2 className="font-mono text-sm text-piedra">{copy.compatibilidad.titulo}</h2>
-        <p className="mt-1 font-body text-sm leading-relaxed text-tinta/75">
-          {copy.compatibilidad.bajada}
-        </p>
-      </div>
+    <>
+      <Desplegable etiqueta={copy.compatibilidad.titulo} titulo={tituloConflictos}>
+        <p className="font-body text-sm leading-relaxed text-tinta/75">{copy.compatibilidad.bajada}</p>
 
-      {conflictos.length ? (
-        <ul className="flex flex-col gap-3">
-          {conflictos.map((c) => (
-            <Tarjeta key={c.reglaId} conflicto={c} />
-          ))}
-        </ul>
-      ) : (
-        <p className="rounded-2xl border border-niebla bg-gel/15 p-4 font-body text-sm leading-relaxed text-tinta/85">
-          {copy.compatibilidad.sinConflictos}
-        </p>
-      )}
-
-      {plan ? (
-        <div className="rounded-2xl border border-niebla bg-porcelana p-5">
-          <h3 className="font-display text-base font-medium text-tinta">{plan.titulo}</h3>
-          <p className="mt-1 font-body text-sm leading-relaxed text-tinta/85">{plan.intro}</p>
-          <ol className="mt-3 flex flex-col gap-2">
-            {plan.noches.map((n) => (
-              <li key={n.noche} className="flex gap-3">
-                <span className="mt-0.5 font-mono text-xs text-piedra">
-                  {String(n.noche).padStart(2, "0")}
-                </span>
-                <span className="font-body text-sm leading-relaxed text-tinta">
-                  <span className="font-medium">{n.titulo}.</span> {n.detalle}
-                </span>
-              </li>
+        {conflictos.length ? (
+          <ul className="flex flex-col gap-3">
+            {conflictos.map((c) => (
+              <Tarjeta key={c.reglaId} conflicto={c} />
             ))}
-          </ol>
-          <p className="mt-3 font-body text-xs leading-relaxed text-tinta/70">{plan.siArde}</p>
-        </div>
-      ) : null}
+          </ul>
+        ) : (
+          <p className="font-body text-sm leading-relaxed text-tinta/85">
+            {copy.compatibilidad.sinConflictos}
+          </p>
+        )}
+
+        {plan ? (
+          <div className="border-t border-niebla pt-4">
+            <h3 className="font-display text-base font-medium text-tinta">{plan.titulo}</h3>
+            <p className="mt-1 font-body text-sm leading-relaxed text-tinta/85">{plan.intro}</p>
+            <ol className="mt-3 flex flex-col gap-2">
+              {plan.noches.map((n) => (
+                <li key={n.noche} className="flex gap-3">
+                  <span className="mt-0.5 font-etiqueta text-xs font-medium text-piedra">
+                    {String(n.noche).padStart(2, "0")}
+                  </span>
+                  <span className="font-body text-sm leading-relaxed text-tinta">
+                    <span className="font-medium">{n.titulo}.</span> {n.detalle}
+                  </span>
+                </li>
+              ))}
+            </ol>
+            <p className="mt-3 font-body text-xs leading-relaxed text-tinta/70">{plan.siArde}</p>
+          </div>
+        ) : null}
+      </Desplegable>
 
       {sinergias.length ? (
-        <div className="rounded-2xl border border-gel bg-gel/25 p-5">
-          <h3 className="font-mono text-xs text-piedra">{copy.compatibilidad.sinergias}</h3>
-          <ul className="mt-2 flex flex-col gap-3">
+        <Desplegable
+          etiqueta={copy.compatibilidad.sinergias}
+          titulo={copy.compatibilidad.plegado.sinergias(sinergias.length)}
+        >
+          <ul className="flex flex-col gap-3">
             {sinergias.map((s) => (
               <li key={s.sinergiaId}>
                 <p className="font-display text-base font-medium leading-snug text-tinta">
@@ -141,13 +153,15 @@ export function Compatibilidad({
               </li>
             ))}
           </ul>
-        </div>
+        </Desplegable>
       ) : null}
 
       {mitos.length ? (
-        <div className="rounded-2xl border border-niebla p-5">
-          <h3 className="font-mono text-xs text-piedra">{copy.compatibilidad.mitos}</h3>
-          <ul className="mt-2 flex flex-col gap-4">
+        <Desplegable
+          etiqueta={copy.compatibilidad.mitos}
+          titulo={copy.compatibilidad.plegado.mitos(mitos.length)}
+        >
+          <ul className="flex flex-col gap-4">
             {mitos.map((m) => (
               <li key={m.mitoId}>
                 <p className="font-display text-base font-medium leading-snug text-tinta">
@@ -162,8 +176,8 @@ export function Compatibilidad({
               </li>
             ))}
           </ul>
-        </div>
+        </Desplegable>
       ) : null}
-    </section>
+    </>
   );
 }

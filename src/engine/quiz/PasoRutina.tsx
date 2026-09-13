@@ -94,7 +94,7 @@ export function PasoRutina({
       id={ancla}
       className={`scroll-mt-6 rounded-2xl border p-5 ${cerrada ? "border-dashed border-niebla" : "border-niebla bg-gel/25"}`}
     >
-      <p className="font-mono text-xs text-piedra">
+      <p className="font-etiqueta text-xs font-medium text-piedra">
         paso {String(numero).padStart(2, "0")} · {categoriaLabel}
         {conAvisoDeCombinacion ? (
           <span className="ml-2 text-tinta/70">↓ {copy.compatibilidad.enPaso}</span>
@@ -134,7 +134,7 @@ export function PasoRutina({
                 <h3 className="font-display text-xl font-medium leading-tight text-tinta">{p.nombre}</h3>
               )}
               <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                {p.marca ? <span className="font-mono text-xs text-piedra">{p.marca}</span> : null}
+                {p.marca ? <span className="font-etiqueta text-xs text-piedra">{p.marca}</span> : null}
                 <RangoPrecio rango={p.rango_precio} className="shrink-0" />
               </div>
               <PruebaSocial d={p} />

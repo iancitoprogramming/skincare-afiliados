@@ -20,6 +20,9 @@
        Sobre ella el texto va en tinta desde /70; el color queda en el fondo.
      · Texto de color con opacidad (`text-piedra/80`, `text-porcelana/70`), nunca.
      · Por debajo del mínimo, sólo en un control deshabilitado (`disabled:`).
+     · Sobre la foto de la home (el monte con su fade de porcelana a ≈0,68):
+       sólo tinta entero. Medido por tercio de la foto, piedra y salvia no
+       llegan en el tercio más oscuro. El CTA va como terracota sólido.
 */
 @theme {
   --color-porcelana: #f4f6f3;  /* fondo                                        */
@@ -32,5 +35,7 @@
 
   --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-space-mono), ui-monospace, monospace;
+  /* Etiquetas chicas en minúscula: "paso 01 · limpiador", "78 productos".
+     Es la misma Bricolage de los títulos, chica. No hay mono en el sitio. */
+  --font-etiqueta: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
 }

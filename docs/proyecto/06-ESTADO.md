@@ -77,6 +77,16 @@ sobre blanco, y la home no tiene ninguna imagen.
 **Sistema visual.** La paleta y el logo ya están; falta la pasada de jerarquía,
 espaciado y densidad para competir en un feed de Pinterest.
 
+**El fondo de la home** ya no es plano: una foto de monte (`public/monte.webp`,
+East Khasi Hills, CC BY-SA, atribuida al pie) partida en tres bandas que se
+corren con el scroll como un taquín y se realinean arriba, en las tarjetas y
+abajo. La home dejó de usar `<Shell>` para ir a pantalla completa; la mecánica
+vive en `src/components/FondoMonte.tsx`. Sobre la foto el texto va sólo en
+`tinta` (piedra y salvia no pasan AA ahí), y el CTA es un botón terracota.
+Pendientes de copy que quedaron a propósito como estaban: el CTA de la tarjeta
+del catálogo dice "Armar mi rutina" (viene de `copy.catalogo.cta`) y la captura
+de mail usa "guardá tu rutina", que es la etiqueta del quiz.
+
 **Mockups** para Pinterest, TikTok, YouTube e Instagram. Las fotos en alta están
 en `assets/productos/`.
 

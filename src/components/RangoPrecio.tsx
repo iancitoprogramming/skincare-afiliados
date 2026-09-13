@@ -18,7 +18,7 @@ export function RangoPrecio({ rango, className = "" }: { rango: number; classNam
   return (
     <span
       title={copy.precio.porQue}
-      className={`inline-flex rounded-full border border-niebla px-2 py-0.5 font-mono text-[11px] leading-tight text-piedra ${className}`}
+      className={`inline-flex rounded-full border border-niebla px-2 py-0.5 font-etiqueta text-[11px] leading-tight text-piedra ${className}`}
     >
       {etiqueta}
     </span>

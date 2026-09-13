@@ -142,6 +142,13 @@ export const copy = {
     criterios: "cómo decidimos qué combina con qué",
   },
 
+  // Debajo del botón de compra de cada ficha: el camino de compra devuelve al
+  // camino de entender. Vos tenés los dos caminos y hasta acá no se tocaban.
+  ficha: {
+    cruce: "¿Va con tu piel?",
+    cruceCta: "Armá tu rutina y lo chequeamos con el resto",
+  },
+
   // ───────────────────────────────────────────────────────────────────────────
   // PRECIO
   //
@@ -297,6 +304,23 @@ export const copy = {
     // Marca en la card del paso involucrado, para que el aviso de abajo se pueda
     // conectar con el producto concreto sin hacer scroll dos veces.
     enPaso: "mirá el aviso de abajo",
+    // Los tres bloques van plegados en el resultado. Esto es lo que dice el
+    // botón que los abre: cuenta lo que hay adentro, para que se sepa si vale
+    // abrirlo, sin adelantar el contenido. `peor` es la etiqueta de severidad
+    // del aviso más serio ("separar", "ojo con esto", "para tener en cuenta").
+    plegado: {
+      conflictos: (n: number, peor: string) =>
+        n === 0 ? "nada para separar" : `${n} ${n === 1 ? "aviso" : "avisos"} · ${peor}`,
+      sinergias: (n: number) => `${n} ${n === 1 ? "combinación que suma" : "combinaciones que suman"}`,
+      mitos: (n: number) => `${n} ${n === 1 ? "mito, desmentido" : "mitos, desmentidos"}`,
+    },
+  },
+
+  // La nota de tradiciones (coreano / farmacia / mixto) y los pasos que dejamos
+  // afuera van plegados juntos en el resultado, bajo este botón.
+  criterio: {
+    etiqueta: "por qué estos",
+    titulo: "de dónde vienen y qué dejamos afuera",
   },
 
 

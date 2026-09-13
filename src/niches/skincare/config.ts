@@ -185,6 +185,10 @@ export const skincareQuiz: QuizConfig = {
     {
       urlKey: "p",
       title: "¿Cómo sentís tu piel a media tarde?",
+      // Pregunta síntoma, no tipo: "¿cómo la sentís?" y no "¿qué piel tenés?".
+      porQue:
+        "Decide la textura de cada paso —geles y fluidos para la grasa, cremas para la seca— " +
+        "y si es sensible, qué activos quedan afuera aunque estén en el catálogo.",
       options: [
         { value: "grasa", label: "Con brillo, se ve grasa", short: "Piel grasa" },
         { value: "mixta", label: "Zona T grasa, mejillas normales", short: "Piel mixta" },
@@ -196,6 +200,8 @@ export const skincareQuiz: QuizConfig = {
     {
       urlKey: "o",
       title: "¿Qué te gustaría cambiar primero?",
+      porQue:
+        "Elige el activo principal de la rutina, y con él qué puede ir al lado y qué no.",
       options: [
         { value: "acne", label: "Granitos y poros", short: "foco en granitos" },
         { value: "manchas", label: "Manchas y marcas", short: "foco en manchas" },
@@ -206,6 +212,9 @@ export const skincareQuiz: QuizConfig = {
     {
       urlKey: "b",
       title: "¿Cuánto querés gastar?",
+      porQue:
+        "Cambia de qué banda de precio sale cada producto, no cuántos pasos lleva la rutina. " +
+        "Si tu piel pide algo que no hay en esa banda, gana la piel.",
       options: [
         { value: "1", label: PRESUPUESTO["1"], hint: "lo justo y necesario" },
         { value: "2", label: PRESUPUESTO["2"], hint: "buena relación precio-calidad" },
@@ -215,6 +224,9 @@ export const skincareQuiz: QuizConfig = {
     {
       urlKey: "k",
       title: "¿Querés que te incluyamos productos coreanos?",
+      porQue:
+        "Cambia la formulación, no la cantidad de frascos: la coreana va por texturas livianas " +
+        "y calmantes; la de farmacia, por activos declarados en porcentaje.",
       options: [
         {
           value: "si",
@@ -242,6 +254,9 @@ export const skincareQuiz: QuizConfig = {
       // base, porque medimos que la cantidad no predice el resultado: el Tier 4
       // tenía cinco pasos más que la base y la misma cobertura.
       title: "¿Querés sumarle algo a la base?",
+      porQue:
+        "La base es limpiar, hidratar y protegerte del sol. Lo que va encima es opcional y entra " +
+        "recién cuando la base está sostenida.",
       options: [
         {
           value: "1",

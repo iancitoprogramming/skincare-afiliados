@@ -97,7 +97,7 @@ export function CatalogoGrid({
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3 border-y border-niebla py-3">
-        <p className="font-mono text-xs text-piedra">
+        <p className="font-etiqueta text-xs text-piedra">
           {visibles.length} {visibles.length === 1 ? "producto" : "productos"}
           {hayFiltros ? (
             <button
@@ -110,12 +110,12 @@ export function CatalogoGrid({
           ) : null}
         </p>
 
-        <label className="flex items-center gap-2 font-mono text-xs text-piedra">
+        <label className="flex items-center gap-2 font-etiqueta text-xs text-piedra">
           orden
           <select
             value={orden}
             onChange={(e) => setOrden(e.target.value as Orden)}
-            className="rounded-lg border border-niebla bg-porcelana px-2 py-1 font-mono text-xs text-tinta"
+            className="rounded-lg border border-niebla bg-porcelana px-2 py-1 font-etiqueta text-xs text-tinta"
           >
             <option value="criterio">nuestro criterio</option>
             <option value="vendidos">más vendidos en Mercado Libre</option>
@@ -159,7 +159,7 @@ export function CatalogoGrid({
                 )}
 
                 {p.marca ? (
-                  <span className="font-mono text-[11px] leading-none text-piedra">{p.marca}</span>
+                  <span className="font-etiqueta text-[11px] leading-none text-piedra">{p.marca}</span>
                 ) : null}
                 <span className="font-display text-sm font-medium leading-tight text-tinta">
                   {p.nombre}
@@ -193,7 +193,7 @@ function Fila({
 }) {
   return (
     <div className="flex flex-col gap-2">
-      <p className="font-mono text-xs text-piedra">{titulo}</p>
+      <p className="font-etiqueta text-xs text-piedra">{titulo}</p>
       <div className="flex flex-wrap gap-2">
         {opciones.map((o) => {
           const activo = valor === o.valor;
