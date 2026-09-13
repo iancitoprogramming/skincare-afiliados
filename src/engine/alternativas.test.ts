@@ -121,4 +121,28 @@ describe("alternativasDePaso", () => {
       expect(alternativasDePaso(productos, rutina, paso, r, catalogoDe({}), clave)).toEqual([]);
     }
   });
+
+  // La regla es "no suma", no "no cambia nada". Una candidata puede SACAR un
+  // conflicto que la recomendada tenía: pasa en el catálogo real, donde el
+  // hidratante recomendado repite la niacinamida del sérum y una alternativa no.
+  // La recomendada ganó igual porque en el motor la prioridad pesa más que una
+  // "nota" de redundancia; la alternativa es mejor en ese eje y se ofrece.
+  it("ofrece la que saca un conflicto que la recomendada tenía", () => {
+    const limpiador = prod("LIMP", "limpiador");
+    const serum = prod("SERUM", "serum_activo");
+    const h1 = prod("H1", "hidratante");
+    const sinNiacinamida = prod("SIN_NIACINAMIDA", "hidratante");
+    const catalogo = catalogoDe({
+      LIMP: ["niacinamida"],
+      SERUM: ["niacinamida"],
+      H1: ["niacinamida"], // tercera vez en la misma noche: "nota" de redundancia
+      SIN_NIACINAMIDA: ["hialuronico"],
+    });
+    const paso = pasoDe(h1);
+    const rutina: Rutina = { am: [], pm: [pasoDe(limpiador), pasoDe(serum), paso] };
+    const ids = alternativasDePaso([limpiador, serum, h1, sinNiacinamida], rutina, paso, r, catalogo, clave).map(
+      (p) => p.id,
+    );
+    expect(ids).toEqual(["SIN_NIACINAMIDA"]);
+  });
 });
