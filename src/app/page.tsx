@@ -116,7 +116,7 @@ export default async function Home() {
       <main className={s.contenido}>
         <section className={s.seccion}>
           <div className={s.copy}>
-            <h1 className="font-display text-[2.1rem] font-medium leading-[1.06] tracking-tight text-tinta sm:text-5xl">
+            <h1 className="font-display text-titular font-medium leading-[1.06] tracking-tight text-tinta sm:text-5xl">
               {copy.home.titulo}
             </h1>
             <p className="font-body text-base leading-relaxed text-tinta">{copy.home.bajada(preguntas)}</p>
@@ -225,7 +225,7 @@ export default async function Home() {
               >
                 {copy.home.criterios} →
               </Link>
-              <p className="font-etiqueta text-[0.66rem] text-tinta">
+              <p className="font-etiqueta text-xs text-tinta">
                 foto ·{" "}
                 <a href={FOTO.url} target="_blank" rel="noopener" className="underline underline-offset-2">
                   {FOTO.autor} · {FOTO.licencia}

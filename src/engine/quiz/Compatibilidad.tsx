@@ -52,10 +52,10 @@ function Tarjeta({ conflicto }: { conflicto: Conflicto }) {
   return (
     <li className={`rounded-2xl border ${estilo.borde} bg-gel/15 p-4`}>
       <div className="flex flex-wrap items-center gap-2">
-        <span className={`rounded-full px-2 py-0.5 font-etiqueta text-[11px] ${estilo.chip}`}>
+        <span className={`rounded-full px-2 py-0.5 font-etiqueta text-xs ${estilo.chip}`}>
           {copy.compatibilidad.severidad[conflicto.severidad]}
         </span>
-        <span className="font-etiqueta text-[11px] text-piedra">
+        <span className="font-etiqueta text-xs text-piedra">
           {copy.compatibilidad.clase[conflicto.clase]}
           {cuando ? ` · ${cuando}` : ""}
         </span>
@@ -72,7 +72,7 @@ function Tarjeta({ conflicto }: { conflicto: Conflicto }) {
       </p>
 
       {conflicto.productos.length ? (
-        <p className="mt-2 font-etiqueta text-[11px] leading-relaxed text-piedra">
+        <p className="mt-2 font-etiqueta text-xs leading-relaxed text-piedra">
           {conflicto.productos.join(" · ")}
         </p>
       ) : null}
@@ -131,7 +131,8 @@ export function Compatibilidad({
                 </li>
               ))}
             </ol>
-            <p className="mt-3 font-body text-xs leading-relaxed text-tinta/70">{plan.siArde}</p>
+            {/* 14 px aunque sea secundario: es lo que hay que hacer si la piel reacciona. */}
+            <p className="mt-3 font-body text-sm leading-relaxed text-tinta/70">{plan.siArde}</p>
           </div>
         ) : null}
       </Desplegable>

@@ -5,6 +5,12 @@
 .contenido {
   position: relative;
   z-index: 1;
+  /* El fade de cada bloque (`.copy::before`) sobresale 3.5rem a los costados, y
+     en un celular eso pasa el borde de la pantalla: a 390 px la página medía 426
+     y se podía correr de costado. `clip` corta sólo lo que queda afuera —que
+     igual no se ve— sin volver a `.contenido` un contenedor de scroll, como haría
+     `hidden`. */
+  overflow-x: clip;
 }
 
 /* Marca fija arriba. El velo de porcelana de atrás es por el contraste del

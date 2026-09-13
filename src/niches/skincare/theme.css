@@ -33,6 +33,11 @@
   --color-terracota: #c2410c;  /* CTA — porcelana encima    4,76:1             */
   --color-niebla:    #cbd5d0;  /* bordes                    (no texto)         */
 
+  /* El titular de la home. Es el único tamaño fuera de la escala de Tailwind
+     —queda entre `3xl` y `4xl`— y lleva nombre para que no vuelva a colarse un
+     `text-[…]` suelto. `tipografia.test.ts` no deja pasar tamaños sin nombre. */
+  --text-titular: 2.1rem;
+
   --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
   /* Etiquetas chicas en minúscula: "paso 01 · limpiador", "78 productos".

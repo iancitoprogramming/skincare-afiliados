@@ -81,6 +81,39 @@ títulos, a 12px con un poco de tracking; el marcador de paso va en peso 500.
 Hasta el fondo de monte de la home iban en Space Mono: sobre la foto sus
 serifas se leían como máquina de escribir. Ya no hay monoespaciada en el sitio.
 
+### Tamaños
+
+El tamaño lo decide el rol del texto, no cuánto espacio queda:
+
+| Rol | Tamaño mínimo |
+|---|---|
+| Etiqueta, dato, leyenda, cita, nota al pie | `text-xs` · 12 px |
+| Texto corrido | `text-sm` · 14 px |
+| **Instrucción que la persona tiene que seguir**, aunque sea secundaria | `text-sm` · 14 px |
+| Campo de formulario (`input`, `select`, `textarea`) | `text-base` · 16 px, declarado en el campo |
+
+- **12 px es el piso.** Lighthouse marca como difícil de leer en móvil todo lo
+  que baja de ahí. Hasta el 13/9 había seis `text-[11px]` sueltos —la banda de
+  precio, la marca del catálogo, los chips y la tabla de combinaciones— y el
+  crédito de la foto de la home a 10,56 px.
+- **Una instrucción no es una nota al pie.** El aviso de un paso que no es un
+  match limpio, o qué hacer si la piel arde, se lee antes de comprar o en el
+  momento en que algo sale mal. Por eso van a 14 px, aunque estén en un segundo
+  plano visual.
+- **Los campos van a 16 px** porque Safari en iPhone agranda la página al
+  enfocar un campo con letra más chica. Apple no lo documenta; está reproducido
+  de forma independiente. Va declarado en el campo porque Tailwind hace que los
+  campos hereden la letra, y lo heredado depende de dónde se monte.
+- **Sólo tamaños con nombre:** la escala de Tailwind, más `text-titular`
+  (2,1 rem) para el titular de la home, que está definido en `theme.css`.
+
+Como referencia, Apple, en iOS, pone el texto normal en 17 pt, las notas al pie
+en 13 y las leyendas en 12 y 11, que es su mínimo. Las etiquetas y notas a 12 px
+entran en ese rango. Lo que se sale es usar ese tamaño para una instrucción.
+
+`tipografia.test.ts` hace cumplir el piso, los campos y los nombres. El rol no lo
+puede ver.
+
 ## Logo
 
 Tres arcos concéntricos que se cierran sobre un punto, en `piedra`.

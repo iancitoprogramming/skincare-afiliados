@@ -77,7 +77,8 @@ export function PasoRutina({
   const explicacion = explicado ? (momento && explicado[momento]) || explicado.explicacion : null;
 
   // Cuando la recomendacion no fue un match limpio, se dice. Un kit o una rutina
-  // que esconde esto vende peor a la larga.
+  // que esconde esto vende peor a la larga. Va a 14 px y no a 12: es algo que la
+  // persona tiene que saber antes de comprar, no una nota al pie.
   const aviso =
     paso.fallback === "no_apto_sensible"
       ? copy.avisos.no_apto_sensible
@@ -153,7 +154,7 @@ export function PasoRutina({
           ) : null}
 
           {aviso ? (
-            <p className="mt-3 rounded-xl border border-terracota/30 bg-terracota/5 px-3 py-2 font-body text-xs text-tinta/80">
+            <p className="mt-3 rounded-xl border border-terracota/30 bg-terracota/5 px-3 py-2 font-body text-sm text-tinta/80">
               {aviso}
             </p>
           ) : null}
