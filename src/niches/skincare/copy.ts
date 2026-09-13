@@ -221,6 +221,55 @@ export const copy = {
       "Se va de la banda que elegiste. No hay ninguno más accesible que sirva para tu piel y tu objetivo, y preferimos decírtelo antes que darte uno que no te va a servir.",
   },
 
+  // Para qué sirve cada paso, antes de mostrar qué producto lo cumple. Va sin
+  // marca a propósito: es el criterio, y el producto llega como la respuesta.
+  //
+  // Es texto nuestro y lo lee todo el que termina el quiz, así que cada
+  // afirmación tiene respaldo y pasa por el mismo filtro de claims que el copy
+  // de producto (`copy-pasos.test.ts`):
+  //   · limpiador — American Academy of Dermatology: dos veces por día, con uno
+  //     suave y sin frotar, porque frotar irrita. INGREDIENTES.md §4.1: en algo
+  //     que se enjuaga, el contacto con la piel es de segundos.
+  //   · hidratante — Lodén, Clinics in Dermatology 2012: la composición decide
+  //     si un hidratante mejora la función de barrera o la deteriora. Por eso el
+  //     texto no promete nada del paso en general y dice que importa cuál.
+  //   · protector — Hughes et al., Annals of Internal Medicine 2013, ensayo
+  //     aleatorizado de 4,5 años: 24% menos fotoenvejecimiento con uso diario
+  //     que con uso ocasional. Detalle en INGREDIENTES.md §8.
+  //
+  // `am` y `pm` son opcionales: si el paso cambia según el momento, se dice; si
+  // no, va `explicacion` en los dos, y siempre en los kits.
+  pasos: {
+    limpiador: {
+      funcion: "Limpiar sin llevarte de más",
+      explicacion:
+        "Un limpiador suave, a la mañana y a la noche, sin frotar. Está en la piel unos segundos " +
+        "antes de enjuagarse, así que su trabajo no es aportar: es sacar lo que sobra sin llevarse " +
+        "lo que la piel necesita.",
+      am: "A la mañana alcanza con poco: la piel viene de la noche, no de la calle. Agua tibia y sin frotar.",
+      pm: "A la noche es el lavado con más trabajo: saca lo que la piel juntó durante el día. Sin frotar, que frotar irrita.",
+    },
+    serum_activo: {
+      funcion: "Ir a lo que querés cambiar",
+      explicacion:
+        "Es el único paso que apunta directo a tu objetivo; los otros sostienen la base. Va después " +
+        "de limpiar y antes de hidratar, que es el orden en que se aplica.",
+    },
+    hidratante: {
+      funcion: "Que la piel no pierda agua",
+      explicacion:
+        "Es su trabajo principal, y no todos lo hacen igual: según la fórmula, un hidratante puede " +
+        "mejorar la barrera de la piel o dejarla peor. Por eso importa cuál.",
+    },
+    protector_solar: {
+      funcion: "Protegerte del sol, todos los días",
+      explicacion:
+        "Es el paso que más cambia la piel a largo plazo, y el mejor medido: en un ensayo de cuatro " +
+        "años y medio, quienes lo usaron todos los días tuvieron 24% menos envejecimiento por sol que " +
+        "quienes lo usaban de vez en cuando. A la mañana va último.",
+    },
+  } as Record<string, { funcion: string; explicacion: string; am?: string; pm?: string }>,
+
   // Aparece recién en la pantalla de resultados, nunca antes.
   afiliacion: "Si comprás por estos links, cobramos una comisión sin costo extra para vos.",
   dermatologo: "Ante un problema de piel, consultá a un dermatólogo.",

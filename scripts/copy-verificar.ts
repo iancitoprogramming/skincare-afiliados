@@ -10,19 +10,8 @@
 import { COPY_PRODUCTOS } from "../src/niches/skincare/copy-productos";
 import { productos } from "../src/niches/skincare/productos";
 
-// Verbos y frases que un producto cosmético de venta libre no puede sostener.
-const PROHIBIDAS: [RegExp, string][] = [
-  [/\bcur[ao]r?\b|\bcura\b/i, "promete curar"],
-  [/\btrat(a|ar|amiento)\b/i, "dice tratar: es lenguaje médico"],
-  [/\belimin(a|ar)\b/i, "promete eliminar"],
-  [/\brepar(a|ar)\b/i, "promete reparar"],
-  [/\brevierte\b/i, "promete revertir"],
-  [/\bdesinflama\b|\bantiinflamatorio\b/i, "claim antiinflamatorio"],
-  [/\bcl[ií]nicamente (comprobado|probado)\b/i, "claim clínico sin fuente"],
-  [/\bgarantiza\b/i, "garantía de resultado"],
-  [/\bmilagro/i, "lenguaje de milagro"],
-  [/en \d+ (d[ií]as|semanas|meses)/i, "promesa de resultado con plazo"],
-];
+// La lista vive en src/niches/skincare/claims.ts, para que los tests también la usen.
+import { PROHIBIDAS } from "../src/niches/skincare/claims";
 
 // Largo máximo. Las cards tienen poco espacio y un texto que se corta a la
 // mitad es peor que uno corto.
