@@ -161,6 +161,17 @@ export const copy = {
     // quiere entender por qué recomendamos lo que recomendamos. En la home el
     // mismo destino tiene además su propia franja (`franja`).
     criterios: "cómo decidimos qué combina con qué",
+    // La captura de mail al pie de la home. Decía "guardá tu rutina", que es la
+    // etiqueta del resultado del quiz: en la home todavía no hay rutina que
+    // guardar. La nota es la misma frase del mail de bienvenida —que la toma de
+    // acá— y dice qué va a recibir, sin prometer frecuencia. "Ya estás en el
+    // Club" es el asunto del mail que le llega.
+    correo: {
+      etiqueta: "dejanos tu correo",
+      nota:
+        "Te escribimos poco, y sólo cuando cambia algo que te afecte: un producto que entra o sale del catálogo, o un criterio que corregimos.",
+      listo: "Listo, ya estás en el Club. Revisá tu correo.",
+    },
   },
 
   // Debajo del botón de compra de cada ficha: el camino de compra devuelve al
