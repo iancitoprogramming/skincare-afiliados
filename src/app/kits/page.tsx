@@ -34,7 +34,7 @@ export default async function Kits() {
               <h1 className="font-display text-3xl font-medium tracking-tight text-tinta">
                 {copy.kits.unicos.titulo}
               </h1>
-              <p className="font-body text-sm text-tinta/75">{copy.kits.unicos.bajada}</p>
+              <p className="font-body text-sm text-tinta/80">{copy.kits.unicos.bajada}</p>
             </header>
 
             {KITS_UNICOS.map((k) => (
@@ -53,7 +53,7 @@ export default async function Kits() {
                 <span className="mt-1 font-display text-xl font-medium leading-tight text-tinta">
                   {k.nombre}
                 </span>
-                <span className="font-body text-sm text-tinta/75">{k.descripcion}</span>
+                <span className="font-body text-sm text-tinta/80">{k.descripcion}</span>
                 <PruebaSocial d={k} className="mt-2" />
 
                 {/* Acá había precio y precio de lista tachado. Un descuento
@@ -75,7 +75,7 @@ export default async function Kits() {
             <h2 className="font-display text-2xl font-medium tracking-tight text-tinta">
               {copy.kits.armados.titulo}
             </h2>
-            <p className="font-body text-sm text-tinta/75">{copy.kits.armados.bajada}</p>
+            <p className="font-body text-sm text-tinta/80">{copy.kits.armados.bajada}</p>
           </header>
 
           {kits.map((kit) => (
@@ -91,7 +91,7 @@ export default async function Kits() {
               <span className="font-display text-xl font-medium leading-tight text-tinta">
                 {kit.def.nombre}
               </span>
-              <span className="font-body text-sm text-tinta/75">{kit.def.descripcion}</span>
+              <span className="font-body text-sm text-tinta/80">{kit.def.descripcion}</span>
               <span className="mt-3 font-body text-base font-medium text-terracota">
                 {copy.kits.ver} →
               </span>

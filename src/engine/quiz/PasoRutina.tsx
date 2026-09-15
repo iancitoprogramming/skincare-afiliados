@@ -192,7 +192,7 @@ export function PasoRutina({
 
       {cerrada ? (
         <p className="font-body text-sm leading-relaxed text-tinta/80">
-          {copy.yaLoTengo.cubierto} <span className="text-tinta/65">{copy.yaLoTengo.nota(p.nombre)}</span>
+          {copy.yaLoTengo.cubierto} <span className="text-tinta/70">{copy.yaLoTengo.nota(p.nombre)}</span>
         </p>
       ) : null}
     </div>

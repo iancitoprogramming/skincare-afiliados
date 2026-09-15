@@ -163,7 +163,7 @@ export function Resultados({
         <Compatibilidad analisis={analisis} plan={plan} />
         {nota ? (
           <Desplegable etiqueta={copy.criterio.etiqueta} titulo={copy.criterio.titulo}>
-            <p className="font-body text-sm leading-relaxed text-tinta/85">{nota}</p>
+            <p className="font-body text-sm leading-relaxed text-tinta/80">{nota}</p>
             <p className="font-body text-sm leading-relaxed text-tinta/70">{copy.opcionales}</p>
           </Desplegable>
         ) : null}

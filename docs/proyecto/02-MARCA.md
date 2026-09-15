@@ -46,8 +46,8 @@ clases de `src/`:
 
 | Superficie | Dónde | Texto encima |
 |---|---|---|
-| **Clara:** de `porcelana` a `gel/35` | fondo, tarjetas, puertas | tinta desde `/65` · piedra, salvia y terracota enteros |
-| **Teñida:** `piedra/NN`, `terracota/NN`, `niebla/NN`, `gel` sólido | chips de severidad, opción seleccionada del quiz | tinta desde `/70` — el color va en el fondo, no en la letra |
+| **Clara:** de `porcelana` a `gel/35` | fondo, tarjetas, puertas | tinta entero, `/80` o `/70` · piedra, salvia y terracota enteros |
+| **Teñida:** `piedra/NN`, `terracota/NN`, `niebla/NN`, `gel` sólido | chips de severidad, opción seleccionada del quiz | tinta entero, `/80` o `/70` — el color va en el fondo, no en la letra |
 | `terracota` sólido | CTA, filtro activo | `porcelana` entero |
 | **Foto** (la home): el monte con el fade de porcelana a ≈0,68 | hero, tarjetas, cómo funciona, preguntas, mail | **sólo `tinta` entero**. Medido por tercio de la foto: en el más oscuro, piedra queda en ~3:1 y salvia en ~4:1. El CTA va como `terracota` sólido |
 
@@ -59,6 +59,34 @@ clases de `src/`:
 - **El escaneo no ve un fondo puesto en el padre y un texto en el hijo.** Por eso
   se mide también la página renderizada: así apareció la pista del quiz, que en
   `piedra` quedaba en 3,98:1 con la opción seleccionada.
+
+### Niveles de tinta
+
+Tinta va en tres niveles y nada más:
+
+| Nivel | Clase | Para qué | Contraste |
+|---|---|---|---|
+| Principal | `text-tinta` | títulos y lo que se lee primero | 11:1 o más |
+| Apoyo | `text-tinta/80` | explicaciones, bajadas, descripciones, avisos | **7:1 o más** sobre superficie clara |
+| Nota | `text-tinta/70` | leyendas, notas al pie, pistas, marcas, celdas vacías | **4,5:1 o más** en cualquier superficie |
+
+- **Por qué 7:1 para el apoyo.** Es el umbral AAA de WCAG (1.4.6). Según W3C,
+  compensa la pérdida de sensibilidad al contraste de quien tiene baja visión y
+  no usa tecnología de asistencia. El apoyo es lo que se lee de corrido —la
+  explicación de cada paso, lo que hay que saber de un choque—, y ahí conviene
+  el margen.
+- **Por qué no cinco.** Hasta el 13/9 había `/65`, `/70`, `/75`, `/80` y `/85`, y
+  no eran cinco jerarquías: la explicación de un paso iba en `/80` y la de un
+  choque, en la tarjeta de abajo, en `/85`. Ahora cada nivel es un rol, y entre
+  apoyo y nota hay el doble de diferencia de color que entre dos escalones
+  viejos: 7,5 contra 3,7 de ΔE00 sobre porcelana.
+- **Se asigna por rol, no por parecido.** "Por qué esta pregunta" va como nota
+  porque es contexto en voz baja; "si la piel arde" va como apoyo aunque esté al
+  pie, porque es lo que hay que hacer.
+- **`/35`**, sólo en un control deshabilitado y con `disabled:`. **Sobre la foto
+  de la home**, sólo tinta entero.
+
+`contraste.test.ts` no deja pasar ningún otro valor.
 
 ### Historia, para no repetir el error
 

@@ -29,7 +29,7 @@ export function Pregunta({
       {/* Qué hace el motor con la respuesta. Va debajo de las opciones y en
           voz baja: es contexto, no otra cosa para decidir. */}
       {question.porQue ? (
-        <p className="font-body text-sm leading-relaxed text-tinta/75">
+        <p className="font-body text-sm leading-relaxed text-tinta/70">
           <span className="font-etiqueta text-xs text-piedra">por qué esta pregunta · </span>
           {question.porQue}
         </p>
