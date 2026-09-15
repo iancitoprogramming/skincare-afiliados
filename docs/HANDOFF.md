@@ -3,6 +3,10 @@
 > Reescrito el 2026-09-15, al cerrar una conversación larga (12/9 a 15/9). Lo que
 > dice acá está verificado contra el repo y GitHub ese día, salvo donde se aclara
 > que no se volvió a medir. Reemplaza al handoff del 12/9.
+>
+> **Actualizado el 15/9 a la tarde:** el #34 y el #35 ya están en `main` y en
+> Production; la cuenta de Alex pasó de `WomenAre0bjects` a `ExtremeImagery` (§1,
+> §10), y el catálogo se comparó contra producción (§6).
 
 ---
 
@@ -23,7 +27,7 @@ niacinamida, que un retinoide no caiga la misma noche que un ácido.
 | Carpeta local | `C:\Users\zxzxe\OneDrive\Desktop\Main Claude\club-de-piel-web` |
 | Producción | `clubdepiel.store` |
 | Vault de Obsidian | `C:\Users\zxzxe\OneDrive\Desktop\Club de Piel\Organize` |
-| Permisos | La cuenta `WomenAre0bjects` tiene push directo y mergea. Los PR van al repo de Ian, no a un fork. |
+| Permisos | Desde el 15/9 la cuenta de Alex con push directo y merge es `ExtremeImagery`. `WomenAre0bjects` quedó restringida por GitHub y se sacó del repo (§10). Los PR van al repo de Ian, no a un fork. |
 
 **La identidad de los commits no es negociable.** El git local está configurado
 como `iancitoprogramming <129790147+iancitoprogramming@users.noreply.github.com>`
@@ -36,47 +40,53 @@ Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
 
 Vercel sólo deploya commits de un autor con acceso al proyecto. Con otra identidad
 **producción deja de publicarse sin avisar**: pasó con los PR #14 a #21. Los merges
-que hace `WomenAre0bjects` desde `gh pr merge` sí deployan; se verificó en los
-deployments de Production del #26 al #28.
+que hacía `WomenAre0bjects` desde `gh pr merge` sí deployaban; se verificó en los
+deployments de Production del #26 al #28, y del #34 y el #35. Con el repo público
+Vercel no frenó esos merges. **Los merges de `ExtremeImagery` todavía no se
+verificaron:** después del primero, confirmar que el deployment de Production de
+ese commit terminó.
 
 ---
 
 ## 2 · Dónde quedó el trabajo
 
-### Los PR abiertos al 15/9
+### Los PR del 15/9: mergeados
 
-| PR | Rama | Qué | CI |
+| PR | Rama | Qué | Estado |
 |---|---|---|---|
-| **#34** | `arreglos-preview` | Los tres problemas de la preview del 15/9: puertas bajo las barras, catálogo sin productos en la primera pantalla y la franja de redes en desktop | verde |
-| **#35** | `home-editorial` | La home con el lenguaje de Beauty of Joseon (§4) | ver abajo |
+| **#34** | `arreglos-preview` | Los tres problemas de la preview del 15/9: puertas bajo las barras, catálogo sin productos en la primera pantalla y la franja de redes en desktop | En `main` (`d588c58`) y en Production |
+| **#35** | `home-editorial` | La home con el lenguaje de Beauty of Joseon (§4) | En `main` (`0a8e802`) y en Production |
 
-**Orden: primero el #34, después el #35.** El #35 salió de la rama del #34 y
-contiene sus commits. Los arreglos de la home del #34 quedan sin efecto con el #35
-—el fondo de monte desaparece—, pero el del catálogo y el test de reservas sí
-importan hasta que se mergee.
+**Los dos quedaron invisibles en GitHub** porque los abrió `WomenAre0bjects`, que
+GitHub restringió (§10): la página del PR da 404 aunque se entre como dueño del
+repo. El registro está en los commits de merge y en los deployments de Vercel.
 
-**El #35 falló en CI y quedó arreglado en el último push.** `tsc` no encontraba los
-tipos de los imports `*.jpg` de `src/assets/home/`: Next los declara en
-`next-env.d.ts`, que está en `.gitignore` y sólo existe después de correr `next
-dev` o `next build`. En CI `npm test` corre antes del build. El arreglo es
-`src/types/imagenes.d.ts`, con la misma referencia. **Antes de mergear, confirmar
-que `verificar` quedó en verde.**
+**CI y el #35.** El primer run del #35 falló: `tsc` no encontraba los tipos de los
+imports `*.jpg` de `src/assets/home/`. Next los declara en `next-env.d.ts`, que
+está en `.gitignore` y sólo existe después de correr `next dev` o `next build`, y
+en CI `npm test` corre antes del build. El arreglo es `src/types/imagenes.d.ts`,
+con la misma referencia. **El último commit del #35 (`5e4b12c`) no tuvo run** por
+la restricción de la cuenta, y los merges del #34 y el #35 tampoco. Se corrió el
+job de CI a mano sobre `5e4b12c` —clon limpio, sin `next-env.d.ts`, Node 22— y
+pasaron los cuatro pasos. `main` tiene el mismo árbol que `5e4b12c`. El primer
+run oficial sobre ese contenido es el del PR que trae esta actualización del
+handoff.
 
 ### `main` al 15/9
 
-Último merge: **#33** (`b8398cf`).
+Último merge: **#35** (`0a8e802`).
 
 | | |
 |---|---|
-| Tests en `main` | 182 en 25 archivos |
-| Tests en `home-editorial` | 184 en 25 archivos |
+| Tests en `main` | 184 en 25 archivos |
 | `npm run build` | 175 páginas |
 | Rutinas sin conflicto | 344 de 360 · 0 con "separar" — medido el 12/9 |
-| Links que monetizan | 81 de 81, todos de `maurobilat` — medido el 12/9 |
+| Links que monetizan | 81 de 81, todos de `maurobilat` — medido otra vez el 15/9 |
 | Activos con fuente verificada | 73 de 79 — medido el 12/9 |
 
-Las tres últimas no se volvieron a medir: desde el 12/9 no se tocó el catálogo y
-el único cambio de motor fueron las alternativas (#27), que no cambian la rutina.
+Las rutinas y los activos no se volvieron a medir: desde el 12/9 no se tocó el
+catálogo y el único cambio de motor fueron las alternativas (#27), que no cambian
+la rutina.
 
 ---
 
@@ -174,8 +184,10 @@ secundaria.
 
 ## 6 · Lo próximo, priorizado
 
-1. **Mergear el #34 y el #35**, en ese orden, con `verificar` en verde. Después
-   confirmar en GitHub que el deployment de Production de ese commit terminó.
+1. **Confirmar que CI y Vercel andan con `ExtremeImagery`.** En su primer PR o
+   merge tiene que aparecer `verificar`, y su merge tiene que terminar en un
+   deployment de Production (§1). Si `verificar` no aparece, la cuenta nueva tiene
+   el mismo problema que la anterior (§10).
 2. **Llevar el resto del sitio al lenguaje de la home.** Catálogo, quiz, resultado,
    fichas, kits y combinaciones:
    - tarjetas rectas;
@@ -190,10 +202,13 @@ secundaria.
    (1000×1500) y las actuales son 1200×630.
 4. **Frescura del catálogo en producción.** Producción lee el catálogo de Supabase,
    que queda al día sólo cuando alguien corre `npm run sync`.
-   - Hay correcciones de `apto_sensible` del 12/9 que pueden no estar en producción.
-   - El 15/9 se le pasó al usuario un prompt para que Ian compare, sincronice y
-     verifique desde su máquina.
-   - No se sabe si ya lo corrió.
+   - Ian no corrió el `sync` el 15/9: en los logs de Supabase de ese día sólo hay
+     lecturas de `productos`.
+   - **No hacía falta.** Se comparó el catálogo de `main` contra la tabla, sólo
+     leyendo: los 78 activos coinciden en los 29 campos que sube el `sync`, y el
+     inactivo (Mela B3 "Opcion 2") está inactivo en los dos lados. Las correcciones
+     de `apto_sensible` del 12/9 ya están en producción.
+   - Vuelve a hacer falta con el próximo cambio de catálogo.
 5. **Los 6 productos sin verificar** (§7), empezando por el ISDIN Ureadin Fusion.
 6. **Fotos propias de ingredientes.** Una sección como la de ingredientes de Beauty
    of Joseon (centella, ginseng o arroz recortados) no se puede hacer con bancos
@@ -324,6 +339,15 @@ falla en CI: pasó con los `*.jpg` del #35 (§2).
 
 **Dos colores de texto en la misma lista de clases** (`text-tinta/70 text-tinta`)
 no se resuelven por orden. Para eso existe `ETIQUETA_BASE` en `estilo.ts`.
+
+**Una cuenta restringida por GitHub no avisa en el repo.** Le pasó a
+`WomenAre0bjects` el 15/9, alrededor de las 14:35. Síntomas: su perfil da 404
+(también en la API), los PR que abrió y los runs que disparó desaparecen de las
+listas aunque existan, y lo que empuja deja de disparar Actions sin error. La
+configuración de Actions del repo estaba bien. Para distinguirlo de un problema
+del repo, consultar `GET /repos/…/commits/{sha}/check-runs`: ahí siguen
+apareciendo los runs ocultos. Se resolvió sacando esa cuenta y sumando
+`ExtremeImagery`.
 
 **Un pseudo-elemento con `z-index: -1` dentro de un bloque con `isolation:
 isolate`** se pinta encima del contenido de los bloques anteriores. Lavó dos
