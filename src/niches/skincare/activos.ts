@@ -1694,10 +1694,19 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // LRP Hyalu B5 Suractivated [INCI] — reemplazó al anterior. Verificado: misma
   // lista, incluidos alcohol denat y fragancia.
   MLA59802317: ["hialuronico", "panthenol", "madecassosido", "adenosina", "tocoferol", "alcohol_denat", "fragancia"],
-  // Neutrogena Hydro Boost sérum concentrado [INCI] — verificado el 12/9/2026.
-  // Lista corta: hialuronato de sodio y pantenol sobre glicerina y gelificantes
-  // (carragenano, agar, xantana). Sin fragancia, sin alcohol y sin ácidos.
-  MLA22655637: ["hialuronico", "panthenol", "fragancia"],
+  // Neutrogena Hydro Boost sérum concentrado [INCI] — verificado el 12/9/2026, y
+  // otra vez el 15/9/2026 contra la ficha oficial de Neutrogena Uruguay (Kenvue),
+  // que publica la fórmula latinoamericana: agua, glicerina, butilenglicol,
+  // pantenol, fenoxietanol, clorfenesina, crospolímero de acrilatos, hialuronato
+  // de sodio, EDTA disódico, hidróxido de sodio, carragenano, agar, cloruro de
+  // potasio, xantana y CI 77007. Sin fragancia, sin alcohol y sin ácidos, y la
+  // marca lo declara "sin perfume".
+  //
+  // HASTA EL 15/9 ESTE MAPEO DECÍA `fragancia`, contra este mismo comentario y
+  // contra el INCI, y eso lo vetaba para piel sensible sin motivo de fórmula. Es
+  // la trampa de la región al revés: en la línea Hydro Boost, la que lleva
+  // perfume en Latinoamérica es la crema en gel (MLA28531465), no el sérum.
+  MLA22655637: ["hialuronico", "panthenol"],
   // L'Oréal Revitalift Hialurónico 1,5% [INCI] — verificado el 12/9/2026. Catorce
   // ingredientes: hialuronato de sodio, ascorbil glucósido (derivado de vitamina
   // C) y un dipéptido. Sin fragancia y sin alcohol denat.

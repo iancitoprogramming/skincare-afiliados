@@ -458,16 +458,24 @@ frenan. Para alguien trabajando manchas, el protector con color es parte del tra
 
 **En el catálogo:** Anthelios UVMUNE 400 con color · Anthelios Oil Control · Eucerin Tono medio.
 
-### 8.4 · La corrección que hay que hacer: **no hay ningún protector mineral**
+### 8.4 · Protector mineral: **hay uno, y es apto para piel sensible**
 
-Varios protectores del catálogo listan **CI 77891 / dióxido de titanio**. Es tentador contarlos como
-minerales. **No lo son.** En esas fórmulas el dióxido de titanio aparece junto a los óxidos de hierro
-(CI 77491/77492/77499) y después de los filtros orgánicos: está como **pigmento**, para dar el tono,
-no como filtro UV.
+Hasta el 9/9/2026 esta sección decía que no había ningún protector mineral, y con 72 productos
+cargados era cierto. Ese día entró el **Haruharu Wonder Black Rice Pure Mineral SPF50**
+(`MLA2068351806`): **óxido de zinc como filtro**, con el INCI verificado el 11/9/2026 (ver su entrada
+en `activos.ts`). Está marcado apto para piel sensible y es el que cubre ese hueco.
+
+Lo que sigue valiendo de la advertencia original: varios protectores del catálogo listan **CI 77891 /
+dióxido de titanio** y **no son minerales**. En esas fórmulas el dióxido de titanio aparece junto a los
+óxidos de hierro (CI 77491/77492/77499) y después de los filtros orgánicos: está como **pigmento**, para
+dar el tono, no como filtro UV.
 
 > **Un protector con color no es un protector mineral.** Confundirlos sería exactamente el tipo de
-> error que este documento existe para evitar — y el bloqueante B1 de `ISSUES.md` sigue abierto:
-> con 72 productos cargados, **piel sensible sigue sin un protector mineral**.
+> error que este documento existe para evitar.
+
+Hay además una fórmula **híbrida**: el **La Roche-Posay Anthelios FPS50 Ultra Fluido con color**
+(`MLA16048263`) trae dióxido de titanio listado entre los filtros, junto a filtros orgánicos. Filtra
+también con un mineral, pero lleva alcohol denat y octocrileno: no es la opción para piel reactiva.
 
 ---
 

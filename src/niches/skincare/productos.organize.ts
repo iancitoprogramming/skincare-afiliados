@@ -1242,7 +1242,10 @@ export const productosOrganize: Producto[] = [
   {
     // Acido Hialuronico
     // sérum de hialurónico
-    // no va a → sensible: Fragancia
+    // Apto para piel sensible desde el 15/9/2026. El vault decía "no va a →
+    // sensible: Fragancia", pero el INCI latinoamericano oficial no trae
+    // fragancia y la marca lo declara sin perfume: ver su entrada en activos.ts.
+    // El vault sigue diciendo lo anterior, así que hay que corregirlo allá.
     id: "914fa2b9-679c-50cb-a01e-e7713bfcbba3",
     ml_id: "MLA22655637",
     rating: 4.8,
@@ -1253,10 +1256,10 @@ export const productosOrganize: Producto[] = [
     categoria: "serum_secundario",
     paso: 0,
     momento: "ambos",
-    tipos_piel: ["grasa","mixta","normal","seca"],
+    tipos_piel: ["grasa","mixta","normal","seca","sensible"],
     preocupaciones: ["deshidratacion"],
     origen: "europeo",
-    apto_sensible: false,
+    apto_sensible: true,
     rango_precio: 1, // provisional, por marca
     link_afiliado: "https://meli.la/17ssJ5t",
     imagen_url: "https://http2.mlstatic.com/D_Q_NP_2X_703489-MLU72748302713_112023-V.webp",

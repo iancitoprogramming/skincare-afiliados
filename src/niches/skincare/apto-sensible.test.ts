@@ -149,4 +149,16 @@ describe("apto_sensible contra el mapa de activos", () => {
     expect(vetantesDe("MLAU3481553718")).toEqual([]);
     expect(tirtir!.apto_sensible).toBe(true);
   });
+
+  // El sérum Hydro Boost queda clavado del lado apto. Hasta el 15/9/2026 el mapeo
+  // le declaraba `fragancia`, que su INCI latinoamericano no trae: ni la ficha
+  // oficial de Neutrogena Uruguay la lista, y la marca lo declara sin perfume.
+  // Con eso quedaba vetado para piel sensible sin motivo de fórmula. Si alguien
+  // lo vuelve a vetar, que sea por un INCI nuevo y cambiando este test.
+  it("el sérum Hydro Boost sigue apto: su INCI latinoamericano no trae fragancia", () => {
+    const serum = activos.find((p) => p.ml_id === "MLA22655637");
+    expect(serum, "el sérum Hydro Boost salió del catálogo activo").toBeDefined();
+    expect(vetantesDe("MLA22655637")).toEqual([]);
+    expect(serum!.apto_sensible).toBe(true);
+  });
 });
