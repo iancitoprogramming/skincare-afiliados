@@ -1,8 +1,8 @@
 # Handoff · Club de Piel
 
-> Reescrito el 2026-09-12. Todo lo que dice acá está verificado contra el repo ese
-> día, no de memoria. Reemplaza al handoff del 6/9, que quedó viejo en casi todo:
-> decía 56 tests, 69 páginas y 46 links pendientes.
+> Reescrito el 2026-09-15, al cerrar una conversación larga (12/9 a 15/9). Lo que
+> dice acá está verificado contra el repo y GitHub ese día, salvo donde se aclara
+> que no se volvió a medir. Reemplaza al handoff del 12/9.
 
 ---
 
@@ -23,269 +23,346 @@ niacinamida, que un retinoide no caiga la misma noche que un ácido.
 | Carpeta local | `C:\Users\zxzxe\OneDrive\Desktop\Main Claude\club-de-piel-web` |
 | Producción | `clubdepiel.store` |
 | Vault de Obsidian | `C:\Users\zxzxe\OneDrive\Desktop\Club de Piel\Organize` |
-| Permisos | La cuenta `WomenAre0bjects` tiene push directo. Los PR van al repo de Ian, no a un fork. |
+| Permisos | La cuenta `WomenAre0bjects` tiene push directo y mergea. Los PR van al repo de Ian, no a un fork. |
 
----
-
-## 2 · Estado verificado el 12/9/2026
-
-`main`, ya con la auditoría del PR #14 mergeada:
+**La identidad de los commits no es negociable.** El git local está configurado
+como `iancitoprogramming <129790147+iancitoprogramming@users.noreply.github.com>`
+y cada commit termina con:
 
 ```
-tsc --noEmit        exit 0
-npm test            132/132 en 15 archivos
-npm run build       exit 0 · 175 páginas
-npm run auditar     344/360 rutinas sin conflicto (95,6%) · 0 con "separar"
-npm run cobertura   346 match · 2 sin preocupación · 72 fuera de banda
-                    0 comodín · 0 no-apto-sensible · "catálogo redondo"
-npm run cuentas     81 ítems · los 81 declaran maurobilat · exit 0
-activos             73 de 79 entradas con fuente verificada
+Co-authored-by: therexone1 <therexone1@gmail.com>
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
 ```
 
-**Antes del #14, `main` medía 346/360 y 38 de 84 activos verificados.** Las dos
-rutinas que bajan no son una regresión: aparecen porque la auditoría declaró
-activos que antes estaban sin declarar —el conflicto ya estaba en el frasco, lo
-que faltaba era que el motor lo viera—. Y el total de entradas baja de 84 a 79
-porque cinco eran huérfanas, `ml_id` que ya no están en `productos.ts`; no se
-quitó ningún activo.
-
-**Ojo al medir:** cada número de acá se mide sobre el catálogo completo, que es
-`productos.ts` **más** `productos.organize.ts`. `productos.ts` solo tiene 34 de
-los 81 ítems, así que contar grepeando ese archivo da la mitad de la respuesta.
+Vercel sólo deploya commits de un autor con acceso al proyecto. Con otra identidad
+**producción deja de publicarse sin avisar**: pasó con los PR #14 a #21. Los merges
+que hace `WomenAre0bjects` desde `gh pr merge` sí deployan; se verificó en los
+deployments de Production del #26 al #28.
 
 ---
 
-## 3 · Qué cambió desde el handoff anterior
+## 2 · Dónde quedó el trabajo
 
-Fueron ocho PR mergeados (#5 a #13). En orden de impacto:
+### Los PR abiertos al 15/9
 
-**El scraping salió (#5).** `cuentas.ts` resolvía la cuenta de cada link siguiendo
-el redirect de `meli.la` con un User-Agent falseado, y eso cae bajo la obligación
-(e) del Programa de Afiliados. Ahora la cuenta **se declara** al cargar el link y
-el script sólo audita. `sin-scraping.test.ts` impide que vuelva: distingue por
-host, así que `api.mercadolibre.com` con OAuth está permitida y las páginas no.
+| PR | Rama | Qué | CI |
+|---|---|---|---|
+| **#34** | `arreglos-preview` | Los tres problemas de la preview del 15/9: puertas bajo las barras, catálogo sin productos en la primera pantalla y la franja de redes en desktop | verde |
+| **#35** | `home-editorial` | La home con el lenguaje de Beauty of Joseon (§4) | ver abajo |
 
-**El presupuesto cede ante la piel y el objetivo (#9).** Era filtro duro y
-`apto_sensible` se relajaba; ahora es al revés. Las bandas se mezclan dentro de
-una rutina. Los pasos marcados "no apto para piel sensible" pasaron de 16 a 0.
+**Orden: primero el #34, después el #35.** El #35 salió de la rama del #34 y
+contiene sus commits. Los arreglos de la home del #34 quedan sin efecto con el #35
+—el fondo de monte desaparece—, pero el del catálogo y el test de reservas sí
+importan hasta que se mergee.
 
-**La popularidad dejó de clasificar y de ordenar (#11, #12).** Se retiraron las
-etiquetas "muy probado / probado / poca prueba" —que salían sólo de la cantidad de
-opiniones en ML— y el desempate por respaldo. El criterio quedó
-`prioridad → calidad de fórmula → banda → id`. El rating y las ventas siguen a la
-vista como dato atribuido a Mercado Libre.
+**El #35 falló en CI y quedó arreglado en el último push.** `tsc` no encontraba los
+tipos de los imports `*.jpg` de `src/assets/home/`: Next los declara en
+`next-env.d.ts`, que está en `.gitignore` y sólo existe después de correr `next
+dev` o `next build`. En CI `npm test` corre antes del build. El arreglo es
+`src/types/imagenes.d.ts`, con la misma referencia. **Antes de mergear, confirmar
+que `verificar` quedó en verde.**
 
-**Hay CI (#6, #7).** No había nada corriendo `tsc`: un error de tipos vivió en
-`main` sin que nada lo frenara. Ahora `npm test` es `tsc --noEmit && vitest run` y
-un workflow corre instalar, tipos, tests, build, links y auditoría de cuentas en
-cada push a main y cada PR.
+### `main` al 15/9
 
-**La sincronización con Supabase estaba rota (#10).** Diez campos del catálogo no
-tenían columna, así que el upsert fallaba entero. Ver §5.
+Último merge: **#33** (`b8398cf`).
 
-**El limpiador que faltaba ya estaba en el catálogo (#8).** `npm run huecos` pedía
-comprar uno; el problema era que `candidatosDe` devuelve el nivel `match` en
-exclusiva, y los tres limpiadores coreanos etiquetados para acné traían ácidos.
-Etiquetar dos limpiadores limpios que ya estaban cerró el hueco sin comprar nada.
+| | |
+|---|---|
+| Tests en `main` | 182 en 25 archivos |
+| Tests en `home-editorial` | 184 en 25 archivos |
+| `npm run build` | 175 páginas |
+| Rutinas sin conflicto | 344 de 360 · 0 con "separar" — medido el 12/9 |
+| Links que monetizan | 81 de 81, todos de `maurobilat` — medido el 12/9 |
+| Activos con fuente verificada | 73 de 79 — medido el 12/9 |
 
-**Se auditó el catálogo (#13, #14).** Ver §4.
-
-**Dos productos con tea tree decían ser aptos para piel sensible (#16).** Este
-handoff anotaba uno —el Skin1004 Tea-trica, que ya estaba fuera del motor— y
-eran tres. El grave era el **COSRX Low pH Good Morning**: estaba
-`apto_sensible: true` sin `en_rutina: false`, así que el motor **sí** se lo
-servía a quien declaraba piel sensible. El comentario de su propio mapeo de
-activos ya decía que el tea tree "lo saca de las rutinas de piel sensible": la
-prosa y el dato decían cosas opuestas y ganaba el dato. El candado es
-`apto-sensible.test.ts`. El tercero, el TIRTIR Milk Skin Toner, quedó como
-excepción escrita: declara `menta` por un extracto de hoja, no por un aceite
-esencial, y si son el mismo activo es una decisión de criterio.
-
-**El motor puede bajar de nivel de match, pero sólo a veces (#17).** Era "la
-causa de fondo" que este handoff pedía, y el arreglo directo no se podía hacer:
-bajar de nivel ante cualquier "separar" contradice el test *"NO degrada la
-calidad del match para esquivar un conflicto"*. Ver §6.
+Las tres últimas no se volvieron a medir: desde el 12/9 no se tocó el catálogo y
+el único cambio de motor fueron las alternativas (#27), que no cambian la rutina.
 
 ---
 
-## 4 · La auditoría de productos
+## 3 · Qué se hizo del 12/9 al 15/9
+
+**Catálogo y criterio (#14 a #21).** Auditoría de productos, tea tree y fragancia
+vetan `apto_sensible`, la cascada de candidatos, los aceites esenciales que el
+diccionario no nombraba. El detalle sigue en `06-ESTADO.md` y en
+`AUDITORIA-PRODUCTOS.md`.
+
+**Resultado y home (#23 a #28).** La puerta del catálogo decía "Armar mi rutina";
+cada paso dice primero para qué sirve; los pasos de mañana y noche no se repiten
+enteros; "Ya tengo uno"; hasta dos alternativas por paso chequeadas contra el
+resto; "cómo funciona" y cinco preguntas en la home.
+
+**Lo que hicieron otros en paralelo.** El **#29** —de otra sesión— trajo la home
+del monte, `font-etiqueta`, el resultado plegado con `Desplegable` y lo que se tomó
+del banco visual (chips del objetivo, `porQue` por pregunta, cruce de la ficha al
+quiz). El **#31** trajo Resend: el mail que sale cuando alguien deja su correo.
+
+**Sistema visual (#30, #32, #33).**
+- **#30 · Contraste por capa.** Todos los colores pasaban sobre porcelana, pero el
+  texto vive sobre tarjetas y chips. Había nueve lugares debajo de AA.
+- **#32 · Tamaño de letra.** Piso de 12 px, instrucciones a 14, campos a 16.
+- **#33 · Tinta en tres niveles:** entero, `/80` y `/70`.
+
+**Dirección visual nueva (#34, #35).** Ver §4.
+
+---
+
+## 4 · La dirección visual: Beauty of Joseon
+
+El 15/9 el usuario pidió cambiar el fondo de montañas, que era provisorio, con
+**el sitio de Beauty of Joseon como referencia**, y fijó la vara: *tiene que verse
+profesional; la página todavía necesita seriedad*. Aprobó un boceto y pidió cambiar
+una sola foto.
+
+**Qué se tomó de Beauty of Joseon** (mirado en su sitio global y en el coreano):
+fondo marfil, títulos en serif, fotos de texturas con luz pareja, etiquetas en
+mayúscula chica con aire, botones rectos y líneas finas. Está escrito en
+`02-MARCA.md` § *La referencia visual*.
+
+**Lo que decidió el usuario:**
+- **Tipografía: Newsreader** para títulos, comparada contra Instrument Serif.
+  Beauty of Joseon usa Proxima Sera, que es paga.
+- **La foto de la franja** no podía ser una hoja verde recortada.
+- **Descargar las imágenes**, después de ver archivo, fuente, tamaño y licencia.
+
+**Lo que se decidió en el camino y conviene sostener:**
+- **Fotos sólo con licencia verificada en la página de cada una.** En Unsplash eso
+  es "Free Photo" con la Unsplash License, **no Unsplash+**, que es paga. El
+  registro está en `src/niches/skincare/fotos-home.ts`, y se acreditan al pie.
+- **Sin iconografía coreana** (arte Joseon, hanok): el catálogo es 48 europeo, 19
+  coreano y 11 nacional, y esa estética lo haría parecer sólo coreano. Hay arte
+  Joseon en dominio público (Cleveland Museum of Art, CC0) si algún día se quiere
+  un acento.
+- **Sin fotos con marcas a la vista ni con gente.**
+
+**Qué cambió en código con el #35:**
+- **Paleta:** `porcelana` pasa a `#fbfaf7` (marfil), `niebla` a `#e0d8cd`, y entra
+  `arena` (`#f3ede6`), donde terracota **no** pasa AA.
+- **Tipografía:** Newsreader en `font-display`, Instrument Sans en `font-body` y
+  `font-etiqueta`; Bricolage sale.
+- **Piezas compartidas:** `src/components/estilo.ts` (`ETIQUETA`, `BOTON_LLENO`,
+  `BOTON_LINEA`).
+- **Lo que sale:** `FondoMonte`, `home.module.css`, `foto.ts` y `monte.webp`.
+
+**Lo que NO cambió todavía:** catálogo, quiz, resultado, fichas, kits y
+combinaciones heredaron la serif, el marfil y los bordes cálidos, pero siguen con
+tarjetas redondeadas, el tinte verde `gel`, el botón de compra terracota y el
+formulario de mail redondeado. Es el próximo paso (§6).
+
+---
+
+## 5 · El sistema visual y sus candados
+
+Las reglas viven en `docs/proyecto/02-MARCA.md` y en el comentario de
+`src/niches/skincare/theme.css`. Los tests las hacen cumplir:
+
+| Test | Qué frena |
+|---|---|
+| `contraste.test.ts` | Calcula la matriz desde `PALETA` y escanea las clases de `src/`: tinta sólo en `/80` o `/70`; texto de color sin opacidad; `bg-gel` hasta `/35`; texto de color sobre superficie teñida; terracota sobre `arena`. Por debajo del mínimo sólo con `disabled:` |
+| `tipografia.test.ts` | Ningún `text-[…]` con tamaño; nada debajo de 12 px en `theme.css`; campos de formulario desde `text-base` |
+| `paleta.test.ts` | `paleta.ts` y `theme.css` declaran los mismos colores |
+| `copy-home.test.ts`, `copy-pasos.test.ts`, `copy-quiz.test.ts`, `bienvenida.test.ts` | El copy pasa por `PROHIBIDAS` de `claims.ts` |
+
+**El escaneo no ve un fondo puesto en el padre y un texto en el hijo.** Por eso
+cada cambio visual se mide también renderizado (§8).
+
+**La regla por rol que ningún test ve:** etiqueta, dato o nota al pie van desde 12
+px; una instrucción que la persona tiene que seguir va desde 14 px aunque sea
+secundaria.
+
+---
+
+## 6 · Lo próximo, priorizado
+
+1. **Mergear el #34 y el #35**, en ese orden, con `verificar` en verde. Después
+   confirmar en GitHub que el deployment de Production de ese commit terminó.
+2. **Llevar el resto del sitio al lenguaje de la home.** Catálogo, quiz, resultado,
+   fichas, kits y combinaciones:
+   - tarjetas rectas;
+   - `arena` o marfil en vez del tinte verde `gel`;
+   - `Shell` con el header de la home;
+   - el formulario de mail recto.
+
+   **El color del botón de compra es decisión del usuario:** terracota o tinta.
+   Proponerlo, no hacerlo.
+3. **La imagen para compartir** (`opengraph-image.tsx` y
+   `api/og/producto/[slug]`) sigue con el diseño anterior. Pinterest recomienda 2:3
+   (1000×1500) y las actuales son 1200×630.
+4. **Frescura del catálogo en producción.** Producción lee el catálogo de Supabase,
+   que queda al día sólo cuando alguien corre `npm run sync`.
+   - Hay correcciones de `apto_sensible` del 12/9 que pueden no estar en producción.
+   - El 15/9 se le pasó al usuario un prompt para que Ian compare, sincronice y
+     verifique desde su máquina.
+   - No se sabe si ya lo corrió.
+5. **Los 6 productos sin verificar** (§7), empezando por el ISDIN Ureadin Fusion.
+6. **Fotos propias de ingredientes.** Una sección como la de ingredientes de Beauty
+   of Joseon (centella, ginseng o arroz recortados) no se puede hacer con bancos
+   libres: no hay con esa calidad.
+7. **Pendientes de producto:**
+   - las preguntas frecuentes reales, cuando haya respuestas de clientas;
+   - prueba social y carrusel;
+   - el copy "guardá tu rutina" de la captura de la home, que es la etiqueta del
+     quiz.
+8. **Catálogo:**
+   - las dos compras de `docs/COMPRAR.md`;
+   - 9 productos atados a un solo vendedor (`docs/listados-atados.md`);
+   - confirmar con el frasco el alcanfor del Beauty of Joseon;
+   - `INGREDIENTES.md` §8.4 todavía dice que no hay protector mineral, y hay.
+
+---
+
+## 7 · La auditoría de productos: las 6 que faltan
 
 `docs/AUDITORIA-PRODUCTOS.md` es el registro. Cada entrada del mapa de activos
-lleva un marcador —`[INCI]`, `[vault]` o `[pendiente]`— y `fuente-activos.test.ts`
-falla si a alguna le falta.
-
-**Por qué existe:** una lista de activos vacía y una sin verificar se ven idénticas
-en el código y son opuestas. `Cleanex Free Gel` tenía la lista vacía y el
-comentario "no verificado"; el motor lo trataba como limpio en 36 rutinas y el
-INCI decía que trae fragancia.
-
-**Lo más grave que encontró:** la Dermaglós Crema de Día FPS30 trae palmitato de
-retinilo y fragancia, y el catálogo la usaba como paso de protector solar. Salió
-del motor con `en_rutina: false`.
-
-**Confirmó cinco de las seis trampas** de `INGREDIENTES.md` §10.3 contra el INCI:
-Mela B3, Pure Vitamin C12, Eximia Hyalu-B, Eximia Hyalu-N y el sérum de Garnier.
-
-### Las 6 que faltan, y por qué
-
-Ninguna se puede cerrar a distancia. Necesitan el envase en la mano o migrar la
-entrada a una ficha `/p/`:
+lleva `[INCI]`, `[vault]` o `[pendiente]`, y `fuente-activos.test.ts` falla si a
+alguna le falta. Ninguna de estas se puede cerrar a distancia:
 
 | Producto | Qué falta |
 |---|---|
-| LRP Anthelios Oil Control | El `ml_id` es `MLAU` y la API responde 403. El INCI sin color trae `Parfum` y `Zinc PCA` que no están mapeados, y no trae los óxidos de hierro que sí lo están. |
-| ISDIN Ureadin Fusion | **El más importante.** El mapeo declara ácido láctico y vitamina C pura que no aparecen en la parte visible del INCI. Si no estuvieran, sobra un exfoliante y una vitamina C. |
-| Idraet Espuma Extra Suave | La marca no publica INCI. |
-| Avène Hydrance SPF30 | Variante sin resolver; no es la *Rich*. |
-| Detenage N | Panalab bloquea la lectura automática. |
-| Eucerin DermoPure | Dos versiones; el nombre del catálogo no alcanza para decidir. |
+| ISDIN Ureadin Fusion | **El más importante.** El mapeo declara ácido láctico y vitamina C pura que no aparecen en la parte visible del INCI |
+| LRP Anthelios Oil Control | `ml_id` `MLAU`: la API responde 403. El INCI sin color trae `Parfum` y `Zinc PCA` sin mapear |
+| Idraet Espuma Extra Suave | La marca no publica INCI |
+| Avène Hydrance SPF30 | Variante sin resolver; no es la *Rich* |
+| Detenage N | Panalab bloquea la lectura automática |
+| Eucerin DermoPure | Dos versiones; el nombre del catálogo no alcanza |
 
 ---
 
-## 5 · Lo que bloquea salir a vender
+## 8 · Cómo se verifica un cambio
 
-**1 · El tracking está apagado, y prenderlo tiene tres pasos previos.** Hoy no se
-registra ningún clic. `/api/clicks` responde 204 con Supabase configurado o sin
-configurar, así que desde afuera no se distingue. Verificado que producción sirve
-el catálogo local, no el de Supabase.
+Lo pidió el usuario y es costumbre: **nada se da por terminado sin**
 
-Para prenderlo, en este orden:
+1. `npm test` (que es `tsc --noEmit && vitest run`);
+2. `npm run build` **corrido local**, con el server de desarrollo frenado;
+3. mirar la home en el navegador a 390 px.
 
-1. Aplicar las migraciones `0001` a `0004` en Supabase.
-2. `npm run sync` — necesita un `.env` con `NEXT_PUBLIC_SUPABASE_URL` y
-   `SUPABASE_SERVICE_ROLE_KEY`. El script usa `dotenv`, que lee `.env`, **no**
-   `.env.local`.
-3. Cargar las dos variables públicas en Production **y redeployar**: según la doc
-   de Vercel los cambios de variables sólo aplican a deploys nuevos.
-4. Probar completando el quiz en producción: tiene que aparecer una fila en
-   `sesiones`. Eso no genera ningún clic de afiliado.
+**Los servers de preview.** El panel lee `.claude/launch.json` de la carpeta de
+arriba (`Main Claude/`), no del repo. Hay dos configuraciones:
 
-**Consecuencia a tener presente:** una vez que Supabase sirva el catálogo, cada
-cambio de catálogo necesita `npm run sync` o producción queda atrasada.
+- **`club-de-piel`:** `next dev` en el puerto 3000.
+- **`club-de-piel-produccion`:** `next start -p 3001`; necesita un build antes.
 
-**2 · ~~El check de Vercel falla en todos los PR~~ → resuelto el 12/9.** El motivo
-era el autor de git: *"Git author WomenAre0bjects must have access to the project
-on Vercel to create deployments"*. Desde el PR #22 los commits salen con la
-identidad del dueño del proyecto (`iancitoprogramming`) y un trailer
-`Co-authored-by: therexone1 <therexone1@gmail.com>` con el autor real. **Si un
-commit o un merge sale con otra identidad, producción deja de publicarse sin
-avisar**: pasó con los PR #14 a #21. Detalle en `06-ESTADO.md`.
+`next dev` y `next build` escriben los dos en `.next`: con uno levantado, el otro
+se rompe.
 
-**3 · Pinterest**: falta el perfil business y reclamar el dominio
-(`NEXT_PUBLIC_PINTEREST_VERIFY`), y revisar el firewall de Vercel antes de mandarle
-la URL al crawler.
+**Medir renderizado.** Con `javascript_tool` en el panel, sobre la página
+renderizada:
+- **Contraste:** compone cada capa de fondo en un canvas, en sRGB, igual que el
+  navegador. Las opacidades de Tailwind v4 son `color-mix` con transparente, que da
+  el mismo resultado.
+- **Tamaños:** que ningún texto baje de 12 px.
+- **Desborde:** `scrollWidth` contra el ancho de la pantalla.
+- **Imágenes:** que `naturalWidth` sea mayor que cero.
 
-**Los Medios ya están declarados** en `maurobilat`: sitio, Instagram, TikTok,
-YouTube, Pinterest y X. Facebook se descartó por decisión. Los 81 links salen de la
-cuenta única y `npm run cuentas` sale 0.
+**Capturas.** Las del panel fallan cuando el panel no está a la vista. Lo que
+funciona es Chrome headless por CDP con el `WebSocket` de Node 24 contra el build
+de producción:
+- **Chrome:** `C:\Program Files\Google\Chrome\Application\chrome.exe`, con
+  `--remote-debugging-port` y un `--user-data-dir` propio.
+- **Emulación:** `Emulation.setDeviceMetricsOverride`.
+- **Captura:** `Page.captureScreenshot`.
+- **Los scripts no quedaron en el repo:** vivían en el scratchpad de la sesión.
+
+**Unsplash bloquea el headless** con BotStopper. No se esquiva: se navega con el
+panel, que es un navegador normal, y las miniaturas del CDN
+(`images.unsplash.com`) sí cargan.
+
+**El preview de Vercel pide login** (SSO de Vercel): sólo lo abre quien tiene
+acceso al proyecto de Ian. Para mostrarle algo al usuario, capturas.
+
+**En local, el 404 de `/_vercel/insights/script.js` es esperable:** Vercel
+Analytics sólo existe desplegado.
 
 ---
 
-## 6 · Decisiones tomadas — no reabrir
+## 9 · Decisiones tomadas — no reabrir
 
-Las anteriores están en `docs/proyecto/06-ESTADO.md`. Las de esta línea de trabajo:
+Las anteriores al 12/9 están en `docs/proyecto/06-ESTADO.md`.
 
 | Decisión | Por qué |
 |---|---|
-| **Nada de scraping a ML** | Obligación (e) del Programa. La API oficial con OAuth sí: es acceso autorizado por otro acuerdo |
-| **La popularidad no clasifica ni ordena** | Las ventas no miden la calidad de una fórmula. Un producto excelente y desconocido perdía por desconocido |
-| **El presupuesto cede ante la piel y el objetivo** | Hay pasos que no existen en banda accesible; dar algo que no sirve para ahorrar es peor |
-| **No se agrega un `aceite_esencial` genérico** | Decisión del usuario. Los que tienen id propio —tea tree, romero, menta— sí se declaran |
-| **Un producto entra por su fórmula, no por sus ventas** | Ver `04-CATALOGO.md` § *Antes de cargarlo* |
-| **Sumar sin quitar** | Un activo se quita sólo cuando la fuente oficial demuestra su ausencia |
-| **`tipos_piel` orienta, `apto_sensible` veta** | El primero dice para qué piel está pensado el producto; el segundo es el único que filtra en el motor, y sólo veta por fórmula. Pueden discrepar, y discrepan a propósito en tres productos |
-| **La fragancia veta `apto_sensible`**, enjuague incluido | Decisión del usuario delegada, 12/9. De los 8 productos del motor que declaran fragancia, 6 ya estaban cargados como no aptos: los 2 que faltaban eran la excepción, no otra política. Ver `AUDITORIA-PRODUCTOS.md` |
-| **Un extracto de hoja no es su aceite esencial** | Misma fecha. Un id de aceite esencial es para un ACEITE que el INCI nombre, que es lo que el mapa ya hacía en sus otras tres entradas. El diccionario ya distingue por forma: `hamamelis` tiene carga 0 por ser extracto |
-| **Un conflicto que se arregla con una instrucción no baja la calidad de match** | Decisión del usuario, 12/9. "Retinoide y ácido la misma noche" se resuelve con "noches alternas", y el sitio ya genera el calendario noche por noche. Bajar de nivel le costaría a la persona el producto que vino a buscar — y al medirlo, el calendario le aparece igual, porque el retinoide solo tampoco es de uso diario. Sólo se baja ante un choque sin instrucción posible: hoy es uno, `pila-retinoide`, cuyo "qué hacer" es "quedate con uno" |
+| **Nada de scraping a ML** | Obligación (e) del Programa. La API oficial con OAuth sí |
+| **La popularidad no clasifica ni ordena** | Las ventas no miden la calidad de una fórmula |
+| **El presupuesto cede ante la piel y el objetivo** | Dar algo que no sirve para ahorrar es peor |
+| **`tipos_piel` orienta, `apto_sensible` veta** | Sólo se excluye por fórmula |
+| **La fragancia y los aceites esenciales vetan `apto_sensible`**, enjuague incluido | Decisión del usuario delegada, 12/9 |
+| **No hay `aceite_esencial` genérico** | Se le da id a cada aceite que aparezca en un INCI |
+| **Un conflicto que se arregla con una instrucción no baja la calidad de match** | Decisión del usuario, 12/9 |
+| **El tónico nunca es un paso obligatorio** | Decisión del usuario |
+| **Tres puertas** (quiz, catálogo, kits) | Lo que va debajo no es una puerta: `03-PRODUCTO.md` |
+| **Beauty of Joseon es la referencia visual** | Decisión del usuario, 15/9. Se toma su lenguaje, no sus imágenes ni su marca |
+| **Newsreader en los títulos** | Decisión del usuario, 15/9 |
+| **Fotos sólo con licencia verificada, sin marcas, sin gente, sin iconografía coreana** | 15/9; §4 |
+| **Contraste medido por capa; tinta en tres niveles** | #30 y #33; `02-MARCA.md` |
+| **Piso de 12 px, instrucciones a 14, campos a 16** | #32; `02-MARCA.md` |
 
 ---
 
-## 7 · Trampas conocidas
+## 10 · Trampas conocidas
 
-**Las variantes de una línea son la trampa más frecuente.** Pasó con Avène (*Rich*
-contra *Légère*), Dermaglós (cuatro cremas FPS30, la nuestra era *Ultra Volumen*),
-Eucerin (Tono Medio contra Toque Seco) y Anthelios (con color y sin color).
-Preguntarle a la API oficial qué producto es resuelve la mayoría; cuando no se
-puede, dejarlo pendiente en vez de adivinarlo.
+**Las variantes de una línea son la trampa más frecuente de catálogo.** Avène
+*Rich* contra *Légère*, cuatro Dermaglós FPS30, Eucerin Tono Medio contra Toque
+Seco, Anthelios con y sin color. Cuando la API no resuelve, dejarlo pendiente.
 
 **Las fórmulas cambian por región.** El Neutrogena Hydro Boost no lleva perfume en
-España y sí en Latinoamérica. Usar la lista del mercado equivocado da el resultado
-opuesto.
+España y sí en Latinoamérica.
 
-**Los `ml_id` que empiezan con `MLAU`** son de alcance del vendedor: la API
-responde 403 para todo. Panalab, CosDNA y las páginas de Neutrogena Argentina
-también bloquean la lectura automática.
+**Los `ml_id` `MLAU`** dan 403 en la API. Panalab, CosDNA y Neutrogena Argentina
+bloquean la lectura automática.
 
-**El importador puede borrar los links.** `productos.organize.ts` dice "generado,
-no editar" y dejó de ser cierto. Ya abortó una vez dejando cero links. Hoy tiene
-guarda, pero además **el vault y el catálogo divergieron**: 5 `ml_id` activos no
-existen en los `.md` de Obsidian, así que `npm run importar-organize` aborta a
-propósito.
+**El importador puede borrar los links.** El vault y el catálogo divergieron: 5
+`ml_id` activos no existen en los `.md` de Obsidian y `npm run importar-organize`
+aborta a propósito.
 
-**Vitest no resuelve el alias `@/`.** Sólo funciona para imports de tipo. En
-código de valor hay que usar rutas relativas.
+**Medir el catálogo completo:** `productos.ts` **más** `productos.organize.ts`.
+Grepear sólo el primero da la mitad.
 
-**No correr `npm run build` con el server de dev levantado.** Los dos escriben
-`.next` y aparecen `MODULE_NOT_FOUND` sobre código que está bien.
+**Vitest no resuelve el alias `@/`** en imports de valor. Rutas relativas.
 
-**Detalle de herramienta:** encadenar dos o más heredocs en un solo comando de
-bash falla con un error de sintaxis que no dice nada. Un heredoc por comando.
+**`next-env.d.ts` está en `.gitignore`.** Un tipo que sólo viene de ahí pasa local y
+falla en CI: pasó con los `*.jpg` del #35 (§2).
 
----
+**Dos colores de texto en la misma lista de clases** (`text-tinta/70 text-tinta`)
+no se resuelven por orden. Para eso existe `ETIQUETA_BASE` en `estilo.ts`.
 
-## 8 · Lo próximo, priorizado
+**Un pseudo-elemento con `z-index: -1` dentro de un bloque con `isolation:
+isolate`** se pinta encima del contenido de los bloques anteriores. Lavó dos
+botones de la home del monte (#34).
 
-1. **Prender el tracking** (§5). Es lo único que frena lanzar con medición.
-2. **Leer el envase de los 6 productos** de §4, empezando por el ISDIN.
-3. **Las dos compras de `docs/COMPRAR.md`**, especificadas activo por activo: un
-   hidratante con azelaico —o tranexámico o alfa-arbutina— que destraba 6 de los
-   10 conflictos que quedan, y un sérum activo apto para sensible en banda
-   accesible, donde hoy hay **uno** y está en banda 3.
-4. **9 productos atados a un solo vendedor** (`docs/listados-atados.md`). Necesitan
-   links nuevos generados desde la ficha `/p/`.
-5. **2 vulnerabilidades moderadas** de `vitest`, sólo de desarrollo. El arreglo
-   pide vitest 5, que es un salto mayor.
-6. **UX**: sistema visual, mockups para las redes, carrusel y prueba social.
+**`gh pr view` a veces responde `mergeable: UNKNOWN`** y el panel de la app puede
+mostrar un conflicto viejo. Confirmar con `git merge-tree --write-tree
+origin/main <rama>`.
 
-**Los aceites esenciales que el diccionario no podía nombrar se cerraron el 12/9**,
-de a uno, que es el camino que quedaba una vez descartado el activo genérico (§6).
-Entró `aceite_esencial_manzanilla` por el Round Lab Dokdo, y después salvia,
-artemisa, albahaca y `alcanfor` por el Beauty of Joseon. Los dos a costo cero en
-las rutinas; lo que se movió fue la calidad de fórmula, que es donde tenía que
-moverse. **Pero el problema cambió de forma, no desapareció:** el diccionario
-modela los siete aceites que aparecieron en algún INCI del catálogo, así que el
-producto que entre mañana con un aceite nuevo va a parecerle limpio al motor hasta
-que alguien lea su INCI. Lo que hay ahora es un procedimiento —darle id, declararlo,
-y `apto-sensible.test.ts` avisa solo a quién le cambia el veto— en vez de una
-decisión pendiente.
+**Herramientas:** un heredoc por comando de bash; en Windows, Python imprime mal
+sin `PYTHONIOENCODING=utf-8`; `grep -E` con `\|` en vez de `|` da falsos ceros.
 
 ---
 
-## 9 · Cómo trabaja este usuario
+## 11 · Cómo trabaja este usuario
 
 - **Escribe en español rioplatense** y espera respuestas así.
-- **Pide investigar y corroborar contra las fuentes más rigurosas disponibles,
-  siempre**, incluso lo que él mismo afirma. No responder de memoria sobre hechos
-  verificables. Las recomendaciones llegan a personas que van a actuar sobre ellas.
-- **Corrige de fondo, no de forma.** Cuando dice "la popularidad no mide calidad"
-  está cambiando el criterio de producto, no pidiendo un ajuste. Conviene medir el
-  impacto antes y después, con `auditar`, `huecos` y `cobertura`.
-- **Prefiere que se actúe.** Dice "hacelo" y espera el trabajo hecho y verificado,
-  no un plan. Pero agradece que se le marque un blocker real antes de construir
-  sobre él.
-- **Decide él las cuestiones de producto.** Medir y recomendar, sí; cambiar el
-  criterio por cuenta propia, no.
+- **Pide investigar y corroborar contra las fuentes más rigurosas, siempre**,
+  incluso lo que él afirma. Citar de dónde sale cada cosa.
+- **Prefiere que se actúe:** "mergeá el #N y seguí con X" es el ritmo. Espera el
+  trabajo hecho y verificado, con PR, no un plan.
+- **Decide él las cuestiones de producto y de marca.** Medir y proponer, sí;
+  cambiar el criterio por cuenta propia, no. A veces delega con "decidí vos".
+- **Para cambios visuales grandes, primero un boceto.** El del 15/9 fue un HTML
+  renderizado con el copy real y las fotos enlazadas, sin descargarlas.
+- **Descargar archivos se confirma antes**, indicando archivo, fuente, tamaño y
+  licencia.
+- **La vara visual es "profesional y serio".**
 
 ---
 
-## 10 · Comandos para arrancar
+## 12 · Comandos para arrancar
 
 ```bash
 cd "C:\Users\zxzxe\OneDrive\Desktop\Main Claude\club-de-piel-web"
-git checkout main && git pull
-npm install
+git fetch && git status
+gh pr list --state open
+npm ci
 npm test && npm run build
-npm run auditar
 ```
 
 Herramental de medición:
@@ -298,3 +375,7 @@ npm run cuentas      # todos los links salen de maurobilat · exit 1 si no
 npm run check-links  # los activos monetizan
 npm run frescura     # qué datos están por vencer
 ```
+
+El resto de la documentación está en `docs/proyecto/` (índice en `LEEME.md`):
+`02-MARCA.md` para el sistema visual, `03-PRODUCTO.md` para las puertas y el quiz,
+`06-ESTADO.md` para el estado y las decisiones anteriores.
