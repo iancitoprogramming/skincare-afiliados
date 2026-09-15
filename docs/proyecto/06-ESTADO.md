@@ -16,7 +16,7 @@ números: decía 69 páginas, 56 tests y 46 links pendientes._
 | Productos en catálogo | 79 · 78 activos, más 2 kits de compra única |
 | De esos, en el motor | 57 · los otros 21 están con `en_rutina: false` |
 | Links que monetizan | 81 de 81 · 0 pendientes · todos declaran `maurobilat` |
-| Tests | 182 en verde, en 25 archivos · medido el 13/9 |
+| Tests | 184 en verde, en 26 archivos · medido el 15/9 |
 | Rutinas sin ningún conflicto | 344 de 360 (95,6 %) · 0 con severidad "separar" |
 | Activos con fuente verificada | 73 de 79 entradas |
 | Tiers servibles | 1 y 2 (son los dos que existen) |

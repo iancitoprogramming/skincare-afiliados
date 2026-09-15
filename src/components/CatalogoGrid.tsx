@@ -22,6 +22,8 @@ type Orden = "criterio" | "vendidos" | "precio_asc" | "precio_desc";
 export interface OpcionFiltro {
   valor: string;
   label: string;
+  /** Va en un grupo aparte dentro de su fila: los pasos opcionales de una rutina. */
+  opcional?: boolean;
 }
 
 export function CatalogoGrid({
@@ -39,6 +41,7 @@ export function CatalogoGrid({
   const [paso, setPaso] = useState<string | null>(null);
   const [origen, setOrigen] = useState<string | null>(null);
   const [orden, setOrden] = useState<Orden>("criterio");
+  const [masFiltros, setMasFiltros] = useState(false);
 
   const visibles = useMemo(() => {
     const filtrados = productos.filter(
@@ -87,13 +90,54 @@ export function CatalogoGrid({
     setOrigen(null);
   };
   const hayFiltros = Boolean(piel || paso || origen);
+  // Lo aplicado detrás del botón se nombra en el botón: plegado, un filtro
+  // activo que no se ve es un catálogo que parece tener menos productos.
+  const aplicadosPlegados = [
+    pasos.find((o) => o.valor === paso)?.label,
+    origenes.find((o) => o.valor === origen)?.label,
+  ].filter((l): l is string => Boolean(l));
 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-3">
         <Fila titulo="tipo de piel" opciones={pieles} valor={piel} onChange={setPiel} contar={(v) => contar("piel", v)} />
-        <Fila titulo="paso" opciones={pasos} valor={paso} onChange={setPaso} contar={(v) => contar("paso", v)} />
-        <Fila titulo="origen" opciones={origenes} valor={origen} onChange={setOrigen} contar={(v) => contar("origen", v)} />
+
+        {/* En el celular, tipo de piel queda a la vista y paso y origen se abren
+            con un botón. Con los tres abiertos, a 390×844 el primer producto
+            empezaba en el píxel 811: la primera pantalla era sólo filtros.
+
+            Baymard aconseja promover a la vista el filtro que casi todos
+            necesitan, y acá ese es el tipo de piel, la primera pregunta del
+            quiz. También observa que esconder los filtros en otra pantalla
+            obliga a ir y volver de la lista, así que el resto se abre en el
+            lugar, arriba de la grilla. En pantallas anchas los tres entran sin
+            empujar los productos y van abiertos. */}
+        <button
+          type="button"
+          aria-expanded={masFiltros}
+          aria-controls="mas-filtros"
+          onClick={() => setMasFiltros((v) => !v)}
+          className="inline-flex min-h-11 items-center gap-2 self-start rounded-full border border-niebla bg-porcelana px-4 font-body text-sm text-tinta sm:hidden"
+        >
+          {aplicadosPlegados.length ? `paso y origen · ${aplicadosPlegados.join(" · ")}` : "filtrar por paso y origen"}
+          <span
+            aria-hidden
+            className={`font-etiqueta text-xs text-piedra transition-transform ${masFiltros ? "rotate-180" : ""}`}
+          >
+            ↓
+          </span>
+        </button>
+        <div id="mas-filtros" className={`${masFiltros ? "flex" : "hidden"} flex-col gap-3 sm:flex`}>
+          <Fila
+            titulo="paso"
+            opciones={pasos.filter((o) => !o.opcional)}
+            aparte={{ titulo: "opcionales", opciones: pasos.filter((o) => o.opcional) }}
+            valor={paso}
+            onChange={setPaso}
+            contar={(v) => contar("paso", v)}
+          />
+          <Fila titulo="origen" opciones={origenes} valor={origen} onChange={setOrigen} contar={(v) => contar("origen", v)} />
+        </div>
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3 border-y border-niebla py-3">
@@ -182,51 +226,60 @@ export function CatalogoGrid({
 function Fila({
   titulo,
   opciones,
+  aparte,
   valor,
   onChange,
   contar,
 }: {
   titulo: string;
   opciones: OpcionFiltro[];
+  /** Un segundo grupo de la misma fila, con su propio rótulo. */
+  aparte?: { titulo: string; opciones: OpcionFiltro[] };
   valor: string | null;
   onChange: (v: string | null) => void;
   contar: (valor: string) => number;
 }) {
+  const chip = (o: OpcionFiltro) => {
+    const activo = valor === o.valor;
+    const n = contar(o.valor);
+    return (
+      <button
+        key={o.valor}
+        type="button"
+        aria-pressed={activo}
+        // Un filtro que devuelve cero se muestra igual, apagado: esconderlo
+        // haría que la lista de opciones cambie sola bajo el dedo.
+        //
+        // Apagado queda en 2,1:1, y está bien: WCAG 1.4.3 exime el texto de
+        // un control inactivo. Por eso va con la variante `disabled:` y no
+        // con una condición aparte: el contraste bajo sólo existe mientras
+        // el botón está deshabilitado de verdad. `contraste.test.ts` no deja
+        // pasar un texto por debajo del mínimo si no lleva esa variante.
+        disabled={n === 0 && !activo}
+        onClick={() => onChange(activo ? null : o.valor)}
+        className={`group rounded-full border px-3 py-1.5 font-body text-sm transition-colors ${
+          activo
+            ? "border-terracota bg-terracota text-porcelana"
+            : "border-niebla bg-porcelana text-tinta disabled:text-tinta/35"
+        }`}
+      >
+        {o.label}
+        {/* Porcelana entera: con /70 el número quedaba en 3,07:1 sobre el terracota. */}
+        <span className={activo ? "text-porcelana" : "text-piedra group-disabled:text-tinta/35"}> {n}</span>
+      </button>
+    );
+  };
+
   return (
     <div className="flex flex-col gap-2">
       <p className="font-etiqueta text-xs text-piedra">{titulo}</p>
-      <div className="flex flex-wrap gap-2">
-        {opciones.map((o) => {
-          const activo = valor === o.valor;
-          const n = contar(o.valor);
-          return (
-            <button
-              key={o.valor}
-              type="button"
-              aria-pressed={activo}
-              // Un filtro que devuelve cero se muestra igual, apagado: esconderlo
-              // haría que la lista de opciones cambie sola bajo el dedo.
-              //
-              // Apagado queda en 2,1:1, y está bien: WCAG 1.4.3 exime el texto de
-              // un control inactivo. Por eso va con la variante `disabled:` y no
-              // con una condición aparte: el contraste bajo sólo existe mientras
-              // el botón está deshabilitado de verdad. `contraste.test.ts` no deja
-              // pasar un texto por debajo del mínimo si no lleva esa variante.
-              disabled={n === 0 && !activo}
-              onClick={() => onChange(activo ? null : o.valor)}
-              className={`group rounded-full border px-3 py-1.5 font-body text-sm transition-colors ${
-                activo
-                  ? "border-terracota bg-terracota text-porcelana"
-                  : "border-niebla bg-porcelana text-tinta disabled:text-tinta/35"
-              }`}
-            >
-              {o.label}
-              {/* Porcelana entera: con /70 el número quedaba en 3,07:1 sobre el terracota. */}
-              <span className={activo ? "text-porcelana" : "text-piedra group-disabled:text-tinta/35"}> {n}</span>
-            </button>
-          );
-        })}
-      </div>
+      <div className="flex flex-wrap gap-2">{opciones.map(chip)}</div>
+      {aparte?.opciones.length ? (
+        <>
+          <p className="mt-1 font-etiqueta text-xs text-piedra">{aparte.titulo}</p>
+          <div className="flex flex-wrap gap-2">{aparte.opciones.map(chip)}</div>
+        </>
+      ) : null}
     </div>
   );
 }
