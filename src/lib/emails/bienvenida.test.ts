@@ -5,6 +5,7 @@
 import { describe, expect, it } from "vitest";
 import { bienvenida, bienvenidaAsunto, bienvenidaHtml, bienvenidaTexto } from "./bienvenida";
 import { PROHIBIDAS } from "../../niches/skincare/claims";
+import { PALETA } from "../../niches/skincare/paleta";
 
 const sitio = "https://clubdepiel.store";
 const rutinaUrl = `${sitio}/rutina?p=mixta&o=manchas&b=2&k=tanto&n=1`;
@@ -60,5 +61,22 @@ describe("mail de bienvenida", () => {
     const html = bienvenidaHtml({ sitio: "https://x.test", rutinaUrl: 'https://x.test/rutina?p="<b>' });
     expect(html).not.toContain('?p="<b>');
     expect(html).toContain("&quot;&lt;b&gt;");
+  });
+
+  // Los botones del mail llevan a la rutina o al quiz, no a comprar: van en tinta,
+  // porque el terracota es sólo para comprar. `terracota.test.ts` frena eso en las
+  // clases del sitio, pero este HTML va con estilos inline y ese escaneo no lo ve.
+  it("no usa el terracota, que es sólo para comprar", () => {
+    for (const html of [bienvenidaHtml({ sitio, rutinaUrl }), bienvenidaHtml({ sitio })]) {
+      expect(html.toLowerCase()).not.toContain(PALETA.terracota.toLowerCase());
+    }
+  });
+
+  // Los colores salen de PALETA: copiados a mano, habían quedado con la paleta
+  // anterior al 15/9 sin que nada lo marcara.
+  it("usa el fondo y las líneas de la paleta actual", () => {
+    const html = bienvenidaHtml({ sitio });
+    expect(html).toContain(PALETA.porcelana);
+    expect(html).toContain(PALETA.niebla);
   });
 });

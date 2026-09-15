@@ -1,4 +1,5 @@
 import { copy } from "../../niches/skincare/copy";
+import { PALETA } from "../../niches/skincare/paleta";
 
 // El mail que sale cuando alguien deja su correo. Uno solo para los dos casos:
 // desde la home (sin rutina todavía) y desde el resultado del quiz (con el
@@ -6,19 +7,25 @@ import { copy } from "../../niches/skincare/copy";
 // rutina, revisá tu correo").
 //
 // Todo inline y con tablas: Gmail y Outlook descartan <style> y clases. Los
-// colores son los del tema (theme.css) a mano, porque acá no hay CSS.
+// colores salen de PALETA, la misma de theme.css. Hasta el 15/9 estaban copiados
+// a mano y habían quedado con la paleta anterior.
+//
+// Desde el 15/9 tiene el lenguaje del sitio: fondo marfil, tarjeta recta con una
+// línea fina, título en serif y botón en tinta. El botón no es terracota porque
+// no lleva a comprar, y el terracota es sólo para comprar. La serif del título es
+// Georgia y no Newsreader: un mail no puede contar con que el cliente cargue una
+// fuente web.
 //
 // El texto sale del copy del sitio o dice cosas que el sitio hace. No promete
 // frecuencia de envío: no hay newsletter armado, y "una vez por semana" sería
 // la primera promesa incumplida.
 const TEMA = {
-  porcelana: "#f4f6f3",
+  porcelana: PALETA.porcelana,
   blanco: "#ffffff",
-  tinta: "#1b2430",
-  piedra: "#5a6b85",
-  salvia: "#4a6b57",
-  terracota: "#c2410c",
-  niebla: "#cbd5d0",
+  tinta: PALETA.tinta,
+  piedra: PALETA.piedra,
+  salvia: PALETA.salvia,
+  niebla: PALETA.niebla,
 } as const;
 
 export type Bienvenida = {
@@ -64,11 +71,12 @@ export function bienvenidaTexto({ sitio, rutinaUrl, bajaUrl }: Bienvenida): stri
 
 export function bienvenidaHtml({ sitio, rutinaUrl, bajaUrl }: Bienvenida): string {
   const fuente = "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;";
+  const serif = "font-family:Georgia,'Times New Roman',serif;";
   const boton = (href: string, texto: string) => `
               <table role="presentation" cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                  <td style="background-color:${TEMA.terracota};border-radius:12px;">
-                    <a href="${escapar(href)}" style="display:inline-block;padding:14px 26px;${fuente}font-size:16px;font-weight:600;color:${TEMA.porcelana};text-decoration:none;">${escapar(texto)}</a>
+                  <td style="background-color:${TEMA.tinta};">
+                    <a href="${escapar(href)}" style="display:inline-block;padding:16px 28px;${fuente}font-size:14px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:${TEMA.porcelana};text-decoration:none;">${escapar(texto)}</a>
                   </td>
                 </tr>
               </table>`;
@@ -80,10 +88,10 @@ export function bienvenidaHtml({ sitio, rutinaUrl, bajaUrl }: Bienvenida): strin
               <p style="margin:24px 0 0 0;font-size:15px;color:${TEMA.piedra};">${escapar(copy.ventana)}</p>`
     : `
               <p style="margin:0 0 20px 0;">${escapar(bienvenida.sinRutina)}</p>
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 24px 0;border-left:3px solid ${TEMA.salvia};">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 24px 0;border-left:2px solid ${TEMA.salvia};">
                 <tr>
                   <td style="padding:4px 0 4px 16px;${fuente}font-size:17px;line-height:1.45;color:${TEMA.tinta};">
-                    <strong>${escapar(copy.home.titulo)}</strong><br>
+                    <span style="${serif}font-size:21px;line-height:1.3;">${escapar(copy.home.titulo)}</span><br>
                     <span style="color:${TEMA.piedra};">${escapar(copy.tagline)}</span>
                   </td>
                 </tr>
@@ -104,11 +112,11 @@ export function bienvenidaHtml({ sitio, rutinaUrl, bajaUrl }: Bienvenida): strin
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${TEMA.porcelana};">
     <tr>
       <td align="center" style="padding:32px 16px;">
-        <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;background-color:${TEMA.blanco};border:1px solid ${TEMA.niebla};border-radius:16px;">
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;background-color:${TEMA.blanco};border:1px solid ${TEMA.niebla};">
           <tr>
             <td style="padding:36px 36px 0 36px;${fuente}">
-              <p style="margin:0;font-size:12px;letter-spacing:.04em;color:${TEMA.piedra};">${escapar(copy.marca)}</p>
-              <h1 style="margin:14px 0 0 0;font-size:26px;line-height:1.2;font-weight:600;letter-spacing:-.01em;color:${TEMA.tinta};">${escapar(bienvenida.asunto({ rutinaUrl }))}</h1>
+              <p style="margin:0;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:${TEMA.piedra};">${escapar(copy.marca)}</p>
+              <h1 style="margin:14px 0 0 0;${serif}font-size:28px;line-height:1.2;font-weight:400;color:${TEMA.tinta};">${escapar(bienvenida.asunto({ rutinaUrl }))}</h1>
             </td>
           </tr>
           <tr>
