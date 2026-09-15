@@ -87,6 +87,14 @@
 .tarjeta .copy {
   padding: 0.9rem 0.5rem;
   gap: 0.35rem;
+  /* Sin aislar, a diferencia del resto de los bloques. Con `isolation: isolate`
+     cada tarjeta pinta su velo en su propio contexto, y el de la tarjeta de
+     abajo —que sobresale 3.5rem— quedaba encima del botón de la de arriba: a
+     375×667, con las tarjetas a 9 px entre sí, "Empezar" y "Ver el catálogo" se
+     veían lavados. Sin aislar, los tres velos van al contexto de `.contenido`,
+     detrás de todo el contenido de la presentación y encima de la foto; donde
+     se pisan, se suman. */
+  isolation: auto;
 }
 @media (max-height: 500px) and (orientation: landscape) {
   .presentacion {
