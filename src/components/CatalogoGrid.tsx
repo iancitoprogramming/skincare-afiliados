@@ -6,6 +6,7 @@ import type { Producto } from "@/engine/recomendacion";
 import { slugProducto } from "@/engine/slug";
 import { PruebaSocial } from "@/components/PruebaSocial";
 import { RangoPrecio } from "@/components/RangoPrecio";
+import { ETIQUETA, ETIQUETA_BASE, FOTO_PRODUCTO, MARCO_FOTO } from "@/components/estilo";
 
 // Filtrado en el cliente a propósito: el catálogo son decenas de productos, no
 // miles. Traerlos todos y filtrar en memoria es instantáneo y no cuesta un
@@ -141,26 +142,29 @@ export function CatalogoGrid({
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3 border-y border-niebla py-3">
-        <p className="font-etiqueta text-xs text-piedra">
+        <p className={`${ETIQUETA_BASE} text-tinta/70`}>
           {visibles.length} {visibles.length === 1 ? "producto" : "productos"}
           {hayFiltros ? (
             <button
               type="button"
               onClick={limpiar}
-              className="ml-3 text-terracota underline underline-offset-2"
+              className="ml-3 text-tinta underline underline-offset-2"
             >
               limpiar filtros
             </button>
           ) : null}
         </p>
 
-        <label className="flex items-center gap-2 font-etiqueta text-xs text-piedra">
+        <label className={`flex items-center gap-2 ${ETIQUETA}`}>
           orden
-          {/* 16 px: con menos, Safari en iPhone agranda la página al tocar el selector. */}
+          {/* 16 px: con menos, Safari en iPhone agranda la página al tocar el selector.
+              Minúscula y sin aire entre letras: la etiqueta de al lado va en
+              mayúscula espaciada y el selector no tiene que heredarla. El borde va
+              en tinta/70 por lo mismo que el campo de mail (WCAG 1.4.11). */}
           <select
             value={orden}
             onChange={(e) => setOrden(e.target.value as Orden)}
-            className="rounded-lg border border-niebla bg-porcelana px-2 py-1 font-body text-base text-tinta"
+            className="border border-tinta/70 bg-porcelana px-2 py-1 font-body text-base normal-case tracking-normal text-tinta"
           >
             <option value="criterio">nuestro criterio</option>
             <option value="vendidos">más vendidos en Mercado Libre</option>
@@ -171,46 +175,45 @@ export function CatalogoGrid({
       </div>
 
       {visibles.length === 0 ? (
-        <div className="rounded-2xl border border-niebla bg-gel/25 p-6 text-center">
+        <div className="bg-arena p-6 text-center">
           <p className="font-body text-tinta">
             No tenemos nada con esa combinación todavía.
           </p>
           <button
             type="button"
             onClick={limpiar}
-            className="mt-3 font-body font-medium text-terracota"
+            className="mt-3 inline-flex min-h-11 items-center font-body font-medium text-tinta underline underline-offset-4"
           >
             Ver todo el catálogo
           </button>
         </div>
       ) : (
-        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        <ul className="grid grid-cols-2 gap-x-3 gap-y-8 sm:grid-cols-3 sm:gap-x-5 lg:grid-cols-4 xl:grid-cols-5">
           {visibles.map((p) => (
             <li key={p.id}>
-              <Link
-                href={`/producto/${slugProducto(p)}`}
-                className="flex h-full flex-col gap-2 rounded-2xl border border-niebla bg-gel/20 p-3 transition-transform active:scale-[0.99]"
-              >
+              {/* Sin tarjeta: la foto sobre arena ya marca dónde empieza cada
+                  producto, como en la grilla de Beauty of Joseon. */}
+              <Link href={`/producto/${slugProducto(p)}`} className="flex h-full flex-col">
                 {p.imagen_url ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={p.imagen_url}
-                    alt={`${p.marca ?? ""} ${p.nombre}`.trim()}
-                    loading="lazy"
-                    className="aspect-square w-full rounded-xl bg-porcelana object-contain p-1"
-                  />
+                  <div className={`aspect-square w-full p-3 ${MARCO_FOTO}`}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={p.imagen_url}
+                      alt={`${p.marca ?? ""} ${p.nombre}`.trim()}
+                      loading="lazy"
+                      className={FOTO_PRODUCTO}
+                    />
+                  </div>
                 ) : (
-                  <div className="aspect-square w-full rounded-xl bg-porcelana" />
+                  <div className={`aspect-square w-full ${MARCO_FOTO}`} />
                 )}
 
-                {p.marca ? (
-                  <span className="font-etiqueta text-xs leading-none text-piedra">{p.marca}</span>
-                ) : null}
-                <span className="font-display text-sm font-medium leading-tight text-tinta">
+                {p.marca ? <span className={`mt-3 ${ETIQUETA}`}>{p.marca}</span> : null}
+                <span className="mt-1 font-display text-base font-normal leading-snug text-tinta">
                   {p.nombre}
                 </span>
 
-                <span className="mt-auto flex flex-col items-start gap-1">
+                <span className="mt-auto flex flex-col items-start gap-1 pt-2">
                   <RangoPrecio rango={p.rango_precio} />
                   <PruebaSocial d={{ rating: p.rating, opiniones: p.opiniones }} />
                 </span>
@@ -259,12 +262,13 @@ function Fila({
         onClick={() => onChange(activo ? null : o.valor)}
         className={`group rounded-full border px-3 py-1.5 font-body text-sm transition-colors ${
           activo
-            ? "border-terracota bg-terracota text-porcelana"
+            ? "border-tinta bg-tinta text-porcelana"
             : "border-niebla bg-porcelana text-tinta disabled:text-tinta/35"
         }`}
       >
         {o.label}
-        {/* Porcelana entera: con /70 el número quedaba en 3,07:1 sobre el terracota. */}
+        {/* Porcelana entera, como la palabra: el activo va en tinta llena, no en
+            terracota, que es sólo para comprar. */}
         <span className={activo ? "text-porcelana" : "text-piedra group-disabled:text-tinta/35"}> {n}</span>
       </button>
     );
@@ -272,11 +276,11 @@ function Fila({
 
   return (
     <div className="flex flex-col gap-2">
-      <p className="font-etiqueta text-xs text-piedra">{titulo}</p>
+      <p className={ETIQUETA}>{titulo}</p>
       <div className="flex flex-wrap gap-2">{opciones.map(chip)}</div>
       {aparte?.opciones.length ? (
         <>
-          <p className="mt-1 font-etiqueta text-xs text-piedra">{aparte.titulo}</p>
+          <p className={`mt-1 ${ETIQUETA}`}>{aparte.titulo}</p>
           <div className="flex flex-wrap gap-2">{aparte.opciones.map(chip)}</div>
         </>
       ) : null}

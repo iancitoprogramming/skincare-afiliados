@@ -22,15 +22,24 @@ Desde el 15/9 el lenguaje visual toma como referencia el sitio de Beauty of
 Joseon. La lectura sigue siendo botánica; lo que se toma es cómo se ve una marca
 de skincare seria:
 
-- **Fondo marfil**, cálido y casi sin color, con un panel `arena` para separar
-  bloques.
+- **Fondo marfil**, cálido y casi sin color, con paneles `arena` para separar
+  bloques y para los avisos.
 - **Títulos en serif** (Newsreader) a tamaño moderado; texto y etiquetas en sans.
 - **Etiquetas en mayúscula chica** con aire entre letras y **botones rectos**: uno
-  lleno en `tinta` y uno de borde fino. Sin sombras ni esquinas redondeadas.
+  lleno en `tinta` y uno de borde fino. Sin sombras ni esquinas redondeadas. Los
+  chips de filtro y de objetivo siguen redondos: son chips, no botones.
 - **Fotos de texturas** —sérums, cremas— con luz pareja. Sin gente, sin marcas a
   la vista y sin iconografía coreana: el catálogo es mayormente europeo y esa
   estética lo haría parecer otra cosa.
+- **Fotos de producto sobre arena.** Las de Mercado Libre vienen sobre blanco; en
+  un marco `arena` y con `mix-blend-mode: multiply`, el blanco toma el color del
+  marco y la foto deja de verse como un recuadro pegado. Son `MARCO_FOTO` y
+  `FOTO_PRODUCTO`, en `src/components/estilo.ts`.
 - **Líneas finas** en `niebla` y mucho aire entre secciones.
+
+Hasta el 15/9 esto valía sólo para la home. **Desde el 15/9 vale para todo el
+sitio**: catálogo, quiz, resultado, fichas, kits y combinaciones, con el mismo
+encabezado (`src/components/Encabezado.tsx`).
 
 Las fotos son de Unsplash, con la licencia verificada en la página de cada una, y
 se acreditan al pie de la home aunque la licencia no lo exija. El detalle está en
@@ -47,15 +56,36 @@ Medido sobre la página renderizada, no en el papel.
 | `tinta` | `#1b2430` | texto principal | 15,00:1 |
 | `piedra` | `#5a6b85` | texto secundario · **color del logo** | 5,19:1 |
 | `salvia` | `#4a6b57` | verde de marca | 5,70:1 |
-| `gel` | `#dce7de` | superficie verde suave | fondo, no texto |
-| `arena` | `#f3ede6` | panel cálido de la home | fondo; terracota encima no pasa (4,46:1) |
-| `terracota` | `#c2410c` | CTA de compra | 4,96:1 con `porcelana` encima |
+| `gel` | `#dce7de` | superficie verde suave · **sin uso en pantallas desde el 15/9** | fondo, no texto |
+| `arena` | `#f3ede6` | paneles, avisos, opción elegida del quiz y marco de las fotos de producto | fondo; terracota encima no pasa (4,46:1) |
+| `terracota` | `#c2410c` | **sólo comprar**: el botón de compra y el link de las alternativas | 4,96:1 con `porcelana` encima |
 | `niebla` | `#e0d8cd` | bordes y líneas finas | no texto |
 
 **La decisión que hace funcionar el sistema:** `piedra` es el azul del logo *y* el
 color del texto secundario. Eso resuelve tener un logo azul grisáceo en una marca
 verde — el logo deja de ser un acento suelto y pasa a ser el ancla fría de todo
 el sistema.
+
+### Terracota es comprar
+
+Desde el 15/9 el terracota se usa **sólo para comprar**: `BOTON_COMPRA` —el "Ver
+en Mercado Libre" de cada paso, ficha y kit— y el link de cada alternativa.
+Filtro activo, opción elegida del quiz, sello de los kits, avisos y el "separar"
+de las combinaciones van en tinta. Lo decidió el usuario.
+
+- **Por qué.** Baymard pide que el botón de compra tenga un estilo que ningún
+  otro botón reutilice, y NN/g, reservar el color de acento para la acción
+  principal. Tinta llena ya es "Armá tu rutina": con la compra también en tinta,
+  las dos acciones se verían iguales.
+- **Lo que la evidencia no dice.** No hay un color que venda más que otro. Lo que
+  está respaldado es que el botón de compra se distinga y tenga contraste.
+- **Beauty of Joseon hace lo mismo:** su "Add to cart" principal es de borde
+  cobre, y los botones negros quedan para otras cosas. Su cobre no pasa AA
+  (2,52:1 sobre su fondo), así que se tomó la idea y no el color.
+- **Un aviso tampoco va en terracota.** Justo arriba del botón de compra, un
+  aviso del mismo color se leería como parte de él. Lo que avisa es la frase.
+- `terracota.test.ts` falla si aparece una clase con terracota fuera de
+  `estilo.ts` y `Alternativas.tsx`.
 
 ### Sobre qué capa va cada texto
 
@@ -67,17 +97,20 @@ clases de `src/`:
 
 | Superficie | Dónde | Texto encima |
 |---|---|---|
-| **Clara:** de `porcelana` a `gel/35` | fondo, tarjetas, puertas | tinta entero, `/80` o `/70` · piedra, salvia y terracota enteros |
-| **Teñida:** `piedra/NN`, `terracota/NN`, `niebla/NN`, `gel` sólido | chips de severidad, opción seleccionada del quiz | tinta entero, `/80` o `/70` — el color va en el fondo, no en la letra |
-| `terracota` sólido | CTA, filtro activo | `porcelana` entero |
-| **Arena** (`bg-arena`) | panel de las puertas de la home | tinta en sus tres niveles · piedra y salvia enteros · **terracota no** (4,46:1) |
-| `tinta` sólido | botón lleno de la home | `porcelana` entero (15,00:1) |
+| **Clara:** de `porcelana` a `gel/35` | fondo, tarjetas | tinta entero, `/80` o `/70` · piedra, salvia y terracota enteros |
+| **Teñida:** `piedra/NN`, `niebla/NN`, `gel` sólido | chips de severidad | tinta entero, `/80` o `/70` — el color va en el fondo, no en la letra |
+| `terracota` sólido | botón de compra | `porcelana` entero |
+| **Arena** (`bg-arena`) | paneles, avisos, opción elegida del quiz, marco de las fotos | tinta en sus tres niveles · piedra y salvia enteros · **terracota no** (4,46:1) |
+| `tinta` sólido | botón lleno, filtro activo, chip "separar" | `porcelana` entero (15,00:1) |
 
 - **Un color con opacidad nunca pasa** (`text-piedra/80`, `text-porcelana/70`): va
   entero.
 - **Por debajo del mínimo sólo va un control deshabilitado**, con la variante
   `disabled:`. WCAG 1.4.3 exime ese texto, y la variante ata el contraste bajo a
   que el control esté deshabilitado de verdad.
+- **El borde de un campo va en `tinta/70`**: 5,72:1 sobre porcelana y 5,44 contra
+  arena. En `niebla` quedaba en 1,35:1, y WCAG 1.4.11 pide 3:1 cuando el borde es
+  lo que identifica el campo. El placeholder, también en `tinta/70`.
 - **El escaneo no ve un fondo puesto en el padre y un texto en el hijo.** Por eso
   se mide también la página renderizada: así apareció la pista del quiz, que en
   `piedra` quedaba en 3,98:1 con la opción seleccionada.
@@ -131,9 +164,9 @@ archivo sirve para el titular y para un título chico. Se comparó contra
 Instrument Serif, más angosta y de revista, y ganó Newsreader.
 
 Las etiquetas cortas ("paso 01 · limpiador", "25 productos", "tipo de piel") van
-en Instrument Sans a 12px con un poco de tracking; en la home, en mayúscula.
-Antes fueron Space Mono y después Bricolage Grotesque, que también titulaba: con
-la serif en los títulos, una tercera familia sobraba.
+en Instrument Sans a 12px, en mayúscula y con aire entre letras: `ETIQUETA` en
+`estilo.ts`. Antes fueron Space Mono y después Bricolage Grotesque, que también
+titulaba: con la serif en los títulos, una tercera familia sobraba.
 
 ### Tamaños
 

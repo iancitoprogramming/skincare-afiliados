@@ -4,6 +4,7 @@ import type { PasoRutina as Paso, Producto } from "@/engine/recomendacion";
 import { copy } from "@/niches/skincare/copy";
 import { PruebaSocial } from "@/components/PruebaSocial";
 import { RangoPrecio } from "@/components/RangoPrecio";
+import { BOTON_COMPRA, ETIQUETA, FOTO_PRODUCTO, MARCO_FOTO } from "@/components/estilo";
 import { trackClick } from "@/engine/tracking";
 import { Alternativas } from "./Alternativas";
 
@@ -93,18 +94,16 @@ export function PasoRutina({
   return (
     <div
       id={ancla}
-      className={`scroll-mt-6 rounded-2xl border p-5 ${cerrada ? "border-dashed border-niebla" : "border-niebla bg-gel/25"}`}
+      className={`scroll-mt-6 border p-5 ${cerrada ? "border-dashed border-niebla" : "border-niebla"}`}
     >
-      <p className="font-etiqueta text-xs font-medium text-piedra">
+      <p className={ETIQUETA}>
         paso {String(numero).padStart(2, "0")} · {categoriaLabel}
-        {conAvisoDeCombinacion ? (
-          <span className="ml-2 text-tinta/70">↓ {copy.compatibilidad.enPaso}</span>
-        ) : null}
+        {conAvisoDeCombinacion ? <span className="ml-2">↓ {copy.compatibilidad.enPaso}</span> : null}
       </p>
 
       {explicado ? (
         <>
-          <h3 className="mt-2 font-display text-xl font-medium leading-tight text-tinta">
+          <h3 className="mt-2 font-display text-xl font-normal leading-tight text-tinta">
             {explicado.funcion}
           </h3>
           {cerrada ? null : (
@@ -115,27 +114,24 @@ export function PasoRutina({
 
       {cerrada ? null : (
         <>
-          <div className={`flex items-start gap-3 ${explicado ? "mt-4 border-t border-niebla/70 pt-4" : "mt-3"}`}>
+          <div className={`flex items-start gap-3 ${explicado ? "mt-4 border-t border-niebla pt-4" : "mt-3"}`}>
             {p.imagen_url ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={p.imagen_url}
-                alt={p.nombre}
-                loading="lazy"
-                className="h-20 w-20 flex-none rounded-xl bg-porcelana object-contain"
-              />
+              <div className={`h-20 w-20 flex-none p-1.5 ${MARCO_FOTO}`}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={p.imagen_url} alt={p.nombre} loading="lazy" className={FOTO_PRODUCTO} />
+              </div>
             ) : null}
 
             <div className="flex min-w-0 flex-1 flex-col gap-1">
               {/* Con la función del paso arriba, el nombre del producto deja de ser
                   el título de la tarjeta. Sin ella, lo sigue siendo. */}
               {explicado ? (
-                <p className="font-display text-lg font-medium leading-tight text-tinta">{p.nombre}</p>
+                <p className="font-display text-lg font-normal leading-tight text-tinta">{p.nombre}</p>
               ) : (
-                <h3 className="font-display text-xl font-medium leading-tight text-tinta">{p.nombre}</h3>
+                <h3 className="font-display text-xl font-normal leading-tight text-tinta">{p.nombre}</h3>
               )}
               <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                {p.marca ? <span className="font-etiqueta text-xs text-piedra">{p.marca}</span> : null}
+                {p.marca ? <span className={ETIQUETA}>{p.marca}</span> : null}
                 <RangoPrecio rango={p.rango_precio} className="shrink-0" />
               </div>
               <PruebaSocial d={p} />
@@ -153,8 +149,10 @@ export function PasoRutina({
             </p>
           ) : null}
 
+          {/* Sobre arena y con una línea en tinta, no en terracota: justo arriba del
+              botón de compra, un aviso del mismo color se leería como parte de él. */}
           {aviso ? (
-            <p className="mt-3 rounded-xl border border-terracota/30 bg-terracota/5 px-3 py-2 font-body text-sm text-tinta/80">
+            <p className="mt-3 border-l-2 border-tinta bg-arena px-3 py-2 font-body text-sm text-tinta/80">
               {aviso}
             </p>
           ) : null}
@@ -164,7 +162,7 @@ export function PasoRutina({
             target="_blank"
             rel="sponsored noopener noreferrer"
             onClick={() => trackClick({ sesion_id: sesionId, producto_id: p.id, posicion: numero })}
-            className="mt-4 flex min-h-[52px] w-full items-center justify-center rounded-xl bg-terracota px-5 font-body text-lg font-medium text-porcelana transition-transform active:scale-[0.98]"
+            className={`${BOTON_COMPRA} mt-4`}
           >
             Ver en Mercado Libre
           </a>

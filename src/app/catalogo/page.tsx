@@ -51,7 +51,7 @@ export default async function Catalogo() {
     <Shell volver={{ href: "/", label: "inicio" }} disclaimers ancho="ancho">
       <div className="flex flex-col gap-6">
         <header className="flex flex-col gap-2">
-          <h1 className="font-display text-3xl font-medium tracking-tight text-tinta">
+          <h1 className="font-display text-3xl font-normal text-tinta">
             {copy.catalogo.titulo}
           </h1>
           <p className="font-body text-sm text-tinta/80">{copy.catalogo.bajada}</p>

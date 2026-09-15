@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Logo } from "@/components/Logo";
+import { Encabezado } from "@/components/Encabezado";
 import { GuardarEmailHome } from "@/components/GuardarEmailHome";
 import { ComoFunciona } from "@/components/ComoFunciona";
 import { PreguntasFrecuentes } from "@/components/PreguntasFrecuentes";
-import { BOTON_LINEA, BOTON_LLENO, ETIQUETA, ETIQUETA_BASE } from "@/components/estilo";
+import { BOTON_LINEA, BOTON_LLENO, ETIQUETA } from "@/components/estilo";
 import { getCatalogo } from "@/engine/catalogo";
 import { conCriteriosDeOrden } from "@/niches/skincare/calidad";
 import { armarKits } from "@/engine/kits";
@@ -124,28 +124,12 @@ export default async function Home() {
       : []),
   ];
 
-  const nav = copy.home.nav;
-
   return (
     <div className="min-h-[100dvh] bg-porcelana">
       <p className="bg-tinta px-4 py-2 text-center font-etiqueta text-xs text-porcelana">{copy.home.aviso}</p>
 
-      <header className="border-b border-niebla">
-        <div className="mx-auto flex h-16 max-w-7xl items-center px-5 lg:h-20 lg:px-14">
-          <nav aria-label="secciones" className="hidden flex-1 gap-8 lg:flex">
-            <Link href="/rutina" className={`${ETIQUETA_BASE} text-tinta`}>{nav.rutina}</Link>
-            <Link href="/catalogo" className={`${ETIQUETA_BASE} text-tinta`}>{nav.catalogo}</Link>
-            <Link href="/kits" className={`${ETIQUETA_BASE} text-tinta`}>{nav.kits}</Link>
-          </nav>
-          <Link href="/" className="flex items-center gap-2">
-            <Logo size={24} className="text-piedra" />
-            <span className="font-display text-2xl font-normal text-tinta lg:text-3xl">{copy.marca}</span>
-          </Link>
-          <div className="hidden flex-1 justify-end lg:flex">
-            <Link href="/combinaciones" className={`${ETIQUETA_BASE} text-tinta`}>{nav.combinaciones}</Link>
-          </div>
-        </div>
-      </header>
+      {/* El mismo encabezado que el resto del sitio: vive en `Encabezado`. */}
+      <Encabezado />
 
       <main>
         {/* Portada. En desktop, foto a la izquierda y texto a la derecha; en el

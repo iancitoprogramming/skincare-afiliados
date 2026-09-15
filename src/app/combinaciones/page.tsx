@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { Shell } from "@/components/Shell";
+import { BOTON_LLENO, ETIQUETA, ETIQUETA_BASE } from "@/components/estilo";
 import { copy } from "@/niches/skincare/copy";
 import { ACTIVOS, MITOS, REGLAS, SINERGIAS } from "@/niches/skincare/activos";
-import { celda, EN_MATRIZ, LEYENDA, SIMBOLO } from "@/niches/skincare/matriz";
+import { celda, EN_MATRIZ, LEYENDA, SIMBOLO, type Marca } from "@/niches/skincare/matriz";
 import { OG_POR_DEFECTO } from "@/lib/sitio";
 
 // Página de criterios. Existe por dos motivos, y el segundo es el que importa:
@@ -24,6 +25,18 @@ export const metadata = {
   description:
     "La tabla completa de combinaciones entre ingredientes activos, con el criterio detrás de " +
     "cada una: qué se destruye, qué sólo irrita, qué se potencia y qué es mito.",
+};
+
+// El color de cada marca de la tabla, el mismo en las celdas y en la leyenda.
+// ✕ ("nunca") y ＋ ("se potencian") son la misma cruz girada: con el terracota
+// fuera —es sólo para comprar— el que las separa es el salvia de lo que suma, y
+// "nunca" va en tinta con más peso.
+const COLOR_MARCA: Record<Marca, string> = {
+  nunca: "font-medium text-tinta",
+  separar: "text-piedra",
+  potencia: "text-salvia",
+  libre: "text-tinta/70",
+  nota: "text-tinta/70",
 };
 
 const CLASES: { clase: string; titulo: string; bajada: string }[] = [
@@ -53,14 +66,14 @@ export default function Combinaciones() {
     <Shell volver={{ href: "/", label: "inicio" }}>
       <div className="flex flex-col gap-10">
         <header className="flex flex-col gap-3">
-          <h1 className="font-display text-3xl font-medium leading-tight tracking-tight text-tinta">
+          <h1 className="font-display text-3xl font-normal leading-tight text-tinta">
             Qué se puede mezclar y qué no
           </h1>
           <p className="font-body leading-relaxed text-tinta/80">
             «No mezclar X con Y» no quiere decir una sola cosa. Quiere decir cuatro, y cada una se
             arregla distinto. Casi toda la confusión que circula sale de meterlas en la misma bolsa.
           </p>
-          <dl className="flex flex-col gap-2 rounded-2xl border border-niebla bg-gel/20 p-4">
+          <dl className="flex flex-col gap-2 bg-arena p-4">
             {[
               ["se destruyen", "una molécula rompe a la otra. Separar por momento del día."],
               ["cuestión de orden", "conviven bien; sólo importa cuál va primero."],
@@ -68,7 +81,7 @@ export default function Combinaciones() {
               ["pagás dos veces", "no pasa nada malo. Estás comprando lo mismo dos veces."],
             ].map(([k, v]) => (
               <div key={k} className="flex flex-col">
-                <dt className="font-etiqueta text-xs text-piedra">{k}</dt>
+                <dt className={ETIQUETA}>{k}</dt>
                 <dd className="font-body text-sm leading-relaxed text-tinta/80">{v}</dd>
               </div>
             ))}
@@ -77,7 +90,7 @@ export default function Combinaciones() {
 
         {/* ── La matriz ───────────────────────────────────────────────────── */}
         <section className="flex flex-col gap-3">
-          <h2 className="font-etiqueta text-sm text-piedra">la tabla</h2>
+          <h2 className={`${ETIQUETA_BASE} text-tinta`}>la tabla</h2>
           <div className="-mx-5 overflow-x-auto px-5">
             <table className="w-max border-collapse font-etiqueta text-xs">
               <thead>
@@ -110,15 +123,7 @@ export default function Combinaciones() {
                         <td
                           key={col}
                           title={c.motivo ?? undefined}
-                          className={`p-1.5 text-center text-sm ${
-                            c.marca === "nunca"
-                              ? "text-terracota"
-                              : c.marca === "separar"
-                                ? "text-piedra"
-                                : c.marca === "potencia"
-                                  ? "text-tinta"
-                                  : "text-tinta/70"
-                          }`}
+                          className={`p-1.5 text-center text-sm ${COLOR_MARCA[c.marca]}`}
                         >
                           {SIMBOLO[c.marca]}
                         </td>
@@ -132,7 +137,7 @@ export default function Combinaciones() {
           <ul className="flex flex-col gap-1">
             {LEYENDA.map((l) => (
               <li key={l.marca} className="font-body text-xs text-tinta/70">
-                <span className="mr-2 font-etiqueta text-sm text-tinta">{SIMBOLO[l.marca]}</span>
+                <span className={`mr-2 font-etiqueta text-sm ${COLOR_MARCA[l.marca]}`}>{SIMBOLO[l.marca]}</span>
                 {l.texto}
               </li>
             ))}
@@ -151,15 +156,15 @@ export default function Combinaciones() {
           return (
             <section key={clase} className="flex flex-col gap-3">
               <div>
-                <h2 className="font-display text-xl font-medium leading-snug text-tinta">{titulo}</h2>
+                <h2 className="font-display text-xl font-normal leading-snug text-tinta">{titulo}</h2>
                 <p className="mt-1 font-body text-sm leading-relaxed text-tinta/80">{bajada}</p>
               </div>
               <ul className="flex flex-col gap-3">
                 {reglas.map((r) => (
                   <li
                     key={r.id}
-                    className={`rounded-2xl border p-4 ${
-                      r.severidad === "separar" ? "border-terracota/40" : "border-niebla"
+                    className={`border p-4 ${
+                      r.severidad === "separar" ? "border-tinta" : "border-niebla"
                     }`}
                   >
                     <h3 className="font-display text-base font-medium leading-snug text-tinta">
@@ -186,7 +191,7 @@ export default function Combinaciones() {
         {/* ── Sinergias ───────────────────────────────────────────────────── */}
         <section className="flex flex-col gap-3">
           <div>
-            <h2 className="font-display text-xl font-medium leading-snug text-tinta">
+            <h2 className="font-display text-xl font-normal leading-snug text-tinta">
               Lo que sí conviene juntar
             </h2>
             <p className="mt-1 font-body text-sm leading-relaxed text-tinta/80">
@@ -196,7 +201,7 @@ export default function Combinaciones() {
           </div>
           <ul className="flex flex-col gap-3">
             {SINERGIAS.map((s) => (
-              <li key={s.id} className="rounded-2xl border border-gel bg-gel/25 p-4">
+              <li key={s.id} className="bg-arena p-4">
                 <h3 className="font-display text-base font-medium leading-snug text-tinta">
                   {s.titulo}
                 </h3>
@@ -216,7 +221,7 @@ export default function Combinaciones() {
         {/* ── Mitos ───────────────────────────────────────────────────────── */}
         <section className="flex flex-col gap-3">
           <div>
-            <h2 className="font-display text-xl font-medium leading-snug text-tinta">
+            <h2 className="font-display text-xl font-normal leading-snug text-tinta">
               Tres cosas que te van a decir y no son ciertas
             </h2>
             <p className="mt-1 font-body text-sm leading-relaxed text-tinta/80">
@@ -226,7 +231,7 @@ export default function Combinaciones() {
           </div>
           <ul className="flex flex-col gap-4">
             {MITOS.map((m) => (
-              <li key={m.id} className="rounded-2xl border border-niebla p-4">
+              <li key={m.id} className="border border-niebla p-4">
                 <h3 className="font-display text-base font-medium leading-snug text-tinta">
                   {m.titulo}
                 </h3>
@@ -246,18 +251,17 @@ export default function Combinaciones() {
           </ul>
         </section>
 
-        <section className="rounded-2xl border border-niebla bg-gel/25 p-5">
-          <h2 className="font-display text-xl font-medium leading-snug text-tinta">
+        <section className="bg-arena p-5">
+          <h2 className="font-display text-xl font-normal leading-snug text-tinta">
             Esto ya está aplicado en tu rutina
           </h2>
           <p className="mt-1 font-body text-sm leading-relaxed text-tinta/80">
             No hace falta que lo memorices. Cuando armás tu rutina, el sitio chequea estas reglas
             contra los productos que te tocaron y te avisa si hay algo para separar.
           </p>
-          <Link
-            href="/rutina"
-            className="mt-4 flex min-h-[52px] w-full items-center justify-center rounded-xl bg-terracota px-5 font-body text-lg font-medium text-porcelana transition-transform active:scale-[0.98]"
-          >
+          {/* Tinta llena, como "Armá tu rutina" en la home: lleva al quiz, no a
+              comprar, así que no va en terracota. */}
+          <Link href="/rutina" className={`${BOTON_LLENO} mt-4 w-full`}>
             Armar mi rutina
           </Link>
         </section>

@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { ETIQUETA } from "@/components/estilo";
 
 // Un bloque plegado con un botón para abrirlo. <details> nativo, como las
 // alternativas del resultado y las preguntas de la home: se abre con teclado,
@@ -23,10 +24,10 @@ export function Desplegable({
   children: ReactNode;
 }) {
   return (
-    <details open={abierto} className="group rounded-2xl border border-niebla">
+    <details open={abierto} className="group border border-niebla">
       <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-3 px-5 py-3 [&::-webkit-details-marker]:hidden">
         <span className="flex flex-col gap-0.5">
-          <span className="font-etiqueta text-xs text-piedra">{etiqueta}</span>
+          <span className={ETIQUETA}>{etiqueta}</span>
           <span className="font-body text-base font-medium leading-snug text-tinta">{titulo}</span>
         </span>
         <span

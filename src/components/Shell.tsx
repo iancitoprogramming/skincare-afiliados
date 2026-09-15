@@ -1,9 +1,11 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { copy } from "@/niches/skincare/copy";
-import { Logo } from "@/components/Logo";
+import { Encabezado } from "@/components/Encabezado";
 
-// Shell común de todas las pantallas: marca arriba, disclaimers abajo.
+// Shell común de las pantallas que no son la home: el encabezado de la home
+// arriba, disclaimers abajo. Desde el 15/9 el encabezado es el mismo en todo el
+// sitio (`Encabezado`), así que va a todo el ancho y el contenido, en su columna.
 // Mobile-first: el 90% del tráfico va a entrar desde una red social.
 // El sitio nació mobile-first y estaba clavado en max-w-md en todas las
 // pantallas. Para una ficha o el quiz esa columna angosta está bien —el texto
@@ -31,47 +33,34 @@ export function Shell({
   disclaimers?: boolean;
 }) {
   return (
-    <div className={`mx-auto flex min-h-[100dvh] w-full flex-col px-5 py-6 sm:px-8 ${ANCHOS[ancho]}`}>
-      <header className="flex items-baseline justify-between gap-3">
-        <Link href="/" className="flex items-center gap-2">
-          <Logo size={26} className="text-piedra" />
-          <span className="font-display text-lg font-medium tracking-tight text-tinta">
-            {copy.marca}
-          </span>
-        </Link>
-        {volver ? (
+    <div className="flex min-h-[100dvh] flex-col">
+      <Encabezado volver={volver} />
+
+      <div className={`mx-auto flex w-full flex-1 flex-col px-5 sm:px-8 ${ANCHOS[ancho]}`}>
+        <main className="flex flex-1 flex-col py-8">{children}</main>
+
+        {/*
+          Los criterios viven en el pie, no en la puerta de entrada. Nadie llega de
+          una red social buscando "combinaciones de activos": llega por un producto
+          o por una rutina. Pero el que ya está adentro y quiere entender por qué
+          recomendamos lo que recomendamos, lo tiene a un toque desde cualquier
+          pantalla.
+        */}
+        <footer className="flex flex-col gap-2 border-t border-niebla py-6">
           <Link
-            href={volver.href}
-            className="font-etiqueta text-xs text-piedra transition-colors hover:text-tinta"
+            href="/combinaciones"
+            className="self-start font-etiqueta text-xs text-tinta underline decoration-niebla underline-offset-4 transition-colors hover:decoration-tinta"
           >
-            ← {volver.label}
+            {copy.home.criterios} →
           </Link>
-        ) : null}
-      </header>
-
-      <main className="flex flex-1 flex-col py-6">{children}</main>
-
-      {/*
-        Los criterios viven en el pie, no en la puerta de entrada. Nadie llega de
-        una red social buscando "combinaciones de activos": llega por un producto
-        o por una rutina. Pero el que ya está adentro y quiere entender por qué
-        recomendamos lo que recomendamos, lo tiene a un toque desde cualquier
-        pantalla.
-      */}
-      <footer className="flex flex-col gap-2 border-t border-niebla pt-4">
-        <Link
-          href="/combinaciones"
-          className="font-etiqueta text-xs text-piedra underline decoration-niebla underline-offset-4 transition-colors hover:text-tinta"
-        >
-          {copy.home.criterios} →
-        </Link>
-        {disclaimers ? (
-          <>
-            <p className="font-body text-xs text-piedra">* {copy.afiliacion}</p>
-            <p className="font-body text-xs text-piedra">* {copy.dermatologo}</p>
-          </>
-        ) : null}
-      </footer>
+          {disclaimers ? (
+            <>
+              <p className="font-body text-xs text-piedra">* {copy.afiliacion}</p>
+              <p className="font-body text-xs text-piedra">* {copy.dermatologo}</p>
+            </>
+          ) : null}
+        </footer>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { ETIQUETA } from "@/components/estilo";
 
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
@@ -42,7 +43,7 @@ export function GuardarEmail({
 
   return (
     <form onSubmit={submit} className="flex flex-col gap-2">
-      <label htmlFor="email-rutina" className="font-etiqueta text-xs text-piedra">
+      <label htmlFor="email-rutina" className={ETIQUETA}>
         {label}
       </label>
       {/* Honeypot: fuera de la vista y del tab, sin autocompletar. Un bot que
@@ -59,7 +60,12 @@ export function GuardarEmail({
       />
       <div className="flex gap-2">
         {/* text-base explícito: el tamaño heredado depende de dónde se monte, y con
-            menos de 16 px Safari en iPhone agranda la página al enfocar el campo. */}
+            menos de 16 px Safari en iPhone agranda la página al enfocar el campo.
+
+            El borde va en tinta/70, que da 5,7:1. En niebla quedaba en 1,35:1, y
+            cuando el borde es lo que muestra dónde está el campo, WCAG 1.4.11 pide
+            3:1. El placeholder, también en tinta/70: el de Tailwind es la mitad
+            del color del texto y quedaba cerca de 3:1. */}
         <input
           id="email-rutina"
           type="email"
@@ -71,18 +77,26 @@ export function GuardarEmail({
             if (error) setError("");
           }}
           placeholder="tu@email.com"
-          className="min-h-[52px] min-w-0 flex-1 rounded-xl border border-niebla bg-porcelana px-4 font-body text-base text-tinta outline-none focus:border-piedra"
+          className="min-h-13 min-w-0 flex-1 border border-tinta/70 bg-porcelana px-4 font-body text-base text-tinta outline-none placeholder:text-tinta/70 focus:border-tinta focus:ring-1 focus:ring-tinta"
         />
         <button
           type="submit"
-          className="min-h-[52px] rounded-xl border border-tinta px-5 font-body font-medium text-tinta transition-colors hover:bg-tinta hover:text-porcelana"
+          className="min-h-13 border border-tinta px-5 font-body text-xs font-medium uppercase tracking-[0.16em] text-tinta transition-colors hover:bg-tinta hover:text-porcelana"
         >
           guardar
         </button>
       </div>
-      {error ? <p className="font-body text-sm text-terracota">{error}</p> : null}
+      {/* Los errores van en tinta y no en terracota, que es sólo para comprar: lo
+          que avisa es la frase, no el color. */}
+      {error ? (
+        <p role="alert" className="font-body text-sm font-medium text-tinta">
+          {error}
+        </p>
+      ) : null}
       {estado === "error" ? (
-        <p className="font-body text-sm text-terracota">No se pudo guardar, probá de nuevo.</p>
+        <p role="alert" className="font-body text-sm font-medium text-tinta">
+          No se pudo guardar, probá de nuevo.
+        </p>
       ) : null}
     </form>
   );

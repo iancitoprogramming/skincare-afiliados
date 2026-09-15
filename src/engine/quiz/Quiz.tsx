@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import type { Answers, QuizConfig } from "./types";
 import type { Producto } from "@/engine/recomendacion";
+import { ETIQUETA } from "@/components/estilo";
 import { Pregunta } from "./Pregunta";
 import { Progreso } from "./Progreso";
 import { Armando } from "./Armando";
@@ -70,12 +71,15 @@ export function Quiz({ config, productos }: { config: QuizConfig; productos: Pro
     window.history.replaceState(null, "", window.location.pathname);
   };
 
+  // Vive adentro del Shell de /rutina, que ya pone el <main>, el ancho y los
+  // márgenes. Tenía los suyos repetidos: dos <main> anidados y el doble de margen
+  // a los costados, que a 390 px le sacaba 40 px de ancho a la pregunta.
   return (
-    <main className="mx-auto flex min-h-[100dvh] w-full max-w-md flex-col px-5 py-6">
+    <div className="flex w-full flex-1 flex-col">
       {phase === "quiz" ? (
         <>
-          <p className="font-etiqueta text-xs text-piedra">{config.intro}</p>
-          <div className="mt-6 flex flex-col gap-8 rounded-2xl border border-niebla bg-gel/25 p-5">
+          <p className={ETIQUETA}>{config.intro}</p>
+          <div className="mt-6 flex flex-col gap-8">
             <Progreso
               current={step}
               total={questions.length}
@@ -97,7 +101,7 @@ export function Quiz({ config, productos }: { config: QuizConfig; productos: Pro
       ) : null}
 
       {phase === "resultados" ? (
-        <div className="flex-1 py-4">
+        <div className="flex-1">
           <Resultados
             config={config}
             productos={productos}
@@ -107,6 +111,6 @@ export function Quiz({ config, productos }: { config: QuizConfig; productos: Pro
           />
         </div>
       ) : null}
-    </main>
+    </div>
   );
 }

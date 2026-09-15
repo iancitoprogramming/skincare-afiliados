@@ -12,7 +12,7 @@ export function Pregunta({
 }) {
   return (
     <div className="flex flex-col gap-7">
-      <h1 className="text-balance font-display text-3xl font-medium leading-tight text-tinta">
+      <h1 className="text-balance font-display text-3xl font-normal leading-tight text-tinta">
         {question.title}
       </h1>
       <div className="divide-y divide-niebla border-y border-niebla">
