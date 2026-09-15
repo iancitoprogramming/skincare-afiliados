@@ -1242,10 +1242,11 @@ export const productosOrganize: Producto[] = [
   {
     // Acido Hialuronico
     // sérum de hialurónico
-    // Apto para piel sensible desde el 15/9/2026. El vault decía "no va a →
-    // sensible: Fragancia", pero el INCI latinoamericano oficial no trae
-    // fragancia y la marca lo declara sin perfume: ver su entrada en activos.ts.
-    // El vault sigue diciendo lo anterior, así que hay que corregirlo allá.
+    // Apto para piel sensible desde el 15/9/2026. El importador lo había
+    // excluido ("no va a → sensible: Fragancia") porque el mapa de activos le
+    // declaraba fragancia por error. El INCI latinoamericano oficial no la trae
+    // y la marca lo declara sin perfume: ver su entrada en activos.ts. El vault
+    // nunca lo excluyó: esa exclusión la calcula el importador desde activos.ts.
     id: "914fa2b9-679c-50cb-a01e-e7713bfcbba3",
     ml_id: "MLA22655637",
     rating: 4.8,

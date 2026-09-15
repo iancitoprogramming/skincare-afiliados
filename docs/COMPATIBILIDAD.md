@@ -677,6 +677,11 @@ manifestación numérica del bloqueante B1 de `ISSUES.md`: no hay ni un solo pro
 siete del catálogo son de filtro orgánico — verificado contra el INCI de cada uno, no contra la
 etiqueta de marketing.
 
+> **Nota del 15/9/2026: esta medición es anterior al 9/9.** Ese día entró el Haruharu Wonder Black
+> Rice Pure Mineral SPF50, con óxido de zinc como filtro y apto para piel sensible, así que el hueco
+> de protector mineral quedó cubierto. El estado actual está en `INGREDIENTES.md` §8.4, y la
+> auditoría del 15/9 da 0 rutinas con "separar". `ISSUES.md` ya no está en el repo.
+
 ### 8.5 · La proyección: qué pasa cuando se active el pipeline
 
 `npm run auditar -- --proyectar` corre la auditoría como si los 72 productos ya tuvieran link. Es la
