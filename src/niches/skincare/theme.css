@@ -4,6 +4,10 @@
    centella, arroz, ginseng, caracol, té verde. Los ingredientes son el
    posicionamiento.
 
+   El lenguaje visual toma como referencia el sitio de Beauty of Joseon: fondo
+   marfil, serif en los títulos, fotos de texturas y botones rectos. Ver
+   docs/proyecto/02-MARCA.md.
+
    `piedra` es el azul del logo. Que el color de la marca sea además el color del
    texto secundario es lo que evita que el logo quede fuera de paleta: no es un
    acento suelto, es el ancla fría de todo el sistema.
@@ -22,27 +26,27 @@
        Sobre ella el texto va en tinta; el color queda en el fondo.
      · Texto de color con opacidad (`text-piedra/80`, `text-porcelana/70`), nunca.
      · Por debajo del mínimo, sólo en un control deshabilitado (`disabled:`).
-     · Sobre la foto de la home (el monte con su fade de porcelana a ≈0,68):
-       sólo tinta entero. Medido por tercio de la foto, piedra y salvia no
-       llegan en el tercio más oscuro. El CTA va como terracota sólido.
+     · Arena (`bg-arena`), el panel cálido de la home: van tinta en sus tres
+       niveles, piedra y salvia. Terracota no, que queda en 4,46.
 */
 @theme {
-  --color-porcelana: #f4f6f3;  /* fondo                                        */
-  --color-tinta:     #1b2430;  /* texto principal          14,4:1              */
-  --color-piedra:    #5a6b85;  /* texto secundario · logo   4,98:1             */
-  --color-salvia:    #4a6b57;  /* verde de marca            5,47:1             */
+  --color-porcelana: #fbfaf7;  /* fondo marfil                                 */
+  --color-tinta:     #1b2430;  /* texto principal          15,0:1              */
+  --color-piedra:    #5a6b85;  /* texto secundario · logo   5,19:1             */
+  --color-salvia:    #4a6b57;  /* verde de marca            5,70:1             */
   --color-gel:       #dce7de;  /* superficie verde suave    (fondo, no texto)  */
-  --color-terracota: #c2410c;  /* CTA — porcelana encima    4,76:1             */
-  --color-niebla:    #cbd5d0;  /* bordes                    (no texto)         */
+  --color-arena:     #f3ede6;  /* panel cálido · terracota no pasa (4,46:1)    */
+  --color-terracota: #c2410c;  /* CTA — porcelana encima    4,96:1             */
+  --color-niebla:    #e0d8cd;  /* bordes y líneas finas     (no texto)         */
 
   /* El titular de la home. Es el único tamaño fuera de la escala de Tailwind
      —queda entre `3xl` y `4xl`— y lleva nombre para que no vuelva a colarse un
      `text-[…]` suelto. `tipografia.test.ts` no deja pasar tamaños sin nombre. */
   --text-titular: 2.1rem;
 
-  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-newsreader), ui-serif, Georgia, serif;
   --font-body: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
-  /* Etiquetas chicas en minúscula: "paso 01 · limpiador", "78 productos".
-     Es la misma Bricolage de los títulos, chica. No hay mono en el sitio. */
-  --font-etiqueta: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  /* Etiquetas chicas: "paso 01 · limpiador", "78 productos". La misma sans del
+     texto; la personalidad la ponen los títulos en serif. */
+  --font-etiqueta: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
 }

@@ -16,6 +16,26 @@ Por qué no las otras dos:
 - **Lujo** choca con precios de $15.000 a $137.000 y con una voz que evita la
   pretensión.
 
+### La referencia visual: Beauty of Joseon
+
+Desde el 15/9 el lenguaje visual toma como referencia el sitio de Beauty of
+Joseon. La lectura sigue siendo botánica; lo que se toma es cómo se ve una marca
+de skincare seria:
+
+- **Fondo marfil**, cálido y casi sin color, con un panel `arena` para separar
+  bloques.
+- **Títulos en serif** (Newsreader) a tamaño moderado; texto y etiquetas en sans.
+- **Etiquetas en mayúscula chica** con aire entre letras y **botones rectos**: uno
+  lleno en `tinta` y uno de borde fino. Sin sombras ni esquinas redondeadas.
+- **Fotos de texturas** —sérums, cremas— con luz pareja. Sin gente, sin marcas a
+  la vista y sin iconografía coreana: el catálogo es mayormente europeo y esa
+  estética lo haría parecer otra cosa.
+- **Líneas finas** en `niebla` y mucho aire entre secciones.
+
+Las fotos son de Unsplash, con la licencia verificada en la página de cada una, y
+se acreditan al pie de la home aunque la licencia no lo exija. El detalle está en
+`src/niches/skincare/fotos-home.ts`.
+
 ## Paleta
 
 Todos los colores que llevan texto pasan **WCAG AA (4.5:1)** sobre el fondo.
@@ -23,13 +43,14 @@ Medido sobre la página renderizada, no en el papel.
 
 | Token | Hex | Rol | Contraste |
 |---|---|---|---|
-| `porcelana` | `#f4f6f3` | fondo | — |
-| `tinta` | `#1b2430` | texto principal | 14,40:1 |
-| `piedra` | `#5a6b85` | texto secundario · **color del logo** | 4,98:1 |
-| `salvia` | `#4a6b57` | verde de marca | 5,47:1 |
+| `porcelana` | `#fbfaf7` | fondo marfil | — |
+| `tinta` | `#1b2430` | texto principal | 15,00:1 |
+| `piedra` | `#5a6b85` | texto secundario · **color del logo** | 5,19:1 |
+| `salvia` | `#4a6b57` | verde de marca | 5,70:1 |
 | `gel` | `#dce7de` | superficie verde suave | fondo, no texto |
-| `terracota` | `#c2410c` | CTA | 4,76:1 con `porcelana` encima |
-| `niebla` | `#cbd5d0` | bordes | no texto |
+| `arena` | `#f3ede6` | panel cálido de la home | fondo; terracota encima no pasa (4,46:1) |
+| `terracota` | `#c2410c` | CTA de compra | 4,96:1 con `porcelana` encima |
+| `niebla` | `#e0d8cd` | bordes y líneas finas | no texto |
 
 **La decisión que hace funcionar el sistema:** `piedra` es el azul del logo *y* el
 color del texto secundario. Eso resuelve tener un logo azul grisáceo en una marca
@@ -49,7 +70,8 @@ clases de `src/`:
 | **Clara:** de `porcelana` a `gel/35` | fondo, tarjetas, puertas | tinta entero, `/80` o `/70` · piedra, salvia y terracota enteros |
 | **Teñida:** `piedra/NN`, `terracota/NN`, `niebla/NN`, `gel` sólido | chips de severidad, opción seleccionada del quiz | tinta entero, `/80` o `/70` — el color va en el fondo, no en la letra |
 | `terracota` sólido | CTA, filtro activo | `porcelana` entero |
-| **Foto** (la home): el monte con el fade de porcelana a ≈0,68 | hero, tarjetas, cómo funciona, preguntas, mail | **sólo `tinta` entero**. Medido por tercio de la foto: en el más oscuro, piedra queda en ~3:1 y salvia en ~4:1. El CTA va como `terracota` sólido |
+| **Arena** (`bg-arena`) | panel de las puertas de la home | tinta en sus tres niveles · piedra y salvia enteros · **terracota no** (4,46:1) |
+| `tinta` sólido | botón lleno de la home | `porcelana` entero (15,00:1) |
 
 - **Un color con opacidad nunca pasa** (`text-piedra/80`, `text-porcelana/70`): va
   entero.
@@ -83,8 +105,7 @@ Tinta va en tres niveles y nada más:
 - **Se asigna por rol, no por parecido.** "Por qué esta pregunta" va como nota
   porque es contexto en voz baja; "si la piel arde" va como apoyo aunque esté al
   pie, porque es lo que hay que hacer.
-- **`/35`**, sólo en un control deshabilitado y con `disabled:`. **Sobre la foto
-  de la home**, sólo tinta entero.
+- **`/35`**, sólo en un control deshabilitado y con `disabled:`.
 
 `contraste.test.ts` no deja pasar ningún otro valor.
 
@@ -99,15 +120,20 @@ de entrar.
 
 | Familia | Uso |
 |---|---|
-| **Bricolage Grotesque** | `font-display` — títulos |
+| **Newsreader** | `font-display` — títulos |
 | **Instrument Sans** | `font-body` — texto corrido |
-| **Bricolage Grotesque** | `font-etiqueta` — etiquetas chicas, datos, precios |
+| **Instrument Sans** | `font-etiqueta` — etiquetas chicas, datos, precios |
 
-Las etiquetas cortas en minúscula ("paso 01 · limpiador", "25 productos",
-"tipo de piel") son las que dan personalidad. Van en la misma Bricolage de los
-títulos, a 12px con un poco de tracking; el marcador de paso va en peso 500.
-Hasta el fondo de monte de la home iban en Space Mono: sobre la foto sus
-serifas se leían como máquina de escribir. Ya no hay monoespaciada en el sitio.
+**Newsreader** es la serif de los títulos desde el 15/9. Beauty of Joseon titula
+en Proxima Sera, que es paga; de las libres, Newsreader es la más parecida
+—híbrida, con x-height amplia— y trae eje de tamaño óptico, así que el mismo
+archivo sirve para el titular y para un título chico. Se comparó contra
+Instrument Serif, más angosta y de revista, y ganó Newsreader.
+
+Las etiquetas cortas ("paso 01 · limpiador", "25 productos", "tipo de piel") van
+en Instrument Sans a 12px con un poco de tracking; en la home, en mayúscula.
+Antes fueron Space Mono y después Bricolage Grotesque, que también titulaba: con
+la serif en los títulos, una tercera familia sobraba.
 
 ### Tamaños
 
