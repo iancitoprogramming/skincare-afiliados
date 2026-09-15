@@ -7,6 +7,10 @@
 > **Actualizado el 15/9 a la tarde:** el #34 y el #35 ya están en `main` y en
 > Production; la cuenta de Alex pasó de `WomenAre0bjects` a `ExtremeImagery` (§1,
 > §10), y el catálogo se comparó contra producción (§6).
+>
+> **Actualizado el 15/9 a la noche:** el paso 2 —el resto del sitio con el
+> lenguaje de la home— está en el **#37** (rama `sitio-editorial`), verificado y
+> esperando merge (§2, §4). El terracota quedó sólo para comprar (§5, §9).
 
 ---
 
@@ -42,24 +46,34 @@ Vercel sólo deploya commits de un autor con acceso al proyecto. Con otra identi
 **producción deja de publicarse sin avisar**: pasó con los PR #14 a #21. Los merges
 que hacía `WomenAre0bjects` desde `gh pr merge` sí deployaban; se verificó en los
 deployments de Production del #26 al #28, y del #34 y el #35. Con el repo público
-Vercel no frenó esos merges. **Los merges de `ExtremeImagery` todavía no se
-verificaron:** después del primero, confirmar que el deployment de Production de
-ese commit terminó.
+Vercel no frenó esos merges.
+
+**`ExtremeImagery` en la máquina de Alex.** Es la cuenta activa de `gh`, y git usa
+`gh` como helper de credenciales, así que los pushes salen con ella; su perfil es
+público (la API responde 200). El #36 no la prueba: lo mergeó `iancitoprogramming`,
+y en ese push a `main` (`fc51441`) corrió `verificar` y terminó Production con la
+cuenta de Ian. **El #37 sí la prueba, a medias:** lo pusheó y lo abrió
+`ExtremeImagery`, `verificar` corrió en el PR y dio verde, y el PR se ve sin token.
+Falta la otra mitad, que sólo se ve al mergearlo: `verificar` en el push a `main` y
+el deployment de Production de ese commit.
 
 ---
 
 ## 2 · Dónde quedó el trabajo
 
-### Los PR del 15/9: mergeados
+### Los PR del 15/9
 
 | PR | Rama | Qué | Estado |
 |---|---|---|---|
 | **#34** | `arreglos-preview` | Los tres problemas de la preview del 15/9: puertas bajo las barras, catálogo sin productos en la primera pantalla y la franja de redes en desktop | En `main` (`d588c58`) y en Production |
 | **#35** | `home-editorial` | La home con el lenguaje de Beauty of Joseon (§4) | En `main` (`0a8e802`) y en Production |
+| **#36** | `docs-handoff-cuenta` | El handoff con el cambio de cuenta | En `main` (`fc51441`). Lo mergeó Ian; `verificar` y Production en verde |
+| **#37** | `sitio-editorial` | El resto del sitio con el lenguaje de la home (§4) | Abierto con `ExtremeImagery`, con `verificar` en verde. Verificado local (§8); esperando que el usuario lo mergee |
 
-**Los dos quedaron invisibles en GitHub** porque los abrió `WomenAre0bjects`, que
-GitHub restringió (§10): la página del PR da 404 aunque se entre como dueño del
-repo. El registro está en los commits de merge y en los deployments de Vercel.
+**El #34 y el #35 quedaron invisibles en GitHub** porque los abrió
+`WomenAre0bjects`, que GitHub restringió (§10): la página del PR da 404 aunque se
+entre como dueño del repo. El registro está en los commits de merge y en los
+deployments de Vercel.
 
 **CI y el #35.** El primer run del #35 falló: `tsc` no encontraba los tipos de los
 imports `*.jpg` de `src/assets/home/`. Next los declara en `next-env.d.ts`, que
@@ -69,16 +83,16 @@ con la misma referencia. **El último commit del #35 (`5e4b12c`) no tuvo run** p
 la restricción de la cuenta, y los merges del #34 y el #35 tampoco. Se corrió el
 job de CI a mano sobre `5e4b12c` —clon limpio, sin `next-env.d.ts`, Node 22— y
 pasaron los cuatro pasos. `main` tiene el mismo árbol que `5e4b12c`. El primer
-run oficial sobre ese contenido es el del PR que trae esta actualización del
-handoff.
+run oficial sobre ese contenido fue el del #36, en verde.
 
 ### `main` al 15/9
 
-Último merge: **#35** (`0a8e802`).
+Último merge: **#36** (`fc51441`).
 
 | | |
 |---|---|
 | Tests en `main` | 184 en 25 archivos |
+| Tests en el #37 | 186 en 26 archivos |
 | `npm run build` | 175 páginas |
 | Rutinas sin conflicto | 344 de 360 · 0 con "separar" — medido el 12/9 |
 | Links que monetizan | 81 de 81, todos de `maurobilat` — medido otra vez el 15/9 |
@@ -86,7 +100,7 @@ handoff.
 
 Las rutinas y los activos no se volvieron a medir: desde el 12/9 no se tocó el
 catálogo y el único cambio de motor fueron las alternativas (#27), que no cambian
-la rutina.
+la rutina. El #37 tampoco toca motor ni catálogo: sólo presentación.
 
 ---
 
@@ -113,7 +127,7 @@ quiz). El **#31** trajo Resend: el mail que sale cuando alguien deja su correo.
 - **#32 · Tamaño de letra.** Piso de 12 px, instrucciones a 14, campos a 16.
 - **#33 · Tinta en tres niveles:** entero, `/80` y `/70`.
 
-**Dirección visual nueva (#34, #35).** Ver §4.
+**Dirección visual nueva (#34, #35 y #37).** Ver §4.
 
 ---
 
@@ -134,6 +148,8 @@ mayúscula chica con aire, botones rectos y líneas finas. Está escrito en
   Beauty of Joseon usa Proxima Sera, que es paga.
 - **La foto de la franja** no podía ser una hoja verde recortada.
 - **Descargar las imágenes**, después de ver archivo, fuente, tamaño y licencia.
+- **Botón de compra terracota, y el terracota sólo para comprar** (el paso 2,
+  abajo).
 
 **Lo que se decidió en el camino y conviene sostener:**
 - **Fotos sólo con licencia verificada en la página de cada una.** En Unsplash eso
@@ -154,10 +170,25 @@ mayúscula chica con aire, botones rectos y líneas finas. Está escrito en
   `BOTON_LINEA`).
 - **Lo que sale:** `FondoMonte`, `home.module.css`, `foto.ts` y `monte.webp`.
 
-**Lo que NO cambió todavía:** catálogo, quiz, resultado, fichas, kits y
-combinaciones heredaron la serif, el marfil y los bordes cálidos, pero siguen con
-tarjetas redondeadas, el tinte verde `gel`, el botón de compra terracota y el
-formulario de mail redondeado. Es el próximo paso (§6).
+**El paso 2, en el #37.** Antes de tocar código se hizo un boceto: un HTML con
+copy y datos reales del build local, a 390 px, con el resultado en las dos
+opciones de botón de compra. El usuario eligió **terracota** y aceptó las demás
+propuestas. Lo que cambió:
+- **Catálogo, quiz, resultado, fichas, kits y combinaciones:** tarjetas y botones
+  rectos; arena o marfil donde había `gel`. `gel` queda en la paleta, sin uso.
+- **`Encabezado`:** el header de la home, sacado a un componente que usan la home
+  y `Shell`. "Volver" va a la derecha y sólo en pantallas chicas.
+- **`BOTON_COMPRA`:** terracota, recto, en mayúscula con aire. Es el único botón
+  terracota; filtro activo, opción elegida del quiz, sello de los kits, avisos y
+  "separar" pasan a tinta.
+- **Fotos de producto sobre arena** con `mix-blend-mode: multiply` (`MARCO_FOTO`,
+  `FOTO_PRODUCTO`): el blanco de Mercado Libre deja de verse como un recuadro.
+- **Mail y selector de orden** rectos, con borde y placeholder en `tinta/70`.
+- **El quiz** tenía un `<main>` y márgenes propios adentro del `Shell`, que ya los
+  pone: dos `<main>` anidados y 40 px menos de ancho a 390 px. Se sacaron.
+- **Tabla de combinaciones:** ✕ ("nunca") y ＋ ("se potencian") son la misma cruz
+  girada. Sin terracota, "nunca" va en tinta con más peso y "se potencian" en
+  salvia; la leyenda usa los mismos colores.
 
 ---
 
@@ -169,6 +200,7 @@ Las reglas viven en `docs/proyecto/02-MARCA.md` y en el comentario de
 | Test | Qué frena |
 |---|---|
 | `contraste.test.ts` | Calcula la matriz desde `PALETA` y escanea las clases de `src/`: tinta sólo en `/80` o `/70`; texto de color sin opacidad; `bg-gel` hasta `/35`; texto de color sobre superficie teñida; terracota sobre `arena`. Por debajo del mínimo sólo con `disabled:` |
+| `terracota.test.ts` | Ninguna clase con terracota fuera de `estilo.ts` (`BOTON_COMPRA`) y `Alternativas.tsx` (el link de cada alternativa) |
 | `tipografia.test.ts` | Ningún `text-[…]` con tamaño; nada debajo de 12 px en `theme.css`; campos de formulario desde `text-base` |
 | `paleta.test.ts` | `paleta.ts` y `theme.css` declaran los mismos colores |
 | `copy-home.test.ts`, `copy-pasos.test.ts`, `copy-quiz.test.ts`, `bienvenida.test.ts` | El copy pasa por `PROHIBIDAS` de `claims.ts` |
@@ -184,23 +216,36 @@ secundaria.
 
 ## 6 · Lo próximo, priorizado
 
-1. **Confirmar que CI y Vercel andan con `ExtremeImagery`.** En su primer PR o
-   merge tiene que aparecer `verificar`, y su merge tiene que terminar en un
-   deployment de Production (§1). Si `verificar` no aparece, la cuenta nueva tiene
-   el mismo problema que la anterior (§10).
-2. **Llevar el resto del sitio al lenguaje de la home.** Catálogo, quiz, resultado,
-   fichas, kits y combinaciones:
-   - tarjetas rectas;
-   - `arena` o marfil en vez del tinte verde `gel`;
-   - `Shell` con el header de la home;
-   - el formulario de mail recto.
-
-   **El color del botón de compra es decisión del usuario:** terracota o tinta.
-   Proponerlo, no hacerlo.
-3. **La imagen para compartir** (`opengraph-image.tsx` y
+1. **Mergear el #37 cuando el usuario lo apruebe, con `ExtremeImagery`.** Es
+   también la prueba de la cuenta (§1): `verificar` en el PR, `verificar` en el
+   push a `main` y el deployment de Production de ese commit. Si `verificar` no
+   aparece, la cuenta nueva tiene el mismo problema que la anterior (§10).
+2. **La imagen para compartir** (`opengraph-image.tsx` y
    `api/og/producto/[slug]`) sigue con el diseño anterior. Pinterest recomienda 2:3
-   (1000×1500) y las actuales son 1200×630.
-4. **Frescura del catálogo en producción.** Producción lee el catálogo de Supabase,
+   (1000×1500) y las actuales son 1200×630. Cambiar el tamaño es una decisión del
+   usuario: una imagen 2:3 se recorta en otras redes.
+3. **Los 6 productos sin verificar** (§7), empezando por el ISDIN Ureadin Fusion.
+4. **Fotos propias de ingredientes.** Una sección como la de ingredientes de Beauty
+   of Joseon (centella, ginseng o arroz recortados) no se puede hacer con bancos
+   libres: no hay con esa calidad.
+5. **Pendientes de producto:**
+   - las preguntas frecuentes reales, cuando haya respuestas de clientas;
+   - prueba social y carrusel;
+   - el copy "guardá tu rutina" de la captura de la home, que es la etiqueta del
+     quiz;
+   - **el mail de bienvenida** (`src/lib/emails/bienvenida.ts`) sigue con un botón
+     terracota redondeado. No lleva a comprar, así que por la regla del terracota
+     no le corresponde; queda para decidir con el usuario.
+6. **Catálogo:**
+   - las dos compras de `docs/COMPRAR.md`;
+   - 9 productos atados a un solo vendedor (`docs/listados-atados.md`);
+   - confirmar con el frasco el alcanfor del Beauty of Joseon;
+   - `INGREDIENTES.md` §8.4 todavía dice que no hay protector mineral, y hay;
+   - **el sérum Hydro Boost (`MLA22655637`) se contradice:** el comentario de
+     `activos.ts` dice "sin fragancia" y el mapeo incluye `fragancia`, con lo que
+     queda vetado para piel sensible. Hay que resolverlo con el INCI de la fórmula
+     latinoamericana. El gel limpiador Hydro Boost (`MLA53897352`) está bien.
+7. **Frescura del catálogo en producción.** Producción lee el catálogo de Supabase,
    que queda al día sólo cuando alguien corre `npm run sync`.
    - Ian no corrió el `sync` el 15/9: en los logs de Supabase de ese día sólo hay
      lecturas de `productos`.
@@ -209,20 +254,6 @@ secundaria.
      inactivo (Mela B3 "Opcion 2") está inactivo en los dos lados. Las correcciones
      de `apto_sensible` del 12/9 ya están en producción.
    - Vuelve a hacer falta con el próximo cambio de catálogo.
-5. **Los 6 productos sin verificar** (§7), empezando por el ISDIN Ureadin Fusion.
-6. **Fotos propias de ingredientes.** Una sección como la de ingredientes de Beauty
-   of Joseon (centella, ginseng o arroz recortados) no se puede hacer con bancos
-   libres: no hay con esa calidad.
-7. **Pendientes de producto:**
-   - las preguntas frecuentes reales, cuando haya respuestas de clientas;
-   - prueba social y carrusel;
-   - el copy "guardá tu rutina" de la captura de la home, que es la etiqueta del
-     quiz.
-8. **Catálogo:**
-   - las dos compras de `docs/COMPRAR.md`;
-   - 9 productos atados a un solo vendedor (`docs/listados-atados.md`);
-   - confirmar con el frasco el alcanfor del Beauty of Joseon;
-   - `INGREDIENTES.md` §8.4 todavía dice que no hay protector mineral, y hay.
 
 ---
 
@@ -260,23 +291,31 @@ arriba (`Main Claude/`), no del repo. Hay dos configuraciones:
 `next dev` y `next build` escriben los dos en `.next`: con uno levantado, el otro
 se rompe.
 
-**Medir renderizado.** Con `javascript_tool` en el panel, sobre la página
-renderizada:
+**Medir renderizado.** Sobre la página renderizada:
 - **Contraste:** compone cada capa de fondo en un canvas, en sRGB, igual que el
   navegador. Las opacidades de Tailwind v4 son `color-mix` con transparente, que da
   el mismo resultado.
 - **Tamaños:** que ningún texto baje de 12 px.
 - **Desborde:** `scrollWidth` contra el ancho de la pantalla.
 - **Imágenes:** que `naturalWidth` sea mayor que cero.
+- **Lo plegado:** abrir los `<details>` antes de medir, o no se mide.
 
-**Capturas.** Las del panel fallan cuando el panel no está a la vista. Lo que
-funciona es Chrome headless por CDP con el `WebSocket` de Node 24 contra el build
-de producción:
+**Lo que se midió en el #37:** nueve pantallas a 390 px —home, catálogo, ficha,
+quiz, un resultado real, kits, un kit de compra única, un kit armado y
+combinaciones—, con los desplegables abiertos: 914 textos, **0 debajo de 4,5:1, 0
+debajo de 12 px**, sin desborde y sin imágenes rotas.
+
+**Capturas y medición.** Las del panel fallan cuando el panel no está a la vista,
+y sus pestañas se cierran solas. Lo que funciona es Chrome headless por CDP con el
+`WebSocket` de Node 24 contra el build de producción:
 - **Chrome:** `C:\Program Files\Google\Chrome\Application\chrome.exe`, con
   `--remote-debugging-port` y un `--user-data-dir` propio.
 - **Emulación:** `Emulation.setDeviceMetricsOverride`.
-- **Captura:** `Page.captureScreenshot`.
-- **Los scripts no quedaron en el repo:** vivían en el scratchpad de la sesión.
+- **Captura:** `Page.captureScreenshot`, con `captureBeyondViewport` **sólo** para
+  la página entera: con `true` en una captura de una sola pantalla, devuelve la
+  página entera con el contenido repetido.
+- **Los scripts no quedaron en el repo:** vivían en el scratchpad de la sesión
+  (`captura.mjs` y `medir.mjs`, que hace las mediciones de arriba).
 
 **Unsplash bloquea el headless** con BotStopper. No se esquiva: se navega con el
 panel, que es un navegador normal, y las miniaturas del CDN
@@ -310,6 +349,8 @@ Las anteriores al 12/9 están en `docs/proyecto/06-ESTADO.md`.
 | **Fotos sólo con licencia verificada, sin marcas, sin gente, sin iconografía coreana** | 15/9; §4 |
 | **Contraste medido por capa; tinta en tres niveles** | #30 y #33; `02-MARCA.md` |
 | **Piso de 12 px, instrucciones a 14, campos a 16** | #32; `02-MARCA.md` |
+| **Botón de compra terracota y recto; el terracota, sólo para comprar** | Decisión del usuario, 15/9. Baymard pide un estilo propio para la compra y NN/g, reservar el acento para la acción principal; `02-MARCA.md` § *Terracota es comprar* |
+| **Fotos de producto sobre arena con multiply; campos con borde `tinta/70`** | Decisión del usuario, 15/9, sobre el boceto |
 
 ---
 
@@ -340,6 +381,10 @@ falla en CI: pasó con los `*.jpg` del #35 (§2).
 **Dos colores de texto en la misma lista de clases** (`text-tinta/70 text-tinta`)
 no se resuelven por orden. Para eso existe `ETIQUETA_BASE` en `estilo.ts`.
 
+**Un campo adentro de una etiqueta hereda su letra.** El `<select>` del orden del
+catálogo vive adentro de un `<label>` con `ETIQUETA` y le heredaba la mayúscula y
+el aire entre letras. Por eso lleva `normal-case tracking-normal`.
+
 **Una cuenta restringida por GitHub no avisa en el repo.** Le pasó a
 `WomenAre0bjects` el 15/9, alrededor de las 14:35. Síntomas: su perfil da 404
 (también en la API), los PR que abrió y los runs que disparó desaparecen de las
@@ -357,8 +402,15 @@ botones de la home del monte (#34).
 mostrar un conflicto viejo. Confirmar con `git merge-tree --write-tree
 origin/main <rama>`.
 
+**Git Bash convierte los argumentos que empiezan con `/` en rutas de Windows:**
+`/catalogo` le llega a un script de Node como `C:/Program Files/Git/catalogo`.
+Pasó con la medición del #37, que midió `about:blank` sin dar error. Correr esos
+scripts con `MSYS_NO_PATHCONV=1`.
+
 **Herramientas:** un heredoc por comando de bash; en Windows, Python imprime mal
-sin `PYTHONIOENCODING=utf-8`; `grep -E` con `\|` en vez de `|` da falsos ceros.
+sin `PYTHONIOENCODING=utf-8`; `grep -E` con `\|` en vez de `|` da falsos ceros;
+`rg` no acepta lookahead (`(?!…)`) sin `--pcre2`; en PowerShell, un `curl.exe -o
+NUL` hizo que la herramienta bloqueara el comando entero.
 
 ---
 
