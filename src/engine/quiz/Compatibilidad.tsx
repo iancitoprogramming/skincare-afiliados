@@ -21,14 +21,17 @@ import { Desplegable } from "@/components/Desplegable";
 // medían tres pantallas y empujaban la captura de mail fuera de la vista; el
 // botón cuenta lo que hay adentro y la persona abre lo que le importa.
 
-// El texto de los chips va en tinta, no en el color de la severidad. Sobre su
-// propio tinte el terracota queda en 3,77:1 y el piedra en 4,03:1, y a 11 px
-// hacen falta 4,5 (WCAG 1.4.3). El color sigue estando en el fondo del chip y en
-// el borde de la tarjeta; lo que se lee es la palabra.
+// El texto de los chips va en tinta, no en el color de la severidad: sobre su
+// propio tinte el piedra no llega a 4,5:1 (WCAG 1.4.3). El color sigue estando
+// en el fondo del chip y en el borde de la tarjeta; lo que se lee es la palabra.
+//
+// "Separar", el más serio, va en tinta llena. Fue terracota hasta el 15/9, pero
+// el terracota es sólo para comprar: un aviso del mismo color que el botón de
+// compra, a un scroll de distancia, mezcla las dos cosas.
 const ESTILO: Record<Severidad, { chip: string; borde: string }> = {
   separar: {
-    chip: "bg-terracota/15 text-tinta",
-    borde: "border-terracota/40",
+    chip: "bg-tinta text-porcelana",
+    borde: "border-tinta",
   },
   cuidado: {
     chip: "bg-piedra/15 text-tinta",
@@ -50,9 +53,9 @@ function Tarjeta({ conflicto }: { conflicto: Conflicto }) {
       : null;
 
   return (
-    <li className={`rounded-2xl border ${estilo.borde} bg-gel/15 p-4`}>
+    <li className={`border ${estilo.borde} p-4`}>
       <div className="flex flex-wrap items-center gap-2">
-        <span className={`rounded-full px-2 py-0.5 font-etiqueta text-xs ${estilo.chip}`}>
+        <span className={`px-2 py-0.5 font-etiqueta text-xs ${estilo.chip}`}>
           {copy.compatibilidad.severidad[conflicto.severidad]}
         </span>
         <span className="font-etiqueta text-xs text-piedra">

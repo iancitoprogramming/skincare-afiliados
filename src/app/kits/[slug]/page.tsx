@@ -3,6 +3,7 @@ import { Shell } from "@/components/Shell";
 import { BotonComprar } from "@/components/BotonComprar";
 import { PruebaSocial } from "@/components/PruebaSocial";
 import { RangoPrecio } from "@/components/RangoPrecio";
+import { ETIQUETA, ETIQUETA_BASE, FOTO_PRODUCTO, MARCO_FOTO } from "@/components/estilo";
 import { getCatalogo } from "@/engine/catalogo";
 import { OG_POR_DEFECTO } from "@/lib/sitio";
 import { conCriteriosDeOrden } from "@/niches/skincare/calidad";
@@ -42,25 +43,24 @@ export default async function KitDetalle({ params }: { params: Promise<{ slug: s
       <Shell volver={{ href: "/kits", label: copy.kits.volver }} disclaimers>
         <div className="flex flex-col gap-5">
           <header className="flex flex-col gap-2">
-            <span className="flex flex-wrap items-center gap-2 font-etiqueta text-xs text-piedra">
-              <span className="rounded-full bg-terracota px-2 py-0.5 text-porcelana">
+            {/* El sello en tinta: el terracota queda para el botón de compra. */}
+            <span className="flex flex-wrap items-center gap-x-3 gap-y-2">
+              <span className={`${ETIQUETA_BASE} border border-tinta px-2 py-0.5 text-tinta`}>
                 {copy.kits.unicos.badge}
               </span>
-              {unico.mas_vendido ? <span>más vendido en ML</span> : null}
+              {unico.mas_vendido ? <span className={ETIQUETA}>más vendido en ML</span> : null}
             </span>
-            <h1 className="font-display text-3xl font-medium leading-tight tracking-tight text-tinta">
+            <h1 className="font-display text-3xl font-normal leading-tight text-tinta">
               {unico.nombre}
             </h1>
             <p className="font-body text-sm text-tinta/80">{unico.descripcion}</p>
             <PruebaSocial d={unico} className="mt-1" />
           </header>
 
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={unico.imagen_url}
-            alt={unico.nombre}
-            className="h-56 w-full rounded-2xl border border-niebla bg-porcelana object-contain p-2"
-          />
+          <div className={`h-56 w-full p-4 ${MARCO_FOTO}`}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={unico.imagen_url} alt={unico.nombre} className={FOTO_PRODUCTO} />
+          </div>
 
           <div className="flex flex-col gap-1">
             <RangoPrecio rango={unico.rango_precio} className="self-start" />
@@ -68,8 +68,8 @@ export default async function KitDetalle({ params }: { params: Promise<{ slug: s
           </div>
 
           {unico.incluye.length > 0 ? (
-            <div className="rounded-2xl border border-niebla bg-gel/25 p-5">
-              <p className="font-etiqueta text-xs text-piedra">{copy.kits.unicos.incluye}</p>
+            <div className="bg-arena p-5">
+              <p className={ETIQUETA}>{copy.kits.unicos.incluye}</p>
               <ul className="mt-2 flex flex-col gap-1">
                 {unico.incluye.map((x) => (
                   <li key={x} className="font-body text-tinta">
@@ -107,11 +107,11 @@ export default async function KitDetalle({ params }: { params: Promise<{ slug: s
     <Shell volver={{ href: "/kits", label: copy.kits.volver }} disclaimers>
       <div className="flex flex-col gap-6">
         <header className="flex flex-col gap-2">
-          <p className="font-etiqueta text-xs text-piedra">
+          <p className={ETIQUETA}>
             {copy.kits.pasos(kit.pasos.length)} ·{" "}
             {copy.precio.rangoKit(copy.precio.rangos[kit.rango])}
           </p>
-          <h1 className="font-display text-3xl font-medium leading-tight tracking-tight text-tinta">
+          <h1 className="font-display text-3xl font-normal leading-tight text-tinta">
             {def.nombre}
           </h1>
           <p className="font-body text-sm text-tinta/80">{def.descripcion}</p>
@@ -129,7 +129,7 @@ export default async function KitDetalle({ params }: { params: Promise<{ slug: s
           ))}
         </div>
 
-        <p className="rounded-2xl border border-niebla bg-gel/25 p-4 font-body text-sm text-tinta/80">
+        <p className="bg-arena p-4 font-body text-sm text-tinta/80">
           {copy.kits.aclaracionCompra}
         </p>
       </div>

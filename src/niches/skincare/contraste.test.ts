@@ -76,16 +76,16 @@ const CLARAS: Record<string, RGB> = Object.fromEntries(
   Array.from({ length: GEL_TOPE / 5 + 1 }, (_, i) => [i === 0 ? "porcelana" : `gel/${i * 5}`, gel(i * 5)]),
 );
 
-// Superficies teñidas, cada una sobre la tarjeta en la que vive de verdad. Acá
-// el piedra y el terracota ya no pasan: el texto va en tinta.
+// Superficies teñidas, cada una sobre lo que tiene debajo de verdad. Acá el
+// piedra y el terracota ya no pasan: el texto va en tinta.
+//
+// Desde el 15/9 las tarjetas van rectas y sin tinte, así que los chips de
+// severidad quedan sobre porcelana. La opción elegida del quiz y el aviso de un
+// paso pasaron a arena, que se mide aparte; "separar" va en tinta llena con
+// porcelana encima, que es la misma cuenta que el botón lleno.
 const TENIDAS: Record<string, RGB> = {
-  "chip separar · terracota/15 en tarjeta gel/15": sobre("terracota", 15, gel(15)),
-  "chip cuidado · piedra/15 en tarjeta gel/15": sobre("piedra", 15, gel(15)),
-  "chip nota · niebla/40 en tarjeta gel/15": sobre("niebla", 40, gel(15)),
-  "opción seleccionada · piedra/15 en tarjeta gel/25": sobre("piedra", 15, gel(25)),
-  "opción apretada · gel/60 en tarjeta gel/25": sobre("gel", 60, gel(25)),
-  "aviso del paso · terracota/5 en tarjeta gel/25": sobre("terracota", 5, gel(25)),
-  "chip de reputación · gel sólido": rgb(PALETA.gel),
+  "chip cuidado · piedra/15 sobre porcelana": sobre("piedra", 15, PORCELANA),
+  "chip nota · niebla/40 sobre porcelana": sobre("niebla", 40, PORCELANA),
 };
 
 // Arena, el panel cálido de la home. No es teñida —ahí pasan piedra y salvia—,
@@ -126,12 +126,12 @@ describe("contraste: la matriz del sistema", () => {
   // El apoyo es lo que se lee de corrido: la explicación de cada paso, lo que hay
   // que saber de un choque. Ahí se pide AAA, que según W3C compensa la pérdida de
   // sensibilidad al contraste de quien tiene baja visión sin tecnología de asistencia.
-  it(`tinta/${APOYO} llega a ${REFORZADO}:1 sobre las superficies claras y sobre el aviso de un paso`, () => {
-    const dondeVive = { ...CLARAS, aviso: TENIDAS["aviso del paso · terracota/5 en tarjeta gel/25"] };
+  it(`tinta/${APOYO} llega a ${REFORZADO}:1 sobre las superficies claras y sobre arena, donde van los avisos`, () => {
+    const dondeVive = { ...CLARAS, arena: ARENA };
     expect(fallas(dondeVive, { [`tinta/${APOYO}`]: (f) => sobre("tinta", APOYO, f) }, REFORZADO)).toEqual([]);
   });
 
-  it("porcelana entera pasa sobre terracota sólido, que es el CTA", () => {
+  it("porcelana entera pasa sobre terracota sólido, que es el botón de compra", () => {
     expect(contraste(PORCELANA, rgb(PALETA.terracota))).toBeGreaterThanOrEqual(MINIMO);
   });
 

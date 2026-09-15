@@ -4,6 +4,7 @@ import { Shell } from "@/components/Shell";
 import { BotonComprar } from "@/components/BotonComprar";
 import { PruebaSocial } from "@/components/PruebaSocial";
 import { RangoPrecio } from "@/components/RangoPrecio";
+import { ETIQUETA, FOTO_PRODUCTO, MARCO_FOTO } from "@/components/estilo";
 import { getCatalogo } from "@/engine/catalogo";
 import { conCriteriosDeOrden } from "@/niches/skincare/calidad";
 import { armarKits } from "@/engine/kits";
@@ -60,19 +61,15 @@ export default async function ProductoDetalle({ params }: { params: Promise<{ sl
     <Shell volver={{ href: "/catalogo", label: "catálogo" }} disclaimers>
       <article className="flex flex-col gap-5">
         {p.imagen_url ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={p.imagen_url}
-            alt={`${p.marca ?? ""} ${p.nombre}`.trim()}
-            className="h-64 w-full rounded-2xl border border-niebla bg-porcelana object-contain p-3"
-          />
+          <div className={`h-72 w-full p-6 ${MARCO_FOTO}`}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={p.imagen_url} alt={`${p.marca ?? ""} ${p.nombre}`.trim()} className={FOTO_PRODUCTO} />
+          </div>
         ) : null}
 
         <header className="flex flex-col gap-2">
-          {p.marca ? <p className="font-etiqueta text-xs text-piedra">{p.marca}</p> : null}
-          <h1 className="font-display text-3xl font-medium leading-tight tracking-tight text-tinta">
-            {p.nombre}
-          </h1>
+          {p.marca ? <p className={ETIQUETA}>{p.marca}</p> : null}
+          <h1 className="font-display text-3xl font-normal leading-tight text-tinta">{p.nombre}</h1>
           <PruebaSocial d={p} />
         </header>
 
@@ -100,19 +97,19 @@ export default async function ProductoDetalle({ params }: { params: Promise<{ sl
 
         {p.por_que ? (
           <section className="flex flex-col gap-2">
-            <h2 className="font-etiqueta text-xs text-piedra">por qué lo elegimos</h2>
+            <h2 className={ETIQUETA}>por qué lo elegimos</h2>
             <p className="font-body leading-relaxed text-tinta">{p.por_que}</p>
           </section>
         ) : null}
 
         {p.como_usar ? (
           <section className="flex flex-col gap-2">
-            <h2 className="font-etiqueta text-xs text-piedra">cómo se usa</h2>
+            <h2 className={ETIQUETA}>cómo se usa</h2>
             <p className="font-body leading-relaxed text-tinta">{p.como_usar}</p>
           </section>
         ) : null}
 
-        <section className="flex flex-col gap-3 rounded-2xl border border-niebla bg-gel/25 p-5">
+        <section className="flex flex-col divide-y divide-niebla bg-arena px-5">
           <Dato k="paso" v={CATEGORIAS[p.categoria] ?? p.categoria} />
           <Dato k="origen" v={ORIGENES[p.origen] ?? p.origen} />
           <Dato k="tipo de piel" v={p.tipos_piel.join(" · ")} />
@@ -124,15 +121,15 @@ export default async function ProductoDetalle({ params }: { params: Promise<{ sl
 
         {enKits.length > 0 ? (
           <section className="flex flex-col gap-3">
-            <h2 className="font-etiqueta text-xs text-piedra">aparece en</h2>
+            <h2 className={ETIQUETA}>aparece en</h2>
             {enKits.map((k) => (
               <Link
                 key={k.def.slug}
                 href={`/kits/${k.def.slug}`}
-                className="flex flex-col gap-1 rounded-2xl border border-niebla bg-porcelana p-4 transition-transform active:scale-[0.99]"
+                className="flex flex-col gap-1 border border-niebla p-4 transition-colors hover:border-tinta"
               >
-                <span className="font-display text-lg font-medium text-tinta">{k.def.nombre}</span>
-                <span className="font-etiqueta text-xs text-piedra">
+                <span className="font-display text-lg font-normal text-tinta">{k.def.nombre}</span>
+                <span className={ETIQUETA}>
                   {copy.kits.pasos(k.pasos.length)} · {copy.precio.rangoKit(copy.precio.rangos[k.rango])}
                 </span>
               </Link>
@@ -146,8 +143,8 @@ export default async function ProductoDetalle({ params }: { params: Promise<{ sl
 
 function Dato({ k, v }: { k: string; v: string }) {
   return (
-    <p className="flex items-baseline justify-between gap-4">
-      <span className="font-etiqueta text-xs text-piedra">{k}</span>
+    <p className="flex items-baseline justify-between gap-4 py-3">
+      <span className={ETIQUETA}>{k}</span>
       <span className="text-right font-body text-sm text-tinta">{v}</span>
     </p>
   );

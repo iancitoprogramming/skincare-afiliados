@@ -16,6 +16,7 @@ import { anclaDePaso, pasosPorMomento, type PasoMostrado } from "./repetidos";
 import { GuardarEmail } from "./GuardarEmail";
 import { useYaLoTengo } from "./yaLoTengo";
 import { Desplegable } from "@/components/Desplegable";
+import { ETIQUETA, ETIQUETA_BASE } from "@/components/estilo";
 
 export function Resultados({
   config,
@@ -105,7 +106,7 @@ export function Resultados({
     momento: "am" | "pm";
   }) => (
     <section className="flex flex-col gap-3">
-      <h2 className="font-etiqueta text-sm text-piedra">{titulo}</h2>
+      <h2 className={`${ETIQUETA_BASE} text-tinta`}>{titulo}</h2>
       {pasos.map(({ paso, numero, repetido }) =>
         repetido ? (
           <PasoRepetido
@@ -145,8 +146,8 @@ export function Resultados({
   return (
     <div className="flex flex-col gap-8">
       <header>
-        <p className="font-etiqueta text-xs text-piedra">{resumen}</p>
-        <h1 className="font-display text-3xl font-medium text-tinta">{config.resultados.titulo}</h1>
+        <p className={ETIQUETA}>{resumen}</p>
+        <h1 className="mt-2 font-display text-3xl font-normal text-tinta">{config.resultados.titulo}</h1>
         {tengoAca > 0 ? (
           <p className="mt-1 font-etiqueta text-xs text-salvia">
             {copy.yaLoTengo.resumen(tengoAca, categorias.length - tengoAca)}
@@ -169,7 +170,7 @@ export function Resultados({
         ) : null}
       </div>
 
-      <div className="rounded-2xl border border-niebla bg-gel/25 p-5">
+      <div className="bg-arena p-5">
         {/* La URL lleva las respuestas en la query (ver Quiz.syncUrl): es la
             rutina, y es lo que va en el mail. */}
         <GuardarEmail
@@ -184,7 +185,7 @@ export function Resultados({
       <button
         type="button"
         onClick={onReset}
-        className="self-start font-etiqueta text-sm text-piedra transition-colors hover:text-tinta"
+        className={`${ETIQUETA_BASE} inline-flex min-h-11 items-center self-start text-tinta underline decoration-niebla underline-offset-4 transition-colors hover:decoration-tinta`}
       >
         {config.resultados.rehacer}
       </button>

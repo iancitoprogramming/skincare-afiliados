@@ -1,5 +1,6 @@
 import type { PasoRutina as Paso } from "@/engine/recomendacion";
 import { copy } from "@/niches/skincare/copy";
+import { ETIQUETA } from "@/components/estilo";
 
 // Un paso de la noche que repite, con el mismo producto, uno que ya se mostró
 // entero a la mañana. Va resumido: número, función, lo que cambia a la noche si
@@ -31,15 +32,13 @@ export function PasoRepetido({
   const explicado = copy.pasos[paso.slot.categoria];
 
   return (
-    <div className="rounded-2xl border border-dashed border-niebla px-5 py-4">
-      <p className="font-etiqueta text-xs text-piedra">
+    <div className="border border-dashed border-niebla px-5 py-4">
+      <p className={ETIQUETA}>
         paso {String(numero).padStart(2, "0")} · {categoriaLabel}
-        {conAvisoDeCombinacion ? (
-          <span className="ml-2 text-tinta/70">↓ {copy.compatibilidad.enPaso}</span>
-        ) : null}
+        {conAvisoDeCombinacion ? <span className="ml-2">↓ {copy.compatibilidad.enPaso}</span> : null}
       </p>
 
-      <h3 className="mt-1.5 font-display text-lg font-medium leading-tight text-tinta">
+      <h3 className="mt-1.5 font-display text-lg font-normal leading-tight text-tinta">
         {explicado?.funcion ?? paso.producto.nombre}
       </h3>
 
