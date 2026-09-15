@@ -1,11 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
-import { preload } from "react-dom";
 import { Logo } from "@/components/Logo";
-import { FondoMonte } from "@/components/FondoMonte";
-import { FOTO } from "@/niches/skincare/foto";
 import { GuardarEmailHome } from "@/components/GuardarEmailHome";
 import { ComoFunciona } from "@/components/ComoFunciona";
 import { PreguntasFrecuentes } from "@/components/PreguntasFrecuentes";
+import { BOTON_LINEA, BOTON_LLENO, ETIQUETA, ETIQUETA_BASE } from "@/components/estilo";
 import { getCatalogo } from "@/engine/catalogo";
 import { conCriteriosDeOrden } from "@/niches/skincare/calidad";
 import { armarKits } from "@/engine/kits";
@@ -16,7 +15,7 @@ import { configServible } from "@/engine/quiz/servible";
 import { skincareQuiz } from "@/niches/skincare/config";
 import { productos as fallback } from "@/niches/skincare/productos";
 import { answersToQuery } from "@/engine/quiz/url";
-import s from "./home.module.css";
+import { AUTORES_HOME, FOTOS_HOME } from "@/niches/skincare/fotos-home";
 
 export const revalidate = 3600;
 
@@ -71,15 +70,13 @@ const REDES = [
   },
 ];
 
-// Sobre la foto el texto va en `tinta` y nada más: piedra, salvia y terracota
-// como texto no llegan a AA sobre el fade. El CTA lleva su propio fondo
-// terracota con porcelana encima, que sí pasa. Ver docs/proyecto/02-MARCA.md.
-const CTA =
-  "mt-2 inline-flex min-h-[52px] items-center gap-2 self-center rounded-[14px] bg-terracota px-5 font-body text-base font-medium text-porcelana";
-
-// Puerta de entrada: el monte detrás de todo y tres tarjetas, una por banda.
-// El que llega de una red social decide en un toque, sin buscar ni scrollear
-// un catálogo. La home no usa <Shell>: ver home.module.css.
+// La home con el lenguaje de Beauty of Joseon, que es la referencia visual:
+// fondo marfil, títulos en serif, fotos de texturas, líneas finas y botones
+// rectos. Reemplaza al fondo de monte en bandas, que era provisorio.
+//
+// Lo que no cambió es la arquitectura: las tres puertas siguen siendo tres y la
+// portada ya deja entrar al quiz (el botón) o por el objetivo (los chips). Lo
+// que va debajo de las puertas no es una puerta: ver 03-PRODUCTO.md.
 export default async function Home() {
   const productos = await getCatalogo(fallback, conCriteriosDeOrden);
   const kits = armarKits(productos, KITS, TIERS);
@@ -96,49 +93,101 @@ export default async function Home() {
   // son las del quiz, no una copia.
   const objetivo = quiz.questions.find((q) => q.urlKey === quiz.recomendacion.objetivoKey);
 
-  // La foto es el elemento más grande de la pantalla: es el LCP. Sin preload
-  // el navegador la descubre recién al parsear el <img>, tarde.
-  preload(FOTO.archivo, { as: "image", fetchPriority: "high" });
+  const puertas = [
+    {
+      href: "/rutina",
+      foto: FOTOS_HOME.rutina,
+      etiqueta: "a tu medida",
+      titulo: copy.home.quiz.titulo,
+      bajada: copy.home.quiz.bajada(preguntas),
+      cta: copy.home.quiz.cta,
+    },
+    {
+      href: "/catalogo",
+      foto: FOTOS_HOME.catalogo,
+      etiqueta: `${activos} productos · con filtros`,
+      titulo: copy.catalogo.titulo,
+      bajada: copy.catalogo.bajadaHome,
+      cta: copy.catalogo.cta,
+    },
+    ...(total > 0
+      ? [
+          {
+            href: "/kits",
+            foto: FOTOS_HOME.kits,
+            etiqueta: `${total} kits${KITS_UNICOS.length > 0 ? " · hay de una sola compra" : ""}`,
+            titulo: copy.home.kits.titulo,
+            bajada: copy.home.kits.bajada,
+            cta: copy.home.kits.cta,
+          },
+        ]
+      : []),
+  ];
+
+  const nav = copy.home.nav;
 
   return (
-    <>
-      <FondoMonte />
+    <div className="min-h-[100dvh] bg-porcelana">
+      <p className="bg-tinta px-4 py-2 text-center font-etiqueta text-xs text-porcelana">{copy.home.aviso}</p>
 
-      <header className={s.marca}>
-        <Link href="/" className="inline-flex items-center gap-2">
-          <Logo size={26} className="text-piedra" />
-          <span className="font-display text-lg font-medium tracking-tight text-tinta">
-            {copy.marca}
-          </span>
-        </Link>
+      <header className="border-b border-niebla">
+        <div className="mx-auto flex h-16 max-w-7xl items-center px-5 lg:h-20 lg:px-14">
+          <nav aria-label="secciones" className="hidden flex-1 gap-8 lg:flex">
+            <Link href="/rutina" className={`${ETIQUETA_BASE} text-tinta`}>{nav.rutina}</Link>
+            <Link href="/catalogo" className={`${ETIQUETA_BASE} text-tinta`}>{nav.catalogo}</Link>
+            <Link href="/kits" className={`${ETIQUETA_BASE} text-tinta`}>{nav.kits}</Link>
+          </nav>
+          <Link href="/" className="flex items-center gap-2">
+            <Logo size={24} className="text-piedra" />
+            <span className="font-display text-2xl font-normal text-tinta lg:text-3xl">{copy.marca}</span>
+          </Link>
+          <div className="hidden flex-1 justify-end lg:flex">
+            <Link href="/combinaciones" className={`${ETIQUETA_BASE} text-tinta`}>{nav.combinaciones}</Link>
+          </div>
+        </div>
       </header>
 
-      <main className={s.contenido}>
-        <section className={s.seccion}>
-          <div className={s.copy}>
-            <h1 className="font-display text-titular font-medium leading-[1.06] tracking-tight text-tinta sm:text-5xl">
+      <main>
+        {/* Portada. En desktop, foto a la izquierda y texto a la derecha; en el
+            celular, la foto arriba y el texto abajo, centrado. */}
+        <section className="lg:grid lg:min-h-[640px] lg:grid-cols-[1.05fr_1fr]">
+          <div className="relative aspect-[4/3.4] lg:aspect-auto">
+            <Image
+              src={FOTOS_HOME.portada.imagen}
+              alt=""
+              fill
+              priority
+              placeholder="blur"
+              sizes="(min-width: 1024px) 52vw, 100vw"
+              className="object-cover"
+            />
+          </div>
+          <div className="flex flex-col items-center px-6 pb-12 pt-10 text-center lg:items-start lg:justify-center lg:px-18 lg:text-left">
+            <p className={ETIQUETA}>{copy.home.portada.etiqueta}</p>
+            <h1 className="mt-4 font-display text-titular font-normal leading-[1.08] text-tinta lg:text-6xl">
               {copy.home.titulo}
             </h1>
-            <p className="font-body text-base leading-relaxed text-tinta">{copy.home.bajada(preguntas)}</p>
-
-            <ul className="flex flex-col gap-2">
-              {copy.home.bullets.map((b) => (
-                <li key={b} className="font-body text-sm text-tinta">
-                  <span aria-hidden className="mr-2 inline-block h-1 w-3 rounded-full bg-salvia align-middle" />
-                  {b}
-                </li>
-              ))}
-            </ul>
+            <p className="mt-4 max-w-[38ch] font-body text-base leading-relaxed text-tinta/80">
+              {copy.home.bajada(preguntas)}
+            </p>
+            <div className="mt-7 flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row">
+              <Link href="/rutina" className={`${BOTON_LLENO} w-full max-w-72 sm:w-auto`}>
+                {copy.home.quiz.titulo}
+              </Link>
+              <Link href="/catalogo" className={`${BOTON_LINEA} w-full max-w-72 sm:w-auto`}>
+                {copy.catalogo.cta}
+              </Link>
+            </div>
 
             {objetivo ? (
-              <nav aria-label={objetivo.title} className="flex flex-col items-center gap-2 pt-1">
-                <p className="font-etiqueta text-xs text-tinta">{objetivo.title}</p>
-                <ul className="flex flex-wrap justify-center gap-2">
+              <nav aria-label={objetivo.title} className="mt-9 flex flex-col items-center gap-3 lg:items-start">
+                <p className={ETIQUETA}>{objetivo.title}</p>
+                <ul className="flex flex-wrap justify-center gap-2 lg:justify-start">
                   {objetivo.options.map((o) => (
                     <li key={o.value}>
                       <Link
                         href={`/rutina${answersToQuery({ [objetivo.urlKey]: o.value })}`}
-                        className="inline-flex min-h-11 items-center rounded-full border border-tinta/25 bg-porcelana/80 px-4 font-body text-sm font-medium text-tinta"
+                        className="inline-flex min-h-11 items-center rounded-full border border-niebla bg-porcelana px-4 font-body text-sm text-tinta transition-colors hover:border-tinta"
                       >
                         {o.label}
                       </Link>
@@ -147,114 +196,135 @@ export default async function Home() {
                 </ul>
               </nav>
             ) : null}
+          </div>
+        </section>
 
-            {/* La credibilidad del mecanismo la da contenido real, no un número.
-                Este link es el respaldo de la promesa de arriba. */}
-            <Link
-              href="/combinaciones"
-              className="self-center font-etiqueta text-xs text-tinta underline decoration-piedra underline-offset-4"
-            >
-              {copy.home.respaldo} →
+        {/* Las tres puertas, cada una con su foto. La tarjeta entera es el link;
+            el "botón" de adentro es un span, para no anidar dos controles. */}
+        <section aria-labelledby="puertas" className="bg-arena px-5 py-14 lg:px-14 lg:py-20">
+          <p className={`${ETIQUETA} text-center`}>{copy.home.puertas.etiqueta}</p>
+          <h2 id="puertas" className="mt-3 text-center font-display text-3xl font-normal text-tinta lg:text-4xl">
+            {copy.home.puertas.titulo}
+          </h2>
+          <ul className="mx-auto mt-9 grid max-w-7xl gap-4 md:grid-cols-3 lg:gap-6">
+            {puertas.map((p) => (
+              <li key={p.href} className="flex">
+                <Link href={p.href} className="group flex w-full flex-col bg-porcelana">
+                  <div className="relative aspect-[16/10] overflow-hidden">
+                    <Image
+                      src={p.foto.imagen}
+                      alt=""
+                      fill
+                      placeholder="blur"
+                      sizes="(min-width: 768px) 33vw, 100vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                    />
+                  </div>
+                  <div className="flex flex-1 flex-col items-center px-5 pb-7 pt-6 text-center">
+                    <span className={ETIQUETA}>{p.etiqueta}</span>
+                    <span className="mt-2 font-display text-2xl font-normal text-tinta">{p.titulo}</span>
+                    <span className="mt-1 font-body text-sm text-tinta/80">{p.bajada}</span>
+                    <span className={`${BOTON_LINEA} mt-5 group-hover:bg-tinta group-hover:text-porcelana`}>
+                      {p.cta}
+                    </span>
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <ComoFunciona preguntas={preguntas} />
+
+        {/* Cómo decidimos qué combina con qué: la credibilidad del mecanismo la da
+            contenido real, no un número. */}
+        <section className="border-t border-niebla lg:grid lg:grid-cols-2">
+          <div className="relative aspect-[16/9] lg:aspect-auto lg:min-h-[520px]">
+            <Image
+              src={FOTOS_HOME.combinaciones.imagen}
+              alt=""
+              fill
+              placeholder="blur"
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover"
+            />
+          </div>
+          <div className="flex flex-col items-center px-6 py-12 text-center lg:items-start lg:justify-center lg:px-18 lg:text-left">
+            <p className={ETIQUETA}>{copy.home.franja.etiqueta}</p>
+            <h2 className="mt-3 font-display text-3xl font-normal leading-tight text-tinta lg:text-4xl">
+              {copy.home.franja.titulo}
+            </h2>
+            <p className="mt-4 max-w-[42ch] font-body text-base leading-relaxed text-tinta/80">{copy.home.franja.texto}</p>
+            <Link href="/combinaciones" className={`${BOTON_LINEA} mt-7`}>
+              {copy.home.franja.cta}
             </Link>
           </div>
         </section>
 
-        {/* Cada tarjeta está atada a una banda del fondo: la que entra en foco
-            (centro de pantalla, hover o tap) es la que mueve su banda. */}
-        <section className={s.presentacion} data-presentacion>
-          <Link href="/rutina" data-banda="0" className={s.tarjeta}>
-            <div className={s.copy}>
-              <span className="font-etiqueta text-xs text-tinta">a tu medida</span>
-              <span className="font-display text-2xl font-medium text-tinta">
-                {copy.home.quiz.titulo}
-              </span>
-              <span className="font-body text-sm text-tinta">{copy.home.quiz.bajada(preguntas)}</span>
-              <span className={CTA}>{copy.home.quiz.cta} →</span>
-            </div>
-          </Link>
-          <Link href="/catalogo" data-banda="1" className={s.tarjeta}>
-            <div className={s.copy}>
-              <span className="font-etiqueta text-xs text-tinta">{activos} productos · con filtros</span>
-              <span className="font-display text-2xl font-medium text-tinta">
-                {copy.catalogo.titulo}
-              </span>
-              <span className="font-body text-sm text-tinta">{copy.catalogo.bajadaHome}</span>
-              <span className={CTA}>{copy.catalogo.cta} →</span>
-            </div>
-          </Link>
-          {total > 0 ? (
-            <Link href="/kits" data-banda="2" className={s.tarjeta}>
-              <div className={s.copy}>
-                <span className="font-etiqueta text-xs text-tinta">
-                  {total} kits{KITS_UNICOS.length > 0 ? " · hay de una sola compra" : ""}
-                </span>
-                <span className="font-display text-2xl font-medium text-tinta">
-                  {copy.home.kits.titulo}
-                </span>
-                <span className="font-body text-sm text-tinta">{copy.home.kits.bajada}</span>
-                <span className={CTA}>{copy.home.kits.cta} →</span>
-              </div>
-            </Link>
-          ) : null}
-        </section>
+        <PreguntasFrecuentes />
 
-        {/* Para el que no decidió en las tarjetas y bajó a mirar (vienen de
-            main, #28). Bloques de lectura: la columna va centrada pero el
-            texto queda a la izquierda, que es como se lee una lista. */}
-        <section className={`${s.seccion} ${s.suelta}`}>
-          <div className={`${s.copy} ${s.lectura}`}>
-            <ComoFunciona preguntas={preguntas} />
-          </div>
-        </section>
-        <section className={`${s.seccion} ${s.suelta}`}>
-          <div className={`${s.copy} ${s.lectura}`}>
-            <PreguntasFrecuentes />
-          </div>
-        </section>
-
-        <section className={`${s.seccion} ${s.cierre}`}>
-          <div className={s.copy}>
+        <section aria-label="guardá tu rutina" className="border-t border-niebla px-6 py-14">
+          <div className="mx-auto max-w-md">
             <GuardarEmailHome label="guardá tu rutina" />
-
-            {/* Los criterios viven en el pie, como en toda pantalla. Sin
-                disclaimers: en el home no hay links de compra a la vista. */}
-            <footer className="flex flex-col gap-2 pt-4">
-              <Link
-                href="/combinaciones"
-                className="self-center font-etiqueta text-xs text-tinta underline decoration-piedra underline-offset-4"
-              >
-                {copy.home.criterios} →
-              </Link>
-              <p className="font-etiqueta text-xs text-tinta">
-                foto ·{" "}
-                <a href={FOTO.url} target="_blank" rel="noopener" className="underline underline-offset-2">
-                  {FOTO.autor} · {FOTO.licencia}
-                </a>
-              </p>
-            </footer>
           </div>
         </section>
       </main>
 
-      <nav className={s.redes} aria-label="redes sociales">
-        {REDES.map((r) => (
-          <a key={r.nombre} href={r.href} target="_blank" rel="noopener" aria-label={r.nombre} className="text-tinta">
-            <svg
-              viewBox="0 0 24 24"
-              width="22"
-              height="22"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.6"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
+      {/* Sin disclaimers: en la home no hay links de compra a la vista. */}
+      <footer className="border-t border-niebla px-6 pb-12 pt-14 text-center">
+        <p className="font-display text-5xl font-normal leading-none text-tinta md:text-8xl lg:text-9xl">{copy.marca}</p>
+
+        <nav aria-label="redes sociales" className="mt-8 flex justify-center gap-1">
+          {REDES.map((r) => (
+            <a
+              key={r.nombre}
+              href={r.href}
+              target="_blank"
+              rel="noopener"
+              aria-label={r.nombre}
+              className="grid h-11 w-11 place-items-center text-tinta"
             >
-              {r.icono}
-            </svg>
-          </a>
-        ))}
-      </nav>
-    </>
+              <svg
+                viewBox="0 0 24 24"
+                width="22"
+                height="22"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                {r.icono}
+              </svg>
+            </a>
+          ))}
+        </nav>
+
+        <div className="mt-6 flex flex-col items-center gap-3">
+          <Link
+            href="/combinaciones"
+            className="font-etiqueta text-xs text-tinta underline decoration-niebla underline-offset-4"
+          >
+            {copy.home.criterios} →
+          </Link>
+          <p className="font-etiqueta text-xs text-tinta/70">
+            {copy.home.creditoFotos}:{" "}
+            {AUTORES_HOME.map(({ autor, perfil }, i) => (
+              <span key={autor}>
+                {i > 0 ? " y " : ""}
+                <a href={perfil} target="_blank" rel="noopener" className="underline underline-offset-2">
+                  {autor}
+                </a>
+              </span>
+            ))}{" "}
+            en{" "}
+            <a href="https://unsplash.com" target="_blank" rel="noopener" className="underline underline-offset-2">
+              Unsplash
+            </a>
+          </p>
+        </div>
+      </footer>
+    </div>
   );
 }

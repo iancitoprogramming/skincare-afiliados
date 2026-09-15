@@ -1,4 +1,4 @@
-// El copy nuevo de la home —cómo funciona y preguntas— pasa por el mismo filtro
+// El copy de la home —portada, puertas, franja, cómo funciona y preguntas— pasa por el mismo filtro
 // de claims que el copy de producto y el de los pasos. Es de lo primero que lee
 // alguien que llega desconfiando, y un "garantiza" o un "trata" ahí lo lee
 // cualquiera.
@@ -19,7 +19,15 @@ function textos(valor: unknown): string[] {
 describe("copy de la home: cómo funciona y preguntas", () => {
   it("no promete lo que el sitio no puede sostener", () => {
     const problemas: string[] = [];
-    for (const texto of textos({ metodo: copy.home.metodo, preguntas: copy.home.preguntas })) {
+    const home = {
+      aviso: copy.home.aviso,
+      portada: copy.home.portada,
+      puertas: copy.home.puertas,
+      franja: copy.home.franja,
+      metodo: copy.home.metodo,
+      preguntas: copy.home.preguntas,
+    };
+    for (const texto of textos(home)) {
       for (const [re, motivo] of PROHIBIDAS) {
         if (re.test(texto)) problemas.push(`"${texto.slice(0, 60)}…": ${motivo}`);
       }

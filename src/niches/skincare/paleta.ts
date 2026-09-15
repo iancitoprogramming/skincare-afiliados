@@ -11,13 +11,14 @@
 // `paleta.test.ts` compara este archivo contra theme.css y falla si divergen.
 
 export const PALETA = {
-  porcelana: "#f4f6f3",
+  porcelana: "#fbfaf7",
   tinta: "#1b2430",
   piedra: "#5a6b85",
   salvia: "#4a6b57",
   gel: "#dce7de",
+  arena: "#f3ede6",
   terracota: "#c2410c",
-  niebla: "#cbd5d0",
+  niebla: "#e0d8cd",
 } as const;
 
 export type NombreColor = keyof typeof PALETA;

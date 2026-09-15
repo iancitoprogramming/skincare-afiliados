@@ -13,7 +13,7 @@ export const copy = {
   home: {
     // Above the fold. El mecanismo es "no es el producto, es la combinación", y
     // está respaldado por el motor de compatibilidad: reglas de conflicto entre
-    // activos, sinergias y mitos. Por eso el fold cierra con un link a
+    // activos, sinergias y mitos. Por eso la home tiene una franja propia hacia
     // /combinaciones — la credibilidad la da el contenido, no un número.
     //
     // El marco temporal ("en 5 preguntas") es sobre NUESTRO servicio, no sobre
@@ -26,13 +26,34 @@ export const copy = {
     bajada: (preguntas: number) =>
       `Te armamos la rutina completa en ${preguntas} preguntas, cruzando cada activo con los demás. ` +
       "Sin probar y errar, sin comprar dos veces lo mismo, sin ácidos que se anulan entre sí.",
-    // Orientados a resultado, no a función. Dos: en mobile no entra un tercero
-    // sin empujar el CTA abajo del fold.
-    bullets: [
-      "Comprás una vez lo que te sirve, en vez de ir sumando frascos que quedan por la mitad.",
-      "Te decimos cuándo un producto no es para tu piel, aunque lo tengamos en el catálogo.",
-    ],
-    respaldo: "cómo decidimos qué combina con qué",
+    // La franja oscura de arriba de todo. Dice qué hacemos, no qué le va a pasar
+    // a la piel.
+    aviso: "Elegimos producto por producto y te decimos por qué",
+    portada: {
+      etiqueta: "Rutinas de skincare, a tu medida",
+    },
+    nav: {
+      rutina: "Rutina",
+      catalogo: "Catálogo",
+      kits: "Kits",
+      combinaciones: "Combinaciones",
+    },
+    puertas: {
+      etiqueta: "Tres formas de empezar",
+      titulo: "Elegí por dónde entrar",
+    },
+    // La franja hacia /combinaciones. Resume la entrada de esa página: «no
+    // mezclar X con Y» son cuatro problemas distintos, cada uno con su arreglo.
+    franja: {
+      etiqueta: "Qué se puede mezclar y qué no",
+      titulo: "Cómo decidimos qué combina con qué",
+      texto:
+        "«No mezclar X con Y» no quiere decir una sola cosa: quiere decir cuatro, y cada una se " +
+        "arregla distinto. Te las explicamos una por una.",
+      cta: "Leer las combinaciones",
+    },
+    // El crédito de las fotos, al pie. Ver src/niches/skincare/fotos-home.ts.
+    creditoFotos: "fotos",
     // Las líneas del titular para la imagen de Open Graph. Van acá, pegadas al
     // titular de la página, porque la vez que vivieron en otro archivo el copy
     // cambió y la imagen quedó con el headline anterior durante varios deploys.
@@ -138,7 +159,7 @@ export const copy = {
     // El link a los criterios en el pie de TODAS las pantallas (ver Shell), no
     // una puerta de la home. Vive abajo porque es para el que ya está adentro y
     // quiere entender por qué recomendamos lo que recomendamos. En la home el
-    // mismo destino aparece como `respaldo`, cerrando el fold.
+    // mismo destino tiene además su propia franja (`franja`).
     criterios: "cómo decidimos qué combina con qué",
   },
 

@@ -1,5 +1,5 @@
 // Contraste de texto: WCAG 2.2, criterio 1.4.3, nivel AA. Pide 4,5:1 para texto
-// normal. El sitio usa texto de 11 y 12 px en mono, así que el umbral de texto
+// normal. El sitio usa texto de 12 px, así que el umbral de texto
 // grande (3:1) no se aplica en ningún lado.
 //
 // Tiene dos partes:
@@ -88,6 +88,10 @@ const TENIDAS: Record<string, RGB> = {
   "chip de reputación · gel sólido": rgb(PALETA.gel),
 };
 
+// Arena, el panel cálido de la home. No es teñida —ahí pasan piedra y salvia—,
+// pero tampoco es clara del todo: el terracota queda en 4,46:1.
+const ARENA = rgb(PALETA.arena);
+
 function fallas(
   fondos: Record<string, RGB>,
   textos: Record<string, (fondo: RGB) => RGB>,
@@ -130,6 +134,23 @@ describe("contraste: la matriz del sistema", () => {
   it("porcelana entera pasa sobre terracota sólido, que es el CTA", () => {
     expect(contraste(PORCELANA, rgb(PALETA.terracota))).toBeGreaterThanOrEqual(MINIMO);
   });
+
+  it("porcelana entera pasa sobre tinta, que es el botón lleno de la home", () => {
+    expect(contraste(PORCELANA, rgb(PALETA.tinta))).toBeGreaterThanOrEqual(MINIMO);
+  });
+
+  it(`sobre arena pasan tinta/${NOTA}, piedra y salvia`, () => {
+    expect(
+      fallas(
+        { arena: ARENA },
+        {
+          [`tinta/${NOTA}`]: (f) => sobre("tinta", NOTA, f),
+          piedra: () => rgb(PALETA.piedra),
+          salvia: () => rgb(PALETA.salvia),
+        },
+      ),
+    ).toEqual([]);
+  });
 });
 
 // ── El escaneo ─────────────────────────────────────────────────────────────────
@@ -158,6 +179,8 @@ const TEXTO_CON_OPACIDAD = /(^|[^\w/:-])((?:[\w-]+:)*)text-(tinta|porcelana|pied
 const GEL_CON_OPACIDAD = /(^|[^\w/:-])((?:[\w-]+:)*)bg-gel\/(\d+)/g;
 const SUPERFICIE_TENIDA = /(^|[^\w/:-])bg-(?:(?:piedra|terracota|niebla|salvia)\/\d+|gel(?![\w/-]))/;
 const TEXTO_DE_COLOR = /(^|[^\w/:-])text-(piedra|terracota|salvia)(?![\w/-])/;
+const ARENA_CLASE = /(^|[^\w/:-])bg-arena(?![\w/-])/;
+const TEXTO_TERRACOTA = /(^|[^\w/:-])text-terracota(?![\w/-])/;
 
 function revisar(ruta: string, fuente: string): string[] {
   const s = sinComentarios(fuente);
@@ -193,6 +216,9 @@ function revisar(ruta: string, fuente: string): string[] {
     ...[...s.matchAll(/`[^`]*`/g)].map((m) => ({ texto: m[0].replace(/\$\{[^}]*\}/g, " "), i: m.index ?? 0 })),
   ];
   for (const { texto, i } of literales) {
+    if (ARENA_CLASE.test(texto) && TEXTO_TERRACOTA.test(texto)) {
+      out.push(`${ruta}:${linea(i)} text-terracota sobre arena: queda en 4,46:1`);
+    }
     if (!SUPERFICIE_TENIDA.test(texto)) continue;
     const deColor = texto.match(TEXTO_DE_COLOR);
     if (deColor) out.push(`${ruta}:${linea(i)} text-${deColor[2]} sobre superficie teñida: va en tinta`);
@@ -213,6 +239,7 @@ describe("contraste: las clases de src/", () => {
       [`<p className={\`p-5 \${x ? "bg-piedra/15 text-piedra" : ""}\`}>`, 1],
       [`<span className="text-tinta/65">`, 1],
       [`<p className="text-tinta/85">`, 1],
+      [`<section className="bg-arena text-terracota">`, 1],
       // Lo permitido no suena.
       [`<p className="text-tinta/80">`, 0],
       [`<p className="text-tinta/70">`, 0],
@@ -221,6 +248,7 @@ describe("contraste: las clases de src/", () => {
       [`<button className="hover:bg-gel/40 active:bg-gel/60">`, 0],
       [`chip: "bg-terracota/15 text-tinta",`, 0],
       [`<span className="rounded-full bg-gel text-tinta">`, 0],
+      [`<section className="bg-arena text-tinta/70">`, 0],
       [`// un comentario que nombra text-tinta/35 no es una clase`, 0],
     ];
     const distintos = casos
