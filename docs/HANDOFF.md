@@ -8,9 +8,11 @@
 > Production; la cuenta de Alex pasó de `WomenAre0bjects` a `ExtremeImagery` (§1,
 > §10), y el catálogo se comparó contra producción (§6).
 >
-> **Actualizado el 15/9 a la noche:** el paso 2 —el resto del sitio con el
-> lenguaje de la home— está en el **#37** (rama `sitio-editorial`), verificado y
-> esperando merge (§2, §4). El terracota quedó sólo para comprar (§5, §9).
+> **Actualizado el 15/9 a la noche:** el #37 —el resto del sitio con el lenguaje
+> de la home— está en `main` y en Production, mergeado con `ExtremeImagery`, que
+> quedó probada (§1). Abiertos: el **#38**, la imagen para compartir, esperando el
+> visto bueno del usuario, y el **#39**, el sérum Hydro Boost apto para piel
+> sensible (§2, §6).
 
 ---
 
@@ -48,14 +50,12 @@ que hacía `WomenAre0bjects` desde `gh pr merge` sí deployaban; se verificó en
 deployments de Production del #26 al #28, y del #34 y el #35. Con el repo público
 Vercel no frenó esos merges.
 
-**`ExtremeImagery` en la máquina de Alex.** Es la cuenta activa de `gh`, y git usa
-`gh` como helper de credenciales, así que los pushes salen con ella; su perfil es
-público (la API responde 200). El #36 no la prueba: lo mergeó `iancitoprogramming`,
-y en ese push a `main` (`fc51441`) corrió `verificar` y terminó Production con la
-cuenta de Ian. **El #37 sí la prueba, a medias:** lo pusheó y lo abrió
-`ExtremeImagery`, `verificar` corrió en el PR y dio verde, y el PR se ve sin token.
-Falta la otra mitad, que sólo se ve al mergearlo: `verificar` en el push a `main` y
-el deployment de Production de ese commit.
+**`ExtremeImagery` quedó probada el 15/9.** Es la cuenta activa de `gh` en la
+máquina de Alex, y git usa `gh` como helper de credenciales, así que los pushes
+salen con ella; su perfil es público. Pusheó y abrió el #37, `verificar` corrió en
+el PR y, al mergearlo, en el push a `main` (`72a1eae`), y el deployment de
+Production de ese commit terminó. El #36 no contaba para la prueba: lo mergeó
+`iancitoprogramming`.
 
 ---
 
@@ -68,7 +68,9 @@ el deployment de Production de ese commit.
 | **#34** | `arreglos-preview` | Los tres problemas de la preview del 15/9: puertas bajo las barras, catálogo sin productos en la primera pantalla y la franja de redes en desktop | En `main` (`d588c58`) y en Production |
 | **#35** | `home-editorial` | La home con el lenguaje de Beauty of Joseon (§4) | En `main` (`0a8e802`) y en Production |
 | **#36** | `docs-handoff-cuenta` | El handoff con el cambio de cuenta | En `main` (`fc51441`). Lo mergeó Ian; `verificar` y Production en verde |
-| **#37** | `sitio-editorial` | El resto del sitio con el lenguaje de la home (§4) | Abierto con `ExtremeImagery`, con `verificar` en verde. Verificado local (§8); esperando que el usuario lo mergee |
+| **#37** | `sitio-editorial` | El resto del sitio con el lenguaje de la home (§4) | En `main` (`72a1eae`) y en Production. Lo mergeó `ExtremeImagery` |
+| **#38** | `og-editorial` | La imagen para compartir con el lenguaje del sitio (§4) | Abierto, `verificar` en verde. Esperando el visto bueno del usuario al diseño |
+| **#39** | `sensible-hydro-boost` | El sérum Hydro Boost apto para piel sensible; `INGREDIENTES.md` §8.4 al día | Abierto. Después del merge hace falta `npm run sync` (§6) |
 
 **El #34 y el #35 quedaron invisibles en GitHub** porque los abrió
 `WomenAre0bjects`, que GitHub restringió (§10): la página del PR da 404 aunque se
@@ -87,20 +89,20 @@ run oficial sobre ese contenido fue el del #36, en verde.
 
 ### `main` al 15/9
 
-Último merge: **#36** (`fc51441`).
+Último merge: **#37** (`72a1eae`).
 
 | | |
 |---|---|
-| Tests en `main` | 184 en 25 archivos |
-| Tests en el #37 | 186 en 26 archivos |
+| Tests en `main` | 186 en 26 archivos |
+| Tests en el #39 | 187 en 26 archivos |
 | `npm run build` | 175 páginas |
-| Rutinas sin conflicto | 344 de 360 · 0 con "separar" — medido el 12/9 |
+| Rutinas sin conflicto | 344 de 360 · 0 con "separar" — medido otra vez el 15/9, con el #39 |
 | Links que monetizan | 81 de 81, todos de `maurobilat` — medido otra vez el 15/9 |
 | Activos con fuente verificada | 73 de 79 — medido el 12/9 |
 
-Las rutinas y los activos no se volvieron a medir: desde el 12/9 no se tocó el
-catálogo y el único cambio de motor fueron las alternativas (#27), que no cambian
-la rutina. El #37 tampoco toca motor ni catálogo: sólo presentación.
+Los activos no se volvieron a medir: el #39 corrige el mapeo de un producto que ya
+tenía la fuente verificada. El #37 y el #38 son sólo presentación, y el sérum del
+#39 es un paso opcional que no entra en ninguna rutina.
 
 ---
 
@@ -127,7 +129,9 @@ quiz). El **#31** trajo Resend: el mail que sale cuando alguien deja su correo.
 - **#32 · Tamaño de letra.** Piso de 12 px, instrucciones a 14, campos a 16.
 - **#33 · Tinta en tres niveles:** entero, `/80` y `/70`.
 
-**Dirección visual nueva (#34, #35 y #37).** Ver §4.
+**Dirección visual nueva (#34, #35, #37 y #38).** Ver §4.
+
+**El sérum Hydro Boost (#39).** Ver §6.
 
 ---
 
@@ -190,6 +194,19 @@ propuestas. Lo que cambió:
   girada. Sin terracota, "nunca" va en tinta con más peso y "se potencian" en
   salvia; la leyenda usa los mismos colores.
 
+**La imagen para compartir, en el #38.** Las dos imágenes de Open Graph seguían
+con el diseño anterior. Ahora:
+- **La de la home** lleva la foto de la portada, la etiqueta en mayúscula con aire
+  y el titular en Newsreader.
+- **La de cada ficha** lleva la marca del producto en mayúscula, el nombre en
+  Newsreader y la banda en un recuadro recto. **La foto va sobre blanco**: Satori
+  no soporta `mix-blend-mode`, y sobre arena se vería el recuadro.
+- **Las fuentes** se piden a Google Fonts con `text`, como en los ejemplos
+  oficiales de Vercel para OG (`src/components/og/recursos.ts`). Si Google no
+  responde, la imagen sale con la fuente por defecto y el build no se rompe.
+- **Sigue en 1200×630.** Si se suma una versión 2:3 para Pinterest es decisión
+  del usuario (§6).
+
 ---
 
 ## 5 · El sistema visual y sus candados
@@ -216,14 +233,20 @@ secundaria.
 
 ## 6 · Lo próximo, priorizado
 
-1. **Mergear el #37 cuando el usuario lo apruebe, con `ExtremeImagery`.** Es
-   también la prueba de la cuenta (§1): `verificar` en el PR, `verificar` en el
-   push a `main` y el deployment de Production de ese commit. Si `verificar` no
-   aparece, la cuenta nueva tiene el mismo problema que la anterior (§10).
-2. **La imagen para compartir** (`opengraph-image.tsx` y
-   `api/og/producto/[slug]`) sigue con el diseño anterior. Pinterest recomienda 2:3
-   (1000×1500) y las actuales son 1200×630. Cambiar el tamaño es una decisión del
-   usuario: una imagen 2:3 se recorta en otras redes.
+1. **Revisar el #38 con el usuario y mergearlo si aprueba el diseño.** Decidir
+   además si se suma una versión 2:3 para Pinterest: su página de especificaciones
+   de anuncios recomienda "a 2:3 aspect ratio, or 1000 x 1500 pixels", pero una
+   imagen así se recorta en WhatsApp y en Facebook.
+2. **Mergear el #39 y correr `npm run sync`.** Producción lee el catálogo de
+   Supabase, así que el sérum sigue vetado ahí hasta el `sync`. **Corregir también
+   el vault de Obsidian**, que todavía dice "no va a → sensible: Fragancia" para
+   ese sérum; un reimport pisaría el arreglo.
+   - Qué corrige: el mapeo del sérum Hydro Boost (`MLA22655637`) declaraba
+     `fragancia` contra su propio comentario y contra el INCI. La ficha oficial de
+     Neutrogena Uruguay (Kenvue), con la fórmula latinoamericana, no trae
+     fragancia; la marca lo declara "sin perfume" y FarmaPlus lo confirma.
+   - Se revisaron las 79 entradas de `activos.ts` buscando otro comentario que
+     contradiga su mapeo: no hay.
 3. **Los 6 productos sin verificar** (§7), empezando por el ISDIN Ureadin Fusion.
 4. **Fotos propias de ingredientes.** Una sección como la de ingredientes de Beauty
    of Joseon (centella, ginseng o arroz recortados) no se puede hacer con bancos
@@ -240,11 +263,9 @@ secundaria.
    - las dos compras de `docs/COMPRAR.md`;
    - 9 productos atados a un solo vendedor (`docs/listados-atados.md`);
    - confirmar con el frasco el alcanfor del Beauty of Joseon;
-   - `INGREDIENTES.md` §8.4 todavía dice que no hay protector mineral, y hay;
-   - **el sérum Hydro Boost (`MLA22655637`) se contradice:** el comentario de
-     `activos.ts` dice "sin fragancia" y el mapeo incluye `fragancia`, con lo que
-     queda vetado para piel sensible. Hay que resolverlo con el INCI de la fórmula
-     latinoamericana. El gel limpiador Hydro Boost (`MLA53897352`) está bien.
+   - `COMPATIBILIDAD.md` §8.4 es una medición vieja que todavía dice que no hay
+     protector mineral; si se vuelve a medir, actualizarla. `INGREDIENTES.md` §8.4
+     ya está al día en el #39.
 7. **Frescura del catálogo en producción.** Producción lee el catálogo de Supabase,
    que queda al día sólo cuando alguien corre `npm run sync`.
    - Ian no corrió el `sync` el 15/9: en los logs de Supabase de ese día sólo hay
@@ -253,7 +274,7 @@ secundaria.
      leyendo: los 78 activos coinciden en los 29 campos que sube el `sync`, y el
      inactivo (Mela B3 "Opcion 2") está inactivo en los dos lados. Las correcciones
      de `apto_sensible` del 12/9 ya están en producción.
-   - Vuelve a hacer falta con el próximo cambio de catálogo.
+   - **Vuelve a hacer falta con el #39.**
 
 ---
 
@@ -266,7 +287,7 @@ alguna le falta. Ninguna de estas se puede cerrar a distancia:
 | Producto | Qué falta |
 |---|---|
 | ISDIN Ureadin Fusion | **El más importante.** El mapeo declara ácido láctico y vitamina C pura que no aparecen en la parte visible del INCI |
-| LRP Anthelios Oil Control | `ml_id` `MLAU`: la API responde 403. El INCI sin color trae `Parfum` y `Zinc PCA` sin mapear |
+| LRP Anthelios Oil Control | `ml_id` `MLAU`: la API responde 403. El INCI sin color trae `Parfum` y `Zinc PCA` sin mapear. Está marcado no apto para sensible |
 | Idraet Espuma Extra Suave | La marca no publica INCI |
 | Avène Hydrance SPF30 | Variante sin resolver; no es la *Rich* |
 | Detenage N | Panalab bloquea la lectura automática |
@@ -304,6 +325,11 @@ se rompe.
 quiz, un resultado real, kits, un kit de compra única, un kit armado y
 combinaciones—, con los desplegables abiertos: 914 textos, **0 debajo de 4,5:1, 0
 debajo de 12 px**, sin desborde y sin imágenes rotas.
+
+**Las imágenes para compartir se miran como PNG**, bajadas del build local:
+`/opengraph-image` y `/api/og/producto/<slug>`. Conviene mirar una ficha con
+rating y otra con nombre largo y sin rating. Un cambio de fuente que no llegó no
+da error: la imagen sale con la de por defecto, y sólo se nota mirándola.
 
 **Capturas y medición.** Las del panel fallan cuando el panel no está a la vista,
 y sus pestañas se cierran solas. Lo que funciona es Chrome headless por CDP con el
@@ -360,15 +386,23 @@ Las anteriores al 12/9 están en `docs/proyecto/06-ESTADO.md`.
 *Rich* contra *Légère*, cuatro Dermaglós FPS30, Eucerin Tono Medio contra Toque
 Seco, Anthelios con y sin color. Cuando la API no resuelve, dejarlo pendiente.
 
-**Las fórmulas cambian por región.** El Neutrogena Hydro Boost no lleva perfume en
-España y sí en Latinoamérica.
+**Las fórmulas cambian por región.** El Neutrogena Hydro Boost en crema no lleva
+perfume en España y sí en Latinoamérica. Y la trampa corre para los dos lados:
+el sérum de la misma línea no lleva perfume en Latinoamérica, y el mapeo se lo
+había puesto (#39).
+
+**Un comentario puede decir lo contrario que el dato.** El motor lee el mapeo y el
+flag, no la prosa: el sérum Hydro Boost tenía "Sin fragancia" en el comentario y
+`fragancia` en el mapeo, y quedó vetado para piel sensible. Al tocar una entrada,
+leer las dos cosas.
 
 **Los `ml_id` `MLAU`** dan 403 en la API. Panalab, CosDNA y Neutrogena Argentina
 bloquean la lectura automática.
 
 **El importador puede borrar los links.** El vault y el catálogo divergieron: 5
 `ml_id` activos no existen en los `.md` de Obsidian y `npm run importar-organize`
-aborta a propósito.
+aborta a propósito. Desde el #39 hay una divergencia más, a propósito: el sérum
+Hydro Boost es apto en el repo y el vault todavía dice que no.
 
 **Medir el catálogo completo:** `productos.ts` **más** `productos.organize.ts`.
 Grepear sólo el primero da la mitad.
@@ -384,6 +418,10 @@ no se resuelven por orden. Para eso existe `ETIQUETA_BASE` en `estilo.ts`.
 **Un campo adentro de una etiqueta hereda su letra.** El `<select>` del orden del
 catálogo vive adentro de un `<label>` con `ETIQUETA` y le heredaba la mayúscula y
 el aire entre letras. Por eso lleva `normal-case tracking-normal`.
+
+**Satori no es CSS completo.** No soporta `mix-blend-mode` (por eso la foto de la
+imagen de ficha va sobre blanco), no decodifica WebP y sólo lee fuentes TTF, OTF o
+WOFF. Google Fonts devuelve TTF cuando se le pide sin User-Agent.
 
 **Una cuenta restringida por GitHub no avisa en el repo.** Le pasó a
 `WomenAre0bjects` el 15/9, alrededor de las 14:35. Síntomas: su perfil da 404
