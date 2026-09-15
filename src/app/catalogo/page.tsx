@@ -3,7 +3,7 @@ import { CatalogoGrid, type OpcionFiltro } from "@/components/CatalogoGrid";
 import { getCatalogo } from "@/engine/catalogo";
 import { conCriteriosDeOrden } from "@/niches/skincare/calidad";
 import { copy } from "@/niches/skincare/copy";
-import { CATEGORIAS, ORIGENES, skincareQuiz } from "@/niches/skincare/config";
+import { CATEGORIAS, CATEGORIAS_OPCIONALES, ORIGENES, skincareQuiz } from "@/niches/skincare/config";
 import { productos as fallback } from "@/niches/skincare/productos";
 import { OG_POR_DEFECTO } from "@/lib/sitio";
 
@@ -32,9 +32,16 @@ export default async function Catalogo() {
     .sort()
     .map((v) => ({ valor: v, label: etiquetaPiel(v).replace(/^Piel /, "") }));
 
+  // En el orden de una rutina, que es el de CATEGORIAS, y con las categorías
+  // opcionales marcadas para ir aparte: es la separación que promete la bajada.
+  // Las opcionales tienen pocos productos a propósito, y mezcladas con los pasos
+  // de siempre se leían como filtros casi vacíos.
+  const opcionales = new Set<string>(CATEGORIAS_OPCIONALES);
+  const enRutina = Object.keys(CATEGORIAS);
+  const posicion = (v: string) => (enRutina.includes(v) ? enRutina.indexOf(v) : enRutina.length);
   const pasos: OpcionFiltro[] = presentes(productos.map((p) => p.categoria))
-    .sort()
-    .map((v) => ({ valor: v, label: CATEGORIAS[v] ?? v }));
+    .sort((a, b) => posicion(a) - posicion(b))
+    .map((v) => ({ valor: v, label: CATEGORIAS[v] ?? v, opcional: opcionales.has(v) }));
 
   const origenes: OpcionFiltro[] = presentes(productos.map((p) => p.origen))
     .sort()

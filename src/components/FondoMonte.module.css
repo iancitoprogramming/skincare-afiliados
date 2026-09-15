@@ -18,6 +18,14 @@
   background: #4f6b52; /* verde medio de la foto, por si tarda en llegar */
   --ancho: 2.2;        /* la foto mide 2,2 viewports: las bandas viajan hasta 50 vw */
   --costura: 6px;
+  /* Lo que tapan la marca y las redes: los mismos valores que `.presentacion`
+     en `home.module.css`, que reparte las filas de las tarjetas en el espacio
+     que queda. Las costuras caen entre fila y fila y no en los tercios de la
+     pantalla, así cada tarjeta queda sobre su banda. `FondoMonte.test.ts` exige
+     que los dos archivos coincidan. */
+  --reserva-arriba: 6.5rem;
+  --reserva-abajo: calc(3rem + 44px + max(0.5rem, env(safe-area-inset-bottom)));
+  --fila: calc((100% - var(--reserva-arriba) - var(--reserva-abajo)) / 3);
   transform-origin: 50% 50%;
   /* Sin will-change acá a propósito: es una capa a pantalla completa y Chrome
      la promueve solo cuando cambia el transform. Tenerla siempre compositada
@@ -26,6 +34,7 @@
 @media (min-width: 900px) {
   .fondo {
     --ancho: 1.8; /* en desktop sobra ancho; menos recorte vertical de la foto */
+    --reserva-abajo: 0px; /* las redes van al costado */
   }
 }
 
@@ -60,25 +69,25 @@
 .superior {
   -webkit-mask-image: linear-gradient(
     to bottom,
-    #000 calc(33.333% - var(--costura) / 2),
-    transparent calc(33.333% + var(--costura) / 2)
+    #000 calc(var(--reserva-arriba) + var(--fila) - var(--costura) / 2),
+    transparent calc(var(--reserva-arriba) + var(--fila) + var(--costura) / 2)
   );
   mask-image: linear-gradient(
     to bottom,
-    #000 calc(33.333% - var(--costura) / 2),
-    transparent calc(33.333% + var(--costura) / 2)
+    #000 calc(var(--reserva-arriba) + var(--fila) - var(--costura) / 2),
+    transparent calc(var(--reserva-arriba) + var(--fila) + var(--costura) / 2)
   );
 }
 .media {
   -webkit-mask-image: linear-gradient(
     to bottom,
-    #000 calc(66.667% - var(--costura) / 2),
-    transparent calc(66.667% + var(--costura) / 2)
+    #000 calc(var(--reserva-arriba) + 2 * var(--fila) - var(--costura) / 2),
+    transparent calc(var(--reserva-arriba) + 2 * var(--fila) + var(--costura) / 2)
   );
   mask-image: linear-gradient(
     to bottom,
-    #000 calc(66.667% - var(--costura) / 2),
-    transparent calc(66.667% + var(--costura) / 2)
+    #000 calc(var(--reserva-arriba) + 2 * var(--fila) - var(--costura) / 2),
+    transparent calc(var(--reserva-arriba) + 2 * var(--fila) + var(--costura) / 2)
   );
 }
 

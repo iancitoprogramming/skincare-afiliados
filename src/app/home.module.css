@@ -54,9 +54,24 @@
   padding: 3rem 1.25rem;
 }
 
-/* Las tres tarjetas viven en la misma pantalla: una fila por banda. */
+/* Las tres tarjetas viven en la misma pantalla: una fila por banda.
+
+   Las filas se reparten lo que queda entre la marca y las redes, no la pantalla
+   entera. Repartiendo la pantalla, a 390×844 los 32 px de abajo del botón de
+   kits quedaban bajo el velo de las redes, y a 375×667 el botón terminaba debajo
+   de los íconos y la etiqueta de arriba quedaba a la altura del logo.
+
+   Arriba, la marca (81 px medidos) más su velo de 1.5rem. Abajo, las redes
+   (44 px de ícono y su padding) más su velo de 2.5rem. Las costuras del fondo
+   (`FondoMonte.module.css`) se calculan con estos mismos dos valores para que
+   cada tarjeta siga sobre su banda: si cambian acá, cambian allá, y
+   `FondoMonte.test.ts` lo exige. */
 .presentacion {
+  --reserva-arriba: 6.5rem;
+  --reserva-abajo: calc(3rem + 44px + max(0.5rem, env(safe-area-inset-bottom)));
   height: 100svh;
+  padding-top: var(--reserva-arriba);
+  padding-bottom: var(--reserva-abajo);
   display: grid;
   grid-template-rows: repeat(3, minmax(0, 1fr));
   grid-template-columns: minmax(0, 1fr);
@@ -72,6 +87,14 @@
 .tarjeta .copy {
   padding: 0.9rem 0.5rem;
   gap: 0.35rem;
+  /* Sin aislar, a diferencia del resto de los bloques. Con `isolation: isolate`
+     cada tarjeta pinta su velo en su propio contexto, y el de la tarjeta de
+     abajo —que sobresale 3.5rem— quedaba encima del botón de la de arriba: a
+     375×667, con las tarjetas a 9 px entre sí, "Empezar" y "Ver el catálogo" se
+     veían lavados. Sin aislar, los tres velos van al contexto de `.contenido`,
+     detrás de todo el contenido de la presentación y encima de la foto; donde
+     se pisan, se suman. */
+  isolation: auto;
 }
 @media (max-height: 500px) and (orientation: landscape) {
   .presentacion {
@@ -172,17 +195,28 @@
   border-radius: 999px;
 }
 @media (min-width: 900px) {
+  .presentacion {
+    --reserva-abajo: 0px; /* en desktop las redes van al costado, no abajo */
+  }
+  /* La tira mide lo que miden los íconos, centrada en alto. Antes iba de arriba
+     a abajo de la pantalla, y su velo se leía como una franja blanca a lo largo
+     de todo el borde derecho de la foto. */
   .redes {
     left: auto;
     right: 0.75rem;
-    top: 0;
-    bottom: 0;
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
     flex-direction: column;
     justify-content: center;
     padding: 0;
   }
+  /* El velo sobresale 3rem arriba y abajo y ahí se desvanece; donde están los
+     íconos queda igual de denso que antes. */
   .redes::before {
-    inset: 0 -0.75rem 0 -2rem;
+    inset: -3rem -0.75rem -3rem -2rem;
     background: linear-gradient(to left, rgb(244 246 243 / 0.85), rgb(244 246 243 / 0));
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 3rem, #000 calc(100% - 3rem), transparent);
+    mask-image: linear-gradient(to bottom, transparent, #000 3rem, #000 calc(100% - 3rem), transparent);
   }
 }
