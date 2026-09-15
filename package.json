@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit",
     "test": "tsc --noEmit && vitest run",
     "sync": "tsx scripts/sync-catalogo.ts",
+    "comparar": "tsx scripts/comparar-catalogo.ts",
     "cobertura": "tsx scripts/cobertura.ts",
     "gen-seed": "tsx scripts/gen-seed.ts",
     "importar-vault": "tsx scripts/importar-vault.ts",
