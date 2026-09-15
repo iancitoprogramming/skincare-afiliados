@@ -8,11 +8,10 @@
 > Production; la cuenta de Alex pasó de `WomenAre0bjects` a `ExtremeImagery` (§1,
 > §10), y el catálogo se comparó contra producción (§6).
 >
-> **Actualizado el 15/9 a la noche:** el #37, el #38 y el #39 están en `main` y en
-> Production, mergeados con `ExtremeImagery`, que quedó probada (§1). Abierto: el
-> **#40**, el mail de bienvenida con el lenguaje del sitio y `npm run comparar`.
-> **Falta que Ian corra `npm run sync`:** sin eso, producción no tiene el arreglo
-> del #39 (§6).
+> **Actualizado el 15/9 a la noche:** el #37, el #38, el #39 y el #40 están en
+> `main` y en Production, mergeados con `ExtremeImagery`, que quedó probada (§1).
+> Abierto: el **#41**, la captura de mail de la home. **Falta que Ian corra `npm
+> run sync`:** sin eso, producción no tiene el arreglo del #39 (§6).
 
 ---
 
@@ -54,8 +53,8 @@ Vercel no frenó esos merges.
 máquina de Alex, y git usa `gh` como helper de credenciales, así que los pushes
 salen con ella; su perfil es público. Pusheó y abrió el #37, `verificar` corrió en
 el PR y, al mergearlo, en el push a `main` (`72a1eae`), y el deployment de
-Production de ese commit terminó. Después mergeó el #38 y el #39, también con
-Production en verde. El #36 no contaba para la prueba: lo mergeó
+Production de ese commit terminó. Después mergeó el #38, el #39 y el #40, los tres
+con `verificar` y Production en verde. El #36 no contaba para la prueba: lo mergeó
 `iancitoprogramming`.
 
 ---
@@ -72,7 +71,8 @@ Production en verde. El #36 no contaba para la prueba: lo mergeó
 | **#37** | `sitio-editorial` | El resto del sitio con el lenguaje de la home (§4) | En `main` (`72a1eae`) y en Production. Lo mergeó `ExtremeImagery` |
 | **#38** | `og-editorial` | La imagen para compartir con el lenguaje del sitio (§4) | En `main` (`1faff72`) y en Production |
 | **#39** | `sensible-hydro-boost` | El sérum Hydro Boost apto para piel sensible; `INGREDIENTES.md` §8.4 al día | En `main` (`ba83dd2`) y en Production. **Falta `npm run sync`** (§6) |
-| **#40** | `mail-editorial` | El mail de bienvenida con el lenguaje del sitio, `npm run comparar` y una corrección del #39 | Abierto. Esperando el visto bueno del usuario al mail |
+| **#40** | `mail-editorial` | El mail de bienvenida con el lenguaje del sitio, `npm run comparar` y una corrección del #39 | En `main` (`42a0fd0`) y en Production |
+| **#41** | `correo-home` | La captura de mail de la home ya no habla de una rutina | Abierto |
 
 **El #34 y el #35 quedaron invisibles en GitHub** porque los abrió
 `WomenAre0bjects`, que GitHub restringió (§10): la página del PR da 404 aunque se
@@ -95,21 +95,20 @@ misma rama. El de `ba83dd2` incluye los dos y dio verde.
 
 ### `main` al 15/9
 
-Último merge: **#39** (`ba83dd2`).
+Último merge: **#40** (`42a0fd0`).
 
 | | |
 |---|---|
-| Tests en `main` | 187 en 26 archivos |
-| Tests en el #40 | 189 en 26 archivos |
+| Tests en `main` | 189 en 26 archivos |
 | `npm run build` | 175 páginas |
 | Rutinas sin conflicto | 344 de 360 · 0 con "separar" — medido otra vez el 15/9, con el #39 |
 | Links que monetizan | 81 de 81, todos de `maurobilat` — medido otra vez el 15/9 |
 | Activos con fuente verificada | 73 de 79 — medido el 12/9 |
 
 Los activos no se volvieron a medir: el #39 corrige el mapeo de un producto que ya
-tenía la fuente verificada. El #37, el #38 y el #40 son presentación y
-herramientas, y el sérum del #39 es un paso opcional que no entra en ninguna
-rutina.
+tenía la fuente verificada. El #37, el #38, el #40 y el #41 son presentación,
+copy y herramientas, y el sérum del #39 es un paso opcional que no entra en
+ninguna rutina.
 
 ---
 
@@ -139,6 +138,12 @@ quiz). El **#31** trajo Resend: el mail que sale cuando alguien deja su correo.
 **Dirección visual nueva (#34, #35, #37, #38 y #40).** Ver §4.
 
 **El sérum Hydro Boost (#39 y #40).** Ver §6.
+
+**La captura de mail de la home (#41).** Decía "guardá tu rutina", que es la
+etiqueta del resultado del quiz, y al enviar decía "te guardamos la rutina". Ahora
+dice "dejanos tu correo", con la frase del mail de bienvenida debajo —vive en
+`copy.home.correo` y el mail la toma de ahí— y al enviar, "Listo, ya estás en el
+Club", que es el asunto del mail que le llega.
 
 ---
 
@@ -248,15 +253,14 @@ secundaria.
 
 ## 6 · Lo próximo, priorizado
 
-1. **Mergear el #40 si el usuario aprueba el mail.**
+1. **Mergear el #41** (la captura de mail de la home).
 2. **Ian: `npm run comparar` y después `npm run sync`.** Producción lee el catálogo
    de Supabase y todavía no tiene el arreglo del #39: ahí el sérum Hydro Boost
    sigue vetado para piel sensible.
-   - `comparar` (#40; si todavía no está mergeado, está en esa rama) muestra qué
-     pisaría el sync, sin escribir nada. Debería mostrar sólo el sérum Hydro Boost
-     (`apto_sensible` y `tipos_piel`). Si muestra otra cosa, mirarla antes de
-     sincronizar: el sync hace upsert de todos los campos y desactiva lo que no
-     está en el archivo.
+   - `comparar` muestra qué pisaría el sync, sin escribir nada. Debería mostrar
+     sólo el sérum Hydro Boost (`apto_sensible` y `tipos_piel`). Si muestra otra
+     cosa, mirarla antes de sincronizar: el sync hace upsert de todos los campos y
+     desactiva lo que no está en el archivo.
    - En la máquina de Alex no se puede: su `.env` tiene las variables de Supabase
      vacías (§10).
    - Qué corrige el #39: el mapeo del sérum (`MLA22655637`) declaraba `fragancia`
@@ -269,14 +273,19 @@ secundaria.
      la exclusión "no va a → sensible" la calcula el importador desde
      `activos.ts`. Lo corrige el #40.
 3. **Una imagen 2:3 para Pinterest es decisión del usuario, y no es gratis.** La
-   imagen para compartir sigue en 1200×630. Pinterest recomienda 2:3 en sus
-   especificaciones de anuncios ("a 2:3 aspect ratio, or 1000 x 1500 pixels"),
-   pero una imagen así se recorta en WhatsApp y en Facebook. La única forma
-   documentada de darle a Pinterest otra imagen sin cambiar la que ven las demás
-   redes es su botón Guardar con `data-pin-media` ("Overrides the image and
-   substitutes a different image in the Pin Create form"), y eso exige cargar su
-   script en el sitio ("If you don't call pinit.js, your buttons and widgets won't
-   render").
+   imagen para compartir sigue en 1200×630, que es lo que usan WhatsApp y
+   Facebook. Lo que se averiguó el 15/9 en la documentación de Pinterest:
+   - Sus especificaciones de anuncios recomiendan 2:3 ("a 2:3 aspect ratio, or
+     1000 x 1500 pixels") y avisan que lo más alto "might get cut off in people's
+     feeds".
+   - La documentación de Rich Pins **no dice** qué imagen toma de la página, y su
+     centro de ayuda dice que, al guardar desde un sitio, la persona **elige entre
+     las imágenes de la página**.
+   - La única forma documentada de ofrecerle otra imagen sin cambiar la que ven
+     las demás redes es su botón Guardar con `data-pin-media` ("Overrides the
+     image and substitutes a different image in the Pin Create form"), y eso exige
+     cargar su script: "If you don't call pinit.js, your buttons and widgets won't
+     render". Es sumar un tercero al sitio.
 4. **Los 6 productos sin verificar** (§7), empezando por el ISDIN Ureadin Fusion.
    Necesitan la caja.
 5. **Fotos propias de ingredientes.** Una sección como la de ingredientes de Beauty
@@ -284,9 +293,7 @@ secundaria.
    libres: no hay con esa calidad.
 6. **Pendientes de producto:**
    - las preguntas frecuentes reales, cuando haya respuestas de clientas;
-   - prueba social y carrusel;
-   - el copy "guardá tu rutina" de la captura de la home: es la etiqueta del quiz,
-     y en la home todavía no hay rutina que guardar.
+   - prueba social y carrusel.
 7. **Catálogo:**
    - las dos compras de `docs/COMPRAR.md`;
    - 9 productos atados a un solo vendedor (`docs/listados-atados.md`): hay que
@@ -366,14 +373,16 @@ a un `.html` y capturado a 640 px.
 **Capturas y medición.** Las del panel fallan cuando el panel no está a la vista,
 y sus pestañas se cierran solas. Lo que funciona es Chrome headless por CDP con el
 `WebSocket` de Node 24 contra el build de producción:
-- **Chrome:** `C:\Program Files\Google\Chrome\Application\chrome.exe`, con
+- **Chrome:** `C:/Program Files/Google/Chrome/Application/chrome.exe`, con
   `--remote-debugging-port` y un `--user-data-dir` propio.
 - **Emulación:** `Emulation.setDeviceMetricsOverride`.
 - **Captura:** `Page.captureScreenshot`, con `captureBeyondViewport` **sólo** para
   la página entera: con `true` en una captura de una sola pantalla, devuelve la
   página entera con el contenido repetido.
+- **Una sección suelta** se mira llevándola al centro con `scrollIntoView` y
+  capturando esa pantalla.
 - **Los scripts no quedaron en el repo:** vivían en el scratchpad de la sesión
-  (`captura.mjs`, `medir.mjs` y `render-mail.mts`).
+  (`captura.mjs`, `medir.mjs`, `captura-seccion.mjs` y `render-mail.mts`).
 
 **Unsplash bloquea el headless** con BotStopper. No se esquiva: se navega con el
 panel, que es un navegador normal, y las miniaturas del CDN
@@ -488,6 +497,11 @@ origin/main <rama>`.
 `/catalogo` le llega a un script de Node como `C:/Program Files/Git/catalogo`.
 Pasó con la medición del #37, que midió `about:blank` sin dar error. Correr esos
 scripts con `MSYS_NO_PATHCONV=1`.
+
+**Un script escrito desde adentro de un comando pierde las barras invertidas.**
+`"C:\\Program Files\\…"` llegó al archivo como `C:\Program Files\…` y JavaScript
+se comió las barras: el `spawn` de Chrome falló con `ENOENT`. En Windows conviene
+escribir las rutas con barras normales, que el sistema acepta igual.
 
 **Un script `.ts` suelto fuera del repo, corrido con `tsx`, se trata como
 CommonJS** y no acepta `await` fuera de una función: usar `.mts`. Y en Windows,

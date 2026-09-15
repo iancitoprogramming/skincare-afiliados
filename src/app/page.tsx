@@ -247,9 +247,9 @@ export default async function Home() {
 
         <PreguntasFrecuentes />
 
-        <section aria-label="guardá tu rutina" className="border-t border-niebla px-6 py-14">
+        <section aria-label={copy.home.correo.etiqueta} className="border-t border-niebla px-6 py-14">
           <div className="mx-auto max-w-md">
-            <GuardarEmailHome label="guardá tu rutina" />
+            <GuardarEmailHome />
           </div>
         </section>
       </main>

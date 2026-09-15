@@ -46,9 +46,9 @@ export const bienvenida = {
   sinRutina:
     "Gracias por dejarnos tu correo. Lo más útil que te podemos decir es lo mismo que dice el sitio:",
   botonQuiz: "Armar mi rutina",
-  // Sin frecuencia: se escribe cuando hay algo que decir.
-  frecuencia:
-    "Te escribimos poco, y sólo cuando cambia algo que te afecte: un producto que entra o sale del catálogo, o un criterio que corregimos.",
+  // Sin frecuencia: se escribe cuando hay algo que decir. Es la misma frase que
+  // la home muestra debajo de la captura de mail, y vive en copy.ts.
+  frecuencia: copy.home.correo.nota,
   porQue: (sitio: string) => `Recibís este mail porque dejaste tu correo en ${sitio.replace(/^https?:\/\//, "")}.`,
   baja: "Darte de baja",
 } as const;
