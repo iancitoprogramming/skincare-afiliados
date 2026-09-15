@@ -7,6 +7,9 @@ import { PALETA } from "@/niches/skincare/paleta";
 // de CSS y no interpreta `stroke-dasharray`. Acá los arcos se hacen con tres
 // círculos anidados a los que se les vuelve transparente un lado del borde: da la
 // misma lectura de anillos abiertos con lo que Satori sí entiende.
+//
+// El nombre va en Newsreader, como en el encabezado del sitio. La fuente la carga
+// `fuentesOG()`; si no llegó, Satori usa la de por defecto.
 const ANILLOS = [
   { medida: 52, grosor: 5, rot: -20 },
   { medida: 34, grosor: 5, rot: 40 },
@@ -52,10 +55,10 @@ export function MarcaOG({ escala = 1 }: { escala?: number }) {
 
       <div
         style={{
-          fontSize: `${36 * escala}px`,
-          fontWeight: 600,
+          fontFamily: "Newsreader",
+          fontSize: `${40 * escala}px`,
+          fontWeight: 400,
           color: PALETA.tinta,
-          letterSpacing: "-0.01em",
         }}
       >
         {copy.marca}

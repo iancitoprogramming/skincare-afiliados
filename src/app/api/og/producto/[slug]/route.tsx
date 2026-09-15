@@ -4,6 +4,7 @@ import { PALETA } from "@/niches/skincare/paleta";
 import { productos } from "@/niches/skincare/productos";
 import { copy } from "@/niches/skincare/copy";
 import { MarcaOG } from "@/components/og/MarcaOG";
+import { fuentesOG, tinta } from "@/components/og/recursos";
 
 // La imagen que Pinterest y WhatsApp muestran al compartir una ficha.
 //
@@ -15,6 +16,9 @@ import { MarcaOG } from "@/components/og/MarcaOG";
 // Antes de esto, el og:image de las 25 fichas apuntaba directo al CDN de Mercado
 // Libre. Justo las 25 páginas que se pinean, dependiendo de que un tercero no
 // bloquee el hotlink ni rote la URL.
+//
+// Desde el 15/9 tiene el lenguaje del sitio: marca y nombre en Newsreader, la
+// marca del producto en mayúscula con aire y la banda en un recuadro recto.
 
 // Constante local, no export: un route handler sólo admite exports conocidos.
 const SIZE = { width: 1200, height: 630 };
@@ -60,7 +64,8 @@ export async function GET(_req: Request, ctx: { params: Promise<{ slug: string }
   const p = indicePorSlug(activos).get(slug);
   if (!p) return new Response("No existe", { status: 404 });
 
-  const foto = await fotoComoDataUri(p.imagen_hd ?? p.imagen_url);
+  const [foto, fuentes] = await Promise.all([fotoComoDataUri(p.imagen_hd ?? p.imagen_url), fuentesOG()]);
+  const banda = copy.precio.rangos[p.rango_precio];
 
   return new ImageResponse(
     (
@@ -78,25 +83,34 @@ export async function GET(_req: Request, ctx: { params: Promise<{ slug: string }
             flexDirection: "column",
             justifyContent: "space-between",
             width: foto ? "58%" : "100%",
-            padding: "70px",
+            padding: "64px",
           }}
         >
           <MarcaOG escala={0.8} />
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+          <div style={{ display: "flex", flexDirection: "column" }}>
             {p.marca ? (
-              <div style={{ display: "flex", fontSize: "28px", color: PALETA.piedra }}>
-                {p.marca}
+              <div
+                style={{
+                  display: "flex",
+                  fontFamily: "Instrument Sans",
+                  fontSize: "20px",
+                  letterSpacing: "0.16em",
+                  color: tinta(0.7),
+                }}
+              >
+                {p.marca.toLocaleUpperCase("es-AR")}
               </div>
             ) : null}
             <div
               style={{
                 display: "flex",
-                fontSize: p.nombre.length > 40 ? "50px" : "62px",
-                fontWeight: 600,
+                marginTop: "14px",
+                fontFamily: "Newsreader",
+                fontSize: p.nombre.length > 40 ? "48px" : "58px",
+                fontWeight: 400,
                 color: PALETA.tinta,
-                lineHeight: 1.08,
-                letterSpacing: "-0.02em",
+                lineHeight: 1.1,
               }}
             >
               {p.nombre}
@@ -109,11 +123,18 @@ export async function GET(_req: Request, ctx: { params: Promise<{ slug: string }
                 que un descuento la deja mintiendo en el feed durante meses, sin
                 que se note desde acá. La banda cualitativa dice lo mismo que el
                 número decía de verdad y no envejece. Ver `docs/PRECIO.md`. */}
-            {copy.precio.rangos[p.rango_precio] ? (
+            {banda ? (
               <div
-                style={{ display: "flex", fontSize: "34px", fontWeight: 600, color: PALETA.tinta }}
+                style={{
+                  display: "flex",
+                  fontFamily: "Instrument Sans",
+                  fontSize: "24px",
+                  color: PALETA.piedra,
+                  border: `2px solid ${PALETA.niebla}`,
+                  padding: "6px 16px",
+                }}
               >
-                {copy.precio.rangos[p.rango_precio]}
+                {banda}
               </div>
             ) : null}
             {/* Mismo criterio que en el sitio: la calificación sólo con 10 o más
@@ -122,13 +143,16 @@ export async function GET(_req: Request, ctx: { params: Promise<{ slug: string }
                 Sin ★: la fuente por defecto de Satori no tiene ese glifo y sale
                 como caja vacía. Escrito en palabras se entiende igual. */}
             {p.rating && (p.opiniones ?? 0) >= 10 ? (
-              <div style={{ display: "flex", fontSize: "26px", color: PALETA.piedra }}>
+              <div style={{ display: "flex", fontFamily: "Instrument Sans", fontSize: "24px", color: tinta(0.7) }}>
                 {`${p.rating.toLocaleString("es-AR", { minimumFractionDigits: 1 })} de 5 · ${p.opiniones!.toLocaleString("es-AR")} opiniones`}
               </div>
             ) : null}
           </div>
         </div>
 
+        {/* La foto va sobre blanco y no sobre arena como en el sitio: allá el
+            blanco de la foto se funde con mix-blend-mode, y Satori no lo
+            soporta. Sobre arena se vería el recuadro; sobre blanco, no. */}
         {foto ? (
           <div
             style={{
@@ -136,8 +160,8 @@ export async function GET(_req: Request, ctx: { params: Promise<{ slug: string }
               width: "42%",
               alignItems: "center",
               justifyContent: "center",
-              backgroundColor: PALETA.gel,
-              padding: "50px",
+              backgroundColor: "#ffffff",
+              padding: "56px",
             }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -150,6 +174,7 @@ export async function GET(_req: Request, ctx: { params: Promise<{ slug: string }
         ) : null}
       </div>
     ),
-    SIZE,
+    // Sin fuentes cargadas no se pasa el arreglo vacío: así Satori usa la suya.
+    { ...SIZE, ...(fuentes.length ? { fonts: fuentes } : {}) },
   );
 }
