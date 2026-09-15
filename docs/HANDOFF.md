@@ -8,11 +8,11 @@
 > Production; la cuenta de Alex pasó de `WomenAre0bjects` a `ExtremeImagery` (§1,
 > §10), y el catálogo se comparó contra producción (§6).
 >
-> **Actualizado el 15/9 a la noche:** el #37 —el resto del sitio con el lenguaje
-> de la home— está en `main` y en Production, mergeado con `ExtremeImagery`, que
-> quedó probada (§1). Abiertos: el **#38**, la imagen para compartir, esperando el
-> visto bueno del usuario, y el **#39**, el sérum Hydro Boost apto para piel
-> sensible (§2, §6).
+> **Actualizado el 15/9 a la noche:** el #37, el #38 y el #39 están en `main` y en
+> Production, mergeados con `ExtremeImagery`, que quedó probada (§1). Abierto: el
+> **#40**, el mail de bienvenida con el lenguaje del sitio y `npm run comparar`.
+> **Falta que Ian corra `npm run sync`:** sin eso, producción no tiene el arreglo
+> del #39 (§6).
 
 ---
 
@@ -54,7 +54,8 @@ Vercel no frenó esos merges.
 máquina de Alex, y git usa `gh` como helper de credenciales, así que los pushes
 salen con ella; su perfil es público. Pusheó y abrió el #37, `verificar` corrió en
 el PR y, al mergearlo, en el push a `main` (`72a1eae`), y el deployment de
-Production de ese commit terminó. El #36 no contaba para la prueba: lo mergeó
+Production de ese commit terminó. Después mergeó el #38 y el #39, también con
+Production en verde. El #36 no contaba para la prueba: lo mergeó
 `iancitoprogramming`.
 
 ---
@@ -69,8 +70,9 @@ Production de ese commit terminó. El #36 no contaba para la prueba: lo mergeó
 | **#35** | `home-editorial` | La home con el lenguaje de Beauty of Joseon (§4) | En `main` (`0a8e802`) y en Production |
 | **#36** | `docs-handoff-cuenta` | El handoff con el cambio de cuenta | En `main` (`fc51441`). Lo mergeó Ian; `verificar` y Production en verde |
 | **#37** | `sitio-editorial` | El resto del sitio con el lenguaje de la home (§4) | En `main` (`72a1eae`) y en Production. Lo mergeó `ExtremeImagery` |
-| **#38** | `og-editorial` | La imagen para compartir con el lenguaje del sitio (§4) | Abierto, `verificar` en verde. Esperando el visto bueno del usuario al diseño |
-| **#39** | `sensible-hydro-boost` | El sérum Hydro Boost apto para piel sensible; `INGREDIENTES.md` §8.4 al día | Abierto. Después del merge hace falta `npm run sync` (§6) |
+| **#38** | `og-editorial` | La imagen para compartir con el lenguaje del sitio (§4) | En `main` (`1faff72`) y en Production |
+| **#39** | `sensible-hydro-boost` | El sérum Hydro Boost apto para piel sensible; `INGREDIENTES.md` §8.4 al día | En `main` (`ba83dd2`) y en Production. **Falta `npm run sync`** (§6) |
+| **#40** | `mail-editorial` | El mail de bienvenida con el lenguaje del sitio, `npm run comparar` y una corrección del #39 | Abierto. Esperando el visto bueno del usuario al mail |
 
 **El #34 y el #35 quedaron invisibles en GitHub** porque los abrió
 `WomenAre0bjects`, que GitHub restringió (§10): la página del PR da 404 aunque se
@@ -87,22 +89,27 @@ job de CI a mano sobre `5e4b12c` —clon limpio, sin `next-env.d.ts`, Node 22—
 pasaron los cuatro pasos. `main` tiene el mismo árbol que `5e4b12c`. El primer
 run oficial sobre ese contenido fue el del #36, en verde.
 
+**CI y el #38.** El `verificar` del push de `1faff72` salió cancelado: cinco
+segundos después llegó el merge del #39, y el workflow corta el run anterior de la
+misma rama. El de `ba83dd2` incluye los dos y dio verde.
+
 ### `main` al 15/9
 
-Último merge: **#37** (`72a1eae`).
+Último merge: **#39** (`ba83dd2`).
 
 | | |
 |---|---|
-| Tests en `main` | 186 en 26 archivos |
-| Tests en el #39 | 187 en 26 archivos |
+| Tests en `main` | 187 en 26 archivos |
+| Tests en el #40 | 189 en 26 archivos |
 | `npm run build` | 175 páginas |
 | Rutinas sin conflicto | 344 de 360 · 0 con "separar" — medido otra vez el 15/9, con el #39 |
 | Links que monetizan | 81 de 81, todos de `maurobilat` — medido otra vez el 15/9 |
 | Activos con fuente verificada | 73 de 79 — medido el 12/9 |
 
 Los activos no se volvieron a medir: el #39 corrige el mapeo de un producto que ya
-tenía la fuente verificada. El #37 y el #38 son sólo presentación, y el sérum del
-#39 es un paso opcional que no entra en ninguna rutina.
+tenía la fuente verificada. El #37, el #38 y el #40 son presentación y
+herramientas, y el sérum del #39 es un paso opcional que no entra en ninguna
+rutina.
 
 ---
 
@@ -129,9 +136,9 @@ quiz). El **#31** trajo Resend: el mail que sale cuando alguien deja su correo.
 - **#32 · Tamaño de letra.** Piso de 12 px, instrucciones a 14, campos a 16.
 - **#33 · Tinta en tres niveles:** entero, `/80` y `/70`.
 
-**Dirección visual nueva (#34, #35, #37 y #38).** Ver §4.
+**Dirección visual nueva (#34, #35, #37, #38 y #40).** Ver §4.
 
-**El sérum Hydro Boost (#39).** Ver §6.
+**El sérum Hydro Boost (#39 y #40).** Ver §6.
 
 ---
 
@@ -204,8 +211,15 @@ con el diseño anterior. Ahora:
 - **Las fuentes** se piden a Google Fonts con `text`, como en los ejemplos
   oficiales de Vercel para OG (`src/components/og/recursos.ts`). Si Google no
   responde, la imagen sale con la fuente por defecto y el build no se rompe.
-- **Sigue en 1200×630.** Si se suma una versión 2:3 para Pinterest es decisión
-  del usuario (§6).
+- **Sigue en 1200×630.** Una versión 2:3 para Pinterest es decisión del usuario
+  (§6).
+
+**El mail de bienvenida, en el #40.** Seguía con la paleta anterior al 15/9,
+copiada a mano, y con un botón terracota redondeado que no lleva a comprar. Ahora
+toma los colores de `PALETA`, tiene la tarjeta recta con una línea fina, la marca
+en mayúscula con aire, el título en serif y los botones en tinta. La serif es
+Georgia y no Newsreader: según caniemail, `@font-face` funciona en uno de cada
+cuatro clientes de correo, y Gmail no lo soporta.
 
 ---
 
@@ -221,6 +235,7 @@ Las reglas viven en `docs/proyecto/02-MARCA.md` y en el comentario de
 | `tipografia.test.ts` | Ningún `text-[…]` con tamaño; nada debajo de 12 px en `theme.css`; campos de formulario desde `text-base` |
 | `paleta.test.ts` | `paleta.ts` y `theme.css` declaran los mismos colores |
 | `copy-home.test.ts`, `copy-pasos.test.ts`, `copy-quiz.test.ts`, `bienvenida.test.ts` | El copy pasa por `PROHIBIDAS` de `claims.ts` |
+| `bienvenida.test.ts` (#40) | Además, el HTML del mail no usa el terracota y sí el fondo y las líneas de la paleta actual: lleva estilos inline, y el escaneo de clases no lo ve |
 
 **El escaneo no ve un fondo puesto en el padre y un texto en el hijo.** Por eso
 cada cambio visual se mide también renderizado (§8).
@@ -233,48 +248,59 @@ secundaria.
 
 ## 6 · Lo próximo, priorizado
 
-1. **Revisar el #38 con el usuario y mergearlo si aprueba el diseño.** Decidir
-   además si se suma una versión 2:3 para Pinterest: su página de especificaciones
-   de anuncios recomienda "a 2:3 aspect ratio, or 1000 x 1500 pixels", pero una
-   imagen así se recorta en WhatsApp y en Facebook.
-2. **Mergear el #39 y correr `npm run sync`.** Producción lee el catálogo de
-   Supabase, así que el sérum sigue vetado ahí hasta el `sync`. **Corregir también
-   el vault de Obsidian**, que todavía dice "no va a → sensible: Fragancia" para
-   ese sérum; un reimport pisaría el arreglo.
-   - Qué corrige: el mapeo del sérum Hydro Boost (`MLA22655637`) declaraba
-     `fragancia` contra su propio comentario y contra el INCI. La ficha oficial de
-     Neutrogena Uruguay (Kenvue), con la fórmula latinoamericana, no trae
-     fragancia; la marca lo declara "sin perfume" y FarmaPlus lo confirma.
-   - Se revisaron las 79 entradas de `activos.ts` buscando otro comentario que
-     contradiga su mapeo: no hay.
-3. **Los 6 productos sin verificar** (§7), empezando por el ISDIN Ureadin Fusion.
-4. **Fotos propias de ingredientes.** Una sección como la de ingredientes de Beauty
+1. **Mergear el #40 si el usuario aprueba el mail.**
+2. **Ian: `npm run comparar` y después `npm run sync`.** Producción lee el catálogo
+   de Supabase y todavía no tiene el arreglo del #39: ahí el sérum Hydro Boost
+   sigue vetado para piel sensible.
+   - `comparar` (#40; si todavía no está mergeado, está en esa rama) muestra qué
+     pisaría el sync, sin escribir nada. Debería mostrar sólo el sérum Hydro Boost
+     (`apto_sensible` y `tipos_piel`). Si muestra otra cosa, mirarla antes de
+     sincronizar: el sync hace upsert de todos los campos y desactiva lo que no
+     está en el archivo.
+   - En la máquina de Alex no se puede: su `.env` tiene las variables de Supabase
+     vacías (§10).
+   - Qué corrige el #39: el mapeo del sérum (`MLA22655637`) declaraba `fragancia`
+     contra su propio comentario y contra el INCI. La ficha oficial de Neutrogena
+     Uruguay (Kenvue), con la fórmula latinoamericana, no trae fragancia; la marca
+     lo declara "sin perfume" y FarmaPlus lo confirma. Se revisaron las 79
+     entradas de `activos.ts` buscando otro comentario que contradiga su mapeo, y
+     no hay.
+   - **El vault no hay que tocarlo.** En el #39 se dijo lo contrario, y estaba mal:
+     la exclusión "no va a → sensible" la calcula el importador desde
+     `activos.ts`. Lo corrige el #40.
+3. **Una imagen 2:3 para Pinterest es decisión del usuario, y no es gratis.** La
+   imagen para compartir sigue en 1200×630. Pinterest recomienda 2:3 en sus
+   especificaciones de anuncios ("a 2:3 aspect ratio, or 1000 x 1500 pixels"),
+   pero una imagen así se recorta en WhatsApp y en Facebook. La única forma
+   documentada de darle a Pinterest otra imagen sin cambiar la que ven las demás
+   redes es su botón Guardar con `data-pin-media` ("Overrides the image and
+   substitutes a different image in the Pin Create form"), y eso exige cargar su
+   script en el sitio ("If you don't call pinit.js, your buttons and widgets won't
+   render").
+4. **Los 6 productos sin verificar** (§7), empezando por el ISDIN Ureadin Fusion.
+   Necesitan la caja.
+5. **Fotos propias de ingredientes.** Una sección como la de ingredientes de Beauty
    of Joseon (centella, ginseng o arroz recortados) no se puede hacer con bancos
    libres: no hay con esa calidad.
-5. **Pendientes de producto:**
+6. **Pendientes de producto:**
    - las preguntas frecuentes reales, cuando haya respuestas de clientas;
    - prueba social y carrusel;
-   - el copy "guardá tu rutina" de la captura de la home, que es la etiqueta del
-     quiz;
-   - **el mail de bienvenida** (`src/lib/emails/bienvenida.ts`) sigue con un botón
-     terracota redondeado. No lleva a comprar, así que por la regla del terracota
-     no le corresponde; queda para decidir con el usuario.
-6. **Catálogo:**
+   - el copy "guardá tu rutina" de la captura de la home: es la etiqueta del quiz,
+     y en la home todavía no hay rutina que guardar.
+7. **Catálogo:**
    - las dos compras de `docs/COMPRAR.md`;
-   - 9 productos atados a un solo vendedor (`docs/listados-atados.md`);
-   - confirmar con el frasco el alcanfor del Beauty of Joseon;
-   - `COMPATIBILIDAD.md` §8.4 es una medición vieja que todavía dice que no hay
-     protector mineral; si se vuelve a medir, actualizarla. `INGREDIENTES.md` §8.4
-     ya está al día en el #39.
-7. **Frescura del catálogo en producción.** Producción lee el catálogo de Supabase,
+   - 9 productos atados a un solo vendedor (`docs/listados-atados.md`): hay que
+     elegir la publicación y generar el link de afiliado desde la cuenta de
+     Mercado Libre, así que lo hace el usuario;
+   - confirmar con el frasco el alcanfor del Beauty of Joseon.
+8. **Frescura del catálogo en producción.** Producción lee el catálogo de Supabase,
    que queda al día sólo cuando alguien corre `npm run sync`.
    - Ian no corrió el `sync` el 15/9: en los logs de Supabase de ese día sólo hay
      lecturas de `productos`.
-   - **No hacía falta.** Se comparó el catálogo de `main` contra la tabla, sólo
-     leyendo: los 78 activos coinciden en los 29 campos que sube el `sync`, y el
-     inactivo (Mela B3 "Opcion 2") está inactivo en los dos lados. Las correcciones
-     de `apto_sensible` del 12/9 ya están en producción.
-   - **Vuelve a hacer falta con el #39.**
+   - Antes del #39 no hacía falta: Ian comparó el catálogo de `main` contra la
+     tabla, sólo leyendo, y los 78 activos coincidían en los 29 campos que sube el
+     `sync`; el inactivo (Mela B3 "Opcion 2") estaba inactivo en los dos lados.
+   - **Con el #39 vuelve a hacer falta:** ver el punto 2.
 
 ---
 
@@ -302,6 +328,9 @@ Lo pidió el usuario y es costumbre: **nada se da por terminado sin**
 1. `npm test` (que es `tsc --noEmit && vitest run`);
 2. `npm run build` **corrido local**, con el server de desarrollo frenado;
 3. mirar la home en el navegador a 390 px.
+
+**Un cambio de catálogo, además, se sube con `npm run comparar` y después `npm
+run sync`**, desde una máquina con la `service_role` de Supabase.
 
 **Los servers de preview.** El panel lee `.claude/launch.json` de la carpeta de
 arriba (`Main Claude/`), no del repo. Hay dos configuraciones:
@@ -331,6 +360,9 @@ debajo de 12 px**, sin desborde y sin imágenes rotas.
 rating y otra con nombre largo y sin rating. Un cambio de fuente que no llegó no
 da error: la imagen sale con la de por defecto, y sólo se nota mirándola.
 
+**El mail se mira renderizado:** `bienvenidaHtml` con rutina y sin rutina, escrito
+a un `.html` y capturado a 640 px.
+
 **Capturas y medición.** Las del panel fallan cuando el panel no está a la vista,
 y sus pestañas se cierran solas. Lo que funciona es Chrome headless por CDP con el
 `WebSocket` de Node 24 contra el build de producción:
@@ -341,7 +373,7 @@ y sus pestañas se cierran solas. Lo que funciona es Chrome headless por CDP con
   la página entera: con `true` en una captura de una sola pantalla, devuelve la
   página entera con el contenido repetido.
 - **Los scripts no quedaron en el repo:** vivían en el scratchpad de la sesión
-  (`captura.mjs` y `medir.mjs`, que hace las mediciones de arriba).
+  (`captura.mjs`, `medir.mjs` y `render-mail.mts`).
 
 **Unsplash bloquea el headless** con BotStopper. No se esquiva: se navega con el
 panel, que es un navegador normal, y las miniaturas del CDN
@@ -401,8 +433,16 @@ bloquean la lectura automática.
 
 **El importador puede borrar los links.** El vault y el catálogo divergieron: 5
 `ml_id` activos no existen en los `.md` de Obsidian y `npm run importar-organize`
-aborta a propósito. Desde el #39 hay una divergencia más, a propósito: el sérum
-Hydro Boost es apto en el repo y el vault todavía dice que no.
+aborta a propósito.
+
+**Las exclusiones del importador no salen del vault.** Los comentarios "no va a →
+sensible: …" de `productos.organize.ts` los escribe `importar-organize` calculando
+`apto_sensible` desde el mapa de `activos.ts`. Un error en ese mapa aparece ahí
+como si el vault lo dijera: pasó con el sérum Hydro Boost.
+
+**En la máquina de Alex el `.env` tiene las variables de Supabase vacías.** Los
+builds locales usan el catálogo del repo y no el de producción, y `npm run sync` y
+`npm run comparar` cortan sin credenciales.
 
 **Medir el catálogo completo:** `productos.ts` **más** `productos.organize.ts`.
 Grepear sólo el primero da la mitad.
@@ -432,6 +472,10 @@ del repo, consultar `GET /repos/…/commits/{sha}/check-runs`: ahí siguen
 apareciendo los runs ocultos. Se resolvió sacando esa cuenta y sumando
 `ExtremeImagery`.
 
+**Justo después de un push, `gh pr checks` puede decir "no checks reported".**
+Tarda unos segundos en registrar el run. No confundirlo con el síntoma de la cuenta
+restringida: mirar los check-runs del commit un minuto después.
+
 **Un pseudo-elemento con `z-index: -1` dentro de un bloque con `isolation:
 isolate`** se pinta encima del contenido de los bloques anteriores. Lavó dos
 botones de la home del monte (#34).
@@ -445,10 +489,16 @@ origin/main <rama>`.
 Pasó con la medición del #37, que midió `about:blank` sin dar error. Correr esos
 scripts con `MSYS_NO_PATHCONV=1`.
 
+**Un script `.ts` suelto fuera del repo, corrido con `tsx`, se trata como
+CommonJS** y no acepta `await` fuera de una función: usar `.mts`. Y en Windows,
+`import()` de una ruta `C:/…` necesita `pathToFileURL`.
+
 **Herramientas:** un heredoc por comando de bash; en Windows, Python imprime mal
 sin `PYTHONIOENCODING=utf-8`; `grep -E` con `\|` en vez de `|` da falsos ceros;
 `rg` no acepta lookahead (`(?!…)`) sin `--pcre2`; en PowerShell, un `curl.exe -o
-NUL` hizo que la herramienta bloqueara el comando entero.
+NUL` hizo que la herramienta bloqueara el comando entero; `git commit` con varios
+`-m` hace un párrafo por cada uno, y los trailers tienen que ir juntos en el
+último o Git no los reconoce.
 
 ---
 
@@ -488,6 +538,7 @@ npm run cobertura    # pasos flojos, fuera de banda, comodines
 npm run cuentas      # todos los links salen de maurobilat · exit 1 si no
 npm run check-links  # los activos monetizan
 npm run frescura     # qué datos están por vencer
+npm run comparar     # qué pisaría el sync, sin escribir nada (#40)
 ```
 
 El resto de la documentación está en `docs/proyecto/` (índice en `LEEME.md`):
