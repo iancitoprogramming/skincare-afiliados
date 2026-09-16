@@ -153,7 +153,9 @@ el selector de imágenes de Pinterest (`pinmarklet.js`): si alguien guarda desde
 extensión, también se lleva el pin 2:3.
 
 El botón es un link a la URL de creación de pin de Pinterest
-(`/pin/create/button/?url=…&media=…&description=…`) y funciona sin ningún script.
+(`/pin/create/button/?url=…&media=…&description=…`) y funciona sin ningún script:
+probado el 16/9, la URL sola abre el formulario de Pinterest con la imagen de
+`media`.
 `pinit.js` se carga sólo en las fichas y le agrega que el formulario se abra en
 una ventana chica en vez de otra pestaña.
 

@@ -8,12 +8,13 @@
 > Production; la cuenta de Alex pasó de `WomenAre0bjects` a `ExtremeImagery` (§1,
 > §10), y el catálogo se comparó contra producción (§6).
 >
-> **Actualizado el 16/9:** del #37 al #41 están en `main` y en Production,
-> mergeados con `ExtremeImagery`, que quedó probada (§1). El #43, de Ian, sacó la
-> captura de mail de la home: el correo se pide sólo en el resultado del quiz
-> (§3). **Falta que Ian corra `npm run sync`:** sin eso, producción no tiene el
-> arreglo del #39 (§6). Los productos pendientes se revisaron otra vez sin el
-> envase, y no cierra ninguno (§7).
+> **Actualizado el 16/9:** del #37 al #43 están en `main` y en Production. Los
+> mergeó `ExtremeImagery`, que quedó probada (§1), salvo el #43, que mergeó Ian.
+> El #43 sacó la captura de mail de la home: el correo se pide sólo en el
+> resultado del quiz (§3). **Abierto: el #44**, el pin 2:3 de cada ficha con el
+> botón Guardar en Pinterest (§6). **Falta que Ian corra `npm run sync`:** sin eso,
+> producción no tiene el arreglo del #39 (§6). Los productos pendientes se
+> revisaron otra vez sin el envase, y no cierra ninguno (§7).
 
 ---
 
@@ -75,7 +76,9 @@ con `verificar` y Production en verde. El #36 no contaba para la prueba: lo merg
 | **#39** | `sensible-hydro-boost` | El sérum Hydro Boost apto para piel sensible; `INGREDIENTES.md` §8.4 al día | En `main` (`ba83dd2`) y en Production. **Falta `npm run sync`** (§6) |
 | **#40** | `mail-editorial` | El mail de bienvenida con el lenguaje del sitio, `npm run comparar` y una corrección del #39 | En `main` (`42a0fd0`) y en Production |
 | **#41** | `correo-home` | La captura de mail de la home ya no habla de una rutina | En `main` (`d5ef21e`) y en Production |
+| **#42** | `auditoria-evidencia` | Lo que se averiguó de los productos pendientes sin el envase (§7) y este handoff | En `main` (`293236d`) y en Production |
 | **#43** | `captura-en-resultado` | El correo se pide en un solo lugar, el resultado del quiz: sale la captura de la home | En `main` (`a4dc89b`) y en Production. Lo mergeó Ian |
+| **#44** | `pinterest-2x3` | El pin 2:3 de cada ficha y el botón Guardar en Pinterest (§6) | Abierto |
 
 **El #34 y el #35 quedaron invisibles en GitHub** porque los abrió
 `WomenAre0bjects`, que GitHub restringió (§10): la página del PR da 404 aunque se
@@ -98,7 +101,7 @@ misma rama. El de `ba83dd2` incluye los dos y dio verde.
 
 ### `main` al 15/9
 
-Último merge: **#43** (`a4dc89b`).
+Último merge: **#42** (`293236d`), después del #43.
 
 | | |
 |---|---|
@@ -275,20 +278,23 @@ secundaria.
    - **El vault no hay que tocarlo.** En el #39 se dijo lo contrario, y estaba mal:
      la exclusión "no va a → sensible" la calcula el importador desde
      `activos.ts`. Lo corrige el #40.
-2. **Una imagen 2:3 para Pinterest es decisión del usuario, y no es gratis.** La
-   imagen para compartir sigue en 1200×630, que es lo que usan WhatsApp y
-   Facebook. Lo que se averiguó el 15/9 en la documentación de Pinterest:
-   - Sus especificaciones de anuncios recomiendan 2:3 ("a 2:3 aspect ratio, or
-     1000 x 1500 pixels") y avisan que lo más alto "might get cut off in people's
-     feeds".
-   - La documentación de Rich Pins **no dice** qué imagen toma de la página, y su
-     centro de ayuda dice que, al guardar desde un sitio, la persona **elige entre
-     las imágenes de la página**.
-   - La única forma documentada de ofrecerle otra imagen sin cambiar la que ven
-     las demás redes es su botón Guardar con `data-pin-media` ("Overrides the
-     image and substitutes a different image in the Pin Create form"), y eso exige
-     cargar su script: "If you don't call pinit.js, your buttons and widgets won't
-     render". Es sumar un tercero al sitio.
+2. **Pinterest 2:3: el #44 espera el visto bueno.** El 16/9 el usuario aprobó
+   cargar `pinit.js` para ofrecerle a Pinterest una imagen 2:3. El #44 genera en el
+   build un pin de 1000×1500 por ficha (`/api/pin/producto/[slug]`), y el botón
+   "Guardar en Pinterest" de la ficha se lo ofrece. Lo que hay que saber antes de
+   mergearlo:
+   - **El link funciona sin `pinit.js`**: es la URL de creación de pin de
+     Pinterest, con la imagen, y el script sólo le suma una ventana chica.
+     Probado el 16/9 sin sesión: la URL sola abre el formulario de Pinterest y
+     carga la imagen de `media`; para guardar pide iniciar sesión. Esto corrige lo
+     que decía este punto antes, que el script era la condición para ofrecer otra
+     imagen.
+   - **`pinit.js` le avisa a Pinterest de cada visita a una ficha**, con la URL de
+     la página, aunque nadie toque el botón. Está medido; el detalle y cómo
+     sacarlo están en `05-TECNICO.md` § Pinterest. El sitio no tiene página de
+     privacidad que lo diga.
+   - Después del merge hay que verificar que en producción el `media` del botón
+     sea `https://clubdepiel.store/api/pin/producto/…` y devuelva `200 image/png`.
 3. **Los 6 productos sin verificar** (§7), empezando por el ISDIN Ureadin Fusion.
    Necesitan la caja.
 4. **Fotos propias de ingredientes.** Una sección como la de ingredientes de Beauty
