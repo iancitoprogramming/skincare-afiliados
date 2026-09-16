@@ -13,10 +13,6 @@ export function GuardarEmail({
   onGuardar,
 }: {
   label: string;
-  /**
-   * Lo que se lee cuando el correo quedó guardado. Por omisión habla de la rutina,
-   * que es el caso del resultado; la home, donde no hay rutina, pasa el suyo.
-   */
   /** `website` es el honeypot: una persona lo manda vacío. */
   onGuardar?: (email: string, website: string) => Promise<void> | void;
 }) {
