@@ -44,9 +44,14 @@ casi te frena?".
 /combinaciones          criterios de compatibilidad entre activos
 ```
 
-Todo prerenderizado. **175 páginas estáticas** al 12/9/2026 — el número sale
-de `npm run build`, no de sumar a mano: cambia cada vez que entra o sale un
-producto activo.
+Cada ficha tiene además dos imágenes, horneadas en el build:
+`/api/og/producto/[slug]` (1200×630, la que se ve al compartir el link) y
+`/api/pin/producto/[slug]` (1000×1500, el pin 2:3 que ofrece el botón Guardar en
+Pinterest de la ficha).
+
+Todo prerenderizado. **253 páginas estáticas** al 16/9/2026: 175 hasta el 15/9,
+más los 78 pins. El número sale de `npm run build`, no de sumar a mano: cambia
+cada vez que entra o sale un producto activo.
 
 ### Los slugs son contrato
 

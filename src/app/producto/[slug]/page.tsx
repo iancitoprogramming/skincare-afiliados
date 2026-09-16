@@ -2,9 +2,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Shell } from "@/components/Shell";
 import { BotonComprar } from "@/components/BotonComprar";
+import { GuardarEnPinterest } from "@/components/GuardarEnPinterest";
 import { PruebaSocial } from "@/components/PruebaSocial";
 import { RangoPrecio } from "@/components/RangoPrecio";
-import { ETIQUETA, FOTO_PRODUCTO, MARCO_FOTO } from "@/components/estilo";
+import { ETIQUETA, ETIQUETA_BASE, FOTO_PRODUCTO, MARCO_FOTO } from "@/components/estilo";
 import { getCatalogo } from "@/engine/catalogo";
 import { conCriteriosDeOrden } from "@/niches/skincare/calidad";
 import { armarKits } from "@/engine/kits";
@@ -13,6 +14,8 @@ import { copy } from "@/niches/skincare/copy";
 import { CATEGORIAS, ORIGENES, TIERS } from "@/niches/skincare/config";
 import { KITS } from "@/niches/skincare/kits";
 import { productos as fallback } from "@/niches/skincare/productos";
+import { descripcionPin } from "@/lib/pinterest";
+import { urlDelSitio } from "@/lib/sitio";
 
 export const revalidate = 3600;
 
@@ -57,13 +60,39 @@ export default async function ProductoDetalle({ params }: { params: Promise<{ sl
     k.pasos.some((paso) => paso.producto.id === p.id),
   );
 
+  // Lo que se guarda en Pinterest: la ficha, con su pin 2:3 y no con la foto de
+  // Mercado Libre. Absolutas porque salen del sitio.
+  const sitio = urlDelSitio();
+  const pin = {
+    url: `${sitio}/producto/${slug}`,
+    media: `${sitio}/api/pin/producto/${slug}`,
+    descripcion: descripcionPin(p),
+  };
+
   return (
     <Shell volver={{ href: "/catalogo", label: "catálogo" }} disclaimers>
       <article className="flex flex-col gap-5">
         {p.imagen_url ? (
-          <div className={`h-72 w-full p-6 ${MARCO_FOTO}`}>
+          // Abajo, el marco deja lugar para el botón Guardar (pb-14): así no tapa
+          // la foto, que queda del mismo alto que antes.
+          <div className={`relative h-80 w-full px-6 pb-14 pt-6 ${MARCO_FOTO}`}>
+            {/* Los data-pin-* los lee el selector de imágenes de Pinterest
+                (pinmarklet.js): si alguien guarda desde la extensión, se lleva el
+                pin 2:3 y no la foto de Mercado Libre. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={p.imagen_url} alt={`${p.marca ?? ""} ${p.nombre}`.trim()} className={FOTO_PRODUCTO} />
+            <img
+              src={p.imagen_url}
+              alt={`${p.marca ?? ""} ${p.nombre}`.trim()}
+              className={FOTO_PRODUCTO}
+              data-pin-media={pin.media}
+              data-pin-url={pin.url}
+              data-pin-description={pin.descripcion}
+            />
+            {/* En la esquina del marco, porque lo que se guarda es la foto. */}
+            <GuardarEnPinterest
+              {...pin}
+              className={`absolute bottom-0 right-0 inline-flex min-h-11 items-center bg-porcelana px-4 ${ETIQUETA_BASE} text-tinta underline-offset-4 hover:underline`}
+            />
           </div>
         ) : null}
 
@@ -97,7 +126,7 @@ export default async function ProductoDetalle({ params }: { params: Promise<{ sl
 
         {p.por_que ? (
           <section className="flex flex-col gap-2">
-            <h2 className={ETIQUETA}>por qué lo elegimos</h2>
+            <h2 className={ETIQUETA}>{copy.ficha.porQue}</h2>
             <p className="font-body leading-relaxed text-tinta">{p.por_que}</p>
           </section>
         ) : null}

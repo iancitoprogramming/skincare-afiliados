@@ -4,7 +4,7 @@ import { PALETA } from "@/niches/skincare/paleta";
 import { productos } from "@/niches/skincare/productos";
 import { copy } from "@/niches/skincare/copy";
 import { MarcaOG } from "@/components/og/MarcaOG";
-import { fuentesOG, tinta } from "@/components/og/recursos";
+import { fotoProducto, fuentesOG, tinta } from "@/components/og/recursos";
 
 // La imagen que Pinterest y WhatsApp muestran al compartir una ficha.
 //
@@ -33,38 +33,12 @@ export function generateStaticParams() {
   return activos.map((p) => ({ slug: slugProducto(p) }));
 }
 
-/**
- * Trae la foto de ML y la devuelve como data URI.
- *
- * Corre del lado del servidor, no en el cliente de quien comparte. Es lo que
- * convierte un hotlink en un PNG propio.
- *
- * Pide .jpg aunque el catálogo guarde .webp: Satori —el motor detrás de
- * ImageResponse— no decodifica WebP y falla con "u2 is not iterable", que no
- * dice absolutamente nada. El CDN de Mercado Libre sirve las dos extensiones
- * para la misma foto.
- *
- * Si falla, la imagen se arma igual sin foto: una ficha sin foto en el preview
- * es un problema menor, una imagen rota es peor.
- */
-async function fotoComoDataUri(url?: string): Promise<string | null> {
-  if (!url) return null;
-  try {
-    const r = await fetch(url.replace(/\.webp$/i, ".jpg"));
-    if (!r.ok) return null;
-    const buf = Buffer.from(await r.arrayBuffer());
-    return `data:${r.headers.get("content-type") ?? "image/jpeg"};base64,${buf.toString("base64")}`;
-  } catch {
-    return null;
-  }
-}
-
 export async function GET(_req: Request, ctx: { params: Promise<{ slug: string }> }) {
   const { slug } = await ctx.params;
   const p = indicePorSlug(activos).get(slug);
   if (!p) return new Response("No existe", { status: 404 });
 
-  const [foto, fuentes] = await Promise.all([fotoComoDataUri(p.imagen_hd ?? p.imagen_url), fuentesOG()]);
+  const [foto, fuentes] = await Promise.all([fotoProducto(p.imagen_hd ?? p.imagen_url), fuentesOG()]);
   const banda = copy.precio.rangos[p.rango_precio];
 
   return new ImageResponse(

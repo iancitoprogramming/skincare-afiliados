@@ -26,14 +26,15 @@ const CARPETAS = ["src", "scripts"];
 /**
  * La única salida a un dominio de Mercado Libre que se acepta hoy.
  *
- * `/api/og/producto/[slug]` descarga la foto del producto del CDN para hornearla
- * en la imagen de Open Graph. Es un asset que ya mostramos, no extracción de
+ * `fotoProducto()` descarga la foto del producto del CDN para hornearla en las
+ * imágenes de cada ficha: la de Open Graph (`/api/og/producto/[slug]`) y el pin
+ * 2:3 (`/api/pin/producto/[slug]`). Es un asset que ya mostramos, no extracción de
  * datos: no se parsea nada ni se consulta información que la publicación no
  * exhiba. Queda anotado igual porque es la excepción, y una excepción sin nombre
  * es una puerta abierta.
  */
 const PERMITIDO = [
-  { archivo: "src/app/api/og/producto/[slug]/route.tsx", host: "mlstatic.com" },
+  { archivo: "src/components/og/recursos.ts", host: "mlstatic.com" },
   // El reporte de `npm run listados` escribe un link a la publicación para que
   // se pueda abrir a mano. Es una URL impresa en un markdown, no una llamada:
   // el archivo cae en este chequeo sólo porque además consulta la API oficial.

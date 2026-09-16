@@ -143,6 +143,35 @@ Tiene que devolver una URL absoluta con el dominio de producción. Si dice
 `localhost`, `base` resolvió mal. Después, que esa URL devuelva `200` y
 `image/png`.
 
+## Pinterest: el pin 2:3 y el botón Guardar
+
+Cada ficha tiene un botón "Guardar en Pinterest" (`GuardarEnPinterest.tsx`) que le
+ofrece a Pinterest `/api/pin/producto/[slug]`, 1000×1500, en vez de la imagen de
+1200×630 que usan las demás redes. La foto del producto de la ficha lleva los
+mismos datos en `data-pin-media`, `data-pin-url` y `data-pin-description`, que lee
+el selector de imágenes de Pinterest (`pinmarklet.js`): si alguien guarda desde la
+extensión, también se lleva el pin 2:3.
+
+El botón es un link a la URL de creación de pin de Pinterest
+(`/pin/create/button/?url=…&media=…&description=…`) y funciona sin ningún script.
+`pinit.js` se carga sólo en las fichas y le agrega que el formulario se abra en
+una ventana chica en vez de otra pestaña.
+
+**Qué le manda `pinit.js` a Pinterest**, leído de su código y medido en el
+navegador el 16/9/2026: pide el script a `assets.pinterest.com`; un segundo
+después, un beacon a `log.pinterest.com` con `event=init`, la URL de la página
+(`via`) y el idioma del navegador (`nvl`), aunque nadie toque el botón; y en cada
+clic, otro con `event=button_pinit_custom`. Salen con la IP de la persona y con
+las cookies de Pinterest que tenga su navegador.
+
+**No usar `data-pin-custom`.** En ese modo `pinit.js` le borra el `href` al link
+(`removeAttribute("href")`) y lo abre desde un listener propio, así que el botón
+deja de recibir foco con el teclado. El link lleva `data-pin-do="none"`, para que
+`pinit.js` no lo toque, y el clic llama a `PinUtils.pinOne`.
+
+**Para sacar `pinit.js`**, se borra el `<Script>` de `GuardarEnPinterest.tsx`: el
+link sigue abriendo el mismo formulario, con la misma imagen, en otra pestaña.
+
 ## Convenciones de código
 
 **Los comentarios explican el porqué, no el qué.** Si un comentario describe lo
