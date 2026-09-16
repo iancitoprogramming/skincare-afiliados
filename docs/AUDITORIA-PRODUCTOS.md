@@ -241,6 +241,24 @@ todas necesitan leer el envase o migrar la entrada a una ficha de catálogo `/p/
 > la lista que se consiguió es la europea y no incluye tocoferol, que el mapeo sí
 > declara. No se quitó porque la página argentina responde 403.
 
+### Revisión del 15/9/2026 — lo que se pudo averiguar sin el envase
+
+Se volvió a buscar el INCI de los pendientes. **Ninguno cierra**, pero hay
+evidencia nueva que conviene tener a mano cuando alguien tenga las cajas:
+
+| Producto | Qué se encontró |
+|---|---|
+| ISDIN Ureadin Fusion | La ficha oficial de ISDIN y Openfarma (Argentina) sólo nombran activos —urea al 3%, creatina, glicerina, manteca de shorea, vitamina E, ceramida 3— y ninguna menciona ácido láctico ni vitamina C. Un INCI más largo que el del 12/9, en tiendas europeas, sigue truncado y tampoco los trae en la parte visible. **Además, la manteca es de shorea** (*Shorea stenoptera*, illipe) **y no de karité** (*Butyrospermum parkii*), que es lo que declara el mapeo. No se tocó el mapeo: la regla es quitar un activo sólo cuando la fuente oficial demuestra su ausencia, y una lista de activos destacados no lo demuestra. |
+| Detenage N | detenage.com y la tienda de Panalab tampoco publican INCI: sólo niacinamida al 10% e hialurónico al 1% y al 0,5%. |
+| Idraet Espuma Extra Suave | Idraet USA tampoco publica INCI. Nombra agua termal y extractos de manzanilla, tilo, caléndula y hamamelis: son extractos, no aceites esenciales, así que no vetan piel sensible, igual que el extracto de hoja del TIRTIR. |
+| Neutrogena Retinol Boost | El producto del catálogo es la **crema** de 30 ml. Apareció el INCI español del **sérum** de 30 ml, con tocoferol y BHT, pero es otro producto y no sirve para cerrar esta entrada. neutrogena.es responde 403. |
+| Beauty of Joseon Ginseng Cleansing Oil | La página oficial sigue listando alcanfor el 15/9, sin nota de reformulación. Sigue sin saberse qué versión se vende en Argentina. |
+
+Los tres que dependen de qué variante vende la publicación de Mercado Libre
+—Anthelios Oil Control, Avène Hydrance y Eucerin DermoPure— no se buscaron:
+resolverlos pide mirar la publicación, y la lectura automática de Mercado Libre
+está descartada.
+
 ### Lo que enseñó esta tanda
 
 **Las fórmulas cambian por región, y tomar la lista equivocada da el resultado

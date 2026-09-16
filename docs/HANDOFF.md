@@ -8,10 +8,12 @@
 > Production; la cuenta de Alex pasó de `WomenAre0bjects` a `ExtremeImagery` (§1,
 > §10), y el catálogo se comparó contra producción (§6).
 >
-> **Actualizado el 15/9 a la noche:** el #37, el #38, el #39 y el #40 están en
-> `main` y en Production, mergeados con `ExtremeImagery`, que quedó probada (§1).
-> Abierto: el **#41**, la captura de mail de la home. **Falta que Ian corra `npm
-> run sync`:** sin eso, producción no tiene el arreglo del #39 (§6).
+> **Actualizado el 16/9:** del #37 al #41 están en `main` y en Production,
+> mergeados con `ExtremeImagery`, que quedó probada (§1). El #43, de Ian, sacó la
+> captura de mail de la home: el correo se pide sólo en el resultado del quiz
+> (§3). **Falta que Ian corra `npm run sync`:** sin eso, producción no tiene el
+> arreglo del #39 (§6). Los productos pendientes se revisaron otra vez sin el
+> envase, y no cierra ninguno (§7).
 
 ---
 
@@ -61,7 +63,7 @@ con `verificar` y Production en verde. El #36 no contaba para la prueba: lo merg
 
 ## 2 · Dónde quedó el trabajo
 
-### Los PR del 15/9
+### Los PR del 15/9 y el 16/9
 
 | PR | Rama | Qué | Estado |
 |---|---|---|---|
@@ -72,7 +74,8 @@ con `verificar` y Production en verde. El #36 no contaba para la prueba: lo merg
 | **#38** | `og-editorial` | La imagen para compartir con el lenguaje del sitio (§4) | En `main` (`1faff72`) y en Production |
 | **#39** | `sensible-hydro-boost` | El sérum Hydro Boost apto para piel sensible; `INGREDIENTES.md` §8.4 al día | En `main` (`ba83dd2`) y en Production. **Falta `npm run sync`** (§6) |
 | **#40** | `mail-editorial` | El mail de bienvenida con el lenguaje del sitio, `npm run comparar` y una corrección del #39 | En `main` (`42a0fd0`) y en Production |
-| **#41** | `correo-home` | La captura de mail de la home ya no habla de una rutina | Abierto |
+| **#41** | `correo-home` | La captura de mail de la home ya no habla de una rutina | En `main` (`d5ef21e`) y en Production |
+| **#43** | `captura-en-resultado` | El correo se pide en un solo lugar, el resultado del quiz: sale la captura de la home | En `main` (`a4dc89b`) y en Production. Lo mergeó Ian |
 
 **El #34 y el #35 quedaron invisibles en GitHub** porque los abrió
 `WomenAre0bjects`, que GitHub restringió (§10): la página del PR da 404 aunque se
@@ -95,7 +98,7 @@ misma rama. El de `ba83dd2` incluye los dos y dio verde.
 
 ### `main` al 15/9
 
-Último merge: **#40** (`42a0fd0`).
+Último merge: **#43** (`a4dc89b`).
 
 | | |
 |---|---|
@@ -106,7 +109,7 @@ misma rama. El de `ba83dd2` incluye los dos y dio verde.
 | Activos con fuente verificada | 73 de 79 — medido el 12/9 |
 
 Los activos no se volvieron a medir: el #39 corrige el mapeo de un producto que ya
-tenía la fuente verificada. El #37, el #38, el #40 y el #41 son presentación,
+tenía la fuente verificada. El #37, el #38, el #40, el #41 y el #43 son presentación,
 copy y herramientas, y el sérum del #39 es un paso opcional que no entra en
 ninguna rutina.
 
@@ -254,8 +257,7 @@ secundaria.
 
 ## 6 · Lo próximo, priorizado
 
-1. ~~Mergear el #41~~ (mergeado; la captura de la home se sacó después).
-2. **Ian: `npm run comparar` y después `npm run sync`.** Producción lee el catálogo
+1. **Ian: `npm run comparar` y después `npm run sync`.** Producción lee el catálogo
    de Supabase y todavía no tiene el arreglo del #39: ahí el sérum Hydro Boost
    sigue vetado para piel sensible.
    - `comparar` muestra qué pisaría el sync, sin escribir nada. Debería mostrar
@@ -273,7 +275,7 @@ secundaria.
    - **El vault no hay que tocarlo.** En el #39 se dijo lo contrario, y estaba mal:
      la exclusión "no va a → sensible" la calcula el importador desde
      `activos.ts`. Lo corrige el #40.
-3. **Una imagen 2:3 para Pinterest es decisión del usuario, y no es gratis.** La
+2. **Una imagen 2:3 para Pinterest es decisión del usuario, y no es gratis.** La
    imagen para compartir sigue en 1200×630, que es lo que usan WhatsApp y
    Facebook. Lo que se averiguó el 15/9 en la documentación de Pinterest:
    - Sus especificaciones de anuncios recomiendan 2:3 ("a 2:3 aspect ratio, or
@@ -287,28 +289,28 @@ secundaria.
      image and substitutes a different image in the Pin Create form"), y eso exige
      cargar su script: "If you don't call pinit.js, your buttons and widgets won't
      render". Es sumar un tercero al sitio.
-4. **Los 6 productos sin verificar** (§7), empezando por el ISDIN Ureadin Fusion.
+3. **Los 6 productos sin verificar** (§7), empezando por el ISDIN Ureadin Fusion.
    Necesitan la caja.
-5. **Fotos propias de ingredientes.** Una sección como la de ingredientes de Beauty
+4. **Fotos propias de ingredientes.** Una sección como la de ingredientes de Beauty
    of Joseon (centella, ginseng o arroz recortados) no se puede hacer con bancos
    libres: no hay con esa calidad.
-6. **Pendientes de producto:**
+5. **Pendientes de producto:**
    - las preguntas frecuentes reales, cuando haya respuestas de clientas;
    - prueba social y carrusel.
-7. **Catálogo:**
+6. **Catálogo:**
    - las dos compras de `docs/COMPRAR.md`;
    - 9 productos atados a un solo vendedor (`docs/listados-atados.md`): hay que
      elegir la publicación y generar el link de afiliado desde la cuenta de
      Mercado Libre, así que lo hace el usuario;
    - confirmar con el frasco el alcanfor del Beauty of Joseon.
-8. **Frescura del catálogo en producción.** Producción lee el catálogo de Supabase,
+7. **Frescura del catálogo en producción.** Producción lee el catálogo de Supabase,
    que queda al día sólo cuando alguien corre `npm run sync`.
    - Ian no corrió el `sync` el 15/9: en los logs de Supabase de ese día sólo hay
      lecturas de `productos`.
    - Antes del #39 no hacía falta: Ian comparó el catálogo de `main` contra la
      tabla, sólo leyendo, y los 78 activos coincidían en los 29 campos que sube el
      `sync`; el inactivo (Mela B3 "Opcion 2") estaba inactivo en los dos lados.
-   - **Con el #39 vuelve a hacer falta:** ver el punto 2.
+   - **Con el #39 vuelve a hacer falta:** ver el punto 1.
 
 ---
 
@@ -320,7 +322,7 @@ alguna le falta. Ninguna de estas se puede cerrar a distancia:
 
 | Producto | Qué falta |
 |---|---|
-| ISDIN Ureadin Fusion | **El más importante.** El mapeo declara ácido láctico y vitamina C pura que no aparecen en la parte visible del INCI |
+| ISDIN Ureadin Fusion | **El más importante.** El mapeo declara ácido láctico y vitamina C pura que no aparecen en la parte visible del INCI, y manteca de karité cuando la que aparece es de shorea (illipe). Revisado otra vez el 15/9 sin el envase: ver `AUDITORIA-PRODUCTOS.md` |
 | LRP Anthelios Oil Control | `ml_id` `MLAU`: la API responde 403. El INCI sin color trae `Parfum` y `Zinc PCA` sin mapear. Está marcado no apto para sensible |
 | Idraet Espuma Extra Suave | La marca no publica INCI |
 | Avène Hydrance SPF30 | Variante sin resolver; no es la *Rich* |
