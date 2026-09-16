@@ -10,7 +10,6 @@ const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 // /api/leads con validación server-side) se engancha en la parte 4 vía onGuardar.
 export function GuardarEmail({
   label,
-  listo = "Listo, te guardamos la rutina. Revisá tu correo.",
   onGuardar,
 }: {
   label: string;
@@ -18,7 +17,6 @@ export function GuardarEmail({
    * Lo que se lee cuando el correo quedó guardado. Por omisión habla de la rutina,
    * que es el caso del resultado; la home, donde no hay rutina, pasa el suyo.
    */
-  listo?: string;
   /** `website` es el honeypot: una persona lo manda vacío. */
   onGuardar?: (email: string, website: string) => Promise<void> | void;
 }) {
