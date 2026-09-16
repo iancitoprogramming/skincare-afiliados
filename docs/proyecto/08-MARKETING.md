@@ -129,14 +129,28 @@ entre las imágenes de la página.
 ## 6 · Cómo se mide
 
 - **Supabase**, prendido en producción: `sesiones` (una por quiz completado, con
-  las respuestas y los `utm_*` de la URL de entrada), `clicks` (cada clic a
-  Mercado Libre, con producto y posición), `leads` (correos). Medido el 16/9, los
-  últimos 7 días: **7 sesiones, 10 clics, 2 correos**. Es el piso desde el que
-  arranca la campaña.
-- **Vercel Analytics** en todas las páginas.
-- **Los links de campaña tienen que llevar `utm_*`**: el quiz los lee de la URL
-  y los guarda con la sesión. Sin eso no se puede atribuir un clic a una pieza.
-  Ejemplo: `https://clubdepiel.store/rutina?o=manchas&utm_source=pinterest&utm_campaign=manchas`.
+  las respuestas y los `utm_*` de la visita), `clicks` (cada clic a Mercado
+  Libre, con producto, posición, y desde el 16/9 también los `utm_*`, la página
+  y el referrer de la visita), `leads` (correos). Medido el 16/9, los últimos 7
+  días: **8 sesiones, 11 clics, 2 correos**, ninguno con utm todavía. Es el piso
+  desde el que arranca la campaña.
+- **Vercel Analytics** en todas las páginas; guarda solo los `utm_*` de cada
+  página vista.
+- **Los links de campaña tienen que llevar `utm_*`**: la primera página que se
+  abre los guarda para toda la visita, así que la pieza puede aterrizar en el
+  quiz, en una ficha o en los kits, y la sesión y cada clic salen atribuidos a
+  ella. Sin eso no se puede atribuir un clic a una pieza. Ejemplo:
+  `https://clubdepiel.store/rutina?o=manchas&utm_source=pinterest&utm_campaign=manchas`.
+  Sin utm, queda el referrer (`pinterest.com`, `instagram.com`), que dice la red
+  pero no la pieza.
+- **Pinterest Tag**: cableado detrás de `NEXT_PUBLIC_PINTEREST_TAG_ID`. Con el
+  id puesto en Vercel, Pinterest ve cada página vista, cada correo guardado y
+  cada clic a Mercado Libre, atribuidos al pin; sin el id no se carga nada. Es
+  el primer tercero con cookies del sitio, así que prenderlo es decisión de Ian.
+  El id se saca del perfil business: Anuncios → Conversiones → Pinterest Tag.
+- **Mercado Libre**: los clics y las ventas por link los cuenta el panel de
+  afiliados de `maurobilat`; no hay nada que prender del lado del sitio. Del
+  lado nuestro, cada clic queda en `clicks` con su utm.
 - **Resend** guarda los contactos por segmento; el aviso de cada alta llega a la
   casilla de `NOTIFY_EMAIL`.
 - **Ventana de atribución de Mercado Libre: 24 horas desde el primer clic.** Se

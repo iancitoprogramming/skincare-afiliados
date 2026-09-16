@@ -68,6 +68,13 @@ export function informarMetadata(): void {
       process.env.NEXT_PUBLIC_PINTEREST_VERIFY ? "presente" : "AUSENTE"
     }`,
   );
+  // El tag es opcional (ver src/lib/pinterest.ts); se informa para que se vea
+  // desde el log si la campaña va a poder medir conversiones o no.
+  console.log(
+    `[metadata] pinterest tag = ${
+      process.env.NEXT_PUBLIC_PINTEREST_TAG_ID ? "presente" : "ausente"
+    }`,
+  );
 }
 
 /**

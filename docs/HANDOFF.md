@@ -11,9 +11,16 @@
 > **Actualizado el 16/9:** del #37 al #41 están en `main` y en Production,
 > mergeados con `ExtremeImagery`, que quedó probada (§1). El #43, de Ian, sacó la
 > captura de mail de la home: el correo se pide sólo en el resultado del quiz
-> (§3). **Falta que Ian corra `npm run sync`:** sin eso, producción no tiene el
-> arreglo del #39 (§6). Los productos pendientes se revisaron otra vez sin el
-> envase, y no cierra ninguno (§7).
+> (§3). Los productos pendientes se revisaron otra vez sin el envase, y no cierra
+> ninguno (§7).
+>
+> **Actualizado el 16/9 a la noche:** Ian corrió `npm run comparar` y `npm run
+> sync`: producción ya tiene el arreglo del #39 (3 campos, 0 bajas; después, 0 y
+> 0). El #46 dejó el handoff de marketing (`docs/proyecto/08-MARKETING.md`). El
+> #47 arregla la atribución por `utm`, que no funcionaba —el quiz reescribía la
+> URL antes de que nadie la leyera—, lleva la entrada de la visita a cada clic y
+> cablea el Pinterest Tag detrás de una variable; su migración `0005` ya está
+> aplicada en producción. El estado se volvió a medir en `06-ESTADO.md`.
 
 ---
 
@@ -72,10 +79,12 @@ con `verificar` y Production en verde. El #36 no contaba para la prueba: lo merg
 | **#36** | `docs-handoff-cuenta` | El handoff con el cambio de cuenta | En `main` (`fc51441`). Lo mergeó Ian; `verificar` y Production en verde |
 | **#37** | `sitio-editorial` | El resto del sitio con el lenguaje de la home (§4) | En `main` (`72a1eae`) y en Production. Lo mergeó `ExtremeImagery` |
 | **#38** | `og-editorial` | La imagen para compartir con el lenguaje del sitio (§4) | En `main` (`1faff72`) y en Production |
-| **#39** | `sensible-hydro-boost` | El sérum Hydro Boost apto para piel sensible; `INGREDIENTES.md` §8.4 al día | En `main` (`ba83dd2`) y en Production. **Falta `npm run sync`** (§6) |
+| **#39** | `sensible-hydro-boost` | El sérum Hydro Boost apto para piel sensible; `INGREDIENTES.md` §8.4 al día | En `main` (`ba83dd2`) y en Production. `npm run sync` hecho el 16/9 |
 | **#40** | `mail-editorial` | El mail de bienvenida con el lenguaje del sitio, `npm run comparar` y una corrección del #39 | En `main` (`42a0fd0`) y en Production |
 | **#41** | `correo-home` | La captura de mail de la home ya no habla de una rutina | En `main` (`d5ef21e`) y en Production |
 | **#43** | `captura-en-resultado` | El correo se pide en un solo lugar, el resultado del quiz: sale la captura de la home | En `main` (`a4dc89b`) y en Production. Lo mergeó Ian |
+| **#46** | `handoff-marketing` | El handoff para la campaña, `docs/proyecto/08-MARKETING.md` | En `main` (`5e6771b`) |
+| **#47** | `claude/npm-run-sync-handoff-3bde6c` | La atribución por `utm` que no funcionaba, la entrada de la visita en cada clic, el Pinterest Tag detrás de `NEXT_PUBLIC_PINTEREST_TAG_ID`, migración `0005` | **Abierto** el 16/9. La migración ya está en producción, antes del deploy a propósito (`05-TECNICO.md`) |
 
 **El #34 y el #35 quedaron invisibles en GitHub** porque los abrió
 `WomenAre0bjects`, que GitHub restringió (§10): la página del PR da 404 aunque se
@@ -96,22 +105,23 @@ run oficial sobre ese contenido fue el del #36, en verde.
 segundos después llegó el merge del #39, y el workflow corta el run anterior de la
 misma rama. El de `ba83dd2` incluye los dos y dio verde.
 
-### `main` al 15/9
+### `main` al 16/9
 
-Último merge: **#43** (`a4dc89b`).
+Último merge: **#46** (`5e6771b`). Todo medido otra vez el 16/9, sobre `main`
+más el #47.
 
 | | |
 |---|---|
-| Tests en `main` | 189 en 26 archivos |
+| Tests | 189 en 26 archivos en `main` · 199 en 27 con el #47 |
 | `npm run build` | 175 páginas |
-| Rutinas sin conflicto | 344 de 360 · 0 con "separar" — medido otra vez el 15/9, con el #39 |
-| Links que monetizan | 81 de 81, todos de `maurobilat` — medido otra vez el 15/9 |
-| Activos con fuente verificada | 73 de 79 — medido el 12/9 |
+| Rutinas sin conflicto | 344 de 360 · 0 con "separar" |
+| Links que monetizan | 81 de 81, todos de `maurobilat` · `links-pendientes` en 0 |
+| Activos con fuente verificada | 73 de 79 · 6 pendientes |
+| Catálogo en producción | igual al archivo: `comparar` da 0 cambios y 0 bajas |
+| Tracking | prendido desde el 12/9 a la noche · 8 sesiones, 11 clics, 2 correos · ninguna sesión con `utm` (ver #47) |
 
-Los activos no se volvieron a medir: el #39 corrige el mapeo de un producto que ya
-tenía la fuente verificada. El #37, el #38, el #40, el #41 y el #43 son presentación,
-copy y herramientas, y el sérum del #39 es un paso opcional que no entra en
-ninguna rutina.
+El #46 es documentación y el #47 es medición: ninguno toca el catálogo, y los
+números del catálogo son los del 15/9.
 
 ---
 
@@ -257,9 +267,10 @@ secundaria.
 
 ## 6 · Lo próximo, priorizado
 
-1. **Ian: `npm run comparar` y después `npm run sync`.** Producción lee el catálogo
-   de Supabase y todavía no tiene el arreglo del #39: ahí el sérum Hydro Boost
-   sigue vetado para piel sensible.
+1. ~~**Ian: `npm run comparar` y después `npm run sync`.**~~ **Hecho el 16/9.**
+   `comparar` mostró 3 campos (dos `imagen_hd` y el `preocupaciones` del Avene
+   Hydrance) y 0 bajas; el sync subió 79; `comparar` de vuelta dio 0 y 0. Lo que
+   sigue queda como registro del procedimiento:
    - `comparar` muestra qué pisaría el sync, sin escribir nada. Debería mostrar
      sólo el sérum Hydro Boost (`apto_sensible` y `tipos_piel`). Si muestra otra
      cosa, mirarla antes de sincronizar: el sync hace upsert de todos los campos y
@@ -304,13 +315,15 @@ secundaria.
      Mercado Libre, así que lo hace el usuario;
    - confirmar con el frasco el alcanfor del Beauty of Joseon.
 7. **Frescura del catálogo en producción.** Producción lee el catálogo de Supabase,
-   que queda al día sólo cuando alguien corre `npm run sync`.
-   - Ian no corrió el `sync` el 15/9: en los logs de Supabase de ese día sólo hay
-     lecturas de `productos`.
-   - Antes del #39 no hacía falta: Ian comparó el catálogo de `main` contra la
-     tabla, sólo leyendo, y los 78 activos coincidían en los 29 campos que sube el
-     `sync`; el inactivo (Mela B3 "Opcion 2") estaba inactivo en los dos lados.
-   - **Con el #39 vuelve a hacer falta:** ver el punto 1.
+   que queda al día sólo cuando alguien corre `npm run sync`. Al 16/9 está al
+   día (punto 1). La regla sigue: cada PR que toque el catálogo termina con
+   `comparar` y `sync` desde la máquina de Ian, o producción queda atrasada.
+8. **Probar la atribución después de mergear el #47.** Abrir
+   `clubdepiel.store/rutina?o=manchas&utm_source=prueba`, completar el quiz,
+   clickear un producto, y ver en Supabase la sesión y el clic con
+   `utm = {"utm_source":"prueba"}`. Hasta esa fila, la campaña no se mide por
+   pieza. Y las tres decisiones que quedan de Ian —Pinterest Tag, imagen 2:3, X—
+   están en `06-ESTADO.md`.
 
 ---
 
@@ -556,7 +569,12 @@ npm run cuentas      # todos los links salen de maurobilat · exit 1 si no
 npm run check-links  # los activos monetizan
 npm run frescura     # qué datos están por vencer
 npm run comparar     # qué pisaría el sync, sin escribir nada (#40)
+npm run links-pendientes  # qué links faltan generar · hoy 0
 ```
+
+Los conteos de tracking (sesiones, clics, correos, y desde el #47 los `utm` de
+cada uno) se leen en Supabase con la service key desde la máquina de Ian; no hay
+panel. Vercel Analytics tiene el suyo.
 
 El resto de la documentación está en `docs/proyecto/` (índice en `LEEME.md`):
 `02-MARCA.md` para el sistema visual, `03-PRODUCTO.md` para las puertas y el quiz,

@@ -71,6 +71,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=        # sólo scripts locales
 NEXT_PUBLIC_SITE_URL=             # dominio propio, cuando lo haya
 NEXT_PUBLIC_PINTEREST_VERIFY=     # código de reclamo de dominio
+NEXT_PUBLIC_PINTEREST_TAG_ID=     # Pinterest Tag; sin él no se carga (src/lib/pinterest.ts)
 RESEND_API_KEY=                   # mail al dejar el correo · Sensitive en Vercel
 RESEND_FROM=                      # "Club de Piel <hola@clubdepiel.store>"
 RESEND_SEGMENT_ID=                # segmento del contacto (referencia, no secreto)
@@ -79,7 +80,16 @@ NOTIFY_EMAIL=                     # opcional: aviso interno por cada correo nuev
 ```
 
 **Sin las dos primeras el tracking es un no-op silencioso.** Todo clic, sesión y
-email se descarta. Es el bloqueante para lanzar con medición.
+email se descarta. Están en Production desde el 12/9/2026; era el bloqueante para
+lanzar con medición y ya no lo es.
+
+**La entrada de la visita** (`utm_*`, página y referrer del primer pageview) se
+guarda en `sessionStorage` desde `<Medicion />` en el layout y viaja con la sesión
+y con cada clic (`src/engine/tracking.ts`). Antes se leía de la URL al terminar el
+quiz, y el quiz ya la había reescrito: ninguna sesión traía utm. Un clic desde
+`/producto` o `/kits`, sin sesión, igual queda atribuido a la pieza. Las columnas
+`utm`, `pagina` y `referrer` de `clicks` son de la migración `0005`, que va
+**antes** del deploy: `tracking.test.ts` falla si la ruta inserta algo sin columna.
 
 **Sin `RESEND_API_KEY` no sale ningún mail**, pero el lead se guarda igual. Con
 la key, al dejar el correo el contacto entra al segmento con el topic en

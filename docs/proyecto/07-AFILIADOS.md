@@ -78,7 +78,11 @@ Hay que declarar en la cuenta, antes de publicar:
 | Instagram | `@clubdepielok` |
 | TikTok | `@clubdepielok` |
 | YouTube | `@clubdepiel` |
-| Facebook | a crear |
+| X | declarada, sin handle todavía |
+
+Facebook se descartó por decisión (el 8/9 se había dicho lo contrario; la
+decisión final es la del 16/9, ver `06-ESTADO.md` § *no reabrir*). **Al 16/9
+todas las de la tabla están declaradas en `maurobilat`.**
 
 **El sitio va en la lista.** Es el Medio principal —es donde viven las 175 páginas
 y los 81 links— y es el que más fácil se olvida, porque uno piensa en "redes"
@@ -221,9 +225,11 @@ Ojo con los retinoides: el retinol cosmético va, la tretinoína es medicamento.
 - [x] Confirmar que el titular sea monotributista.
 - [x] Regenerar los 35 links desde `maurobilat`. Cerrado el 9/9/2026: los 73
       resuelven a la cuenta única y `npm run cuentas` sale 0.
-- [ ] Declarar los Medios en `maurobilat`: el sitio y las cinco redes.
+- [x] Declarar los Medios en `maurobilat`: el sitio y las redes. Hecho al
+      16/9/2026; X está declarada pero sin handle.
 - [x] Retirar el scraping de `scripts/cuentas.ts`. La cuenta pasa a declararse
       al cargar el link y el script sólo audita lo declarado.
 - [ ] Revisar la verificación de producto, que sí parsea páginas y hoy se hace
       a mano al aplicar una tanda.
-- [ ] Crear Facebook: vuelve a entrar como Medio (decisión del 8/9/2026).
+- ~~Crear Facebook~~: descartado por decisión (16/9/2026). Si se reabre, hay que
+      crearlo y declararlo antes de compartir un solo link ahí.

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Instrument_Sans, Newsreader } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { Medicion } from "@/components/Medicion";
 import { copy } from "@/niches/skincare/copy";
 import { informarMetadata, urlDelSitio } from "@/lib/sitio";
 import "./globals.css";
@@ -57,6 +58,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className="min-h-[100dvh] bg-porcelana font-body text-tinta antialiased">
         {children}
         <Analytics />
+        <Medicion />
       </body>
     </html>
   );
