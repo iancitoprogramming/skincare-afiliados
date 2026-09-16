@@ -1,10 +1,13 @@
 import { copy } from "../../niches/skincare/copy";
 import { PALETA } from "../../niches/skincare/paleta";
 
-// El mail que sale cuando alguien deja su correo. Uno solo para los dos casos:
-// desde la home (sin rutina todavía) y desde el resultado del quiz (con el
-// link a su rutina, que es lo que la pantalla prometió: "te guardamos la
-// rutina, revisá tu correo").
+// El mail que sale cuando alguien deja su correo. Desde el 16/9 (#43) el correo
+// se pide sólo en el resultado del quiz, así que lleva el link a la rutina, que
+// es lo que la pantalla prometió: "te guardamos la rutina, revisá tu correo".
+// La versión sin rutina sigue viva por dos motivos: sale cuando `/api/leads`
+// descarta la URL que recibió (de otro origen que el del sitio, o de más de 400
+// caracteres: ver `rutina-url.ts`), y sirve si algún día vuelve a haber otra
+// puerta.
 //
 // Todo inline y con tablas: Gmail y Outlook descartan <style> y clases. Los
 // colores salen de PALETA, la misma de theme.css. Hasta el 15/9 estaban copiados
@@ -46,8 +49,8 @@ export const bienvenida = {
   sinRutina:
     "Gracias por dejarnos tu correo. Lo más útil que te podemos decir es lo mismo que dice el sitio:",
   botonQuiz: "Armar mi rutina",
-  // Sin frecuencia: se escribe cuando hay algo que decir. Es la misma frase que
-  // la home muestra debajo de la captura de mail, y vive en copy.ts.
+  // Sin frecuencia: se escribe cuando hay algo que decir. La frase vive en
+  // copy.ts, en `copy.correo.frecuencia`.
   frecuencia: copy.correo.frecuencia,
   porQue: (sitio: string) => `Recibís este mail porque dejaste tu correo en ${sitio.replace(/^https?:\/\//, "")}.`,
   baja: "Darte de baja",
