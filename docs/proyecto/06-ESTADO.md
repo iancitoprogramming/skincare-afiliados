@@ -97,6 +97,11 @@ en `assets/productos/`.
 > Para Pinterest (2:3, 1000×1500) **casi ninguna da el alto sola** — van a
 > necesitar fondo o composición. Son fotos de producto sobre blanco.
 
+**El pin 2:3 de cada ficha ya existe** (16/9): `/api/pin/producto/[slug]` compone
+la foto sobre blanco con la marca, el nombre, el porqué, el paso y la banda de
+precio, y el botón Guardar de la ficha se lo ofrece a Pinterest. Ver
+`05-TECNICO.md` § Pinterest.
+
 **El carrusel y la prueba social del above the fold.** Necesita producción de
 fotos y las respuestas de clientas a "¿qué casi te frena?".
 

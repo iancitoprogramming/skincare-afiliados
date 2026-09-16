@@ -178,6 +178,18 @@ export const copy = {
   ficha: {
     cruce: "¿Va con tu piel?",
     cruceCta: "Armá tu rutina y lo chequeamos con el resto",
+    // El título del porqué. Lo usan la ficha y el pin 2:3, que lo repite abajo
+    // de la foto.
+    porQue: "por qué lo elegimos",
+  },
+
+  // El botón Guardar de cada ficha. "Guardar" y no "pinear": las pautas de marca
+  // de Pinterest piden no usar "Pin" como verbo ("use 'save' instead"). Va sin
+  // el logo de Pinterest, que tiene sus propias reglas de uso.
+  pinterest: {
+    guardar: "Guardar en Pinterest",
+    // Para lectores de pantalla: el link abre otra ventana.
+    ventana: "se abre en otra ventana",
   },
 
   // ───────────────────────────────────────────────────────────────────────────

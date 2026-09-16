@@ -164,9 +164,10 @@ dominio de página de Mercado Libre o un User-Agent falseado. El test distingue 
 host, no por dominio: `api.mercadolibre.com` está permitida en cualquier archivo
 —es la API oficial con OAuth, el camino sancionado— y `www.mercadolibre.com.ar` o
 `meli.la` no lo están en ninguno. Las dos excepciones nominadas son la descarga de
-la foto del producto para la imagen de Open Graph, que es un asset que ya mostramos
-y no extracción de datos, y el link a la publicación que `npm run listados` imprime
-en su reporte, que es una URL escrita en un markdown y no una llamada.
+la foto del producto para las imágenes de cada ficha —la de Open Graph y el pin 2:3
+de Pinterest—, que es un asset que ya mostramos y no extracción de datos, y el link
+a la publicación que `npm run listados` imprime en su reporte, que es una URL
+escrita en un markdown y no una llamada.
 
 Es una de las razones para preferir la API oficial: acceso autorizado por otro
 acuerdo, en vez de extracción no autorizada por ninguno.
