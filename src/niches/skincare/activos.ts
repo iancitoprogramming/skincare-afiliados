@@ -1761,6 +1761,13 @@ export const ACTIVOS_POR_PRODUCTO: Record<string, string[]> = {
   // ácido láctico ni la vitamina C que este mapeo declara. Si no estuvieran, acá
   // sobra un exfoliante y una vitamina C pura, que no es poca cosa. Hay que leer
   // el envase antes de confiar en esta entrada.
+  //
+  // 15/9/2026: la ficha oficial de ISDIN y Openfarma (Argentina) sólo nombran
+  // activos —urea, creatina, glicerina, manteca de shorea, vitamina E, ceramida
+  // 3— y ninguna menciona láctico ni vitamina C. Y aparece una segunda duda: la
+  // manteca es de SHOREA (Shorea Stenoptera Seed Butter, illipe), no de karité
+  // (Butyrospermum Parkii), que es lo que declara este mapeo. No se toca nada:
+  // una lista de activos destacados no demuestra que el resto no esté.
   MLA21174873: ["urea", "aha_lactico", "ceramidas", "vit_c_laa", "hialuronico", "tocoferol", "creatina", "manteca_karite", "fragancia"],
   // Garnier Crema Hidratante en Gel Anti Imperfecciones [INCI] — verificado el
   // 12/9/2026. Niacinamida tercera, alcohol denat cuarto, ascorbil glucósido,
