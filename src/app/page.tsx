@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Encabezado } from "@/components/Encabezado";
-import { GuardarEmailHome } from "@/components/GuardarEmailHome";
 import { ComoFunciona } from "@/components/ComoFunciona";
 import { PreguntasFrecuentes } from "@/components/PreguntasFrecuentes";
 import { BOTON_LINEA, BOTON_LLENO, ETIQUETA } from "@/components/estilo";
@@ -246,12 +245,6 @@ export default async function Home() {
         </section>
 
         <PreguntasFrecuentes />
-
-        <section aria-label={copy.home.correo.etiqueta} className="border-t border-niebla px-6 py-14">
-          <div className="mx-auto max-w-md">
-            <GuardarEmailHome />
-          </div>
-        </section>
       </main>
 
       {/* Sin disclaimers: en la home no hay links de compra a la vista. */}

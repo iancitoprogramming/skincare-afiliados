@@ -86,9 +86,9 @@ tres puertas como tarjetas con foto sobre un panel `arena`, y botones rectos en
 `tinta`. Reemplazó al fondo de monte en bandas, que era provisorio. Las fotos son
 de Unsplash (`src/niches/skincare/fotos-home.ts`) y se acreditan al pie. El resto
 del sitio heredó la tipografía y el fondo marfil, pero no el layout: llevar el
-catálogo, el quiz y las fichas a este lenguaje es el paso siguiente. Pendiente de
-copy que quedó a propósito: la captura de mail usa "guardá tu rutina", que es la
-etiqueta del quiz.
+catálogo, el quiz y las fichas a este lenguaje es el paso siguiente. El correo se
+pide en un solo lugar, el resultado del quiz, bajo "guardá tu rutina" (16/9): la
+home no lo pide.
 
 **Mockups** para Pinterest, TikTok, YouTube e Instagram. Las fotos en alta están
 en `assets/productos/`.

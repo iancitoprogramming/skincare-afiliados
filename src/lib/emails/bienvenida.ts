@@ -48,7 +48,7 @@ export const bienvenida = {
   botonQuiz: "Armar mi rutina",
   // Sin frecuencia: se escribe cuando hay algo que decir. Es la misma frase que
   // la home muestra debajo de la captura de mail, y vive en copy.ts.
-  frecuencia: copy.home.correo.nota,
+  frecuencia: copy.correo.frecuencia,
   porQue: (sitio: string) => `Recibís este mail porque dejaste tu correo en ${sitio.replace(/^https?:\/\//, "")}.`,
   baja: "Darte de baja",
 } as const;

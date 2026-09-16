@@ -9,10 +9,11 @@
 > §10), y el catálogo se comparó contra producción (§6).
 >
 > **Actualizado el 16/9:** del #37 al #41 están en `main` y en Production,
-> mergeados con `ExtremeImagery`, que quedó probada (§1). **Falta que Ian corra
-> `npm run sync`:** sin eso, producción no tiene el arreglo del #39 (§6). Los
-> productos pendientes se revisaron otra vez sin el envase, y no cierra ninguno
-> (§7).
+> mergeados con `ExtremeImagery`, que quedó probada (§1). El #43, de Ian, sacó la
+> captura de mail de la home: el correo se pide sólo en el resultado del quiz
+> (§3). **Falta que Ian corra `npm run sync`:** sin eso, producción no tiene el
+> arreglo del #39 (§6). Los productos pendientes se revisaron otra vez sin el
+> envase, y no cierra ninguno (§7).
 
 ---
 
@@ -62,7 +63,7 @@ con `verificar` y Production en verde. El #36 no contaba para la prueba: lo merg
 
 ## 2 · Dónde quedó el trabajo
 
-### Los PR del 15/9
+### Los PR del 15/9 y el 16/9
 
 | PR | Rama | Qué | Estado |
 |---|---|---|---|
@@ -74,6 +75,7 @@ con `verificar` y Production en verde. El #36 no contaba para la prueba: lo merg
 | **#39** | `sensible-hydro-boost` | El sérum Hydro Boost apto para piel sensible; `INGREDIENTES.md` §8.4 al día | En `main` (`ba83dd2`) y en Production. **Falta `npm run sync`** (§6) |
 | **#40** | `mail-editorial` | El mail de bienvenida con el lenguaje del sitio, `npm run comparar` y una corrección del #39 | En `main` (`42a0fd0`) y en Production |
 | **#41** | `correo-home` | La captura de mail de la home ya no habla de una rutina | En `main` (`d5ef21e`) y en Production |
+| **#43** | `captura-en-resultado` | El correo se pide en un solo lugar, el resultado del quiz: sale la captura de la home | En `main` (`a4dc89b`) y en Production. Lo mergeó Ian |
 
 **El #34 y el #35 quedaron invisibles en GitHub** porque los abrió
 `WomenAre0bjects`, que GitHub restringió (§10): la página del PR da 404 aunque se
@@ -96,7 +98,7 @@ misma rama. El de `ba83dd2` incluye los dos y dio verde.
 
 ### `main` al 15/9
 
-Último merge: **#41** (`d5ef21e`).
+Último merge: **#43** (`a4dc89b`).
 
 | | |
 |---|---|
@@ -107,7 +109,7 @@ misma rama. El de `ba83dd2` incluye los dos y dio verde.
 | Activos con fuente verificada | 73 de 79 — medido el 12/9 |
 
 Los activos no se volvieron a medir: el #39 corrige el mapeo de un producto que ya
-tenía la fuente verificada. El #37, el #38, el #40 y el #41 son presentación,
+tenía la fuente verificada. El #37, el #38, el #40, el #41 y el #43 son presentación,
 copy y herramientas, y el sérum del #39 es un paso opcional que no entra en
 ninguna rutina.
 
@@ -140,11 +142,12 @@ quiz). El **#31** trajo Resend: el mail que sale cuando alguien deja su correo.
 
 **El sérum Hydro Boost (#39 y #40).** Ver §6.
 
-**La captura de mail de la home (#41).** Decía "guardá tu rutina", que es la
-etiqueta del resultado del quiz, y al enviar decía "te guardamos la rutina". Ahora
-dice "dejanos tu correo", con la frase del mail de bienvenida debajo —vive en
-`copy.home.correo` y el mail la toma de ahí— y al enviar, "Listo, ya estás en el
-Club", que es el asunto del mail que le llega.
+**La captura de mail de la home (#41, y después se sacó).** El #41 le cambió
+el texto para que no hablara de una rutina que no existía. El 16/9 Lucas decidió
+que el correo se pide en un solo lugar: el resultado del quiz, bajo "guardá tu
+rutina", que es donde hay algo que guardar. Un campo de mail suelto al pie es un
+pop-up con otro nombre. La frase del mail de bienvenida sobre qué va a recibir
+sigue en `copy.correo.frecuencia`.
 
 ---
 
