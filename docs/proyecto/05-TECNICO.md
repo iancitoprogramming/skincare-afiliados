@@ -80,7 +80,8 @@ NOTIFY_EMAIL=                     # opcional: aviso interno por cada correo nuev
 ```
 
 **Sin las dos primeras el tracking es un no-op silencioso.** Todo clic, sesión y
-email se descarta. Es el bloqueante para lanzar con medición.
+email se descarta. Están en Production desde el 12/9/2026; era el bloqueante para
+lanzar con medición y ya no lo es.
 
 **La entrada de la visita** (`utm_*`, página y referrer del primer pageview) se
 guarda en `sessionStorage` desde `<Medicion />` en el layout y viaja con la sesión

@@ -122,11 +122,13 @@ sale vacío.
 
 ## Qué medir
 
-Todavía **no se mide nada**: sin las variables de Supabase en producción, cada
-clic, sesión y email se descarta en silencio. Es el bloqueante #1 para lanzar,
-porque sin eso se lanza a ciegas.
+**Se mide desde el 12/9/2026**: Supabase guarda cada sesión (quiz completado),
+cada clic a Mercado Libre y cada correo, y Vercel Analytics las páginas vistas.
+Al 16/9: 8 sesiones, 11 clics, 2 correos. Es el piso de la campaña. La
+atribución por `utm` —de qué pieza vino cada sesión y cada clic— funciona desde el
+PR #47; antes se perdía en el camino (`06-ESTADO.md`).
 
-Cuando esté prendido, lo que importa:
+Lo que importa:
 
 - Clics a ML por visita
 - Qué producto y qué kit se clickean

@@ -44,7 +44,7 @@ casi te frena?".
 /combinaciones          criterios de compatibilidad entre activos
 ```
 
-Todo prerenderizado. **175 páginas estáticas** al 12/9/2026 — el número sale
+Todo prerenderizado. **175 páginas estáticas** al 16/9/2026 — el número sale
 de `npm run build`, no de sumar a mano: cambia cada vez que entra o sale un
 producto activo.
 

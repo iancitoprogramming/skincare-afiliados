@@ -45,5 +45,5 @@ El código. Vive en el repo, y los archivos que más explican son:
 
 ---
 
-_Corte: 2026-09-05._ Los números de `06-ESTADO.md` envejecen: si algo no
+_Corte: 2026-09-16._ Los números de `06-ESTADO.md` envejecen: si algo no
 coincide con el repo, manda el repo.
