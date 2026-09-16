@@ -8,7 +8,7 @@ proyecto de Claude.
 **`00-INSTRUCCIONES.md`** va pegado en el campo **Instrucciones del proyecto**.
 Es corto a propósito: son las reglas de cómo trabajar, no la documentación.
 
-**Los otros seis** se suben como **conocimiento del proyecto**.
+**Los otros siete** se suben como **conocimiento del proyecto**.
 
 ## Qué hay en cada uno
 
@@ -21,6 +21,7 @@ Es corto a propósito: son las reglas de cómo trabajar, no la documentación.
 | `04-CATALOGO.md` | Estado del catálogo, forma de un producto, huecos, el pipeline de Alex |
 | `05-TECNICO.md` | Stack, estructura, scripts, env vars, convenciones, trampas conocidas |
 | `06-ESTADO.md` | Dónde estamos, bloqueantes, decisiones tomadas, errores ya cometidos |
+| `08-MARKETING.md` | Handoff para la campaña: el embudo, qué se puede afirmar, canales y su estado, cómo se mide, ángulos que el sitio sostiene |
 
 ## Los dos más importantes
 
