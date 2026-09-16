@@ -11,8 +11,9 @@
 > **Actualizado el 16/9:** del #37 al #43 están en `main` y en Production. Los
 > mergeó `ExtremeImagery`, que quedó probada (§1), salvo el #43, que mergeó Ian.
 > El #43 sacó la captura de mail de la home: el correo se pide sólo en el
-> resultado del quiz (§3). **Abierto: el #44**, el pin 2:3 de cada ficha con el
-> botón Guardar en Pinterest (§6). **Falta que Ian corra `npm run sync`:** sin eso,
+> resultado del quiz (§3). **Abiertos: el #44**, el pin 2:3 de cada ficha con el
+> botón Guardar en Pinterest (§6), **y el #45**, tres comentarios que quedaron
+> desactualizados con el #43. **Falta que Ian corra `npm run sync`:** sin eso,
 > producción no tiene el arreglo del #39 (§6). Los productos pendientes se
 > revisaron otra vez sin el envase, y no cierra ninguno (§7).
 
@@ -79,6 +80,7 @@ con `verificar` y Production en verde. El #36 no contaba para la prueba: lo merg
 | **#42** | `auditoria-evidencia` | Lo que se averiguó de los productos pendientes sin el envase (§7) y este handoff | En `main` (`293236d`) y en Production |
 | **#43** | `captura-en-resultado` | El correo se pide en un solo lugar, el resultado del quiz: sale la captura de la home | En `main` (`a4dc89b`) y en Production. Lo mergeó Ian |
 | **#44** | `pinterest-2x3` | El pin 2:3 de cada ficha y el botón Guardar en Pinterest (§6) | Abierto |
+| **#45** | `comentarios-correo` | Tres comentarios del correo que describían lo anterior al #43. Sólo comentarios | Abierto |
 
 **El #34 y el #35 quedaron invisibles en GitHub** porque los abrió
 `WomenAre0bjects`, que GitHub restringió (§10): la página del PR da 404 aunque se
