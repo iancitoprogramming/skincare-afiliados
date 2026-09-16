@@ -26,7 +26,7 @@ describe("copy de la home: cómo funciona y preguntas", () => {
       franja: copy.home.franja,
       metodo: copy.home.metodo,
       preguntas: copy.home.preguntas,
-      correo: copy.home.correo,
+      correo: copy.correo,
     };
     for (const texto of textos(home)) {
       for (const [re, motivo] of PROHIBIDAS) {

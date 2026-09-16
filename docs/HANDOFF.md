@@ -139,11 +139,12 @@ quiz). El **#31** trajo Resend: el mail que sale cuando alguien deja su correo.
 
 **El sérum Hydro Boost (#39 y #40).** Ver §6.
 
-**La captura de mail de la home (#41).** Decía "guardá tu rutina", que es la
-etiqueta del resultado del quiz, y al enviar decía "te guardamos la rutina". Ahora
-dice "dejanos tu correo", con la frase del mail de bienvenida debajo —vive en
-`copy.home.correo` y el mail la toma de ahí— y al enviar, "Listo, ya estás en el
-Club", que es el asunto del mail que le llega.
+**La captura de mail de la home (#41, y después se sacó).** El #41 le cambió
+el texto para que no hablara de una rutina que no existía. El 16/9 Lucas decidió
+que el correo se pide en un solo lugar: el resultado del quiz, bajo "guardá tu
+rutina", que es donde hay algo que guardar. Un campo de mail suelto al pie es un
+pop-up con otro nombre. La frase del mail de bienvenida sobre qué va a recibir
+sigue en `copy.correo.frecuencia`.
 
 ---
 
@@ -253,7 +254,7 @@ secundaria.
 
 ## 6 · Lo próximo, priorizado
 
-1. **Mergear el #41** (la captura de mail de la home).
+1. ~~Mergear el #41~~ (mergeado; la captura de la home se sacó después).
 2. **Ian: `npm run comparar` y después `npm run sync`.** Producción lee el catálogo
    de Supabase y todavía no tiene el arreglo del #39: ahí el sérum Hydro Boost
    sigue vetado para piel sensible.
